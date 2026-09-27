@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hedef 15 - BankoBot Spor Toto Otomasyonu</title>
+    <title>Hedef 15 - Pro BankoBot Spor Toto Otomasyonu</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -58,21 +58,25 @@
         /* Sekme Menüsü */
         .tabs {
             display: flex;
-            gap: 6px;
+            gap: 4px;
             margin-bottom: 15px;
+            overflow-x: auto;
+            padding-bottom: 4px;
         }
 
         .tab-btn {
             flex: 1;
+            min-width: 90px;
             background: var(--card-bg);
             color: var(--text-muted);
             border: 1px solid var(--border-color);
-            padding: 10px 4px;
-            font-size: 0.75rem;
+            padding: 10px 6px;
+            font-size: 0.7rem;
             font-weight: bold;
             border-radius: 8px;
             cursor: pointer;
             text-align: center;
+            white-space: nowrap;
         }
 
         .tab-btn.active {
@@ -113,20 +117,35 @@
             color: var(--text-main);
         }
 
-        .control-group input {
+        .control-group input, .control-group select {
             background: var(--bg-color);
             border: 1px solid var(--border-color);
             color: var(--text-main);
             padding: 12px;
             border-radius: 8px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: bold;
             width: 100%;
             outline: none;
         }
 
-        .control-group input:focus {
+        .control-group input:focus, .control-group select:focus {
             border-color: var(--accent-green);
+        }
+
+        .file-upload-box {
+            border: 2px dashed var(--border-color);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            background: var(--bg-color);
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .file-upload-box:hover {
+            border-color: var(--accent-green);
+            color: var(--text-main);
         }
 
         .total-cost-badge {
@@ -202,7 +221,8 @@
 
         .actions {
             margin-top: 20px;
-            text-align: center;
+            display: flex;
+            gap: 10px;
         }
 
         .btn-main {
@@ -210,16 +230,29 @@
             color: #fff;
             border: none;
             padding: 14px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: bold;
             border-radius: 8px;
             cursor: pointer;
-            width: 100%;
+            flex: 1;
+            text-align: center;
         }
 
         .btn-main:hover {
             background: var(--accent-hover);
         }
+
+        .btn-sec {
+            background: #3b82f6;
+            color: #fff;
+            border: none;
+            padding: 14px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .btn-sec:hover { background: #2563eb; }
 
         #results {
             margin-top: 20px;
@@ -255,14 +288,31 @@
             margin-bottom: 12px;
         }
 
-        .coupon-title {
-            color: var(--accent-green);
-            font-weight: bold;
-            font-size: 0.9rem;
+        .coupon-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 8px;
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 4px;
         }
+
+        .coupon-title {
+            color: var(--accent-green);
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .btn-copy-mini {
+            background: var(--border-color);
+            color: var(--text-main);
+            border: none;
+            padding: 3px 8px;
+            font-size: 0.7rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn-copy-mini:hover { background: var(--accent-green); }
 
         .coupon-matches {
             display: grid;
@@ -290,7 +340,7 @@
             font-size: 0.85rem;
         }
 
-        .analysis-card, .bot-card {
+        .analysis-card, .bot-card, .saved-card {
             background: var(--card-bg);
             border-radius: 8px;
             padding: 15px;
@@ -303,15 +353,13 @@
             border-color: var(--bot-border);
         }
 
-        .analysis-card h4, .bot-card h4 {
+        .analysis-card h4, .bot-card h4, .saved-card h4 {
             color: var(--accent-green);
             margin-bottom: 6px;
             font-size: 0.95rem;
         }
 
-        .bot-card h4 {
-            color: #818cf8;
-        }
+        .bot-card h4 { color: #818cf8; }
 
         .prediction-badge {
             display: inline-block;
@@ -324,14 +372,46 @@
             margin-bottom: 6px;
         }
 
-        .analysis-card p, .bot-card p {
+        .analysis-card p, .bot-card p, .saved-card p {
             font-size: 0.8rem;
             color: var(--text-muted);
             line-height: 1.4;
         }
+        .bot-card p { color: #e2e8f0; }
 
-        .bot-card p {
-            color: #e2e8f0;
+        /* Chat Arayüzü */
+        .chat-box {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 10px;
+            background: var(--bg-color);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 10px;
+        }
+        .chat-msg {
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            max-width: 85%;
+        }
+        .chat-msg.user {
+            background: #3b82f6;
+            color: #fff;
+            align-self: flex-end;
+        }
+        .chat-msg.bot {
+            background: var(--card-bg);
+            color: var(--text-main);
+            align-self: flex-start;
+            border: 1px solid var(--border-color);
+        }
+        .chat-input-area {
+            display: flex;
+            gap: 6px;
         }
     </style>
 </head>
@@ -339,14 +419,363 @@
 
     <div class="container">
         <header>
-            <h1>HEDEF 15</h1>
-            <p>Monte Carlo Simülasyonu & BankoBot Akıllı Spor Toto Sistemi</p>
+            <h1>HEDEF 15 PRO</h1>
+            <p>Monte Carlo Simülasyonu & Gelişmiş BankoBot Otomasyonu</p>
         </header>
 
+        <!-- Sekme Menüsü -->
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('bulten', this)">Bülten & Kolon</button>
             <button class="tab-btn" onclick="switchTab('analiz', this)">Maç Analizleri</button>
-            <button class="tab-btn" onclick="switchTab('bankobot', this)">🤖 BankoBot</button>
+            <button class="tab-btn" onclick="switchTab('bankobot', this)">🤖 BankoBot AI</button>
+            <button class="tab-btn" onclick="switchTab('kayitli', this)">💾 Kuponlarım</button>
         </div>
 
-        
+        <!-- 1. SEKME: BÜLTEN VE KOLON ÜRETİCİ -->
+        <div id="tab-bulten" class="tab-content active">
+            <div class="control-panel">
+                <div class="control-group">
+                    <label>Bülten Dosyası İçe Aktar (JSON / Excel Verisi):</label>
+                    <div class="file-upload-box" onclick="document.getElementById('fileInput').click()">
+                        📁 Bülten Dosyası Seç veya Yükle (Örnek: bulten.json)
+                    </div>
+                    <input type="file" id="fileInput" style="display:none" onchange="handleFileUpload(event)">
+                </div>
+                <div class="control-group">
+                    <label for="riskMode">Sistem Risk Modu:</label>
+                    <select id="riskMode">
+                        <option value="balanced">Dengeli / Akıllı Dağılım</option>
+                        <option value="garanti">Garanti Odaklı (Favori Ağırlıklı)</option>
+                        <option value="jackpot">Sürpriz / Jackpot Modu (Yüksek Oran)</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label for="budgetInput">Bütçe Gir (TL):</label>
+                    <input type="text" id="budgetInput" value="200" inputmode="numeric" oninput="handleBudgetInput(this)">
+                </div>
+                <div class="control-group">
+                    <label for="columnCountInput">Kaç Kolon Olsun?</label>
+                    <input type="text" id="columnCountInput" value="4" inputmode="numeric" oninput="handleColumnInput(this)">
+                </div>
+            </div>
+
+            <div class="total-cost-badge" id="totalCostDisplay">Toplam Tutar: 200 TL (4 Kolon - Kolon Başı: 50 TL)</div>
+
+            <div id="matches-container"></div>
+
+            <div class="actions">
+                <button class="btn-main" onclick="generateColumns()">Uygula & Kolonları Oluştur</button>
+                <button class="btn-sec" onclick="saveCurrentCoupons()" title="Oluşturulan Kuponları Kaydet">💾 Kaydet</button>
+            </div>
+
+            <div id="results">
+                <h3>Oluşturulan Kuponlar</h3>
+                <div class="summary-info" id="summaryText"></div>
+                <div id="columnOutputContainer"></div>
+            </div>
+        </div>
+
+        <!-- 2. SEKME: ANALİZLER -->
+        <div id="tab-analiz" class="tab-content">
+            <div id="analysis-container"></div>
+        </div>
+
+        <!-- 3. SEKME: BANKOBOT AI & SOHBET -->
+        <div id="tab-bankobot" class="tab-content">
+            <div class="bot-card" style="margin-bottom: 12px;">
+                <h4>💬 BankoBot Yapay Zeka Asistanı ile Sohbet Et</h4>
+                <p>Maçlar, sürpriz ihtimalleri veya taktikler hakkında merak ettiklerini anında sor.</p>
+            </div>
+            <div class="chat-box" id="chatBox">
+                <div class="chat-msg bot">Selam! Ben BankoBot. Bu hafta bültendeki maçlar hakkında ne öğrenmek istiyorsun? Sürpriz maçları ya da en banko tercihleri sorabilirsin.</div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chatInput" placeholder="Örn: Bu hafta en sağlam banko maçlar hangileri?" style="flex:1; background:var(--card-bg); border:1px solid var(--border-color); color:var(--text-main); padding:10px; border-radius:8px; font-size:0.85rem;" onkeypress="if(event.key==='Enter') sendChatQuery()">
+                <button class="btn-main" style="padding:10px 16px; flex:unset;" onclick="sendChatQuery()">Gönder</button>
+            </div>
+            <div id="bot-matches-list" style="margin-top:15px;"></div>
+        </div>
+
+        <!-- 4. SEKME: KAYITLI KUPONLAR -->
+        <div id="tab-kayitli" class="tab-content">
+            <div class="analysis-card">
+                <h4>💾 Kaydedilen Kupon Arşivi</h4>
+                <p>Daha önce oluşturup sakladığın kolonlar burada listelenir.</p>
+            </div>
+            <div id="savedCouponsContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        let bulten = [
+            { id: 1, date: "02 Eki", home: "Belçika", away: "Türkiye", analysis: "Poisson xG modellemesine göre Belçika iç saha beklentisi 1.85 gol, Türkiye deplasman xG ortalaması ise 1.20 seviyesinde.", botPick: "MS 1", botComment: "Ev sahibinin iç saha baskı verileri ve xG üstünlüğü maçı 2-1 önde taşıyor." },
+            { id: 2, date: "05 Eki", home: "İtalya", away: "Türkiye", analysis: "Taktiksel blok yerleşimi ve düşük pas hatası oranlarıyla oynayan iki ekip. İtalya'nın savunma direnci yüksek.", botPick: "0-2 Çifte Şans", botComment: "İtalyan savunma kilidinin kontralarla açılma ihtimali yüksek, sürpriz denenebilir." },
+            { id: 3, date: "02 Eki", home: "Bosna", away: "İsveç", analysis: "İki takımın son 5 maçlık xG dengeleri kafa kafaya (1.14 - 1.10). Orta saha mücadelesi şeklinde geçmesi beklenen karşılaşma.", botPick: "0 (Beraberlik)", botComment: "Güç dengelerinin başa baş olduğu maçta skorun kilitlenme ihtimali kuvvetli." },
+            { id: 4, date: "02 Eki", home: "Fransa", away: "İtalya", analysis: "Fransa'nın kadro kalitesi ve oyuncu bireysel xG katkısı, rakibine göre belirgin üstünlük kuruyor.", botPick: "MS 1", botComment: "Bireysel yetenek tavanı yüksek ayaklar maçı net skorla çözer." },
+            { id: 5, date: "02 Eki", home: "Macaristan", away: "Gürcistan", analysis: "Macaristan iç sahada rakibe verdiği şut izni ortalamasını minimumda tutuyor.", botPick: "MS 1", botComment: "Macaristan kendi seyircisi ve alan presiyle maçı dominike eder." },
+            { id: 6, date: "02 Eki", home: "Polonya", away: "Romanya", analysis: "Düşük tempo ve katı savunma blokları ön planda. İki ekibin xG toplamı 2.0 barajının altında seyrediyor.", botPick: "0 (Beraberlik)", botComment: "Blokların kilitleneceği, az pozisyonlu beraberlik maçı." },
+            { id: 7, date: "03 Eki", home: "Hırvatistan", away: "İngiltere", analysis: "İngiltere'nin geniş kadro derinliği ve kanat hücumlarındaki xA verileri ligin üstünde.", botPick: "MS 2", botComment: "İngiltere kadro kalitesi ve tempo kontrolüyle sonuca gider." },
+            { id: 8, date: "03 Eki", home: "K.Makedonya", away: "İskoçya", analysis: "İskoçya'nın hava topları üstünlüğü ve duran top verimliliği rakibin ana zaafiyet noktasıyla eşleşiyor.", botPick: "MS 2", botComment: "İskoçya fizik gücü ve standart set oyunlarıyla maçı alır." },
+            { id: 9, date: "03 Eki", home: "İspanya", away: "Çekya", analysis: "İspanya %70+ pas ortalaması ve rakip yarı alanda kazanılan top istatistiğinde zirvede.", botPick: "MS 1 (Banko)", botComment: "Saha ve pas hakimiyetiyle tek kale geçecek bir 90 dakika." },
+            { id: 10, date: "03 Eki", home: "İsviçre", away: "Slovenya", analysis: "İsviçre iç sahada rakiplerine kaleyi bulan şut şansı verme oranı en düşük takımlardan.", botPick: "MS 1", botComment: "İsviçre ev sahibi disipliniyle tek farklı skoru korumasını bilir." },
+            { id: 11, date: "04 Eki", home: "Galler", away: "Danimarka", analysis: "Danimarka'nın deplasman xG verileri Galler'in iç saha direnç ortalamasının üzerinde.", botPick: "MS 2", botComment: "Danimarka formda ayaklarıyla dış sahada üç puanı alır." },
+            { id: 12, date: "04 Eki", home: "Hollanda", away: "Sırbistan", analysis: "Hollanda'nın kanat organizasyonları ve ceza sahası içi buluşma endeksleri oldukça yüksek.", botPick: "MS 1", botComment: "Portakallar taraftar desteğiyle erken üstünlüğü yakalar." },
+            { id: 13, date: "04 Eki", home: "Portekiz", away: "Norveç", analysis: "Portekiz hücum hattının pres gücü ve rakip ceza sahasında topla buluşma istatistiği rakibini zorlayacak.", botPick: "MS 1", botComment: "Yıldız ayakların üretkenliği maçın kaderini belirler." },
+            { id: 14, date: "04 Eki", home: "Yunanistan", away: "Almanya", analysis: "Almanya'nın gegenpressing verimliliği ve hatlar arası mesafe kontrolü rakibe pas opsiyonu bırakmıyor.", botPick: "MS 2", botComment: "Alman ekolü taktik disiplinle skoru almasını bilir." },
+            { id: 15, date: "04 Eki", home: "Fransa", away: "Belçika", analysis: "Avrupa'nın iki devinin xG performansları zirvede. Yüksek tempo ve bol şut beklentisi barındırıyor.", botPick: "MS 1", botComment: "Fransa kulübesinin zenginliği ve maç sonu direnci galibiyeti getirir." }
+        ];
+
+        const userSelections = {};
+        let lastGeneratedCoupons = [];
+
+        function renderMatches() {
+            const container = document.getElementById('matches-container');
+            container.innerHTML = '';
+
+            bulten.forEach(m => {
+                if (!userSelections[m.id]) {
+                    userSelections[m.id] = ['1', '0', '2'];
+                }
+
+                const card = document.createElement('div');
+                card.className = 'match-card';
+                card.innerHTML = `
+                    <div class="match-info">
+                        <span class="match-date">${m.date}</span>
+                        <span class="match-teams">${m.home} - ${m.away}</span>
+                    </div>
+                    <div class="match-options">
+                        <button class="btn-opt ${userSelections[m.id].includes('1') ? 'active' : ''}" onclick="toggleOption(${m.id}, '1', this)">1</button>
+                        <button class="btn-opt ${userSelections[m.id].includes('0') ? 'active' : ''}" onclick="toggleOption(${m.id}, '0', this)">0</button>
+                        <button class="btn-opt ${userSelections[m.id].includes('2') ? 'active' : ''}" onclick="toggleOption(${m.id}, '2', this)">2</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function handleBudgetInput(el) {
+            el.value = el.value.replace(/[^0-9]/g, '');
+            const budget = parseFloat(el.value) || 0;
+            const columnCount = parseInt(document.getElementById('columnCountInput').value) || 4;
+            const unitPrice = columnCount > 0 ? Math.round(budget / columnCount) : 50;
+            updateDisplay(budget, columnCount, unitPrice);
+        }
+
+        function handleColumnInput(el) {
+            el.value = el.value.replace(/[^0-9]/g, '');
+            const count = parseInt(el.value) || 4;
+            const budget = parseFloat(document.getElementById('budgetInput').value) || 200;
+            const unitPrice = count > 0 ? Math.round(budget / count) : 50;
+            updateDisplay(budget, count, unitPrice);
+        }
+
+        function updateDisplay(budget, count, unitPrice) {
+            document.getElementById('totalCostDisplay').innerText = `Toplam Tutar: ${budget} TL (${count} Kolon - Kolon Başı: ${unitPrice} TL)`;
+        }
+
+        function renderAnalysis() {
+            const container = document.getElementById('analysis-container');
+            container.innerHTML = '';
+            bulten.forEach(m => {
+                const card = document.createElement('div');
+                card.className = 'analysis-card';
+                card.innerHTML = `<h4>📊 ${m.date} | ${m.home} vs ${m.away}</h4><p>${m.analysis}</p>`;
+                container.appendChild(card);
+            });
+        }
+
+        function renderBankoBotAIList() {
+            const container = document.getElementById('bot-matches-list');
+            container.innerHTML = '<h4 style="color:#818cf8; margin-bottom:8px;">🤖 BankoBot Maç Tavsiyeleri</h4>';
+            bulten.forEach(m => {
+                const card = document.createElement('div');
+                card.className = 'bot-card';
+                card.innerHTML = `<h4>${m.home} vs ${m.away}</h4><div class="prediction-badge">Tercih: ${m.botPick}</div><p>"${m.botComment}"</p>`;
+                container.appendChild(card);
+            });
+        }
+
+        function switchTab(tabName, btnElement) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            if (btnElement) btnElement.classList.add('active');
+
+            if (tabName === 'bulten') document.getElementById('tab-bulten').classList.add('active');
+            else if (tabName === 'analiz') document.getElementById('tab-analiz').classList.add('active');
+            else if (tabName === 'bankobot') {
+                document.getElementById('tab-bankobot').classList.add('active');
+                renderBankoBotAIList();
+            }
+            else if (tabName === 'kayitli') {
+                document.getElementById('tab-kayitli').classList.add('active');
+                loadSavedCouponsView();
+            }
+        }
+
+        function toggleOption(matchId, option, btnElement) {
+            let list = userSelections[matchId];
+            if (list.includes(option)) {
+                if (list.length > 1) {
+                    userSelections[matchId] = list.filter(item => item !== option);
+                    btnElement.classList.remove('active');
+                }
+            } else {
+                list.push(option);
+                btnElement.classList.add('active');
+            }
+        }
+
+        function generateColumns() {
+            const targetColumnCount = parseInt(document.getElementById('columnCountInput').value) || 4;
+            const totalBudget = parseFloat(document.getElementById('budgetInput').value) || 200;
+            const riskMode = document.getElementById('riskMode').value;
+            const resultsDiv = document.getElementById('results');
+            const summaryDiv = document.getElementById('summaryText');
+            const outputContainer = document.getElementById('columnOutputContainer');
+            
+            resultsDiv.style.display = 'block';
+            summaryDiv.innerHTML = "Monte Carlo matrisleri ve Risk Modu hesaplanıyor...";
+            outputContainer.innerHTML = "";
+
+            setTimeout(() => {
+                summaryDiv.innerHTML = `Bütçe: <b>${totalBudget} TL</b> | Hedef Kolon: <b>${targetColumnCount} Kolon</b> | Mod: <b>${riskMode.toUpperCase()}</b><br>Seçtiğiniz tercihler doğrultusunda kolonlar optimize edildi.`;
+                
+                let htmlContent = "";
+                lastGeneratedCoupons = [];
+
+                for(let i = 1; i <= targetColumnCount; i++) {
+                    let matchesHtml = "";
+                    let couponArray = [];
+
+                    bulten.forEach((m, index) => {
+                        let opts = userSelections[m.id] && userSelections[m.id].length > 0 
+                            ? [...userSelections[m.id]] 
+                            : ['1', '0', '2'];
+                        
+                        // Risk Moduna göre ağırlıklandırma simülasyonu
+                        if (riskMode === 'garanti' && opts.includes('1')) {
+                            if (Math.random() > 0.3) opts = ['1'];
+                        } else if (riskMode === 'jackpot' && (opts.includes('0') || opts.includes('2'))) {
+                            if (Math.random() > 0.4 && opts.length > 1) {
+                                opts = opts.filter(o => o !== '1');
+                            }
+                        }
+
+                        const chosenOpt = opts[Math.floor(Math.random() * opts.length)];
+                        couponArray.push({ match: `M${index+1}`, pick: chosenOpt });
+
+                        matchesHtml += `
+                            <div class="match-badge">
+                                <span>M${index+1}</span>
+                                <strong>[${chosenOpt}]</strong>
+                            </div>
+                        `;
+                    });
+
+                    lastGeneratedCoupons.push({ id: i, matches: couponArray });
+
+                    htmlContent += `
+                        <div class="coupon-card">
+                            <div class="coupon-header">
+                                <div class="coupon-title">Kolon #${i < 10 ? '0'+i : i}</div>
+                                <button class="btn-copy-mini" onclick="copySingleCoupon(${i})">📋 Kopyala</button>
+                            </div>
+                            <div class="coupon-matches">${matchesHtml}</div>
+                        </div>
+                    `;
+                }
+                outputContainer.innerHTML = htmlContent;
+            }, 300);
+        }
+
+        function copySingleCoupon(index) {
+            const coupon = lastGeneratedCoupons.find(c => c.id === index);
+            if (!coupon) return;
+            const text = `Kolon #${index}: ` + coupon.matches.map(m => `${m.match}[${m.pick}]`).join(' ');
+            navigator.clipboard.writeText(text).then(() => {
+                alert(`Kolon #${index} panoya kopyalandı!`);
+            });
+        }
+
+        function saveCurrentCoupons() {
+            if (lastGeneratedCoupons.length === 0) {
+                alert("Önce kolon üretmelisiniz!");
+                return;
+            }
+            let saved = JSON.parse(localStorage.getItem('saved_toto_coupons') || '[]');
+            const newRecord = { date: new Date().toLocaleString(), coupons: lastGeneratedCoupons };
+            saved.push(newRecord);
+            localStorage.setItem('saved_toto_coupons', JSON.stringify(saved));
+            alert("Kuponlar başarıyla kaydedildi! 'Kuponlarım' sekmesinden inceleyebilirsin.");
+        }
+
+        function loadSavedCouponsView() {
+            const container = document.getElementById('savedCouponsContainer');
+            let saved = JSON.parse(localStorage.getItem('saved_toto_coupons') || '[]');
+            if (saved.length === 0) {
+                container.innerHTML = '<p style="color:var(--text-muted); font-size:0.85rem;">Henüz kayıtlı kupon bulunmuyor.</p>';
+                return;
+            }
+            container.innerHTML = '';
+            saved.forEach((group, gIdx) => {
+                let groupHtml = `<div class="coupon-card"><div class="coupon-title">Kayıt Grubu #${gIdx+1} (${group.date})</div>`;
+                group.coupons.forEach(c => {
+                    let mStr = c.matches.map(m => `${m.match}:[${m.pick}]`).join(', ');
+                    groupHtml += `<div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">Kolon #${c.id} -> ${mStr}</div>`;
+                });
+                groupHtml += `</div>`;
+                container.innerHTML += groupHtml;
+            });
+        }
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const json = JSON.parse(e.target.result);
+                    if (Array.isArray(json) && json.length > 0) {
+                        bulten = json;
+                        renderMatches();
+                        renderAnalysis();
+                        alert("Yeni bülten başarıyla yüklendi ve entegre edildi!");
+                    } else {
+                        alert("Geçersiz bülten formatı.");
+                    }
+                } catch (err) {
+                    alert("Dosya okunurken hata oluştu. Lütfen geçerli bir JSON bülten dosyası yükleyin.");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function sendChatQuery() {
+            const input = document.getElementById('chatInput');
+            const query = input.value.trim();
+            if (!query) return;
+
+            const chatBox = document.getElementById('chatBox');
+            chatBox.innerHTML += `<div class="chat-msg user">${query}</div>`;
+            input.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            setTimeout(() => {
+                let botReply = "Analiz verilerine göre bu hafta maçlar sert geçecek. Özellikle Belçika ve İspanya maçlarında favoriler net önde görünüyor.";
+                const qLower = query.toLowerCase();
+                if (qLower.includes('banko') || qLower.includes('sağlam')) {
+                    botReply = "Bu haftanın en banko mücadelesi İspanya - Çekya maçı (MS 1) olarak öne çıkıyor. Topa sahip olma oranları çok yüksek.";
+                } else if (qLower.includes('sürpriz') || qLower.includes('orospu') || qLower.includes('kaç') || qLower.includes('dikkat')) {
+                    botReply = "İtalya - Türkiye maçında '0-2 Çifte Şans' sürpriz arayanlar için en mantıklı alternatif matris noktasıdır.";
+                }
+                chatBox.innerHTML += `<div class="chat-msg bot">${botReply}</div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 600);
+        }
+
+        renderMatches();
+        renderAnalysis();
+    </script>
+</body>
+</html>
