@@ -1,0 +1,31 @@
+name: Otomatik Bulten Guncelleme
+
+on:
+  schedule:
+    - cron: '0 6 * * *' # Her gün sabah saat 06:00'da çalışır
+  workflow_dispatch: # Manuel olarak istediğin zaman 'Run workflow' diyerek de çalıştırabilirsin
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Repoyu Kopyala
+        uses: actions/checkout@v3
+
+      - name: Python Kurulumu
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Bülten Betiğini Çalıştır
+        run: python update_bulten.py
+
+      - name: Değişiklikleri Kaydet ve Gönder (Commit & Push)
+        run: |
+          git config --global user.name "BilyonVIP Bot"
+          git config --global user.email "bot@bilyonvip.local"
+          git add bulten.json
+          git commit -m "Günlük bülten ve YZ tahminleri otomatik güncellendi [skip ci]" || echo "Değişiklik yok"
+          git push
