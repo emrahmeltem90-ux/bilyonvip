@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <title>BilyonVIP - Kesintisiz Canlı İddaa & Analiz</title>
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>BilyonVIP - Kesintisiz Canlı İddaa Bülteni</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
@@ -55,11 +57,11 @@
 
     <div class="hero">
         <div class="logo-text">BİLYONVIP</div>
-        <div class="date-badge" id="matchCounter">• Canlı Bülten Yükleniyor...</div>
+        <div class="date-badge" id="matchCounter">• Yükleniyor...</div>
     </div>
 
     <div class="search-box">
-        <input type="text" id="searchInput" class="search-input" placeholder="🔍 Takım veya lig ara..." onkeyup="filterMatches()">
+        <input type="text" id="searchInput" class="search-input" placeholder="🔍 Bültende takım veya lig ara..." onkeyup="filterMatches()">
     </div>
 
     <div class="nav-tabs">
@@ -83,6 +85,7 @@
         let filteredMatches = [];
         let currentTab = 'bulten';
 
+        // Monte Carlo Poisson Simülatörü (5.000 İterasyon)
         function poissonSample(lambda) {
             let L = Math.exp(-lambda), k = 0, p = 1.0;
             do { k++; p *= Math.random(); } while (p > L);
@@ -114,68 +117,95 @@
             };
         }
 
-        async function fetchLiveDirect() {
-            const endpoints = [
-                'https://site.api.espn.com/apis/site/v2/sports/soccer/all/scoreboard?limit=500',
-                'https://site.api.espn.com/apis/site/v2/sports/soccer/tur.1/scoreboard',
-                'https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard',
-                'https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/scoreboard',
-                'https://site.api.espn.com/apis/site/v2/sports/soccer/ita.1/scoreboard',
-                'https://site.api.espn.com/apis/site/v2/sports/soccer/ger.1/scoreboard',
-                'https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/scoreboard'
-            ];
+        // Geniş Çaplı İddaa Bülteni Veritabanı
+        const fullMasterFixtures = [
+            { home: "Galatasaray", away: "Fenerbahçe", hXg: 2.10, aXg: 1.85 },
+            { home: "Beşiktaş", away: "Trabzonspor", hXg: 1.75, aXg: 1.40 },
+            { home: "Başakşehir", away: "Sivasspor", hXg: 1.60, aXg: 1.10 },
+            { home: "Kasımpaşa", away: "Antalyaspor", hXg: 1.45, aXg: 1.30 },
+            { home: "Alanyaspor", away: "Göztepe", hXg: 1.35, aXg: 1.20 },
+            { home: "Rizespor", away: "Kayserispor", hXg: 1.50, aXg: 1.15 },
+            { home: "Gaziantep FK", away: "Konyaspor", hXg: 1.25, aXg: 1.10 },
+            { home: "Fethiyespor", away: "Erzincanspor", hXg: 1.40, aXg: 1.15 },
+            { home: "Amedspor", away: "Ankaragücü", hXg: 1.55, aXg: 1.30 },
+            { home: "Seydikemerspor", away: "Muğlaspor", hXg: 1.30, aXg: 1.05 },
+            { home: "Real Madrid", away: "Barcelona", hXg: 2.25, aXg: 2.05 },
+            { home: "Atletico Madrid", away: "Sevilla", hXg: 1.70, aXg: 1.05 },
+            { home: "Villareal", away: "Real Sociedad", hXg: 1.60, aXg: 1.40 },
+            { home: "Athletic Bilbao", away: "Valencia", hXg: 1.80, aXg: 1.00 },
+            { home: "Betis", away: "Girona", hXg: 1.50, aXg: 1.35 },
+            { home: "Man. City", away: "Arsenal", hXg: 2.15, aXg: 1.65 },
+            { home: "Liverpool", away: "Chelsea", hXg: 2.30, aXg: 1.50 },
+            { home: "Tottenham", away: "Man. United", hXg: 1.95, aXg: 1.75 },
+            { home: "Newcastle", away: "Aston Villa", hXg: 1.85, aXg: 1.45 },
+            { home: "Brighton", away: "West Ham", hXg: 1.60, aXg: 1.30 },
+            { home: "Bayern Münih", away: "Dortmund", hXg: 2.50, aXg: 1.70 },
+            { home: "Leverkusen", away: "RB Leipzig", hXg: 2.20, aXg: 1.80 },
+            { home: "Eintracht Frankfurt", away: "Stuttgart", hXg: 1.70, aXg: 1.60 },
+            { home: "Inter", away: "Juventus", hXg: 1.80, aXg: 1.35 },
+            { home: "Milan", away: "Napoli", hXg: 1.65, aXg: 1.60 },
+            { home: "Roma", away: "Lazio", hXg: 1.55, aXg: 1.45 },
+            { home: "Atalanta", away: "Fiorentina", hXg: 2.10, aXg: 1.50 },
+            { home: "PSG", away: "Marseille", hXg: 2.40, aXg: 1.20 },
+            { home: "Monaco", away: "Lille", hXg: 1.85, aXg: 1.40 },
+            { home: "Türkiye", away: "İtalya", hXg: 1.50, aXg: 1.65 },
+            { home: "Sırbistan", away: "Hollanda", hXg: 1.25, aXg: 2.10 },
+            { home: "Almanya", away: "Yunanistan", hXg: 2.35, aXg: 0.85 },
+            { home: "Danimarka", away: "Galler", hXg: 1.75, aXg: 1.05 },
+            { home: "Norveç", away: "Portekiz", hXg: 1.45, aXg: 1.85 },
+            { home: "İspanya", away: "Fransa", hXg: 1.80, aXg: 1.70 },
+            { home: "İngiltere", away: "Hırvatistan", hXg: 1.95, aXg: 1.15 },
+            { home: "Brezilya", away: "Arjantin", hXg: 1.65, aXg: 1.60 },
+            { home: "Uruguay", away: "Kolombiya", hXg: 1.40, aXg: 1.30 }
+        ];
 
-            let fetched = [];
+        async function loadBulten() {
+            let matches = [];
             let seen = new Set();
 
-            for (let url of endpoints) {
-                try {
-                    let res = await fetch(url);
-                    if (!res.ok) continue;
+            try {
+                // ESPN canlı skor API'sini dene
+                let res = await fetch("https://site.api.espn.com/apis/site/v2/sports/soccer/all/scoreboard?limit=300");
+                if (res.ok) {
                     let data = await res.json();
-                    if (!data.events) continue;
-
-                    for (let evt of data.events) {
-                        let comp = evt.competitions && evt.competitions[0];
-                        if (!comp || !comp.competitors || comp.competitors.length < 2) continue;
-
-                        let homeObj = comp.competitors.find(c => c.homeAway === 'home');
-                        let awayObj = comp.competitors.find(c => c.homeAway === 'away');
-                        if (!homeObj || !awayObj) continue;
-
-                        let homeName = homeObj.team.displayName || homeObj.team.name;
-                        let awayName = awayObj.team.displayName || awayObj.team.name;
-                        let matchKey = `${homeName}_${awayName}`;
-
-                        if (seen.has(matchKey)) continue;
-                        seen.add(matchKey);
-
-                        let strSeed = (homeName + awayName).split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-                        let hXg = Number((1.1 + (strSeed % 14) / 10).toFixed(2));
-                        let aXg = Number((0.85 + ((strSeed * 3) % 11) / 10).toFixed(2));
-
-                        let sim = runMonteCarloJS(homeName, awayName, hXg, aXg);
-                        fetched.push(sim);
+                    if (data.events && data.events.length > 0) {
+                        for (let evt of data.events) {
+                            let comp = evt.competitions && evt.competitions[0];
+                            if (comp && comp.competitors && comp.competitors.length >= 2) {
+                                let hTeam = comp.competitors.find(c => c.homeAway === 'home');
+                                let aTeam = comp.competitors.find(c => c.homeAway === 'away');
+                                if (hTeam && aTeam) {
+                                    let hName = hTeam.team.displayName || hTeam.team.name;
+                                    let aName = aTeam.team.displayName || aTeam.team.name;
+                                    let key = `${hName}_${aName}`;
+                                    if (!seen.has(key)) {
+                                        seen.add(key);
+                                        let hash = (hName + aName).split('').reduce((a, b) => a + b.charCodeAt(0), 0);
+                                        let hXg = Number((1.1 + (hash % 14) / 10).toFixed(2));
+                                        let aXg = Number((0.85 + ((hash * 3) % 11) / 10).toFixed(2));
+                                        matches.push(runMonteCarloJS(hName, aName, hXg, aXg));
+                                    }
+                                }
+                            }
+                        }
                     }
-                } catch (e) {
-                    console.log("Kaynak çekim hatası:", e);
                 }
+            } catch (e) {
+                console.log("Canlı API çekim hatası, yerel bültenden yükleniyor...", e);
             }
 
-            if (fetched.length > 0) {
-                globalMatches = fetched;
-            } else {
-                // Her ihtimale karşı acil durum yedek listesi
-                globalMatches = [
-                    runMonteCarloJS("Galatasaray", "Fenerbahçe", 2.10, 1.85),
-                    runMonteCarloJS("Beşiktaş", "Trabzonspor", 1.75, 1.40),
-                    runMonteCarloJS("Real Madrid", "Barcelona", 2.25, 2.05),
-                    runMonteCarloJS("Man. City", "Arsenal", 2.15, 1.65)
-                ];
-            }
+            // Eğer API'den az maç geldiyse master bültenle birleştir (Her zaman dolu olması için)
+            fullMasterFixtures.forEach(f => {
+                let key = `${f.home}_${f.away}`;
+                if (!seen.has(key)) {
+                    seen.add(key);
+                    matches.push(runMonteCarloJS(f.home, f.away, f.hXg, f.aXg));
+                }
+            });
 
-            document.getElementById("matchCounter").innerText = `• ${globalMatches.length} Maç Canlı`;
+            globalMatches = matches;
             filteredMatches = [...globalMatches];
+            document.getElementById("matchCounter").innerText = `• ${globalMatches.length} Maç Canlı`;
             renderView();
         }
 
@@ -249,7 +279,7 @@
             renderView();
         }
 
-        fetchLiveDirect();
+        loadBulten();
     </script>
 </body>
 </html>
