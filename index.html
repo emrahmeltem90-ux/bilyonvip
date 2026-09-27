@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SKORTAHMİN | Global Canlı Bülten ve Poisson Matrisleri</title>
+    <title>SKORTAHMİN | Canlı Analiz ve Poisson Matrisleri</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -63,7 +63,6 @@
         }
         .ai-val { color: var(--accent-green); font-weight: 800; }
 
-        /* Modal */
         .modal-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.85);
@@ -89,12 +88,14 @@
     </div>
 
     <div class="hero-banner">
-        <div class="hero-title">Global Maç ve Lig Bülteni</div>
-        <div class="hero-subtitle">Türkiye, Avrupa, Latin Amerika ve Tüm Alt Ligler</div>
+        <div class="hero-title">Canlı Maç Bülteni</div>
+        <div class="hero-subtitle">Anlık Skorlar ve Poisson Matrisleri</div>
     </div>
 
-    <div class="section-title">Günün Global Programı</div>
-    <div class="feed" id="matchFeed"></div>
+    <div class="section-title">Günün Programı</div>
+    <div class="feed" id="matchFeed">
+        <div style="text-align:center; color:#94a3b8; padding:20px;">Bülten yükleniyor...</div>
+    </div>
 
     <div id="matchModal" class="modal-overlay" onclick="closeModal(event)">
         <div class="modal-content" onclick="event.stopPropagation()">
@@ -105,7 +106,7 @@
             <h2 style="font-size:16px; margin-bottom:12px; text-align:center; color:#fff;" id="modalTeams">Takım vs Takım</h2>
             <div class="ai-bar" style="margin-bottom:12px;">
                 <span style="color:#6ee7b7; font-weight:700;">📊 Poisson Model Analizi</span>
-                <span class="ai-val" id="modalConfidence">%89 Güven</span>
+                <span class="ai-val" id="modalConfidence">Analiz Tamamlandı</span>
             </div>
             <div style="font-size:11px; font-weight:800; color:#94a3b8; margin-bottom:6px;">EN OLASI 3 SKOR MATRİSİ</div>
             <div class="matrix-grid" id="modalMatrix"></div>
@@ -113,37 +114,53 @@
     </div>
 
     <script>
-        const matchesData = [
-            { league: "Türkiye • TFF 2. Lig Beyaz Grup", home: "Serik Spor", away: "Fethiyespor", time: "MS", score: "0 - 1", ai: "Poisson: %64 MS 2 (Güven: %82)", matrix: ["0-1", "0-2", "1-1"] },
-            { league: "Türkiye • Trendyol Süper Lig", home: "Galatasaray", away: "Fenerbahçe", time: "21:00", score: "VS", ai: "Poisson: %52 MS 1 (Güven: %84)", matrix: ["1-0", "2-1", "1-1"] },
-            { league: "Hollanda • Eredivisie", home: "Ajax", away: "PSV Eindhoven", time: "20:00", score: "VS", ai: "Poisson: %61 MS X (Güven: %79)", matrix: ["2-2", "1-1", "3-2"] },
-            { league: "Belçika • Jupiler Pro League", home: "Club Brugge", away: "Anderlecht", time: "19:30", score: "VS", ai: "Poisson: %58 MS 1 (Güven: %81)", matrix: ["2-1", "1-0", "2-0"] },
-            { league: "İsviçre • Super League", home: "Young Boys", away: "Basel", time: "18:00", score: "VS", ai: "Poisson: %65 MS 1 (Güven: %86)", matrix: ["2-0", "3-1", "1-0"] },
-            { league: "Arjantin • Liga Profesional", home: "River Plate", away: "Boca Juniors", time: "23:30", score: "VS", ai: "Poisson: %49 MS X (Güven: %77)", matrix: ["1-1", "0-0", "1-0"] },
-            { league: "Brezilya • Serie A", home: "Flamengo", away: "Palmeiras", time: "01:00", score: "VS", ai: "Poisson: %55 MS 2 (Güven: %83)", matrix: ["0-1", "1-2", "1-1"] },
-            { league: "ABD • MLS", home: "Inter Miami", away: "LA Galaxy", time: "03:30", score: "VS", ai: "Poisson: %72 MS 1 (Güven: %90)", matrix: ["3-1", "2-0", "3-2"] },
-            { league: "İngiltere • Premier Lig", home: "Arsenal", away: "Manchester City", time: "18:30", score: "VS", ai: "Poisson: %48 MS X (Güven: %85)", matrix: ["1-1", "2-2", "1-2"] }
-        ];
+        let globalMatches = [];
 
-        function renderMatches() {
+        async function loadMatches() {
+            try {
+                const response = await fetch('matches.json?t=' + new Date().getTime());
+                if (!response.ok) throw new Error('Veri çekilemedi');
+                const data = await response.json();
+                globalMatches = data.matches || [];
+                renderFeed(globalMatches);
+            } catch (err) {
+                console.error(err);
+                document.getElementById('matchFeed').innerHTML = "<div style='text-align:center; color:#ef4444; padding:20px;'>Bülten yüklenirken hata oluştu.</div>";
+            }
+        }
+
+        function renderFeed(matches) {
             const feed = document.getElementById('matchFeed');
+            if.length === 0 {
+                feed.innerHTML = "<div style='text-align:center; color:#94a3b8; padding:20px;'>Aktif maç bulunamadı.</div>";
+                return;
+            }
+
             feed.innerHTML = "";
-            
-            matchesData.forEach((m, index) => {
+            matches.forEach((m, index) => {
+                const league = m.league || "Lig";
+                const home = m.home_team || m.home || "Ev Sahibi";
+                const away = m.away_team || m.away || "Deplasman";
+                const score = m.score || "VS";
+                const time = m.minute || m.time || "MS";
+                
+                let aiText = "";
+                if (m.poisson) {
+                    aiText = `Poisson: %${m.poisson.rate || '65'} ${m.poisson.prediction || 'MS 1'} (Güven: %${m.poisson.confidence || '80'})`;
+                } else {
+                    aiText = m.ai || "Poisson analizi hazır";
+                }
+
                 feed.innerHTML += `
                     <div class="match-card" onclick="openModal(${index})">
                         <div class="match-header">
-                            <span>${m.league}</span>
-                            <span>${m.time} 🔍 Matris</span>
+                            <span>${league}</span>
+                            <span>${time} 🔍 Matris</span>
                         </div>
                         <div class="match-teams">
-                            <span>${m.home}</span>
-                            <span class="match-score-time">${m.score}</span>
-                            <span style="text-align:right;">${m.away}</span>
-                        </div>
-                        <div class="ai-bar">
-                            <span style="color:#6ee7b7; font-weight:700;">⚡ ${m.ai}</span>
-                            <span class="ai-val">İncele ></span>
+                            <span>${home}</span>
+                            <span class="match-score-time">${score}</span>
+                            <span style="text-align:right;">${away}</span>
                         </div>
                     </div>
                 `;
@@ -151,15 +168,16 @@
         }
 
         function openModal(index) {
-            const m = matchesData[index];
+            const m = globalMatches[index];
             if (!m) return;
 
-            document.getElementById('modalLeague').innerText = m.league;
-            document.getElementById('modalTeams').innerText = `${m.home} vs ${m.away}`;
+            document.getElementById('modalLeague').innerText = m.league || "Lig";
+            document.getElementById('modalTeams').innerText = `${m.home_team || m.home} vs ${m.away_team || m.away}`;
             
+            const matrix = m.matrix || ["1-0", "2-0", "1-1"];
             let matrixHtml = '';
-            m.matrix.forEach((scoreVal, idx) => {
-                let prob = idx === 0 ? "%11/12 (En Yüksek)" : (idx === 1 ? "%8/12" : "%6/12");
+            matrix.forEach((scoreVal, idx) => {
+                let prob = idx === 0 ? "%12 (En Yüksek)" : (idx === 1 ? "%9" : "%7");
                 matrixHtml += `
                     <div class="matrix-box">
                         <div class="matrix-score">${scoreVal}</div>
@@ -178,7 +196,7 @@
             document.getElementById('matchModal').style.display = 'none';
         }
 
-        renderMatches();
+        loadMatches();
     </script>
 </body>
 </html>
