@@ -57,7 +57,7 @@
             font-size: 0.95rem;
         }
 
-        /* 3'lü Sekme Yapısı */
+        /* 3'lü Sekme Menüsü */
         .tabs {
             display: flex;
             gap: 8px;
@@ -70,7 +70,7 @@
             color: var(--text-muted);
             border: 1px solid var(--border-color);
             padding: 12px 8px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: bold;
             border-radius: 10px;
             cursor: pointer;
@@ -315,28 +315,31 @@
         </header>
 
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('bulten')">Bülten & Kolon Üret</button>
-            <button class="tab-btn" onclick="switchTab('analiz')">Maç Analizleri</button>
-            <button class="tab-btn" onclick="switchTab('bankobot')">🤖 BankoBot Tercihleri</button>
+            <button class="tab-btn active" onclick="switchTab('bulten', this)">Bülten & Kolon</button>
+            <button class="tab-btn" onclick="switchTab('analiz', this)">Maç Analizleri</button>
+            <button class="tab-btn" onclick="switchTab('bankobot', this)">🤖 BankoBot</button>
         </div>
 
         <div id="tab-bulten" class="tab-content active">
             <div class="control-panel">
                 <div class="control-group">
-                    <label for="columnCountInput">Kaç Kolon Üretilsin?</label>
-                    <input type="number" id="columnCountInput" value="4" min="1" max="100" oninput="updateCost()">
+                    <label for="budgetInput">Bütçe Gir (TL):</label>
+                    <input type="number" id="budgetInput" value="250" min="10" step="10" oninput="calculateColumnsFromBudget()">
                 </div>
                 <div class="control-group">
-                    <label>Toplam Tutar (1 Kolon = 10₺)</label>
-                    <div class="total-cost-badge" id="totalCostDisplay">40 TL</div>
+                    <label for="columnCountInput">Kaç Kolon Olsun? (Seç/Değiştir)</label>
+                    <input type="number" id="columnCountInput" value="25" min="1" max="100" oninput="updateCost()">
                 </div>
+            </div>
+            <div style="margin-bottom: 20px;">
+                <div class="total-cost-badge" id="totalCostDisplay">Toplam Tutar: 250 TL (25 Kolon)</div>
             </div>
 
             <div id="matches-container">
                 </div>
 
             <div class="actions">
-                <button class="btn-main" onclick="generateColumns()">Seçilen Adette Kolonları Üret</button>
+                <button class="btn-main" onclick="generateColumns()">Uygula & Kolonları Oluştur</button>
             </div>
 
             <div id="results">
@@ -346,4 +349,19 @@
             </div>
         </div>
 
-        
+        <div id="tab-analiz" class="tab-content">
+            <div id="analysis-container">
+                </div>
+        </div>
+
+        <div id="tab-bankobot" class="tab-content">
+            <div id="bot-container">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        const unitPrice = 10; // 1 Kolon = 10 TL
+
+        const bulten = [
+            { id: 1, date: "02 Eki 21:45", home: "Belçika", away: "Türkiye", analysis: "Belçika ev sahibi avantajı ve hücum hattıyla baskılı başlayacak. Türkiye'nin deplasman direnci yüksek.", bot
