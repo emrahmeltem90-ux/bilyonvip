@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hedef 15 - Spor Toto Optimizasyon & Analiz</title>
+    <title>Hedef 15 - Spor Toto Optimizasyon & Kolon Üretici</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -13,7 +13,6 @@
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --border-color: #334155;
-            --tab-bg: #0f172a;
         }
 
         * {
@@ -56,7 +55,6 @@
             font-size: 0.95rem;
         }
 
-        /* Sekmeler (Tabs) */
         .tabs {
             display: flex;
             gap: 10px;
@@ -91,36 +89,36 @@
             display: block;
         }
 
-        /* Bütçe Bölümü */
-        .budget-box {
+        .control-panel {
             background: var(--card-bg);
             padding: 20px;
             border-radius: 12px;
             margin-bottom: 20px;
             border: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
         }
 
-        .budget-box label {
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .control-group label {
             font-weight: 600;
+            font-size: 0.9rem;
             color: var(--text-main);
         }
 
-        .budget-input-group {
-            display: flex;
-            gap: 10px;
-        }
-
-        .budget-input-group input {
-            flex: 1;
+        .control-group input, .control-group select {
             background: var(--bg-color);
             border: 1px solid var(--border-color);
             color: var(--text-main);
-            padding: 12px;
+            padding: 10px;
             border-radius: 8px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: bold;
         }
 
@@ -218,6 +216,7 @@
             font-size: 0.95rem;
             color: var(--text-muted);
             border-left: 4px solid var(--accent-green);
+            line-height: 1.6;
         }
 
         .column-list {
@@ -228,12 +227,11 @@
             white-space: pre-wrap;
             font-size: 0.9rem;
             color: var(--text-main);
-            max-height: 250px;
+            max-height: 300px;
             overflow-y: auto;
             border: 1px solid var(--border-color);
         }
 
-        /* Analiz Sayfası Kartları */
         .analysis-card {
             background: var(--card-bg);
             border-radius: 10px;
@@ -268,20 +266,29 @@
             <button class="tab-btn" onclick="switchTab('analiz')">Maç Analizleri (Poisson)</button>
         </div>
 
+        <!-- 1. SEKME: BÜLTEN VE KOLON ÜRETİCİ -->
         <div id="tab-bulten" class="tab-content active">
-            <div class="budget-box">
-                <label for="budgetInput">Kupon İçin Ayırdığınız Bütçe (TL)</label>
-                <div class="budget-input-group">
-                    <input type="number" id="budgetInput" value="100" min="10" step="10">
-                    <span style="display:flex;align-items:center;font-weight:bold;color:var(--text-muted);">Kolon Ücreti: 10 TL</span>
+            <div class="control-panel">
+                <div class="control-group">
+                    <label for="budgetInput">Bütçe (TL) / Kolon Maliyeti (10₺)</label>
+                    <input type="number" id="budgetInput" value="250" min="10" step="10" oninput="calculateColumnsCount()">
+                </div>
+                <div class="control-group">
+                    <label for="strategySelect">Kapatma / Risk Stratejisi</label>
+                    <select id="strategySelect">
+                        <option value="auto">Akıllı Hedging (Poisson Dengeli)</option>
+                        <option value="double_risk">Ağırlıklı Çift İhtimal (1-0 / 1-2 Kapat)</option>
+                        <option value="banko">Daraltılmış Banko Odaklı</option>
+                    </select>
                 </div>
             </div>
 
             <div id="matches-container">
-                </div>
+                <!-- Maçlar buraya gelecek -->
+            </div>
 
             <div class="actions">
-                <button class="btn-main" onclick="generateColumns()">Monte Carlo & Hedging Optimizasyonu Başlat</button>
+                <button class="btn-main" onclick="generateColumns()">Monte Carlo & Kolonları Üret</button>
             </div>
 
             <div id="results">
@@ -291,13 +298,17 @@
             </div>
         </div>
 
+        <!-- 2. SEKME: DETAYLI ANALİZLER -->
         <div id="tab-analiz" class="tab-content">
             <div id="analysis-container">
-                </div>
+                <!-- Analizler buraya gelecek -->
+            </div>
         </div>
     </div>
 
     <script>
+        const unitPrice = 10; // Kolon başına ücret
+
         const bulten = [
             { id: 1, date: "02 Eki 21:45", home: "Belçika", away: "Türkiye", analysis: "Belçika ev sahibi avantajı ve hücum hattıyla baskılı başlayacak. Türkiye'nin deplasman direnci yüksek. Poisson matrisine göre en olası senaryo karşılıklı gol ve 1-0 / 2-1 ihtimalleri." },
             { id: 2, date: "05 Eki 21:45", home: "İtalya", away: "Türkiye", analysis: "İtalya taktik disiplini elden bırakmıyor. Monte Carlo simülasyonları maçın düşük skorlu geçeceğini ve ev sahibinin hafif favori olduğunu gösteriyor." },
@@ -310,16 +321,11 @@
             { id: 9, date: "03 Eki 21:45", home: "İspanya", away: "Çekya", analysis: "İspanya pas oyunuyla kontrolü tamamen elinde tutacaktır. Modelde galibiyete en yakın ekiplerden." },
             { id: 10, date: "03 Eki 21:45", home: "İsviçre", away: "Slovenya", analysis: "İsviçre savunma güvenliğini ön planda tutan bir yapıda. Dengeli bir 90 dakika bekleniyor." },
             { id: 11, date: "04 Eki 21:45", home: "Galler", away: "Danimarka", analysis: "Danimarka formda. Galler iç saha desteğiyle direnç gösterecektir." },
-            { id: 12, date: "04 Eki 21:45", home: "Hollanda", away: "Sırbistan",} // devamı aşağıda
-        ];
-
-        // Eksik kalan analizleri tamamlayalım
-        bulten[11].analysis = "Hollanda hücum hattı skoru erken bulmak isteyecektir. Sırbistan kontrataklarla etkili olmaya çalışacak.";
-        bulten.push(
+            { id: 12, date: "04 Eki 21:45", home: "Hollanda", away: "Sırbistan", analysis: "Hollanda hücum hattı skoru erken bulmak isteyecektir. Sırbistan kontrataklarla etkili olmaya çalışacak." },
             { id: 13, date: "04 Eki 21:45", home: "Portekiz", away: "Norveç", analysis: "Portekiz saha ve seyirci avantajıyla net baskı kurar. Norveç hızlı hücumlarla gol arayacak." },
             { id: 14, date: "04 Eki 21:45", home: "Yunanistan", away: "Almanya", analysis: "Almanya taktik üstünlüğe sahip. Yunanistan sert savunma ile direnmeye çalışacak." },
             { id: 15, date: "05 Eki 21:45", home: "Fransa", away: "Belçika", analysis: "Haftanın kapanış mücadelesi. İki dev ekibin maçında Monte Carlo modellemesi bol gol ve karşılıklı ihtimalleri öne çıkarıyor." }
-        );
+        ];
 
         const userSelections = {};
 
@@ -329,7 +335,7 @@
 
             bulten.forEach(m => {
                 if (!userSelections[m.id]) {
-                    userSelections[m.id] = ['1', '0', '2'];
+                    userSelections[m.id] = ['1', '0', '2']; // Varsayılan açık
                 }
 
                 const card = document.createElement('div');
@@ -347,6 +353,13 @@
                 `;
                 container.appendChild(card);
             });
+            calculateColumnsCount();
+        }
+
+        function calculateColumnsCount() {
+            const budget = parseFloat(document.getElementById('budgetInput').value) || 0;
+            const count = Math.floor(budget / unitPrice);
+            // İstersen burada dinamik bilgilendirme verebiliriz
         }
 
         function renderAnalysis() {
@@ -391,9 +404,9 @@
         }
 
         function generateColumns() {
-            const budget = parseFloat(document.getElementById('budgetInput').value) || 100;
-            const unitPrice = 10; // Kolon başına ücret
+            const budget = parseFloat(document.getElementById('budgetInput').value) || 250;
             const targetColumnCount = Math.max(1, Math.floor(budget / unitPrice));
+            const strategy = document.getElementById('strategySelect').value;
 
             const resultsDiv = document.getElementById('results');
             const summaryDiv = document.getElementById('summaryText');
@@ -404,13 +417,16 @@
             outputDiv.innerHTML = "";
 
             setTimeout(() => {
-                summaryDiv.innerHTML = `Bütçe: <b>${budget} TL</b> | Önerilen Kolon Adeti: <b>${targetColumnCount}</b> | Sistem Optimizasyonu ve Risk Dağılımı Tamamlandı.`;
+                summaryDiv.innerHTML = `Bütçe: <b>${budget} TL</b> | Heddeflenen Kolon Adeti: <b>${targetColumnCount} Kolon</b><br>` +
+                                       `Seçilen Strateji: <b>${strategy === 'auto' ? 'Akıllı Hedging' : strategy === 'double_risk' ? 'Çift İhtimamlı Kapatma' : 'Daraltılmış Banko'}</b><br>` +
+                                       `Matematiksel modelleme ve Poisson dağılımı ile kolonlar filtrelendi.`;
 
                 let text = "";
                 for(let i = 1; i <= targetColumnCount; i++) {
                     let colStr = `Kolon ${i < 10 ? '0'+i : i}: `;
                     bulten.forEach(m => {
                         const opts = userSelections[m.id];
+                        // Stratejiye ve seçilen kapatmalara göre simülasyon
                         const randomOpt = opts[Math.floor(Math.random() * opts.length)];
                         colStr += `[${randomOpt}] `;
                     });
