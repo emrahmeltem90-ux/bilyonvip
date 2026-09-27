@@ -55,7 +55,6 @@
             font-size: 0.8rem;
         }
 
-        /* Sekme Menüsü */
         .tabs {
             display: flex;
             gap: 4px;
@@ -93,7 +92,6 @@
             display: block;
         }
 
-        /* Kontrol Paneli */
         .control-panel {
             background: var(--card-bg);
             padding: 15px;
@@ -127,25 +125,6 @@
             font-weight: bold;
             width: 100%;
             outline: none;
-        }
-
-        .control-group input:focus, .control-group select:focus {
-            border-color: var(--accent-green);
-        }
-
-        .file-upload-box {
-            border: 2px dashed var(--border-color);
-            padding: 12px;
-            border-radius: 8px;
-            text-align: center;
-            background: var(--bg-color);
-            cursor: pointer;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-        .file-upload-box:hover {
-            border-color: var(--accent-green);
-            color: var(--text-main);
         }
 
         .total-cost-badge {
@@ -209,4 +188,275 @@
             padding: 8px 14px;
             border-radius: 6px;
             cursor: pointer;
-            font
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .btn-opt.active {
+            background: var(--accent-green);
+            color: #fff;
+            border-color: var(--accent-green);
+        }
+
+        .actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-main {
+            background: var(--accent-green);
+            color: #fff;
+            border: none;
+            padding: 14px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            flex: 1;
+            text-align: center;
+        }
+
+        .btn-sec {
+            background: #3b82f6;
+            color: #fff;
+            border: none;
+            padding: 14px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        #results {
+            margin-top: 20px;
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+            border: 1px solid var(--border-color);
+        }
+
+        #results h3 {
+            color: var(--accent-green);
+            margin-bottom: 10px;
+            font-size: 1.05rem;
+        }
+
+        .summary-info {
+            background: var(--bg-color);
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            border-left: 3px solid var(--accent-green);
+            line-height: 1.5;
+        }
+
+        .coupon-card {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .coupon-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 4px;
+        }
+
+        .coupon-title {
+            color: var(--accent-green);
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .btn-copy-mini {
+            background: var(--border-color);
+            color: var(--text-main);
+            border: none;
+            padding: 3px 8px;
+            font-size: 0.7rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .coupon-matches {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+            text-align: center;
+        }
+
+        .match-badge {
+            background: #1e293b;
+            border: 1px solid var(--border-color);
+            padding: 6px 2px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+
+        .match-badge span {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.65rem;
+        }
+
+        .match-badge strong {
+            color: var(--accent-green);
+            font-size: 0.85rem;
+        }
+
+        .analysis-card, .bot-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .bot-card {
+            background: var(--bot-bg);
+            border-color: var(--bot-border);
+        }
+
+        .analysis-card h4, .bot-card h4 {
+            color: var(--accent-green);
+            margin-bottom: 6px;
+            font-size: 0.95rem;
+        }
+
+        .bot-card h4 { color: #818cf8; }
+
+        .prediction-badge {
+            display: inline-block;
+            background: #4338ca;
+            color: #fff;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        .analysis-card p, .bot-card p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+        .bot-card p { color: #e2e8f0; }
+
+        .chat-box {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 250px;
+            overflow-y: auto;
+            padding: 10px;
+            background: var(--bg-color);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 10px;
+        }
+        .chat-msg {
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            max-width: 85%;
+        }
+        .chat-msg.user {
+            background: #3b82f6;
+            color: #fff;
+            align-self: flex-end;
+        }
+        .chat-msg.bot {
+            background: var(--card-bg);
+            color: var(--text-main);
+            align-self: flex-start;
+            border: 1px solid var(--border-color);
+        }
+        .chat-input-area {
+            display: flex;
+            gap: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>HEDEF 15 PRO</h1>
+            <p>Monte Carlo Simülasyonu & Gelişmiş BankoBot Otomasyonu</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('bulten', this)">Bülten & Kolon</button>
+            <button class="tab-btn" onclick="switchTab('analiz', this)">Maç Analizleri</button>
+            <button class="tab-btn" onclick="switchTab('bankobot', this)">🤖 BankoBot AI</button>
+            <button class="tab-btn" onclick="switchTab('kayitli', this)">💾 Kuponlarım</button>
+        </div>
+
+        <div id="tab-bulten" class="tab-content active">
+            <div class="control-panel">
+                <div class="control-group">
+                    <label for="riskMode">Sistem Risk Modu:</label>
+                    <select id="riskMode">
+                        <option value="balanced">Dengeli / Akıllı Dağılım</option>
+                        <option value="garanti">Garanti Odaklı (Favori Ağırlıklı)</option>
+                        <option value="jackpot">Sürpriz / Jackpot Modu</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label for="budgetInput">Bütçe Gir (TL):</label>
+                    <input type="text" id="budgetInput" value="200" inputmode="numeric" oninput="calculateBudgetAndColumns('budget')">
+                </div>
+                <div class="control-group">
+                    <label for="columnCountInput">Kaç Kolon Olsun?</label>
+                    <input type="text" id="columnCountInput" value="20" inputmode="numeric" oninput="calculateBudgetAndColumns('column')">
+                </div>
+            </div>
+
+            <div class="total-cost-badge" id="totalCostDisplay">Toplam Tutar: 200 TL (20 Kolon - Kolon Başı: 10 TL)</div>
+
+            <div id="matches-container"></div>
+
+            <div class="actions">
+                <button class="btn-main" onclick="generateColumns()">Uygula & Kolonları Oluştur</button>
+                <button class="btn-sec" onclick="saveCurrentCoupons()">💾 Kaydet</button>
+            </div>
+
+            <div id="results">
+                <h3>Oluşturulan Kuponlar</h3>
+                <div class="summary-info" id="summaryText"></div>
+                <div id="columnOutputContainer"></div>
+            </div>
+        </div>
+
+        <div id="tab-analiz" class="tab-content">
+            <div id="analysis-container"></div>
+        </div>
+
+        <div id="tab-bankobot" class="tab-content">
+            <div class="bot-card" style="margin-bottom: 12px;">
+                <h4>💬 BankoBot Asistanı</h4>
+                <p>Maçlar hakkında merak ettiklerini anında sor.</p>
+            </div>
+            <div class="chat-box" id="chatBox">
+                <div class="chat-msg bot">Selam! Ben BankoBot. Sürpriz maçları ya da en banko tercihleri sorabilirsin.</div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chatInput" placeholder="Örn: En banko maçlar hangileri?" style="flex:1; background:var(--card-bg); border:1px solid var(--border-color); color:var(--text-main); padding:10px; border-radius:8px; font-size:0.85rem;" onkeypress="if(event.key==='Enter') sendChatQuery()">
+                <button class="btn-main" style="padding:10px 16px; flex:unset;" onclick="sendChatQuery()">Gönder</button>
+            </div>
+            <div id="bot-matches-list" style="margin-top:15px;"></div>
+        </div>
+
+        <div id="tab-kayitli" class="tab-content">
+            <div class="analysis-card">
+                <h4>💾 Kaydedilen Kupon Ar
