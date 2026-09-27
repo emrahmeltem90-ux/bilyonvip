@@ -1,15 +1,17 @@
     <script>
+        let globalMatches = [];
+
         async function fetchAndRenderMatches() {
             const feed = document.getElementById('matchFeed');
             feed.innerHTML = "<div style='text-align:center; color:#94a3b8; padding:20px;'>Bülten yükleniyor...</div>";
 
             try {
-                // Doğrudan GitHub'daki güncel matches.json dosyasından veriyi çekiyoruz
                 const response = await fetch('matches.json?t=' + new Date().getTime());
                 if (!response.ok) throw new Error('Veri yüklenemedi');
                 
                 const data = await response.json();
-                renderMatches(data.matches);
+                globalMatches = data.matches || [];
+                renderMatches(globalMatches);
             } catch (error) {
                 console.error("Hata:", error);
                 feed.innerHTML = "<div style='text-align:center; color:#ef4444; padding:20px;'>Bülten yüklenirken bir hata oluştu.</div>";
@@ -25,15 +27,13 @@
                 return;
             }
 
-            matches.forEach((m) => {
-                // Hem eski format (home/away) hem yeni format (home_team/away_team) uyumluluğu
+            matches.forEach((m, index) => {
                 const home = m.home_team || m.home || "Ev Sahibi";
                 const away = m.away_team || m.away || "Deplasman";
                 const score = m.score || "VS";
                 const time = m.time || m.date || "";
                 const league = m.league || "Lig";
                 
-                // Poisson veri yapısı kontrolü
                 let aiText = "";
                 if (typeof m.ai === 'string') {
                     aiText = m.ai;
@@ -43,13 +43,8 @@
                     aiText = "Poisson analizi hazırlanıyor";
                 }
 
-                // Matris verisi yoksa varsayılan atayalım
-                const matrix = m.matrix || ["1-0", "2-0", "1-1"];
-
-                const matchObj = { league, home, away, time, score, ai: aiText, matrix };
-
                 feed.innerHTML += `
-                    <div class="match-card" onclick='openModal(${JSON.stringify(matchObj)})'>
+                    <div class="match-card" onclick="openModal(${index})">
                         <div class="match-header">
                             <span>${league}</span>
                             <span>${time} 🔍 Matris</span>
@@ -68,16 +63,24 @@
             });
         }
 
-        function openModal(m) {
-            document.getElementById('modalLeague').innerText = m.league;
-            document.getElementById('modalTeams').innerText = `${m.home} vs ${m.away}`;
+        function openModal(index) {
+            const m = globalMatches[index];
+            if (!m) return;
+
+            const home = m.home_team || m.home || "Ev Sahibi";
+            const away = m.away_team || m.away || "Deplasman";
+            const league = m.league || "Lig";
+            const matrix = m.matrix || ["1-0", "2-0", "1-1"];
+
+            document.getElementById('modalLeague').innerText = league;
+            document.getElementById('modalTeams').innerText = `${home} vs ${away}`;
             
             let matrixHtml = '';
-            m.matrix.forEach((score, idx) => {
+            matrix.forEach((scoreVal, idx) => {
                 let prob = idx === 0 ? "%11/12 (En Yüksek)" : (idx === 1 ? "%8/12" : "%6/12");
                 matrixHtml += `
                     <div class="matrix-box">
-                        <div class="matrix-score">${score}</div>
+                        <div class="matrix-score">${scoreVal}</div>
                         <div class="matrix-prob">${prob}</div>
                     </div>
                 `;
@@ -87,12 +90,11 @@
         }
 
         function closeModal(e) {
-            if(e.target.id === 'modalMatchModal' || e.target.id === 'matchModal') document.getElementById('matchModal').style.display = 'none';
+            if(e.target.id === 'matchModal') document.getElementById('matchModal').style.display = 'none';
         }
         function closeModalForce() {
             document.getElementById('matchModal').style.display = 'none';
         }
 
-        // Sayfa açıldığında JSON'dan verileri çek
         fetchAndRenderMatches();
     </script>
