@@ -3,166 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BilyonVIP - Canlı İddaa Analiz & Monte Carlo</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>BilyonVIP - Canlı İddaa & Spor Toto Analiz</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-        body {
-            background-color: #0d1117;
-            color: #ffffff;
-            padding-bottom: 85px;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: #0d1117; color: #ffffff; padding-bottom: 85px; }
+        
         .header {
             background: linear-gradient(135deg, #102e1b 0%, #161b22 100%);
-            padding: 15px 20px;
+            padding: 12px 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid #21262d;
         }
-        .header-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #ffffff;
-        }
-        .header-icons i {
-            font-size: 18px;
-            margin-left: 15px;
-            color: #8b949e;
-            cursor: pointer;
-        }
-        .hero {
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo-text {
-            font-size: 26px;
-            font-weight: 900;
-            letter-spacing: 1px;
-        }
-        .date-badge {
-            background-color: #0e3a24;
-            color: #2ea043;
-            border: 1px solid #238636;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-        }
-        .nav-tabs {
-            display: flex;
-            background-color: #161b22;
-            border-bottom: 2px solid #21262d;
-            overflow-x: auto;
-        }
-        .tab-item {
-            flex: 1;
-            text-align: center;
-            padding: 12px 10px;
-            font-size: 13px;
-            font-weight: 700;
-            color: #8b949e;
-            white-space: nowrap;
-            cursor: pointer;
-        }
-        .tab-item.active {
-            color: #3fb950;
-            border-bottom: 3px solid #3fb950;
-        }
-        .container {
-            padding: 15px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        .match-card {
-            background-color: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 16px;
-        }
-        .match-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 14px;
-        }
-        .team-name {
-            font-size: 17px;
-            font-weight: 800;
-            width: 42%;
-        }
-        .team-name.home {
-            text-align: left;
-        }
-        .team-name.away {
-            text-align: right;
-        }
-        .vs-badge {
-            font-size: 12px;
-            color: #8b949e;
-            font-weight: 700;
-        }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-        .stat-box {
-            background-color: #0d1117;
-            border-radius: 8px;
-            padding: 10px;
-        }
-        .stat-label {
-            font-size: 11px;
-            color: #8b949e;
-            margin-bottom: 4px;
-        }
-        .stat-val {
-            font-size: 15px;
-            font-weight: 700;
-            color: #3fb950;
-        }
-        .prediction-banner {
-            background-color: #0d1117;
-            border: 1px solid #21262d;
-            border-radius: 8px;
-            padding: 10px;
-            text-align: center;
-            font-size: 14px;
-            font-weight: 800;
-            color: #3fb950;
-        }
-        .telegram-btn {
-            position: fixed;
-            bottom: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 500px;
-            background-color: #0088cc;
-            color: #ffffff;
-            text-decoration: none;
-            padding: 14px;
-            border-radius: 10px;
-            text-align: center;
-            font-weight: 800;
-            font-size: 14px;
-            box-shadow: 0 4px 15px rgba(0,136,204,0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            z-index: 999;
-        }
+        .header-title { font-size: 16px; font-weight: 700; color: #ffffff; }
+        .header-icons i { font-size: 18px; margin-left: 15px; color: #8b949e; cursor: pointer; }
+        
+        .hero { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .logo-text { font-size: 24px; font-weight: 900; letter-spacing: 1px; color: #ffffff; }
+        .date-badge { background-color: #0e3a24; color: #2ea043; border: 1px solid #238636; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        
+        .nav-tabs { display: flex; background-color: #161b22; border-bottom: 2px solid #21262d; }
+        .tab-btn { flex: 1; text-align: center; padding: 12px 5px; font-size: 12px; font-weight: 700; color: #8b949e; border: none; background: none; cursor: pointer; border-bottom: 3px solid transparent; }
+        .tab-btn.active { color: #3fb950; border-bottom-color: #3fb950; }
+        
+        .container { padding: 12px; max-width: 600px; margin: 0 auto; }
+        
+        .match-card { background-color: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 14px; margin-bottom: 12px; }
+        .match-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .team-name { font-size: 15px; font-weight: 800; width: 42%; }
+        .team-name.home { text-align: left; }
+        .team-name.away { text-align: right; }
+        .vs-badge { font-size: 11px; color: #8b949e; font-weight: 700; }
+        
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+        .stat-box { background-color: #0d1117; border-radius: 6px; padding: 8px; }
+        .stat-label { font-size: 11px; color: #8b949e; margin-bottom: 2px; }
+        .stat-val { font-size: 14px; font-weight: 700; color: #3fb950; }
+        
+        .prediction-banner { background-color: #0d1117; border: 1px solid #21262d; border-radius: 6px; padding: 8px; text-align: center; font-size: 13px; font-weight: 800; color: #3fb950; }
+        
+        .toto-table { width: 100%; border-collapse: collapse; margin-top: 5px; font-size: 13px; }
+        .toto-table th { background-color: #21262d; color: #8b949e; padding: 8px; text-align: left; }
+        .toto-table td { padding: 10px 8px; border-bottom: 1px solid #21262d; }
+        .toto-pick { background-color: #238636; color: #fff; padding: 3px 8px; border-radius: 4px; font-weight: bold; }
+        
+        .telegram-btn { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 500px; background-color: #0088cc; color: #ffffff; text-decoration: none; padding: 13px; border-radius: 8px; text-align: center; font-weight: 800; font-size: 13px; box-shadow: 0 4px 15px rgba(0,136,204,0.4); display: flex; align-items: center; justify-content: center; gap: 8px; z-index: 999; }
     </style>
 </head>
 <body>
@@ -176,116 +64,133 @@
 
     <div class="hero">
         <div class="logo-text">BİLYONVIP</div>
-        <div class="date-badge">• 27 Eylül Paz</div>
+        <div class="date-badge" id="dateDisplay">• 27 Eylül Paz</div>
     </div>
 
     <div class="nav-tabs">
-        <div class="tab-item active"><i class="fas fa-football-ball"></i> CANLI BÜLTEN</div>
-        <div class="tab-item"><i class="fas fa-dice"></i> MONTE CARLO (5000)</div>
-        <div class="tab-item"><i class="fas fa-chart-bar"></i> SPOR TOTO</div>
+        <button class="tab-btn active" onclick="switchTab('bulten', this)">⚽ CANLI BÜLTEN</button>
+        <button class="tab-btn" onclick="switchTab('monte', this)">🎲 MONTE CARLO (5000)</button>
+        <button class="tab-btn" onclick="switchTab('toto', this)">📊 SPOR TOTO (15)</button>
     </div>
 
-    <div class="container" id="matchesContainer">
-        <!-- JS Maçları Anında Yükler -->
-    </div>
+    <div class="container" id="contentArea"></div>
 
     <a href="https://t.me/bilyonvip" target="_blank" class="telegram-btn">
-        <i class="fab fa-telegram-plane"></i>
-        CANLI VIP TAHMİNLER İÇİN TELEGRAM'A KATIL
+        <i class="fab fa-telegram-plane"></i> CANLI VIP TAHMİNLER İÇİN TELEGRAM'A KATIL
     </a>
 
     <script>
+        const fixtures = [
+            { id: 1, home: "Türkiye", away: "İtalya", hXg: 1.50, aXg: 1.65 },
+            { id: 2, home: "Sırbistan", away: "Hollanda", hXg: 1.25, aXg: 2.10 },
+            { id: 3, home: "Almanya", away: "Yunanistan", hXg: 2.35, aXg: 0.85 },
+            { id: 4, home: "Danimarka", away: "Galler", hXg: 1.75, aXg: 1.05 },
+            { id: 5, home: "Norveç", away: "Portekiz", hXg: 1.45, aXg: 1.85 },
+            { id: 6, home: "Avusturya", away: "Kosova", hXg: 2.10, aXg: 0.90 },
+            { id: 7, home: "Litvanya", away: "Azerbaycan", hXg: 1.15, aXg: 1.10 },
+            { id: 8, home: "Cebelitarık", away: "Andorra", hXg: 0.95, aXg: 0.90 },
+            { id: 9, home: "İsrail", away: "İrlanda", hXg: 1.30, aXg: 1.25 },
+            { id: 10, home: "Karacabey Bld.", away: "Ankaragücü", hXg: 1.10, aXg: 1.55 },
+            { id: 11, home: "Sakaryaspor", away: "Kütahyaspor", hXg: 1.65, aXg: 0.95 },
+            { id: 12, home: "İsveç", away: "Romanya", hXg: 1.80, aXg: 0.95 },
+            { id: 13, home: "İtalya", away: "Belçika", hXg: 1.60, aXg: 1.40 },
+            { id: 14, home: "Fransa", away: "İspanya", hXg: 1.70, aXg: 1.60 },
+            { id: 15, home: "İngiltere", away: "Hırvatistan", hXg: 1.90, aXg: 1.10 }
+        ];
+
         function poissonSample(lambda) {
-            let L = Math.exp(-lambda);
-            let k = 0;
-            let p = 1.0;
-            do {
-                k++;
-                p *= Math.random();
-            } while (p > L);
+            let L = Math.exp(-lambda), k = 0, p = 1.0;
+            do { k++; p *= Math.random(); } while (p > L);
             return k - 1;
         }
 
-        function runMonteCarlo(homeXg, awayXg, simulations = 5000) {
-            let scoreCounts = {};
-            let over25Count = 0;
-            for (let i = 0; i < simulations; i++) {
-                let hG = poissonSample(homeXg);
-                let aG = poissonSample(awayXg);
-                let key = `${hG} - ${aG}`;
-                scoreCounts[key] = (scoreCounts[key] || 0) + 1;
-                if ((hG + aG) > 2.5) over25Count++;
+        function runSim(homeXg, awayXg) {
+            let scoreCounts = {}, over25 = 0, winH = 0, draw = 0, winA = 0;
+            for (let i = 0; i < 5000; i++) {
+                let hG = poissonSample(homeXg), aG = poissonSample(awayXg);
+                scoreCounts[`${hG} - ${aG}`] = (scoreCounts[`${hG} - ${aG}`] || 0) + 1;
+                if ((hG + aG) > 2.5) over25++;
+                if (hG > aG) winH++; else if (hG === aG) draw++; else winA++;
             }
-            let sortedScores = Object.entries(scoreCounts).sort((a,b) => b[1] - a[1]);
-            let top1 = sortedScores[0] ? sortedScores[0][0] : "1 - 0";
-            let top2 = sortedScores[1] ? sortedScores[1][0] : top1;
-            let probOver = ((over25Count / simulations) * 100).toFixed(1);
-            let probUnder = (100 - parseFloat(probOver)).toFixed(1);
+            let sorted = Object.entries(scoreCounts).sort((a,b) => b[1] - a[1]);
+            let pOver = ((over25 / 5000) * 100).toFixed(1);
             return {
-                probOver: probOver,
-                probUnder: probUnder,
-                exactScore: top1,
-                backupScore: top2,
-                prediction: parseFloat(probOver) >= 52.0 ? "2.5 ÜST" : "2.5 ALT"
+                pOver: pOver, pUnder: (100 - pOver).toFixed(1),
+                top1: sorted[0] ? sorted[0][0] : "1 - 0",
+                top2: sorted[1] ? sorted[1][0] : "1 - 1",
+                pH: ((winH / 5000) * 100).toFixed(1),
+                pD: ((draw / 5000) * 100).toFixed(1),
+                pA: ((winA / 5000) * 100).toFixed(1)
             };
         }
 
-        // 27 EYLÜL GERÇEK BÜLTEN MAÇLARI
-        const todayFixtures = [
-            { home: "Sırbistan", away: "Hollanda", hXg: 1.25, aXg: 2.10 },
-            { home: "Almanya", away: "Yunanistan", hXg: 2.35, aXg: 0.85 },
-            { home: "Danimarka", away: "Galler", hXg: 1.75, aXg: 1.05 },
-            { home: "Norveç", away: "Portekiz", hXg: 1.45, aXg: 1.85 },
-            { home: "Avusturya", away: "Kosova", hXg: 2.10, aXg: 0.90 },
-            { home: "Litvanya", away: "Azerbaycan", hXg: 1.15, aXg: 1.10 },
-            { home: "Cebelitarık", away: "Andorra", hXg: 0.95, aXg: 0.90 },
-            { home: "İsrail", away: "İrlanda", hXg: 1.30, aXg: 1.25 },
-            { home: "Karacabey Bld.", away: "MKE Ankaragücü", hXg: 1.10, aXg: 1.55 },
-            { home: "Sakaryaspor", away: "Kütahyaspor", hXg: 1.65, aXg: 0.95 },
-            { home: "Türkiye", away: "İtalya", hXg: 1.50, aXg: 1.65 }
-        ];
-
-        function renderMatches() {
-            const container = document.getElementById("matchesContainer");
-            container.innerHTML = "";
-
-            todayFixtures.forEach(match => {
-                const sim = runMonteCarlo(match.hXg, match.aXg);
-                const card = document.createElement("div");
-                card.className = "match-card";
-                card.innerHTML = `
-                    <div class="match-header">
-                        <div class="team-name home">${match.home}</div>
-                        <div class="vs-badge">VS</div>
-                        <div class="team-name away">${match.away}</div>
-                    </div>
-                    <div class="stats-grid">
-                        <div class="stat-box">
-                            <div class="stat-label">2.5 ÜST Olasılığı</div>
-                            <div class="stat-val">%${sim.probOver}</div>
+        function renderBulten() {
+            let html = "";
+            fixtures.slice(0, 10).forEach(m => {
+                let sim = runSim(m.hXg, m.aXg);
+                let pred = parseFloat(sim.pOver) >= 52.0 ? "2.5 ÜST" : "2.5 ALT";
+                html += `
+                    <div class="match-card">
+                        <div class="match-header">
+                            <div class="team-name home">${m.home}</div>
+                            <div class="vs-badge">VS</div>
+                            <div class="team-name away">${m.away}</div>
                         </div>
-                        <div class="stat-box">
-                            <div class="stat-label">2.5 ALT Olasılığı</div>
-                            <div class="stat-val">%${sim.probUnder}</div>
+                        <div class="stats-grid">
+                            <div class="stat-box"><div class="stat-label">2.5 ÜST Olasılığı</div><div class="stat-val">%${sim.pOver}</div></div>
+                            <div class="stat-box"><div class="stat-label">2.5 ALT Olasılığı</div><div class="stat-val">%${sim.pUnder}</div></div>
+                            <div class="stat-box"><div class="stat-label">Muhtemel Skor</div><div class="stat-val">${sim.top1}</div></div>
+                            <div class="stat-box"><div class="stat-label">Yedek Skor</div><div class="stat-val">${sim.top2}</div></div>
                         </div>
-                        <div class="stat-box">
-                            <div class="stat-label">Muhtemel Skor</div>
-                            <div class="stat-val">${sim.exactScore}</div>
-                        </div>
-                        <div class="stat-box">
-                            <div class="stat-label">Yedek Skor</div>
-                            <div class="stat-val">${sim.backupScore}</div>
-                        </div>
-                    </div>
-                    <div class="prediction-banner">
-                        🎯 TAHMİN: ${sim.prediction}
-                    </div>
-                `;
-                container.appendChild(card);
+                        <div class="prediction-banner">🎯 TAHMİN: ${pred}</div>
+                    </div>`;
             });
+            document.getElementById("contentArea").innerHTML = html;
         }
 
-        renderMatches();
+        function renderMonteCarlo() {
+            let html = "";
+            fixtures.slice(0, 10).forEach(m => {
+                let sim = runSim(m.hXg, m.aXg);
+                let best = parseFloat(sim.pH) > parseFloat(sim.pA) ? (parseFloat(sim.pH) > parseFloat(sim.pD) ? "MS 1" : "MS X") : (parseFloat(sim.pA) > parseFloat(sim.pD) ? "MS 2" : "MS X");
+                html += `
+                    <div class="match-card">
+                        <div class="match-header">
+                            <div class="team-name home">${m.home}</div>
+                            <div class="vs-badge">5000 İTERASYON</div>
+                            <div class="team-name away">${m.away}</div>
+                        </div>
+                        <div class="stats-grid">
+                            <div class="stat-box"><div class="stat-label">1 (Ev Sahibi)</div><div class="stat-val">%${sim.pH}</div></div>
+                            <div class="stat-box"><div class="stat-label">X (Beraberlik)</div><div class="stat-val">%${sim.pD}</div></div>
+                            <div class="stat-box"><div class="stat-label">2 (Deplasman)</div><div class="stat-val">%${sim.pA}</div></div>
+                            <div class="stat-box"><div class="stat-label">En Yüksek Olasılık</div><div class="stat-val">${best}</div></div>
+                        </div>
+                    </div>`;
+            });
+            document.getElementById("contentArea").innerHTML = html;
+        }
+
+        function renderSporToto() {
+            let html = `<div class="match-card"><h3 style="margin-bottom:10px; font-size:15px; color:#3fb950;">📊 SPOR TOTO 15 MAÇ HESAPLANMIŞ KOLON</h3><table class="toto-table"><thead><tr><th>#</th><th>Maç</th><th>1X2 Tahmin</th></tr></thead><tbody>`;
+            fixtures.forEach((m, idx) => {
+                let sim = runSim(m.hXg, m.aXg);
+                let pick = parseFloat(sim.pH) > parseFloat(sim.pA) ? (parseFloat(sim.pH) > parseFloat(sim.pD) ? "1" : "X") : (parseFloat(sim.pA) > parseFloat(sim.pD) ? "2" : "X");
+                html += `<tr><td>${idx+1}</td><td>${m.home} - ${m.away}</td><td><span class="toto-pick">${pick}</span></td></tr>`;
+            });
+            html += `</tbody></table></div>`;
+            document.getElementById("contentArea").innerHTML = html;
+        }
+
+        function switchTab(type, el) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            if (type === 'bulten') renderBulten();
+            else if (type === 'monte') renderMonteCarlo();
+            else if (type === 'toto') renderSporToto();
+        }
+
+        renderBulten();
     </script>
 </body>
 </html>
