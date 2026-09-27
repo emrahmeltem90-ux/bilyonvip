@@ -7,5 +7,23 @@
         "status": "CANLI",
         "score": "1 - 0",
         "ai": "Poisson: %70 MS 1 (Güven: %88)"
+    },
+    {
+        "league": "Trendyol Süper Lig",
+        "home": "Fenerbahçe",
+        "away": "Antalyaspor",
+        "time": "21:00",
+        "status": "BAŞLAYACAK",
+        "score": "VS",
+        "ai": "Poisson: %74 MS 1 (Güven: %91)"
+    },
+    {
+        "league": "UEFA Uluslar Ligi",
+        "home": "İspanya",
+        "away": "Sırbistan",
+        "time": "21:45",
+        "status": "BAŞLAYACAK",
+        "score": "VS",
+        "ai": "Poisson: %68 MS 1 (Güven: %85)"
     }
 ]
