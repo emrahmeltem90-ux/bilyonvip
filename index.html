@@ -238,14 +238,8 @@
     </div>
 
     <script>
-        const API_TARGET = "https://sportslive.iddaa.com/sportsbook/v2/bulletin/full";
-
-        // Çoklu yedekli proxy listesi
-        const PROXIES = [
-            "https://api.allorigins.win/raw?url=",
-            "https://corsproxy.io/?",
-            "https://thingproxy.freeboard.io/fetch/"
-        ];
+        // Sizin aktif Worker adresiniz doğrudan tanımlandı
+        const WORKER_URL = "https://dark-limit-3df4.emrah-meltem90.workers.dev"; 
 
         let matchesList = [];
         let currentFilter = 'all';
@@ -255,37 +249,25 @@
             const statusEl = document.getElementById('status-msg');
             statusEl.innerText = "Canlı bülten çekiliyor...";
 
-            let success = false;
+            try {
+                const res = await fetch(WORKER_URL);
+                if (!res.ok) throw new Error("Ağ hatası");
 
-            for (let proxy of PROXIES) {
-                try {
-                    const fetchUrl = proxy + encodeURIComponent(API_TARGET);
-                    const res = await fetch(fetchUrl);
-                    if (!res.ok) continue;
+                let data = await res.json();
+                if (typeof data === 'string') data = JSON.parse(data);
 
-                    let data = await res.json();
-                    
-                    if (typeof data === 'string') {
-                        data = JSON.parse(data);
-                    }
+                matchesList = data.events || data.data?.events || data.m || (Array.isArray(data) ? data : []);
 
-                    matchesList = data.events || data.data?.events || data.m || (Array.isArray(data) ? data : []);
-
-                    if (matchesList.length > 0) {
-                        success = true;
-                        break;
-                    }
-                } catch (e) {
-                    console.warn("Proxy bağlantı hatası:", proxy, e);
+                if (matchesList.length > 0) {
+                    updateHeaderStats();
+                    renderMatches();
+                    statusEl.innerText = "";
+                } else {
+                    statusEl.innerText = "Bültende gösterilecek maç bulunamadı.";
                 }
-            }
-
-            if (success) {
-                updateHeaderStats();
-                renderMatches();
-                statusEl.innerText = "";
-            } else {
-                statusEl.innerHTML = `<span style="color:#ef4444">Bağlantı sağlanamadı. 'Yenile' butonuna basarak tekrar deneyin.</span>`;
+            } catch (e) {
+                console.error(e);
+                statusEl.innerHTML = `<span style="color:#ef4444">Worker bağlantısı başarısız. Cloudflare Worker'ı Deploy ettiğinizden emin olun.</span>`;
             }
         }
 
