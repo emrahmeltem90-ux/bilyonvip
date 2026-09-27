@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hedef 15 - Spor Toto Kolon & Bütçe Yönetimi</title>
+    <title>Hedef 15 - BankoBot Spor Toto Otomasyonu</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -13,6 +13,8 @@
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --border-color: #334155;
+            --bot-bg: #1e1b4b;
+            --bot-border: #6366f1;
         }
 
         * {
@@ -55,9 +57,10 @@
             font-size: 0.95rem;
         }
 
+        /* 3'lü Sekme Yapısı */
         .tabs {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             margin-bottom: 20px;
         }
 
@@ -66,8 +69,8 @@
             background: var(--card-bg);
             color: var(--text-muted);
             border: 1px solid var(--border-color);
-            padding: 12px;
-            font-size: 1rem;
+            padding: 12px 8px;
+            font-size: 0.9rem;
             font-weight: bold;
             border-radius: 10px;
             cursor: pointer;
@@ -112,7 +115,7 @@
             color: var(--text-main);
         }
 
-        .control-group input, .control-group select {
+        .control-group input {
             background: var(--bg-color);
             border: 1px solid var(--border-color);
             color: var(--text-main);
@@ -246,6 +249,7 @@
             border: 1px solid var(--border-color);
         }
 
+        /* Analiz ve BankoBot Kartları */
         .analysis-card {
             background: var(--card-bg);
             border-radius: 10px;
@@ -265,6 +269,41 @@
             color: var(--text-muted);
             line-height: 1.5;
         }
+
+        .bot-card {
+            background: var(--bot-bg);
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 15px;
+            border: 1px solid var(--bot-border);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+        }
+
+        .bot-card h4 {
+            color: #818cf8;
+            margin-bottom: 6px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bot-card .prediction-badge {
+            display: inline-block;
+            background: #4338ca;
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .bot-card p {
+            font-size: 0.95rem;
+            color: #e2e8f0;
+            line-height: 1.5;
+        }
     </style>
 </head>
 <body>
@@ -272,22 +311,23 @@
     <div class="container">
         <header>
             <h1>HEDEF 15</h1>
-            <p>Monte Carlo Simülasyonu & Esnek Kolon Optimizasyonu</p>
+            <p>Monte Carlo Simülasyonu & BankoBot Akıllı Spor Toto Sistemi</p>
         </header>
 
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('bulten')">Bülten & Kolon Üret</button>
-            <button class="tab-btn" onclick="switchTab('analiz')">Maç Analizleri (Poisson)</button>
+            <button class="tab-btn" onclick="switchTab('analiz')">Maç Analizleri</button>
+            <button class="tab-btn" onclick="switchTab('bankobot')">🤖 BankoBot Tercihleri</button>
         </div>
 
         <div id="tab-bulten" class="tab-content active">
             <div class="control-panel">
                 <div class="control-group">
-                    <label for="columnCountInput">Kaç Kolon Üretilsin? (Örn: 4, 10, 25)</label>
+                    <label for="columnCountInput">Kaç Kolon Üretilsin?</label>
                     <input type="number" id="columnCountInput" value="4" min="1" max="100" oninput="updateCost()">
                 </div>
                 <div class="control-group">
-                    <label>Toplam Kupon Tutarı (1 Kolon = 10₺)</label>
+                    <label>Toplam Tutar (1 Kolon = 10₺)</label>
                     <div class="total-cost-badge" id="totalCostDisplay">40 TL</div>
                 </div>
             </div>
@@ -306,143 +346,4 @@
             </div>
         </div>
 
-        <div id="tab-analiz" class="tab-content">
-            <div id="analysis-container">
-                </div>
-        </div>
-    </div>
-
-    <script>
-        const unitPrice = 10; // Kolon başına ücret
-
-        const bulten = [
-            { id: 1, date: "02 Eki 21:45", home: "Belçika", away: "Türkiye", analysis: "Belçika ev sahibi avantajı ve hücum hattıyla baskılı başlayacak. Türkiye'nin deplasman direnci yüksek. Poisson matrisine göre en olası senaryo karşılıklı gol ve 1-0 / 2-1 ihtimalleri." },
-            { id: 2, date: "05 Eki 21:45", home: "İtalya", away: "Türkiye", analysis: "İtalya taktik disiplini elden bırakmıyor. Monte Carlo simülasyonları maçın düşük skorlu geçeceğini ve ev sahibinin hafif favori olduğunu gösteriyor." },
-            { id: 3, date: "02 Eki 21:45", home: "Bosna Hersek", away: "İsveç", analysis: "İki takımın form grafiği dengeli. Hedging hesaplamaları bu maçta sürpriz ihtimaline karşı kuponlarda çift ihtimal (10 veya 02) tutulmasını öneriyor." },
-            { id: 4, date: "02 Eki 21:45", home: "Fransa", away: "İtalya", analysis: "Dev mücadele. Fransa'nın yıldız ayakları önde başlıyor ancak İtalya savunma duvarı sağlam. Maçın kaderini bireysel yetenekler belirleyecek." },
-            { id: 5, date: "02 Eki 21:45", home: "Macaristan", away: "Gürcistan", analysis: "Macaristan iç sahada çok etkili. Algoritmik modelde ev sahibi net favori çıkıyor." },
-            { id: 6, date: "02 Eki 21:45", home: "Polonya", away: "Romanya", analysis: "Orta saha mücadelesi şeklinde geçmesi bekleniyor. Az gol beklentisi olan kapalı bir kutu." },
-            { id: 7, date: "03 Eki 19:00", home: "Hırvatistan", away: "İngiltere", analysis: "İngiltere'nin kadro kalitesi baskın olsa da Hırvatistan tecrübesiyle oyunu ortak edecektir. Zorlu eşleşme." },
-            { id: 8, date: "03 Eki 21:45", home: "Kuzey Makedonya", away: "İskoçya", analysis: "İskoçya fizik gücüyle önde. Kapalı savunmayı açma konusunda sıkıntı yaşayabilirler." },
-            { id: 9, date: "03 Eki 21:45", home: "İspanya", away: "Çekya", analysis: "İspanya pas oyunuyla kontrolü tamamen elinde tutacaktır. Modelde galibiyete en yakın ekiplerden." },
-            { id: 10, date: "03 Eki 21:45", home: "İsviçre", away: "Slovenya", analysis: "İsviçre savunma güvenliğini ön planda tutan bir yapıda. Dengeli bir 90 dakika bekleniyor." },
-            { id: 11, date: "04 Eki 21:45", home: "Galler", away: "Danimarka", analysis: "Danimarka formda. Galler iç saha desteğiyle direnç gösterecektir." },
-            { id: 12, date: "04 Eki 21:45", home: "Hollanda", away: "Sırbistan", analysis: "Hollanda hücum hattı skoru erken bulmak isteyecektir. Sırbistan kontrataklarla etkili olmaya çalışacak." },
-            { id: 13, date: "04 Eki 21:45", home: "Portekiz", away: "Norveç", analysis: "Portekiz saha ve seyirci avantajıyla net baskı kurar. Norveç hızlı hücumlarla gol arayacak." },
-            { id: 14, date: "04 Eki 21:45", home: "Yunanistan", away: "Almanya", analysis: "Almanya taktik üstünlüğe sahip. Yunanistan sert savunma ile direnmeye çalışacak." },
-            { id: 15, date: "05 Eki 21:45", home: "Fransa", away: "Belçika", analysis: "Haftanın kapanış mücadelesi. İki dev ekibin maçında Monte Carlo modellemesi bol gol ve karşılıklı ihtimalleri öne çıkarıyor." }
-        ];
-
-        const userSelections = {};
-
-        function renderMatches() {
-            const container = document.getElementById('matches-container');
-            container.innerHTML = '';
-
-            bulten.forEach(m => {
-                if (!userSelections[m.id]) {
-                    userSelections[m.id] = ['1', '0', '2']; // Varsayılan açık
-                }
-
-                const card = document.createElement('div');
-                card.className = 'match-card';
-                card.innerHTML = `
-                    <div class="match-info">
-                        <span class="match-date">${m.date}</span>
-                        <span class="match-teams">${m.home} - ${m.away}</span>
-                    </div>
-                    <div class="match-options">
-                        <button class="btn-opt ${userSelections[m.id].includes('1') ? 'active' : ''}" onclick="toggleOption(${m.id}, '1', this)">1</button>
-                        <button class="btn-opt ${userSelections[m.id].includes('0') ? 'active' : ''}" onclick="toggleOption(${m.id}, '0', this)">0</button>
-                        <button class="btn-opt ${userSelections[m.id].includes('2') ? 'active' : ''}" onclick="toggleOption(${m.id}, '2', this)">2</button>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-            updateCost();
-        }
-
-        function updateCost() {
-            const count = parseInt(document.getElementById('columnCountInput').value) || 1;
-            const total = count * unitPrice;
-            document.getElementById('totalCostDisplay').innerText = total + " TL";
-        }
-
-        function renderAnalysis() {
-            const container = document.getElementById('analysis-container');
-            container.innerHTML = '';
-
-            bulten.forEach(m => {
-                const card = document.createElement('div');
-                card.className = 'analysis-card';
-                card.innerHTML = `
-                    <h4>${m.date} | ${m.home} vs ${m.away}</h4>
-                    <p>${m.analysis}</p>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-
-            if (tabName === 'bulten') {
-                document.querySelectorAll('.tab-btn')[0].classList.add('active');
-                document.getElementById('tab-bulten').classList.add('active');
-            } else {
-                document.querySelectorAll('.tab-btn')[1].classList.add('active');
-                document.getElementById('tab-analiz').classList.add('active');
-            }
-        }
-
-        function toggleOption(matchId, option, btnElement) {
-            let list = userSelections[matchId];
-            if (list.includes(option)) {
-                if (list.length > 1) {
-                    userSelections[matchId] = list.filter(item => item !== option);
-                    btnElement.classList.remove('active');
-                }
-            } else {
-                list.push(option);
-                btnElement.classList.add('active');
-            }
-        }
-
-        function generateColumns() {
-            const targetColumnCount = parseInt(document.getElementById('columnCountInput').value) || 4;
-            const totalCost = targetColumnCount * unitPrice;
-
-            const resultsDiv = document.getElementById('results');
-            const summaryDiv = document.getElementById('summaryText');
-            const outputDiv = document.getElementById('columnOutput');
-            
-            resultsDiv.style.display = 'block';
-            summaryDiv.innerHTML = "Monte Carlo simülasyonu ve risk dağılım matrisi hesaplanıyor...";
-            outputDiv.innerHTML = "";
-
-            setTimeout(() => {
-                summaryDiv.innerHTML = `Seçilen Kolon Adedi: <b>${targetColumnCount} Kolon</b> | Toplam Maliyet: <b>${totalCost} TL</b><br>` +
-                                       `Maçlardaki kapatma tercihlerinize (1, 0, 2) sadık kalınarak en optimum kombinasyonlar oluşturuldu.`;
-
-                let text = "";
-                for(let i = 1; i <= targetColumnCount; i++) {
-                    let colStr = `Kolon ${i < 10 ? '0'+i : i}: `;
-                    bulten.forEach(m => {
-                        const opts = userSelections[m.id];
-                        // Kullanıcının kapattığı ihtimaller arasından Monte Carlo mantığıyla rastgele seçim
-                        const randomOpt = opts[Math.floor(Math.random() * opts.length)];
-                        colStr += `[${randomOpt}] `;
-                    });
-                    text += colStr + "\n";
-                }
-
-                outputDiv.innerHTML = text;
-            }, 500);
-        }
-
-        renderMatches();
-        renderAnalysis();
-    </script>
-</body>
-</html>
+        
