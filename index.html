@@ -3,115 +3,407 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resmî İddaa Bülteni</title>
+    <title>BİLYONVIP | Resmî İddaa Bülteni</title>
+    <!-- Google Font: Outfit -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: #0f172a; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 15px; }
-        .header { text-align: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #334155; }
-        .header h1 { font-size: 20px; color: #38bdf8; text-transform: uppercase; letter-spacing: 1px; }
-        #status { text-align: center; font-size: 14px; margin-bottom: 15px; color: #94a3b8; }
+        :root {
+            --bg-main: #070b14;
+            --bg-card: rgba(18, 26, 43, 0.85);
+            --border-card: rgba(255, 255, 255, 0.08);
+            --accent-cyan: #38bdf8;
+            --accent-purple: #818cf8;
+            --accent-green: #22c55e;
+            --accent-gold: #f59e0b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', sans-serif; }
+        body { background-color: var(--bg-main); color: var(--text-primary); padding-bottom: 110px; overflow-x: hidden; }
+
+        /* Background Glow */
+        .glow-bg {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 380px;
+            height: 380px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.18) 0%, rgba(129, 140, 248, 0.05) 60%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Top Navbar */
+        .top-navbar {
+            background: rgba(11, 17, 32, 0.9);
+            backdrop-filter: blur(12px);
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-card);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .brand { display: flex; align-items: center; gap: 8px; font-weight: 900; font-size: 22px; }
+        .brand-text { background: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .vip-badge { background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; }
+
+        .btn-reload {
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: var(--accent-cyan);
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-reload:active { transform: scale(0.95); }
+
+        /* VIP Hero Banner */
+        .hero-banner {
+            padding: 24px 20px 16px 20px;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(56, 189, 248, 0.08) 0%, transparent 100%);
+            border-bottom: 1px solid var(--border-card);
+        }
+        .hero-title { font-size: 26px; font-weight: 800; margin-bottom: 4px; letter-spacing: -0.5px; }
+        .hero-title span { color: var(--accent-cyan); }
+        .hero-subtitle { font-size: 13px; color: var(--text-secondary); margin-bottom: 16px; font-weight: 300; }
         
-        .match-card { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 12px; margin-bottom: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
-        .match-meta { display: flex; justify-content: space-between; font-size: 12px; color: #94a3b8; font-weight: 600; margin-bottom: 8px; }
-        .code-badge { background: #0284c7; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
-        
-        .teams { display: flex; justify-content: space-between; align-items: center; font-size: 15px; font-weight: bold; margin: 10px 0; color: #f1f5f9; }
-        .versus { font-size: 12px; color: #64748b; font-weight: normal; margin: 0 8px; }
-        
-        .odds-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
-        .odd-box { background: #0f172a; border: 1px solid #475569; border-radius: 6px; text-align: center; padding: 6px; }
-        .odd-label { font-size: 11px; color: #94a3b8; display: block; }
-        .odd-value { font-size: 14px; color: #4ade80; font-weight: bold; }
+        .hero-stats { display: flex; justify-content: center; gap: 12px; }
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            padding: 8px 16px;
+            border-radius: 12px;
+            min-width: 100px;
+        }
+        .stat-value { font-size: 18px; font-weight: 800; color: var(--accent-cyan); }
+        .stat-label { font-size: 10px; color: var(--text-secondary); text-transform: uppercase; margin-top: 2px; }
+
+        /* Controls & Filter */
+        .controls-section { padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; }
+        .search-input {
+            width: 100%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .search-input:focus { border-color: var(--accent-cyan); box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); }
+
+        .tabs-wrapper { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+        .tab-chip {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            color: var(--text-secondary);
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .tab-chip.active {
+            background: linear-gradient(135deg, #0284c7, #0369a1);
+            color: #fff;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+        }
+
+        /* Matches Container */
+        #status-msg { text-align: center; font-size: 13px; color: var(--text-secondary); margin: 10px 0; }
+        .matches-feed { padding: 0 20px; }
+
+        /* Match Card */
+        .match-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-card);
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 12px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .match-card:hover { border-color: rgba(56, 189, 248, 0.3); }
+
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 11px; }
+        .league-title { color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .tag-code { background: rgba(56, 189, 248, 0.1); color: var(--accent-cyan); border: 1px solid rgba(56, 189, 248, 0.2); padding: 2px 8px; border-radius: 6px; font-weight: 700; }
+        .tag-live { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); padding: 2px 8px; border-radius: 6px; font-weight: 800; animation: pulse 1.5s infinite; }
+
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+        .teams-container { display: flex; justify-content: space-between; align-items: center; margin: 12px 0; }
+        .team-name { font-size: 15px; font-weight: 700; color: #fff; width: 40%; }
+        .team-name.right { text-align: right; }
+        .score-pill { background: #0b1120; border: 1px solid var(--border-card); padding: 4px 12px; border-radius: 8px; color: var(--accent-green); font-weight: 800; font-size: 14px; }
+
+        /* Odds Grid */
+        .odds-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+        .odd-tile {
+            background: #0b1120;
+            border: 1px solid var(--border-card);
+            border-radius: 10px;
+            padding: 8px 4px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .odd-tile.selected {
+            background: linear-gradient(135deg, #22c55e, #15803d);
+            border-color: var(--accent-green);
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+        }
+        .odd-tile.selected .o-label, .odd-tile.selected .o-val { color: #fff !important; }
+        .o-label { font-size: 10px; color: var(--text-secondary); display: block; margin-bottom: 2px; }
+        .o-val { font-size: 14px; color: var(--accent-cyan); font-weight: 800; }
+
+        /* Floating Slip Bar */
+        .slip-bar {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: rgba(11, 17, 32, 0.95);
+            backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.8);
+            z-index: 200;
+        }
+        .slip-odds-total { font-size: 18px; font-weight: 900; color: var(--accent-green); }
+        .btn-confirm {
+            background: linear-gradient(135deg, #38bdf8, #0284c7);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 13px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
+        }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>🔥 RESMÎ İDDAA BÜLTENİ</h1>
+    <div class="glow-bg"></div>
+
+    <!-- Top Navbar -->
+    <div class="top-navbar">
+        <div class="brand">
+            <span class="brand-text">BİLYONVIP</span>
+            <span class="vip-badge">PRO</span>
+        </div>
+        <button class="btn-reload" onclick="fetchBulten()">Yenile ↻</button>
     </div>
 
-    <div id="status">İddaa canlı bülteni çekiliyor...</div>
-    <div id="bulten"></div>
+    <!-- VIP Hero Banner -->
+    <div class="hero-banner">
+        <h1 class="hero-title">Canlı <span>İddaa</span> Bülteni</h1>
+        <p class="hero-subtitle">Resmî maç kodları, canlı oranlar ve anlık veriler</p>
+        
+        <div class="hero-stats">
+            <div class="stat-card">
+                <div class="stat-value" id="statTotal">0</div>
+                <div class="stat-label">Toplam Maç</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color: #ef4444;" id="statLive">0</div>
+                <div class="stat-label">Canlı Oynanan</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Controls & Filters -->
+    <div class="controls-section">
+        <input type="text" id="searchInput" class="search-input" placeholder="Takım veya lig arayın..." oninput="renderMatches()">
+        <div class="tabs-wrapper">
+            <button class="tab-chip active" onclick="setFilter('all', this)">Tüm Bülten</button>
+            <button class="tab-chip" onclick="setFilter('live', this)">🔴 Canlı Maçlar</button>
+            <button class="tab-chip" onclick="setFilter('upcoming', this)">⏳ Başlamamış</button>
+        </div>
+    </div>
+
+    <div id="status-msg">Veriler senkronize ediliyor...</div>
+    <div id="bulten" class="matches-feed"></div>
+
+    <!-- Floating Slip Bar -->
+    <div class="slip-bar">
+        <div>
+            <div style="font-size: 11px; color: var(--text-secondary);" id="slipCount">0 Maç Seçildi</div>
+            <div class="slip-odds-total">Oran: <span id="slipTotal">1.00</span></div>
+        </div>
+        <button class="btn-confirm" onclick="alert('Kupon kaydedildi!')">KUPONU ONAYLA</button>
+    </div>
 
     <script>
-        const PROXY = "https://dark-limit-3df4.emrah-meltem90.workers.dev/?url=";
-        // Resmî İddaa canlı/günlük servis adresi
-        const IDDAA_API = encodeURIComponent("https://sportslive.iddaa.com/sportsbook/v2/bulletin/full");
+        const TARGET_API = "https://sportslive.iddaa.com/sportsbook/v2/bulletin/full";
+        
+        // Sunucu engellerini aşmak için yedekli proxy listesi
+        const PROXIES = [
+            "https://corsproxy.io/?",
+            "https://api.allorigins.win/raw?url=",
+            "https://dark-limit-3df4.emrah-meltem90.workers.dev/?url="
+        ];
 
-        async function loadBulten() {
-            const statusEl = document.getElementById('status');
-            const bultenEl = document.getElementById('bulten');
+        let matchesList = [];
+        let currentFilter = 'all';
+        let selectedBets = {};
 
-            try {
-                const response = await fetch(PROXY + IDDAA_API);
-                if (!response.ok) {
-                    throw new Error(`Sunucu Yanıtı: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                
-                // İddaa verisini ayrıştırma
-                const matches = data.events || data.data?.events || data.m || [];
+        async function fetchBulten() {
+            const statusEl = document.getElementById('status-msg');
+            statusEl.innerText = "Resmî bülten çekiliyor...";
 
-                if (!matches || matches.length === 0) {
-                    statusEl.innerText = "Şu an bültende aktif maç bulunamadı.";
-                    return;
-                }
+            let success = false;
 
-                statusEl.innerHTML = `<span style="color:#4ade80">Toplam ${matches.length} Resmî İddaa Maçı Yüklendi</span>`;
-                let html = "";
+            for (let proxy of PROXIES) {
+                try {
+                    const fetchUrl = proxy + encodeURIComponent(TARGET_API);
+                    const res = await fetch(fetchUrl);
+                    if (!res.ok) continue;
 
-                matches.slice(0, 100).forEach(m => {
-                    const code = m.code || m.c || m.id || '-';
-                    const league = m.leagueName || m.sn || 'İDDAA BÜLTENİ';
-                    const home = m.homeTeamName || m.ht || 'Ev Sahibi';
-                    const away = m.awayTeamName || m.at || 'Deplasman';
+                    const data = await res.json();
+                    matchesList = data.events || data.data?.events || data.m || [];
 
-                    // Oranlar
-                    let ms1 = "1.80", msX = "3.20", ms2 = "3.10";
-                    if (m.odds) {
-                        ms1 = m.odds.ms1 || m.odds['1'] || ms1;
-                        msX = m.odds.msX || m.odds['X'] || msX;
-                        ms2 = m.odds.ms2 || m.odds['2'] || ms2;
+                    if (matchesList.length > 0) {
+                        success = true;
+                        break;
                     }
+                } catch (e) {
+                    console.warn(`Proxy denemesi başarısız (${proxy}):`, e);
+                }
+            }
 
-                    html += `
-                        <div class="match-card">
-                            <div class="match-meta">
-                                <span>${league}</span>
-                                <span class="code-badge">Kod: ${code}</span>
-                            </div>
-                            <div class="teams">
-                                <span>${home}</span>
-                                <span class="versus">vs</span>
-                                <span>${away}</span>
-                            </div>
-                            <div class="odds-container">
-                                <div class="odd-box">
-                                    <span class="odd-label">MS 1</span>
-                                    <span class="odd-value">${ms1}</span>
-                                </div>
-                                <div class="odd-box">
-                                    <span class="odd-label">MS X</span>
-                                    <span class="odd-value">${msX}</span>
-                                </div>
-                                <div class="odd-box">
-                                    <span class="odd-label">MS 2</span>
-                                    <span class="odd-value">${ms2}</span>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-
-                bultenEl.innerHTML = html;
-
-            } catch (err) {
-                statusEl.innerHTML = `<span style="color:#f87171">Bülten çekilirken hata oluştu: ${err.message}</span>`;
+            if (success) {
+                updateHeaderStats();
+                renderMatches();
+                statusEl.innerText = "";
+            } else {
+                statusEl.innerHTML = `<span style="color:#ef4444">Bülten verisi alınamadı. Lütfen sayfayı yenileyin.</span>`;
             }
         }
 
-        loadBulten();
+        function updateHeaderStats() {
+            document.getElementById('statTotal').innerText = matchesList.length;
+            const liveCnt = matchesList.filter(m => m.isLive || m.il).length;
+            document.getElementById('statLive').innerText = liveCnt;
+        }
+
+        function setFilter(type, el) {
+            currentFilter = type;
+            document.querySelectorAll('.tab-chip').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            renderMatches();
+        }
+
+        function renderMatches() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const container = document.getElementById('bulten');
+            container.innerHTML = "";
+
+            let filtered = matchesList.filter(m => {
+                const home = (m.homeTeamName || m.ht || "").toLowerCase();
+                const away = (m.awayTeamName || m.at || "").toLowerCase();
+                const league = (m.leagueName || m.sn || "").toLowerCase();
+                const matchQuery = home.includes(query) || away.includes(query) || league.includes(query);
+
+                const isLive = m.isLive || m.il || false;
+                if (currentFilter === 'live') return matchQuery && isLive;
+                if (currentFilter === 'upcoming') return matchQuery && !isLive;
+                return matchQuery;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div style="text-align:center; padding: 30px; color: var(--text-secondary);">Aradığınız kriterde maç bulunamadı.</div>`;
+                return;
+            }
+
+            filtered.slice(0, 80).forEach(m => {
+                container.appendChild(buildMatchCard(m));
+            });
+        }
+
+        function buildMatchCard(m) {
+            const id = m.id || m.c || Math.random();
+            const isLive = m.isLive || m.il || false;
+            const code = m.code || m.c || '---';
+            const league = m.leagueName || m.sn || 'İDDAA BÜLTENİ';
+            const home = m.homeTeamName || m.ht || 'Ev Sahibi';
+            const away = m.awayTeamName || m.at || 'Deplasman';
+            const score = isLive ? `${m.homeScore ?? 0} - ${m.awayScore ?? 0}` : 'VS';
+
+            const ms1 = m.odds?.ms1 || m.odds?.['1'] || "1.80";
+            const msX = m.odds?.msX || m.odds?.['X'] || "3.20";
+            const ms2 = m.odds?.ms2 || m.odds?.['2'] || "3.10";
+
+            const card = document.createElement('div');
+            card.className = 'match-card';
+            card.innerHTML = `
+                <div class="card-header">
+                    <span class="league-title">${league}</span>
+                    <span class="${isLive ? 'tag-live' : 'tag-code'}">${isLive ? 'CANLI' : 'KOD: ' + code}</span>
+                </div>
+                <div class="teams-container">
+                    <span class="team-name">${home}</span>
+                    <span class="score-pill">${score}</span>
+                    <span class="team-name right">${away}</span>
+                </div>
+                <div class="odds-row">
+                    <div class="odd-tile ${isSelected(id, '1')}" onclick="toggleBet('${id}', '1', '${ms1}')">
+                        <span class="o-label">MS 1</span>
+                        <span class="o-val">${ms1}</span>
+                    </div>
+                    <div class="odd-tile ${isSelected(id, 'X')}" onclick="toggleBet('${id}', 'X', '${msX}')">
+                        <span class="o-label">MS X</span>
+                        <span class="o-val">${msX}</span>
+                    </div>
+                    <div class="odd-tile ${isSelected(id, '2')}" onclick="toggleBet('${id}', '2', '${ms2}')">
+                        <span class="o-label">MS 2</span>
+                        <span class="o-val">${ms2}</span>
+                    </div>
+                </div>
+            `;
+            return card;
+        }
+
+        function toggleBet(id, type, val) {
+            if (selectedBets[id] && selectedBets[id].type === type) {
+                delete selectedBets[id];
+            } else {
+                selectedBets[id] = { type, val: parseFloat(val) || 1.0 };
+            }
+            renderMatches();
+            updateSlipUI();
+        }
+
+        function isSelected(id, type) {
+            return (selectedBets[id] && selectedBets[id].type === type) ? 'selected' : '';
+        }
+
+        function updateSlipUI() {
+            const keys = Object.keys(selectedBets);
+            document.getElementById('slipCount').innerText = `${keys.length} Maç Seçildi`;
+
+            let total = 1.0;
+            keys.forEach(k => { total *= selectedBets[k].val; });
+            document.getElementById('slipTotal').innerText = keys.length > 0 ? total.toFixed(2) : "1.00";
+        }
+
+        fetchBulten();
     </script>
 </body>
 </html>
