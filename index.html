@@ -378,18 +378,18 @@
                     </select>
                 </div>
                 <div class="control-group">
-                    <label for="budgetInput">Toplam Bütçe (TL):</label>
-                    <input type="number" id="budgetInput" value="200" oninput="updateSummaryDisplay()">
+                    <label for="budgetInput">Toplam Hedef Bütçe (TL):</label>
+                    <input type="number" id="budgetInput" value="200" oninput="calculateMatrixCost()">
                 </div>
                 <div class="control-group">
-                    <label for="columnCountInput">Kaç Kolon Üretilsin?</label>
-                    <input type="number" id="columnCountInput" value="1" oninput="updateSummaryDisplay()">
+                    <label for="columnCountInput">Hedeflenen Kolon Adedi:</label>
+                    <input type="number" id="columnCountInput" value="2" oninput="calculateMatrixCost()">
                 </div>
             </div>
 
-            <div class="total-cost-badge" id="totalCostDisplay">Toplam Bütçe: 200 TL | Üretilecek Kolon: 1</div>
+            <div class="total-cost-badge" id="totalCostDisplay">Seçilen Tercihlere Göre Matris Maliyeti: Hesap निवेशक...</div>
 
-            <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:10px;">* İstediğin maçı tek bırak, çiftle ya da tamamen kapat ([1-0-2]). Sürprizi patlatacak matrisi sisteme işle.</p>
+            <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:10px;">* Maçlara yaptığın tekli, çifte şans veya 3'lü seçimler kombinasyon maliyetini belirler. Kolon başı taban ücret 10 TL'dir.</p>
             <div id="matches-container"></div>
 
             <div class="actions">
@@ -398,7 +398,7 @@
             </div>
 
             <div id="results">
-                <h3>Oluşturulan Kolonlar</h3>
+                <h3>Oluşturulan Kolonlar & Misli Dağılımı</h3>
                 <div class="summary-info" id="summaryText"></div>
                 <div id="columnOutputContainer"></div>
             </div>
@@ -462,13 +462,25 @@
                 `;
                 container.appendChild(card);
             });
+            calculateMatrixCost();
         }
 
-        function updateSummaryDisplay() {
-            const budget = document.getElementById('budgetInput').value || 0;
-            const columns = document.getElementById('columnCountInput').value || 1;
+        function calculateMatrixCost() {
+            // Seçilen maçlardaki tercihlere göre toplam kombinasyon (kolon) sayısını bul
+            let totalCombinations = 1;
+            bulten.forEach(m => {
+                let count = userSelections[m.id] ? userSelections[m.id].length : 1;
+                if(count > 0) totalCombinations *= count;
+            });
+
+            let basePricePerColumn = 10; // 1 kolon = 10 TL
+            let naturalCost = totalCombinations * basePricePerColumn;
+
             const display = document.getElementById('totalCostDisplay');
-            display.innerText = `Toplam Bütçe: ${budget} TL | Üretilecek Kolon: ${columns}`;
+            if(display) {
+                display.innerText = `Matris Kombinasyon Kolon Adedi: ${totalCombinations} Kolon | Tablodaki Doğal Tutar: ${naturalCost} TL`;
+            }
+            return totalCombinations;
         }
 
         function renderAnalysis() {
@@ -519,25 +531,27 @@
                 list.push(option);
                 btnElement.classList.add('active');
             }
+            calculateMatrixCost();
         }
 
         function generateColumns() {
-            const targetColumnCount = parseInt(document.getElementById('columnCountInput').value) || 1;
-            const totalBudget = parseFloat(document.getElementById('budgetInput').value) || 0;
+            const targetColumnCount = parseInt(document.getElementById('columnCountInput').value) || 2;
+            const targetBudget = parseFloat(document.getElementById('budgetInput').value) || 200;
             const resultsDiv = document.getElementById('results');
             const summaryDiv = document.getElementById('summaryText');
             const outputContainer = document.getElementById('columnOutputContainer');
             const riskMode = document.getElementById('riskMode').value;
             
             resultsDiv.style.display = 'block';
-            summaryDiv.innerHTML = "Sürpriz matris kolonları bütçeye göre optimize ediliyor...";
+            summaryDiv.innerHTML = "Sürpriz matris kolonları ve misli değerleri hesaplanıyor...";
             outputContainer.innerHTML = "";
 
             setTimeout(() => {
-                // 200 TL bütçe 1 kolona basıldığında kolon başına düşen bütçe / çarpan değeri hesaplanır
-                let unitBudgetPerColumn = (totalBudget / targetColumnCount).toFixed(2);
+                // Kullanıcının belirttiği toplam bütçeyi hedeflenen kolon adedine bölerek her bir kolonun misli/tutar değerini buluyoruz (Örn: 200 TL / 2 Kolon = 100 TL)
+                let budgetPerColumn = (targetBudget / targetColumnCount).toFixed(2);
+                let misliFactor = (budgetPerColumn / 10).toFixed(1); // 10 TL'lik tabana göre misli çarpanı
 
-                summaryDiv.innerHTML = `Toplam Bütçe: <b>${totalBudget} TL</b> | Üretilen Kolon: <b>${targetColumnCount} Kolon</b> | Kolon Başına Değer: <b>${unitBudgetPerColumn} TL</b> | Mod: <b>${riskMode.toUpperCase()}</b>`;
+                summaryDiv.innerHTML = `Hedeflenen Toplam Bütçe: <b>${targetBudget} TL</b> | Üretilen Kolon Adedi: <b>${targetColumnCount}</b> | Kolon Başına Düşen Tutar: <b>${budgetPerColumn} TL</b> (Misli Çarpanı: <b>${misliFactor}x</b>) | Mod: <b>${riskMode.toUpperCase()}</b>`;
                 
                 let htmlContent = "";
                 lastGeneratedCoupons = [];
@@ -563,12 +577,12 @@
                         `;
                     });
 
-                    lastGeneratedCoupons.push({ id: i, budget: unitBudgetPerColumn, matches: couponArray });
+                    lastGeneratedCoupons.push({ id: i, budget: budgetPerColumn, misli: misliFactor, matches: couponArray });
 
                     htmlContent += `
                         <div class="coupon-card">
                             <div class="coupon-header">
-                                <div class="coupon-title">Kolon #${i < 10 ? '0'+i : i} (Değer: ${unitBudgetPerColumn} TL)</div>
+                                <div class="coupon-title">Kolon #${i < 10 ? '0'+i : i} -> Tutar: ${budgetPerColumn} TL (${misliFactor} Misli)</div>
                                 <button class="btn-copy-mini" onclick="copySingleCoupon(${i})">Kopyala</button>
                             </div>
                             <div class="coupon-matches">${matchesHtml}</div>
@@ -582,7 +596,7 @@
         function copySingleCoupon(index) {
             const coupon = lastGeneratedCoupons.find(c => c.id === index);
             if (!coupon) return;
-            const text = `Kolon #${index} (${coupon.budget} TL): ` + coupon.matches.map(m => `${m.match}[${m.pick}]`).join(' ');
+            const text = `Kolon #${index} (${coupon.budget} TL - ${coupon.misli} Misli): ` + coupon.matches.map(m => `${m.match}[${m.pick}]`).join(' ');
             navigator.clipboard.writeText(text).then(() => {
                 alert(`Kolon #${index} panoya kopyalandı!`);
             });
@@ -612,7 +626,7 @@
                 let groupHtml = `<div class="coupon-card"><div class="coupon-title">Kayıt Grubu #${gIdx+1} (${group.date})</div>`;
                 group.coupons.forEach(c => {
                     let mStr = c.matches.map(m => `${m.match}:[${m.pick}]`).join(', ');
-                    groupHtml += `<div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">Kolon #${c.id} (${c.budget} TL) -> ${mStr}</div>`;
+                    groupHtml += `<div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">Kolon #${c.id} (${c.budget} TL / ${c.misli} Misli) -> ${mStr}</div>`;
                 });
                 groupHtml += `</div>`;
                 container.innerHTML += groupHtml;
