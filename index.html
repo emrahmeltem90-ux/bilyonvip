@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hedef 15 - Spor Toto Matris & Bankobot Sistemi</title>
+    <title>Hedef 15 - Sürpriz Avcısı Matris Sistemi</title>
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
+            --bg-color: #0b0f19;
+            --card-bg: #162032;
             --accent-green: #10b981;
-            --accent-hover: #059669;
+            --accent-orange: #f59e0b;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --border-color: #334155;
@@ -39,12 +39,12 @@
             padding: 18px;
             background: var(--card-bg);
             border-radius: 12px;
-            border-bottom: 4px solid var(--accent-green);
+            border-bottom: 4px solid var(--accent-orange);
         }
 
         header h1 {
             font-size: 1.6rem;
-            color: var(--accent-green);
+            color: var(--accent-orange);
             margin-bottom: 4px;
         }
 
@@ -77,9 +77,9 @@
         }
 
         .tab-btn.active {
-            background: var(--accent-green);
-            color: #fff;
-            border-color: var(--accent-green);
+            background: var(--accent-orange);
+            color: #0b0f19;
+            border-color: var(--accent-orange);
         }
 
         .tab-content {
@@ -127,8 +127,8 @@
 
         .total-cost-badge {
             background: var(--bg-color);
-            border: 1px solid var(--accent-green);
-            color: var(--accent-green);
+            border: 1px solid var(--accent-orange);
+            color: var(--accent-orange);
             padding: 12px;
             border-radius: 8px;
             font-weight: bold;
@@ -164,7 +164,7 @@
 
         .match-date {
             font-size: 0.7rem;
-            color: var(--accent-green);
+            color: var(--accent-orange);
             font-weight: bold;
         }
 
@@ -191,9 +191,9 @@
         }
 
         .btn-opt.active {
-            background: var(--accent-green);
-            color: #fff;
-            border-color: var(--accent-green);
+            background: var(--accent-orange);
+            color: #0b0f19;
+            border-color: var(--accent-orange);
         }
 
         .actions {
@@ -203,8 +203,8 @@
         }
 
         .btn-main {
-            background: var(--accent-green);
-            color: #fff;
+            background: var(--accent-orange);
+            color: #0b0f19;
             border: none;
             padding: 14px;
             font-size: 0.95rem;
@@ -236,7 +236,7 @@
         }
 
         #results h3 {
-            color: var(--accent-green);
+            color: var(--accent-orange);
             margin-bottom: 10px;
             font-size: 1.05rem;
         }
@@ -248,7 +248,7 @@
             margin-bottom: 12px;
             font-size: 0.8rem;
             color: var(--text-muted);
-            border-left: 3px solid var(--accent-green);
+            border-left: 3px solid var(--accent-orange);
             line-height: 1.5;
         }
 
@@ -270,7 +270,7 @@
         }
 
         .coupon-title {
-            color: var(--accent-green);
+            color: var(--accent-orange);
             font-weight: bold;
             font-size: 0.9rem;
         }
@@ -293,7 +293,7 @@
         }
 
         .match-badge {
-            background: #1e293b;
+            background: #162032;
             border: 1px solid var(--border-color);
             padding: 6px 2px;
             border-radius: 4px;
@@ -307,7 +307,7 @@
         }
 
         .match-badge strong {
-            color: var(--accent-green);
+            color: var(--accent-orange);
             font-size: 0.85rem;
         }
 
@@ -320,14 +320,14 @@
         }
 
         .analysis-card h4 {
-            color: var(--accent-green);
+            color: var(--accent-orange);
             margin-bottom: 6px;
             font-size: 0.95rem;
         }
 
         .bankobot-box {
             background: var(--bg-color);
-            border-left: 3px solid #3b82f6;
+            border-left: 3px solid #f59e0b;
             padding: 10px;
             margin-top: 8px;
             border-radius: 4px;
@@ -356,13 +356,13 @@
 
     <div class="container">
         <header>
-            <h1>HEDEF 15 PRO</h1>
-            <p>Matris Kolon Optimizasyonu & Bankobot Analiz Sistemi</p>
+            <h1>HEDEF 15 - SÜRPRİZ AVCISI</h1>
+            <p>Matris Kolon Optimizasyonu & Bankobot Nokta Atışı Analizleri</p>
         </header>
 
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('bulten', this)">Bülten & Matris</button>
-            <button class="tab-btn" onclick="switchTab('analiz', this)">🤖 Bankobot Analizleri</button>
+            <button class="tab-btn" onclick="switchTab('analiz', this)">🔥 Bankobot Sürpriz Kokusu</button>
             <button class="tab-btn" onclick="switchTab('kayitli', this)">💾 Kuponlarım</button>
         </div>
 
@@ -370,30 +370,31 @@
         <div id="tab-bulten" class="tab-content active">
             <div class="control-panel">
                 <div class="control-group">
-                    <label for="riskMode">Sistem Dağılım Modu:</label>
+                    <label for="riskMode">Sürpriz Strateji Modu:</label>
                     <select id="riskMode">
-                        <option value="balanced">Dengeli / Akıllı Matris Dağılımı</option>
-                        <option value="garanti">Tek / Çift Odaklı (Favori Ağırlıklı)</option>
-                        <option value="jackpot">Sürpriz Matris Modu</option>
+                        <option value="jackpot">Büyük Sürpriz / Jackpot Matrisi (Yunanistan Modu)</option>
+                        <option value="balanced">Dengeli Matris Dağılımı</option>
+                        <option value="garanti">Tek / Çift Sağlamcı Mod</option>
                     </select>
                 </div>
+                <!-- ARTIK BÜTÇE VE KOLON SAYISI BİRBİRİNİ EZMİYOR, TAMAMEN BAĞIMSIZ! -->
                 <div class="control-group">
-                    <label for="budgetInput">Bütçe Gir (TL): (Örn: 200 veya 2000)</label>
-                    <input type="number" id="budgetInput" value="200" oninput="calculateColumnsFromBudget()">
+                    <label for="budgetInput">Toplam Bütçe (TL):</label>
+                    <input type="number" id="budgetInput" value="200" oninput="updateSummaryDisplay()">
                 </div>
                 <div class="control-group">
                     <label for="columnCountInput">Kaç Kolon Üretilsin?</label>
-                    <input type="number" id="columnCountInput" value="20" oninput="calculateBudgetFromColumns()">
+                    <input type="number" id="columnCountInput" value="1" oninput="updateSummaryDisplay()">
                 </div>
             </div>
 
-            <div class="total-cost-badge" id="totalCostDisplay">Toplam Tutar: 200 TL (20 Kolon - Kolon Başı: 10 TL)</div>
+            <div class="total-cost-badge" id="totalCostDisplay">Toplam Bütçe: 200 TL | Üretilecek Kolon: 1</div>
 
-            <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:10px;">* İstediğin maçı tek bırakabilir, çiftleyebilir (örn: 1-0) ya da tamamen kapatabilirsin ([1-0-2]). Matris bu tercihlerine göre şekillenir.</p>
+            <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:10px;">* İstediğin maçı tek bırak, çiftle ya da tamamen kapat ([1-0-2]). Sürprizi patlatacak matrisi sisteme işle.</p>
             <div id="matches-container"></div>
 
             <div class="actions">
-                <button class="btn-main" onclick="generateColumns()">Matrisi Kolonlara Dağıt & Üret</button>
+                <button class="btn-main" onclick="generateColumns()">Sürpriz Matrisini Kolonlara Dağıt</button>
                 <button class="btn-sec" onclick="saveCurrentCoupons()">💾 Kaydet</button>
             </div>
 
@@ -404,7 +405,7 @@
             </div>
         </div>
 
-        <!-- 2. BANKOBOT ANALİZ SEKMESİ -->
+        <!-- 2. BANKOBOT SÜRPRİZ ANALİZ SEKMESİ -->
         <div id="tab-analiz" class="tab-content">
             <div id="analysis-container"></div>
         </div>
@@ -417,26 +418,25 @@
 
     <script>
         const bulten = [
-            { id: 1, date: "02 Eki", home: "Belçika", away: "Türkiye", xgHome: "1.85", xgAway: "1.20", prob: "1: %52 | 0: %26 | 2: %22", bankobot: "Belçika evinde nefes aldırmaz ama bizimkiler açık alanda cezalandırır. Buraya tek maç yazmak yürek ister, en azından 1-0 çifte şansla sağlama al." },
-            { id: 2, date: "05 Eki", home: "İtalya", away: "Türkiye", xgHome: "1.40", xgAway: "1.15", prob: "1: %45 | 0: %32 | 2: %23", bankobot: "İtalyanlar topu orta sahaya tıkar, kilit maç. Kokusu beraberliğe (0) ve alt bitmeye gidiyor, şansını zorlama." },
-            { id: 3, date: "02 Eki", home: "Bosna", away: "İsveç", xgHome: "1.10", xgAway: "1.12", prob: "1: %34 | 0: %36 | 2: %30", comment: "xG dengeleri kafa kafaya.", bankobot: "İki taraf da birbirinin dengi, resmen 'kim az hata yaparsa' maçı. Kapat geç ya da 0 seçip arkana yaslan." },
-            { id: 4, date: "02 Eki", home: "Fransa", away: "İtalya", xgHome: "1.90", xgAway: "1.05", prob: "1: %58 | 0: %24 | 2: %18", bankobot: "Fransa kadro kalitesiyle burayı ezer geçer. Kuponlarda gönül rahatlığıyla '1' banko yazabileceğin nadir maçlardan." },
-            { id: 5, date: "02 Eki", home: "Macaristan", away: "Gürcistan", xgHome: "1.65", xgAway: "0.90", prob: "1: %55 | 0: %28 | 2: %17", bankobot: "Macaristan kendi sahasında taraftarla birlikte oynamayı çok iyi biliyor. Gürcistan'ın direnişi bir yere kadar, ev sahibi kazanır." },
-            { id: 6, date: "02 Eki", home: "Polonya", away: "Romanya", xgHome: "1.25", xgAway: "1.20", prob: "1: %38 | 0: %35 | 2: %27", bankobot: "Ortada kilitli bir taktik savaşı var. Sürprize açık, matriste 1-0 veya komple kapatmak en mantıklısı." },
-            { id: 7, date: "03 Eki", home: "Hırvatistan", away: "İngiltere", xgHome: "1.30", xgAway: "1.60", prob: "1: %30 | 0: %30 | 2: %40", bankobot: "İngiltere'nin kanat akınları Hırvat savunmasını yıpratır ama Hırvatlar da uzatmalarda iş çevirir. Karşılıklı gol kokuyor, 1-2 denenebilir." },
-            { id: 8, date: "03 Eki", home: "K.Makedonya", away: "İskoçya", xgHome: "0.95", xgAway: "1.35", prob: "1: %25 | 0: %32 | 2: %43", bankobot: "İskoçya fiziki üstünlüğüyle maçı alır. Sürpriz arayanlar için 2 banko adayı." },
-            { id: 9, date: "03 Eki", home: "İspanya", away: "Çekya", xgHome: "2.10", xgAway: "0.75", prob: "1: %70 | 0: %20 | 2: %10", bankobot: "Haftanın en net bankosu. İspanya top göstermez, direkt '1' yazıp geçeceksin." },
-            { id: 10, date: "03 Eki", home: "İsviçre", away: "Slovenya", xgHome: "1.55", xgAway: "0.95", prob: "1: %52 | 0: %30 | 2: %18", bankobot: "İsviçre evinde hata yapmayı sevmez. Kontrollü bir 1-0 skoru bekliyorum." },
-            { id: 11, date: "04 Eki", home: "Galler", away: "Danimarka", xgHome: "1.15", xgAway: "1.50", prob: "1: %28 | 0: %30 | 2: %42", bankobot: "Danimarka bu tarz deplasmanları oynamayı çok iyi biliyor. 02 çifte şans matrisler için can kurtarır." },
-            { id: 12, date: "04 Eki", home: "Hollanda", away: "Sırbistan", xgHome: "1.80", xgAway: "1.25", prob: "1: %53 | 0: %27 | 2: %20", bankobot: "Hollanda hücum hattı bol pozisyon üretir. Ev sahibi kazanır ama Sırbistan da boş geçmez." },
-            { id: 13, date: "04 Eki", home: "Portekiz", away: "Norveç", xgHome: "1.85", xgAway: "1.10", prob: "1: %56 | 0: %26 | 2: %18", bankobot: "Portekiz bireysel yeteneklerle işi erken çözer. '1' basıp rahatça arkana yaslanabilirsin." },
-            { id: 14, date: "04 Eki", home: "Yunanistan", away: "Almanya", xgHome: "0.90", xgAway: "1.75", prob: "1: %20 | 0: %28 | 2: %52", bankobot: "Almanya makine gibi işliyor. Yunanistan'ın savunma direnci bir yere kadar dayanır, net 2." },
-            { id: 15, date: "04 Eki", home: "Fransa", away: "Belçika", xgHome: "1.70", xgAway: "1.50", prob: "1: %46 | 0: %29 | 2: %25", bankobot: "Dev derbi! Kulübe kalitesi ve hamle gücüyle Fransa bir adım önde ama matriste burayı açık (1-2) bırakmakta fayda var." }
+            { id: 1, date: "02 Eki", home: "Belçika", away: "Türkiye", xgHome: "1.85", xgAway: "1.20", prob: "1: %52 | 0: %26 | 2: %22", bankobot: "Millet Belçika'ya banko 1 basacak. Biz diyoruz ki Türkiye burayı darma dağın eder; dikkat, gizli sürpriz 2 potansiyeli yüksek!" },
+            { id: 2, date: "05 Eki", home: "İtalya", away: "Türkiye", xgHome: "1.40", xgAway: "1.15", prob: "1: %45 | 0: %32 | 2: %23", bankobot: "Herkes İtalya evinde kilitler diyor ama bu maç 0-2 patlamaya çok müsait. Sürpriz arayan matriste 1'i tamamen silebilir." },
+            { id: 3, date: "02 Eki", home: "Bosna", away: "İsveç", xgHome: "1.10", xgAway: "1.12", prob: "1: %34 | 0: %36 | 2: %30", bankobot: "Orantısız güç değil, tam bir bitik maç. Kimse buraya bakmaz ama 0 (beraberlik) matrislerin kilit taşı olacak." },
+            { id: 4, date: "02 Eki", home: "Fransa", away: "İtalya", xgHome: "1.90", xgAway: "1.05", prob: "1: %58 | 0: %24 | 2: %18", bankobot: "Görünen köy kılavuz istemez ama Fransızlar havaya girerse patlar. Yine de burası tekli (1) geçmelik." },
+            { id: 5, date: "02 Eki", home: "Macaristan", away: "Gürcistan", xgHome: "1.65", xgAway: "0.90", prob: "1: %55 | 0: %28 | 2: %17", bankobot: "Macaristan iç sahası tehlikelidir, millet Gürcistan sürprizi bekliyor ama ev sahibi maçı ezer." },
+            { id: 6, date: "02 Eki", home: "Polonya", away: "Romanya", xgHome: "1.25", xgAway: "1.20", prob: "1: %38 | 0: %35 | 2: %27", bankobot: "Komple kapatılacak maç. Romanya ters takımdır, millet 1 beklerken son dakika golüyle 2 yazdırır." },
+            { id: 7, date: "03 Eki", home: "Hırvatistan", away: "İngiltere", xgHome: "1.30", xgAway: "1.60", prob: "1: %30 | 0: %30 | 2: %40", bankobot: "İngiltere favori gösteriliyor ama Hırvatlar turnuva takımıdır. Sürpriz arayanlar için net 1." },
+            { id: 8, date: "03 Eki", home: "K.Makedonya", away: "İskoçya", xgHome: "0.95", xgAway: "1.35", prob: "1: %25 | 0: %32 | 2: %43", bankobot: "Bültenin en büyük 'alt 1.5' adayı. Millet İskoçya'ya yükleniyor, Makedonya ters köşe yapabilir." },
+            { id: 9, date: "03 Eki", home: "İspanya", away: "Çekya", xgHome: "2.10", xgAway: "0.75", prob: "1: %70 | 0: %20 | 2: %10", bankobot: "Tek banko arayanlara. Buradan sürpriz çıkmaz, İspanya acımaz." },
+            { id: 10, date: "03 Eki", home: "İsviçre", away: "Slovenya", xgHome: "1.55", xgAway: "0.95", prob: "1: %52 | 0: %30 | 2: %18", bankobot: "Slovenya savunması sertdir, millet İsviçre'yi tek atarken maç 0 biter, kuponlar yatar. Dikkat et!" },
+            { id: 11, date: "04 Eki", home: "Galler", away: "Danimarka", xgHome: "1.15", xgAway: "1.50", prob: "1: %28 | 0: %30 | 2: %42", bankobot: "Danimarka deplasmanda favori ama Galler seyirciyle coşar. Sürpriz 1." },
+            { id: 12, date: "04 Eki", home: "Hollanda", away: "Sırbistan", xgHome: "1.80", xgAway: "1.25", prob: "1: %53 | 0: %27 | 2: %20", bankobot: "Gollü geçer dedikleri maç kilitlenebilir. 0-2 çifte şans matrisin gizli silahıdır." },
+            { id: 13, date: "04 Eki", home: "Portekiz", away: "Norveç", xgHome: "1.85", xgAway: "1.10", prob: "1: %56 | 0: %26 | 2: %18", bankobot: "Portekiz rahat kazanır gibi durur ama Haaland faktörüyle Norveç ters köşe yapabilir." },
+            { id: 14, date: "04 Eki", home: "Yunanistan", away: "Almanya", xgHome: "0.90", xgAway: "1.75", prob: "1: %20 | 0: %28 | 2: %52", bankobot: "İşte aradığın o efsane sürpriz! Herkes Almanya yazar ama Yunanistan o duvarı örerse bülten burada patlar. Matriste burayı kesinlikle 1 veya 0 yapın!" },
+            { id: 15, date: "04 Eki", home: "Fransa", away: "Belçika", xgHome: "1.70", xgAway: "1.50", prob: "1: %46 | 0: %29 | 2: %25", bankobot: "Dev maçta herkes Fransa der, formda Belçika bu maçı alır götürür. Sürpriz arayanlar için 2." }
         ];
 
         const userSelections = {};
         let lastGeneratedCoupons = [];
-        let isUpdating = false;
 
         function renderMatches() {
             const container = document.getElementById('matches-container');
@@ -445,7 +445,7 @@
 
             bulten.forEach(m => {
                 if (!userSelections[m.id]) {
-                    userSelections[m.id] = ['1', '0', '2']; // Varsayılan kapalı (3 seçenek)
+                    userSelections[m.id] = ['1', '0', '2']; // Varsayılan kapalı
                 }
 
                 const card = document.createElement('div');
@@ -465,40 +465,11 @@
             });
         }
 
-        // Bütçe yazıldığında kolon sayısını otomatik ayarla (10 TL = 1 Kolon)
-        function calculateColumnsFromBudget() {
-            if (isUpdating) return;
-            isUpdating = true;
-
-            const budgetInput = document.getElementById('budgetInput');
-            const columnInput = document.getElementById('columnCountInput');
+        function updateSummaryDisplay() {
+            const budget = document.getElementById('budgetInput').value || 0;
+            const columns = document.getElementById('columnCountInput').value || 1;
             const display = document.getElementById('totalCostDisplay');
-
-            let budget = parseFloat(budgetInput.value) || 0;
-            let columns = Math.max(1, Math.floor(budget / 10));
-            
-            columnInput.value = columns;
-            display.innerText = `Toplam Tutar: ${budget} TL (${columns} Kolon - Kolon Başı: 10 TL)`;
-
-            isUpdating = false;
-        }
-
-        // Kolon sayısı yazıldığında bütçeyi otomatik ayarla
-        function calculateBudgetFromColumns() {
-            if (isUpdating) return;
-            isUpdating = true;
-
-            const budgetInput = document.getElementById('budgetInput');
-            const columnInput = document.getElementById('columnCountInput');
-            const display = document.getElementById('totalCostDisplay');
-
-            let columns = parseInt(columnInput.value) || 1;
-            let budget = columns * 10;
-
-            budgetInput.value = budget;
-            display.innerText = `Toplam Tutar: ${budget} TL (${columns} Kolon - Kolon Başı: 10 TL)`;
-
-            isUpdating = false;
+            display.innerText = `Toplam Bütçe: ${budget} TL | Üretilecek Kolon: ${columns}`;
         }
 
         function renderAnalysis() {
@@ -509,9 +480,9 @@
                 const card = document.createElement('div');
                 card.className = 'analysis-card';
                 card.innerHTML = `
-                    <h4>📊 ${m.date} | ${m.home} vs ${m.away}</h4>
+                    <h4>🔥 ${m.date} | ${m.home} vs ${m.away}</h4>
                     <div class="bankobot-box">
-                        <strong>🤖 Bankobot Yorumu:</strong> ${m.bankobot}
+                        <strong>🎯 Bankobot Sürpriz Noktası:</strong> ${m.bankobot}
                     </div>
                     <div class="analysis-stats">
                         <span>Ev xG: <b>${m.xgHome}</b></span>
@@ -553,14 +524,14 @@
 
         function generateColumns() {
             const targetColumnCount = parseInt(document.getElementById('columnCountInput').value) || 1;
-            const totalBudget = parseFloat(document.getElementById('budgetInput').value) || (targetColumnCount * 10);
+            const totalBudget = parseFloat(document.getElementById('budgetInput').value) || 0;
             const resultsDiv = document.getElementById('results');
             const summaryDiv = document.getElementById('summaryText');
             const outputContainer = document.getElementById('columnOutputContainer');
             const riskMode = document.getElementById('riskMode').value;
             
             resultsDiv.style.display = 'block';
-            summaryDiv.innerHTML = "Matris kolonları hesaplanıyor...";
+            summaryDiv.innerHTML = "Sürpriz matris kolonları taranıyor...";
             outputContainer.innerHTML = "";
 
             setTimeout(() => {
@@ -578,14 +549,7 @@
                             ? [...userSelections[m.id]] 
                             : ['1', '0', '2'];
                         
-                        let chosenOpt;
-                        if (riskMode === 'garanti') {
-                            chosenOpt = Math.random() < 0.6 ? availableOpts[0] : availableOpts[Math.floor(Math.random() * availableOpts.length)];
-                        } else if (riskMode === 'jackpot') {
-                            chosenOpt = availableOpts[availableOpts.length - 1];
-                        } else {
-                            chosenOpt = availableOpts[Math.floor(Math.random() * availableOpts.length)];
-                        }
+                        let chosenOpt = availableOpts[Math.floor(Math.random() * availableOpts.length)];
 
                         couponArray.push({ match: `M${index+1}`, pick: chosenOpt });
 
@@ -630,7 +594,7 @@
             let saved = JSON.parse(localStorage.getItem('saved_toto_coupons') || '[]');
             saved.push({ date: new Date().toLocaleString(), coupons: lastGeneratedCoupons });
             localStorage.setItem('saved_toto_coupons', JSON.stringify(saved));
-            alert("Kuponlar başarıyla kaydedildi!");
+            alert("Sürpriz kuponlar başarıyla kaydedildi!");
         }
 
         function loadSavedCouponsView() {
