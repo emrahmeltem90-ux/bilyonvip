@@ -377,7 +377,6 @@
                         <option value="garanti">Tek / Çift Sağlamcı Mod</option>
                     </select>
                 </div>
-                <!-- ARTIK BÜTÇE VE KOLON SAYISI BİRBİRİNİ EZMİYOR, TAMAMEN BAĞIMSIZ! -->
                 <div class="control-group">
                     <label for="budgetInput">Toplam Bütçe (TL):</label>
                     <input type="number" id="budgetInput" value="200" oninput="updateSummaryDisplay()">
@@ -445,7 +444,7 @@
 
             bulten.forEach(m => {
                 if (!userSelections[m.id]) {
-                    userSelections[m.id] = ['1', '0', '2']; // Varsayılan kapalı
+                    userSelections[m.id] = ['1', '0', '2'];
                 }
 
                 const card = document.createElement('div');
@@ -531,11 +530,14 @@
             const riskMode = document.getElementById('riskMode').value;
             
             resultsDiv.style.display = 'block';
-            summaryDiv.innerHTML = "Sürpriz matris kolonları taranıyor...";
+            summaryDiv.innerHTML = "Sürpriz matris kolonları bütçeye göre optimize ediliyor...";
             outputContainer.innerHTML = "";
 
             setTimeout(() => {
-                summaryDiv.innerHTML = `Toplam Bütçe: <b>${totalBudget} TL</b> | Üretilen Kolon: <b>${targetColumnCount} Kolon</b> | Mod: <b>${riskMode.toUpperCase()}</b>`;
+                // 200 TL bütçe 1 kolona basıldığında kolon başına düşen bütçe / çarpan değeri hesaplanır
+                let unitBudgetPerColumn = (totalBudget / targetColumnCount).toFixed(2);
+
+                summaryDiv.innerHTML = `Toplam Bütçe: <b>${totalBudget} TL</b> | Üretilen Kolon: <b>${targetColumnCount} Kolon</b> | Kolon Başına Değer: <b>${unitBudgetPerColumn} TL</b> | Mod: <b>${riskMode.toUpperCase()}</b>`;
                 
                 let htmlContent = "";
                 lastGeneratedCoupons = [];
@@ -561,12 +563,12 @@
                         `;
                     });
 
-                    lastGeneratedCoupons.push({ id: i, matches: couponArray });
+                    lastGeneratedCoupons.push({ id: i, budget: unitBudgetPerColumn, matches: couponArray });
 
                     htmlContent += `
                         <div class="coupon-card">
                             <div class="coupon-header">
-                                <div class="coupon-title">Kolon #${i < 10 ? '0'+i : i}</div>
+                                <div class="coupon-title">Kolon #${i < 10 ? '0'+i : i} (Değer: ${unitBudgetPerColumn} TL)</div>
                                 <button class="btn-copy-mini" onclick="copySingleCoupon(${i})">Kopyala</button>
                             </div>
                             <div class="coupon-matches">${matchesHtml}</div>
@@ -580,7 +582,7 @@
         function copySingleCoupon(index) {
             const coupon = lastGeneratedCoupons.find(c => c.id === index);
             if (!coupon) return;
-            const text = `Kolon #${index}: ` + coupon.matches.map(m => `${m.match}[${m.pick}]`).join(' ');
+            const text = `Kolon #${index} (${coupon.budget} TL): ` + coupon.matches.map(m => `${m.match}[${m.pick}]`).join(' ');
             navigator.clipboard.writeText(text).then(() => {
                 alert(`Kolon #${index} panoya kopyalandı!`);
             });
@@ -610,7 +612,7 @@
                 let groupHtml = `<div class="coupon-card"><div class="coupon-title">Kayıt Grubu #${gIdx+1} (${group.date})</div>`;
                 group.coupons.forEach(c => {
                     let mStr = c.matches.map(m => `${m.match}:[${m.pick}]`).join(', ');
-                    groupHtml += `<div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">Kolon #${c.id} -> ${mStr}</div>`;
+                    groupHtml += `<div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">Kolon #${c.id} (${c.budget} TL) -> ${mStr}</div>`;
                 });
                 groupHtml += `</div>`;
                 container.innerHTML += groupHtml;
