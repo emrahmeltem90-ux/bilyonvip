@@ -6,13 +6,12 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>BilyonVIP - Canlı & Gelecek & Biten Maçlar Bülteni</title>
+    <title>BilyonVIP - Gerçek Zamanlı Canlı İddaa Bülteni</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         body { background-color: #0d1117; color: #ffffff; padding-bottom: 85px; }
         
-        /* Header */
         .header { background: linear-gradient(135deg, #102e1b 0%, #161b22 100%); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #21262d; }
         .header-title { font-size: 16px; font-weight: 700; color: #ffffff; }
         .header-icons i { font-size: 18px; margin-left: 15px; color: #8b949e; }
@@ -21,7 +20,6 @@
         .logo-text { font-size: 20px; font-weight: 900; color: #ffffff; letter-spacing: 1px; }
         .date-badge { background-color: #0e3a24; color: #3fb950; border: 1px solid #238636; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
 
-        /* Arama ve Durum Filtreleri */
         .controls-panel { background-color: #161b22; padding: 10px 12px; border-bottom: 1px solid #21262d; display: flex; flex-direction: column; gap: 8px; }
         .search-input { width: 100%; background-color: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: 8px 12px; color: #fff; font-size: 13px; outline: none; }
         
@@ -29,12 +27,10 @@
         .status-btn { background-color: #21262d; color: #8b949e; border: 1px solid #30363d; border-radius: 16px; padding: 5px 12px; font-size: 11px; font-weight: 700; white-space: nowrap; cursor: pointer; }
         .status-btn.active { background-color: #238636; color: #ffffff; border-color: #2ea043; }
 
-        /* Tablar */
         .nav-tabs { display: flex; background-color: #161b22; border-bottom: 2px solid #21262d; }
         .tab-btn { flex: 1; text-align: center; padding: 10px 4px; font-size: 11px; font-weight: 700; color: #8b949e; border: none; background: none; cursor: pointer; border-bottom: 3px solid transparent; }
         .tab-btn.active { color: #3fb950; border-bottom-color: #3fb950; }
         
-        /* Container ve Kartlar */
         .container { padding: 10px; max-width: 600px; margin: 0 auto; }
         .match-card { background-color: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 12px; margin-bottom: 10px; position: relative; }
         
@@ -51,7 +47,7 @@
         .team-box { width: 38%; font-size: 14px; font-weight: 800; color: #f0f6fc; }
         .team-box.home { text-align: left; }
         .team-box.away { text-align: right; }
-        .score-box { background-color: #0d1117; padding: 6px 12px; border-radius: 6px; border: 1px solid #30363d; font-size: 16px; font-weight: 900; color: #3fb950; text-align: center; min-width: 70px; }
+        .score-box { background-color: #0d1117; padding: 6px 12px; border-radius: 6px; border: 1px solid #30363d; font-size: 15px; font-weight: 900; color: #3fb950; text-align: center; min-width: 65px; }
 
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 8px; }
         .stat-box { background-color: #0d1117; border-radius: 6px; padding: 6px 8px; }
@@ -77,7 +73,6 @@
         <div class="date-badge" id="matchCounter">Gözlemleniyor...</div>
     </div>
 
-    <!-- Arama ve Maç Durumu Filtre Paneli -->
     <div class="controls-panel">
         <input type="text" id="searchInput" class="search-input" placeholder="🔍 Takım veya Lig ara..." onkeyup="applyFilters()">
         <div class="status-filters">
@@ -88,7 +83,6 @@
         </div>
     </div>
 
-    <!-- Analiz Tabları -->
     <div class="nav-tabs">
         <button class="tab-btn active" onclick="switchTab('bulten', this)">⚽ BÜLTEN & TAHMİN</button>
         <button class="tab-btn" onclick="switchTab('monte', this)">🎲 MONTE CARLO</button>
@@ -135,7 +129,7 @@
                 home: home, 
                 away: away,
                 league: extraData.league || "Futbol Ligi",
-                state: extraData.state || "pre", // 'in', 'pre', 'post'
+                state: extraData.state || "pre",
                 statusText: extraData.statusText || "VS",
                 scoreText: extraData.scoreText || "VS",
                 p_over25: pOver, p_under25: (100 - pOver).toFixed(1),
@@ -147,87 +141,119 @@
             };
         }
 
-        // Yedek / Sabit Biten ve Oynanacak Maç Listesi
-        const fallbackList = [
-            { home: "Galatasaray", away: "Fenerbahçe", hXg: 2.1, aXg: 1.8, league: "Süper Lig", state: "pre", statusText: "20:00", scoreText: "VS" },
-            { home: "Beşiktaş", away: "Trabzonspor", hXg: 1.7, aXg: 1.4, league: "Süper Lig", state: "in", statusText: "🔴 64'", scoreText: "2 - 1" },
-            { home: "Real Madrid", away: "Barcelona", hXg: 2.3, aXg: 2.0, league: "La Liga", state: "post", statusText: "🏁 BİTTİ", scoreText: "3 - 2" },
-            { home: "Liverpool", away: "Chelsea", hXg: 2.2, aXg: 1.5, league: "Premier League", state: "in", statusText: "🔴 38'", scoreText: "1 - 1" },
-            { home: "Fethiyespor", away: "Erzincanspor", hXg: 1.4, aXg: 1.1, league: "TFF 2. Lig", state: "post", statusText: "🏁 BİTTİ", scoreText: "1 - 0" },
-            { home: "Seydikemerspor", away: "Muğlaspor", hXg: 1.3, aXg: 1.0, league: "BAL Ligi", state: "pre", statusText: "15:30", scoreText: "VS" }
-        ];
-
         async function fetchLiveBulten() {
+            const container = document.getElementById("mainContainer");
+            const matchCounter = document.getElementById("matchCounter");
+            
+            container.innerHTML = `<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>`;
+            matchCounter.innerText = "• Canlı API Çekiliyor...";
+
+            // Bugünün tarih formatı YYYYMMDD
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            const dateStr = `${yyyy}${mm}${dd}`;
+
+            const espnUrl = `https://site.api.espn.com/apis/site/v2/sports/soccer/all/scoreboard?dates=${dateStr}&limit=500`;
+            const proxy1 = `https://api.allorigins.win/raw?url=${encodeURIComponent(espnUrl)}`;
+            const proxy2 = `https://corsproxy.io/?${encodeURIComponent(espnUrl)}`;
+
+            let data = null;
+
+            // 1. Yöntem: Doğrudan API
+            try {
+                let res = await fetch(espnUrl);
+                if (res.ok) data = await res.json();
+            } catch(e) {}
+
+            // 2. Yöntem: Proxy 1
+            if (!data || !data.events || data.events.length === 0) {
+                try {
+                    let res = await fetch(proxy1);
+                    if (res.ok) data = await res.json();
+                } catch(e) {}
+            }
+
+            // 3. Yöntem: Proxy 2
+            if (!data || !data.events || data.events.length === 0) {
+                try {
+                    let res = await fetch(proxy2);
+                    if (res.ok) data = await res.json();
+                } catch(e) {}
+            }
+
             let matches = [];
             let seen = new Set();
 
-            try {
-                let res = await fetch("https://site.api.espn.com/apis/site/v2/sports/soccer/all/scoreboard?limit=300");
-                if (res.ok) {
-                    let data = await res.json();
-                    if (data.events && data.events.length > 0) {
-                        data.events.forEach(evt => {
-                            let comp = evt.competitions && evt.competitions[0];
-                            if (comp && comp.competitors && comp.competitors.length >= 2) {
-                                let hTeam = comp.competitors.find(c => c.homeAway === 'home');
-                                let aTeam = comp.competitors.find(c => c.homeAway === 'away');
-                                if (hTeam && aTeam) {
-                                    let hName = hTeam.team.displayName || hTeam.team.name;
-                                    let aName = aTeam.team.displayName || aTeam.team.name;
-                                    let key = `${hName}_${aName}`;
+            if (data && data.events && data.events.length > 0) {
+                data.events.forEach(evt => {
+                    let comp = evt.competitions && evt.competitions[0];
+                    if (comp && comp.competitors && comp.competitors.length >= 2) {
+                        let hTeam = comp.competitors.find(c => c.homeAway === 'home');
+                        let aTeam = comp.competitors.find(c => c.homeAway === 'away');
+                        if (hTeam && aTeam) {
+                            let hName = hTeam.team.displayName || hTeam.team.name;
+                            let aName = aTeam.team.displayName || aTeam.team.name;
+                            let key = `${hName}_${aName}`;
 
-                                    if (!seen.has(key)) {
-                                        seen.add(key);
-                                        let rawState = evt.status?.type?.state || "pre";
-                                        let state = (rawState === "in") ? "in" : (rawState === "post") ? "post" : "pre";
-                                        
-                                        let statusText = "VS";
-                                        let scoreText = "VS";
+                            if (!seen.has(key)) {
+                                seen.add(key);
+                                let rawState = evt.status?.type?.state || "pre";
+                                let state = (rawState === "in") ? "in" : (rawState === "post") ? "post" : "pre";
+                                
+                                let statusText = "VS";
+                                let scoreText = "VS";
 
-                                        if (state === "in") {
-                                            let clock = evt.status?.displayClock || "";
-                                            statusText = `🔴 CANLI ${clock ? clock + "'" : ''}`;
-                                            scoreText = `${hTeam.score || 0} - ${aTeam.score || 0}`;
-                                        } else if (state === "post") {
-                                            statusText = "🏁 BİTTİ (MS)";
-                                            scoreText = `${hTeam.score || 0} - ${aTeam.score || 0}`;
-                                        } else {
-                                            let dateObj = new Date(evt.date);
-                                            statusText = dateObj.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
-                                            scoreText = "VS";
-                                        }
-
-                                        let hash = (hName + aName).split('').reduce((a, b) => a + b.charCodeAt(0), 0);
-                                        let hXg = Number((1.1 + (hash % 14) / 10).toFixed(2));
-                                        let aXg = Number((0.85 + ((hash * 3) % 11) / 10).toFixed(2));
-
-                                        matches.push(runMonteCarloJS(hName, aName, hXg, aXg, {
-                                            league: evt.season?.slug || "Futbol Ligi",
-                                            state: state,
-                                            statusText: statusText,
-                                            scoreText: scoreText
-                                        }));
-                                    }
+                                if (state === "in") {
+                                    let clock = evt.status?.displayClock || evt.status?.type?.shortDetail || "";
+                                    statusText = `🔴 CANLI ${clock ? clock + "'" : ''}`;
+                                    scoreText = `${hTeam.score || 0} - ${aTeam.score || 0}`;
+                                } else if (state === "post") {
+                                    statusText = "🏁 BİTTİ (MS)";
+                                    scoreText = `${hTeam.score || 0} - ${aTeam.score || 0}`;
+                                } else {
+                                    let dateObj = new Date(evt.date);
+                                    statusText = dateObj.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+                                    scoreText = "VS";
                                 }
+
+                                let leagueName = comp.league?.name || evt.season?.slug || "Futbol Ligi";
+                                leagueName = leagueName.replace(/-/g, ' ').toUpperCase();
+
+                                let hash = (hName + aName).split('').reduce((a, b) => a + b.charCodeAt(0), 0);
+                                let hXg = Number((1.1 + (hash % 14) / 10).toFixed(2));
+                                let aXg = Number((0.85 + ((hash * 3) % 11) / 10).toFixed(2));
+
+                                matches.push(runMonteCarloJS(hName, aName, hXg, aXg, {
+                                    league: leagueName,
+                                    state: state,
+                                    statusText: statusText,
+                                    scoreText: scoreText
+                                }));
                             }
-                        });
+                        }
                     }
-                }
-            } catch (err) {
-                console.log("API Yükleme hatası, yedek bülten devreye giriyor", err);
+                });
             }
 
-            // Yedek maçları eksikleri tamamlamak için ekle
-            fallbackList.forEach(fb => {
-                let key = `${fb.home}_${fb.away}`;
-                if (!seen.has(key)) {
-                    seen.add(key);
-                    matches.push(runMonteCarloJS(fb.home, fb.away, fb.hXg, fb.aXg, fb));
-                }
-            });
+            // Gerçek maç bulunamadıysa (API yanıt vermezse) Sahte maç BASMA, ekran bildirimi ver!
+            if (matches.length === 0) {
+                matchCounter.innerText = "⚠️ Bağlantı Hatası";
+                container.innerHTML = `
+                    <div style="text-align:center; padding:30px; background:#161b22; border-radius:10px; border:1px solid #30363d;">
+                        <i class="fas fa-wifi" style="font-size:32px; color:#da3633; margin-bottom:12px;"></i>
+                        <h3 style="margin-bottom:8px; font-size:15px;">Canlı Fikstür Çekilemedi</h3>
+                        <p style="font-size:12px; color:#8b949e; margin-bottom:16px;">İnternet veya mobil tarayıcı engeli nedeniyle API'ye ulaşılamadı.</p>
+                        <button onclick="fetchLiveBulten()" style="background:#238636; color:#fff; border:none; padding:10px 20px; border-radius:6px; font-weight:bold; cursor:pointer;">
+                            <i class="fas fa-sync-alt"></i> Tekrar Yenile
+                        </button>
+                    </div>`;
+                return;
+            }
 
             globalMatches = matches;
-            document.getElementById("matchCounter").innerText = `• ${globalMatches.length} Maç Çekildi`;
+            matchCounter.innerText = `• ${globalMatches.length} Gerçek Maç`;
             applyFilters();
         }
 
@@ -260,7 +286,7 @@
             let html = "";
 
             if (list.length === 0) {
-                container.innerHTML = `<div style="text-align:center; padding:40px; color:#8b949e;">Seçilen filtrede maç bulunamadı.</div>`;
+                container.innerHTML = `<div style="text-align:center; padding:40px; color:#8b949e;">Seçilen filtrede bugün maç bulunamadı.</div>`;
                 return;
             }
 
