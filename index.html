@@ -117,7 +117,6 @@
             box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
         }
 
-        #status-msg { text-align: center; font-size: 13px; color: var(--text-secondary); margin: 10px 0; }
         .matches-feed { padding: 0 20px; }
 
         .match-card {
@@ -198,7 +197,7 @@
             <span class="brand-text">BİLYONVIP</span>
             <span class="vip-badge">PRO</span>
         </div>
-        <button class="btn-reload" onclick="fetchBulten()">Yenile ↻</button>
+        <button class="btn-reload" onclick="renderMatches()">Yenile ↻</button>
     </div>
 
     <div class="hero-banner">
@@ -226,7 +225,6 @@
         </div>
     </div>
 
-    <div id="status-msg">Resmî veriler yükleniyor...</div>
     <div id="bulten" class="matches-feed"></div>
 
     <div class="slip-bar">
@@ -234,56 +232,22 @@
             <div style="font-size: 11px; color: var(--text-secondary);" id="slipCount">0 Maç Seçildi</div>
             <div class="slip-odds-total">Oran: <span id="slipTotal">1.00</span></div>
         </div>
-        <button class="btn-confirm" onclick="alert('Kupon onaylandı!')">KUPONU ONAYLA</button>
+        <button class="btn-confirm" onclick="alert('Kupon başarıyla onaylandı!')">KUPONU ONAYLA</button>
     </div>
 
     <script>
-        let matchesList = [];
+        const sampleMatches = [
+            { id: 101, code: "301", league: "Trendyol Süper Lig", home: "Galatasaray", away: "Fenerbahçe", score: "2 - 1", isLive: true, odds: { ms1: "2.10", msX: "3.40", ms2: "2.85" } },
+            { id: 102, code: "302", league: "Trendyol Süper Lig", home: "Beşiktaş", away: "Trabzonspor", score: "0 - 0", isLive: true, odds: { ms1: "1.95", msX: "3.20", ms2: "3.10" } },
+            { id: 103, code: "303", league: "TFF 2. Lig", home: "Fethiyespor", away: "Amedspor", score: "VS", isLive: false, odds: { ms1: "2.40", msX: "3.00", ms2: "2.50" } },
+            { id: 104, code: "304", league: "İngiltere Premier Lig", home: "Manchester City", away: "Arsenal", score: "1 - 1", isLive: true, odds: { ms1: "1.80", msX: "3.50", ms2: "3.90" } },
+            { id: 105, code: "305", league: "İspanya La Liga", home: "Real Madrid", away: "Barcelona", score: "VS", isLive: false, odds: { ms1: "2.05", msX: "3.60", ms2: "2.90" } },
+            { id: 106, code: "306", league: "TFF 3. Lig", home: "Seydikemerspor", away: "Muğlaspor", score: "VS", isLive: false, odds: { ms1: "2.20", msX: "3.10", ms2: "2.70" } },
+            { id: 107, code: "307", league: "İtalya Serie A", home: "Inter", away: "AC Milan", score: "3 - 2", isLive: true, odds: { ms1: "1.90", msX: "3.30", ms2: "3.40" } }
+        ];
+
         let currentFilter = 'all';
         let selectedBets = {};
-
-        async function fetchBulten() {
-            const statusEl = document.getElementById('status-msg');
-            statusEl.innerText = "Canlı bülten çekiliyor...";
-
-            const proxyList = [
-                'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://sportslive.iddaa.com/sportsbook/v2/bulletin/full'),
-                'https://corsproxy.io/?' + encodeURIComponent('https://sportslive.iddaa.com/sportsbook/v2/bulletin/full')
-            ];
-
-            let loaded = false;
-            for (let url of proxyList) {
-                try {
-                    const res = await fetch(url);
-                    if (!res.ok) continue;
-
-                    let data = await res.json();
-                    if (typeof data === 'string') data = JSON.parse(data);
-
-                    matchesList = data.events || data.data?.events || data.m || (Array.isArray(data) ? data : []);
-
-                    if (matchesList.length > 0) {
-                        updateHeaderStats();
-                        renderMatches();
-                        statusEl.innerText = "";
-                        loaded = true;
-                        break;
-                    }
-                } catch (e) {
-                    console.log("Proxy denemesi başarısız, sıradakine geçiliyor...");
-                }
-            }
-
-            if (!loaded) {
-                statusEl.innerHTML = `<span style="color:#ef4444">Bülten yüklenemedi. Lütfen sayfayı yenileyin.</span>`;
-            }
-        }
-
-        function updateHeaderStats() {
-            document.getElementById('statTotal').innerText = matchesList.length;
-            const liveCnt = matchesList.filter(m => m.isLive || m.il).length;
-            document.getElementById('statLive').innerText = liveCnt;
-        }
 
         function setFilter(type, el) {
             currentFilter = type;
@@ -297,76 +261,58 @@
             const container = document.getElementById('bulten');
             container.innerHTML = "";
 
-            let filtered = matchesList.filter(m => {
-                const home = (m.homeTeamName || m.ht || "").toLowerCase();
-                const away = (m.awayTeamName || m.at || "").toLowerCase();
-                const league = (m.leagueName || m.sn || "").toLowerCase();
-                const matchQuery = home.includes(query) || away.includes(query) || league.includes(query);
-
-                const isLive = m.isLive || m.il || false;
-                if (currentFilter === 'live') return matchQuery && isLive;
-                if (currentFilter === 'upcoming') return matchQuery && !isLive;
+            let filtered = sampleMatches.filter(m => {
+                const matchQuery = m.home.toLowerCase().includes(query) || m.away.toLowerCase().includes(query) || m.league.toLowerCase().includes(query);
+                if (currentFilter === 'live') return matchQuery && m.isLive;
+                if (currentFilter === 'upcoming') return matchQuery && !m.isLive;
                 return matchQuery;
             });
 
+            document.getElementById('statTotal').innerText = sampleMatches.length;
+            document.getElementById('statLive').innerText = sampleMatches.filter(m => m.isLive).length;
+
             if (filtered.length === 0) {
-                container.innerHTML = `<div style="text-align:center; padding: 30px; color: var(--text-secondary);">Aradığınız kriterde maç bulunamadı.</div>`;
+                container.innerHTML = `<div style="text-align:center; padding: 30px; color: var(--text-secondary);">Maç bulunamadı.</div>`;
                 return;
             }
 
-            filtered.slice(0, 80).forEach(m => {
-                container.appendChild(buildMatchCard(m));
+            filtered.forEach(m => {
+                const card = document.createElement('div');
+                card.className = 'match-card';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <span class="league-title">${m.league}</span>
+                        <span class="${m.isLive ? 'tag-live' : 'tag-code'}">${m.isLive ? 'CANLI' : 'KOD: ' + m.code}</span>
+                    </div>
+                    <div class="teams-container">
+                        <span class="team-name">${m.home}</span>
+                        <span class="score-pill">${m.score}</span>
+                        <span class="team-name right">${m.away}</span>
+                    </div>
+                    <div class="odds-row">
+                        <div class="odd-tile ${isSelected(m.id, '1')}" onclick="toggleBet(${m.id}, '1', '${m.odds.ms1}')">
+                            <span class="o-label">MS 1</span>
+                            <span class="o-val">${m.odds.ms1}</span>
+                        </div>
+                        <div class="odd-tile ${isSelected(m.id, 'X')}" onclick="toggleBet(${m.id}, 'X', '${m.odds.msX}')">
+                            <span class="o-label">MS X</span>
+                            <span class="o-val">${m.odds.msX}</span>
+                        </div>
+                        <div class="odd-tile ${isSelected(m.id, '2')}" onclick="toggleBet(${m.id}, '2', '${m.odds.ms2}')">
+                            <span class="o-label">MS 2</span>
+                            <span class="o-val">${m.odds.ms2}</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
             });
-        }
-
-        function buildMatchCard(m) {
-            const id = m.id || m.c || Math.random();
-            const isLive = m.isLive || m.il || false;
-            const code = m.code || m.c || '---';
-            const league = m.leagueName || m.sn || 'İDDAA BÜLTENİ';
-            const home = m.homeTeamName || m.ht || 'Ev Sahibi';
-            const away = m.awayTeamName || m.at || 'Deplasman';
-            const score = isLive ? `${m.homeScore ?? 0} - ${m.awayScore ?? 0}` : 'VS';
-
-            const ms1 = m.odds?.ms1 || m.odds?.['1'] || "1.80";
-            const msX = m.odds?.msX || m.odds?.['X'] || "3.20";
-            const ms2 = m.odds?.ms2 || m.odds?.['2'] || "3.10";
-
-            const card = document.createElement('div');
-            card.className = 'match-card';
-            card.innerHTML = `
-                <div class="card-header">
-                    <span class="league-title">${league}</span>
-                    <span class="${isLive ? 'tag-live' : 'tag-code'}">${isLive ? 'CANLI' : 'KOD: ' + code}</span>
-                </div>
-                <div class="teams-container">
-                    <span class="team-name">${home}</span>
-                    <span class="score-pill">${score}</span>
-                    <span class="team-name right">${away}</span>
-                </div>
-                <div class="odds-row">
-                    <div class="odd-tile ${isSelected(id, '1')}" onclick="toggleBet('${id}', '1', '${ms1}')">
-                        <span class="o-label">MS 1</span>
-                        <span class="o-val">${ms1}</span>
-                    </div>
-                    <div class="odd-tile ${isSelected(id, 'X')}" onclick="toggleBet('${id}', 'X', '${msX}')">
-                        <span class="o-label">MS X</span>
-                        <span class="o-val">${msX}</span>
-                    </div>
-                    <div class="odd-tile ${isSelected(id, '2')}" onclick="toggleBet('${id}', '2', '${ms2}')">
-                        <span class="o-label">MS 2</span>
-                        <span class="o-val">${ms2}</span>
-                    </div>
-                </div>
-            `;
-            return card;
         }
 
         function toggleBet(id, type, val) {
             if (selectedBets[id] && selectedBets[id].type === type) {
                 delete selectedBets[id];
             } else {
-                selectedBets[id] = { type, val: parseFloat(val) || 1.0 };
+                selectedBets[id] = { type, val: parseFloat(val) };
             }
             renderMatches();
             updateSlipUI();
@@ -385,7 +331,7 @@
             document.getElementById('slipTotal').innerText = keys.length > 0 ? total.toFixed(2) : "1.00";
         }
 
-        fetchBulten();
+        renderMatches();
     </script>
 </body>
 </html>
