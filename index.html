@@ -13,7 +13,7 @@
         /* Header */
         .header { background: #1e293b; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; position: sticky; top: 0; z-index: 100; }
         .logo { font-size: 18px; font-weight: 900; color: #38bdf8; display: flex; align-items: center; gap: 8px; }
-        .status-badge { background: #22c55e22; color: #4ade80; border: 1px solid #22c55e44; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 5px; }
+        .status-badge { background: #0284c722; color: #38bdf8; border: 1px solid #0284c744; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
 
         /* Navigation Filter Pills */
         .filter-bar { background: #0f172a; padding: 10px 12px; display: flex; gap: 8px; overflow-x: auto; border-bottom: 1px solid #1e293b; scrollbar-width: none; }
@@ -34,9 +34,9 @@
 
         /* Teams & Score Row */
         .teams-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .team-name { font-size: 14px; font-weight: 800; color: #f8fafc; width: 40%; }
+        .team-name { font-size: 13px; font-weight: 800; color: #f8fafc; width: 40%; word-break: break-word; }
         .team-name.away { text-align: right; }
-        .score-display { background: #090d16; color: #22c55e; border: 1px solid #334155; padding: 4px 12px; border-radius: 6px; font-weight: 900; font-size: 16px; min-width: 65px; text-align: center; }
+        .score-display { background: #090d16; color: #22c55e; border: 1px solid #334155; padding: 4px 10px; border-radius: 6px; font-weight: 900; font-size: 15px; min-width: 65px; text-align: center; }
 
         /* Bot Analysis Box */
         .bot-analysis-box { background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%); border: 1px solid #6366f1; border-radius: 8px; padding: 8px 10px; margin-bottom: 10px; }
@@ -47,11 +47,11 @@
 
         /* Odds Grid */
         .odds-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
-        .odd-btn { background: #0f172a; border: 1px solid #334155; border-radius: 6px; padding: 6px 2px; text-align: center; cursor: pointer; transition: 0.15s; position: relative; }
+        .odd-btn { background: #0f172a; border: 1px solid #334155; border-radius: 6px; padding: 6px 2px; text-align: center; cursor: pointer; transition: 0.15s; }
         .odd-btn.bot-pick { border-color: #f59e0b; background: #78350f22; }
         .odd-btn.selected { background: #0284c7; border-color: #38bdf8; color: #ffffff; }
         .odd-label { font-size: 9px; font-weight: 700; color: #64748b; display: block; }
-        .odd-val { font-size: 12px; font-weight: 900; color: #f8fafc; }
+        .odd-val { font-size: 11px; font-weight: 900; color: #f8fafc; }
 
         /* Bottom Fixed Kupon Bar */
         .kupon-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #1e293b; border-top: 2px solid #0284c7; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 -4px 20px rgba(0,0,0,0.5); z-index: 999; }
@@ -69,7 +69,7 @@
     <div class="header">
         <div class="logo"><i class="fas fa-chart-line"></i> BİLYONVIP</div>
         <div class="status-badge" id="statusBadge">
-            <i class="fas fa-circle" style="font-size: 8px;"></i> CANLI AKIŞ
+            <i class="fas fa-sync fa-spin"></i> GERÇEK AKIŞ YÜKLENİYOR
         </div>
     </div>
 
@@ -113,47 +113,60 @@
             const container = document.getElementById("matchContainer");
             container.innerHTML = `<div class="skeleton"></div><div class="skeleton"></div>`;
 
-            const today = new Date();
-            const yyyy = today.getFullYear();
-            const mm = String(today.getMonth() + 1).padStart(2, '0');
-            const dd = String(today.getDate()).padStart(2, '0');
-            const dateStr = `${yyyy}${mm}${dd}`;
-
-            const targetUrl = `https://site.api.espn.com/apis/site/v2/sports/soccer/all/scoreboard?dates=${dateStr}&limit=200`;
-            
-            // CORS Bypass Proxy Fallback Pipeline
-            const proxyList = [
-                targetUrl,
-                `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`,
-                `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`
+            // Global Futbol Skor API Adresleri (Bölge sınırlaması olmayan Dünya Akışı)
+            const globalEndpoints = [
+                "https://site.api.espn.com/apis/site/v2/sports/soccer/scoreboard",
+                "https://api.allorigins.win/raw?url=" + encodeURIComponent("https://site.api.espn.com/apis/site/v2/sports/soccer/scoreboard"),
+                "https://corsproxy.io/?" + encodeURIComponent("https://site.api.espn.com/apis/site/v2/sports/soccer/scoreboard")
             ];
 
-            let data = null;
+            let events = null;
 
-            for (let url of proxyList) {
+            for (let url of globalEndpoints) {
                 try {
                     let res = await fetch(url, { cache: 'no-store' });
                     if (res.ok) {
-                        let parsed = await res.json();
-                        if (parsed && parsed.events && parsed.events.length > 0) {
-                            data = parsed;
+                        let data = await res.json();
+                        if (data && data.events && data.events.length > 0) {
+                            events = data.events;
                             break;
                         }
                     }
                 } catch(e) {}
             }
 
-            if (data && data.events) {
-                processMatches(data.events);
+            if (events && events.length > 0) {
+                document.getElementById("statusBadge").innerHTML = `<i class="fas fa-satellite-dish" style="color:#22c55e;"></i> GERÇEK ANLIK AKIŞ`;
+                processEvents(events);
             } else {
-                // Fallback Mode: Dış API engellense bile sistemi asla çökertecek kırmızı hata vermez
-                document.getElementById("statusBadge").innerHTML = `<i class="fas fa-shield-alt"></i> ÇEVRİMİÇİ BÜLTEN`;
-                document.getElementById("statusBadge").style.color = "#f59e0b";
-                loadFallbackMatches();
+                // Yedek Spor Veritabanı Servisi
+                fetchSecondaryAPI();
             }
         }
 
-        function processMatches(events) {
+        async function fetchSecondaryAPI() {
+            try {
+                const today = new Date().toISOString().split('T')[0];
+                const res = await fetch(`https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d=${today}&s=Soccer`);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.events && data.events.length > 0) {
+                        document.getElementById("statusBadge").innerHTML = `<i class="fas fa-database"></i> YEDEK VERİ SERVİSİ`;
+                        processSecondaryEvents(data.events);
+                        return;
+                    }
+                }
+            } catch(e) {}
+
+            document.getElementById("matchContainer").innerHTML = `
+                <div style="text-align:center; padding:40px 10px; color:#94a3b8;">
+                    <i class="fas fa-exclamation-circle" style="font-size:32px; color:#f59e0b; margin-bottom:10px; display:block;"></i>
+                    Şu anda yayınlanan aktif maç bulunmuyor veya bağlantı yenileniyor. Lütfen birkaç dakika sonra tekrar deneyin.
+                </div>`;
+            document.getElementById("statusBadge").innerText = "GÜNCELLENİYOR";
+        }
+
+        function processEvents(events) {
             let list = [];
             events.forEach((evt, idx) => {
                 let comp = evt.competitions && evt.competitions[0];
@@ -166,10 +179,10 @@
                         let dateObj = new Date(evt.date);
                         let matchTime = dateObj.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
 
-                        let hId = parseInt(hTeam.id || 10);
-                        let aId = parseInt(aTeam.id || 20);
+                        let hId = parseInt(hTeam.id || (idx * 3 + 1));
+                        let aId = parseInt(aTeam.id || (idx * 5 + 2));
                         
-                        let hProb = Math.min(80, Math.max(25, 40 + (hId % 9) * 4));
+                        let hProb = Math.min(80, Math.max(25, 38 + (hId % 8) * 5));
                         let aProb = Math.min(75, Math.max(15, 85 - hProb));
                         let dProb = 100 - hProb - aProb;
 
@@ -179,7 +192,7 @@
 
                         list.push({
                             id: evt.id || `m_${idx}`,
-                            league: (comp.league?.name || "SÜPER LİG").toUpperCase(),
+                            league: (comp.league?.name || evt.season?.slug || "FUTBOL LİGİ").toUpperCase(),
                             home: hTeam.team.displayName || hTeam.team.name,
                             away: aTeam.team.displayName || aTeam.team.name,
                             homeScore: hTeam.score || "0",
@@ -190,7 +203,7 @@
                                 pick: hProb > aProb ? 'ms1' : 'ms2',
                                 pickText: hProb > aProb ? 'MS 1' : 'MS 2',
                                 confidence: Math.max(hProb, aProb),
-                                xG: `${(1.2 + (hId%3)*0.4).toFixed(1)} - ${(0.9 + (aId%3)*0.3).toFixed(1)}`
+                                xG: `${(1.1 + (hId%3)*0.3).toFixed(1)} - ${(0.8 + (aId%3)*0.3).toFixed(1)}`
                             },
                             odds: { ms1: o1, msX: oX, ms2: o2, alt: "1.75", ust: "1.85" }
                         });
@@ -202,13 +215,32 @@
             renderMatches();
         }
 
-        function loadFallbackMatches() {
-            rawMatches = [
-                { id: "f1", league: "TÜRKİYE SÜPER LİG", home: "Galatasaray", away: "Fenerbahçe", homeScore: "1", awayScore: "0", state: "LIVE", statusText: "68'", bot: { pick: "ms1", pickText: "MS 1", confidence: 74, xG: "1.8 - 1.1" }, odds: { ms1: "1.95", msX: "3.40", ms2: "2.85", alt: "1.90", ust: "1.70" } },
-                { id: "f2", league: "İNGİLTERE PREMIER LİG", home: "Arsenal", away: "Chelsea", homeScore: "2", awayScore: "1", state: "LIVE", statusText: "82'", bot: { pick: "ust", pickText: "2.5 ÜST", confidence: 82, xG: "2.4 - 1.3" }, odds: { ms1: "1.70", msX: "3.60", ms2: "3.90", alt: "2.10", ust: "1.55" } },
-                { id: "f3", league: "İSPANYA LALİGA", home: "Real Madrid", away: "Barcelona", homeScore: "0", awayScore: "0", state: "PRE", statusText: "21:00", bot: { pick: "ms1", pickText: "MS 1", confidence: 68, xG: "1.6 - 1.4" }, odds: { ms1: "2.10", msX: "3.30", ms2: "2.70", alt: "2.00", ust: "1.60" } },
-                { id: "f4", league: "ALMANYA BUNDESLİGA", home: "Bayern München", away: "Dortmund", homeScore: "3", awayScore: "1", state: "POST", statusText: "MS", bot: { pick: "ust", pickText: "2.5 ÜST", confidence: 88, xG: "3.1 - 1.2" }, odds: { ms1: "1.45", msX: "4.20", ms2: "4.80", alt: "2.50", ust: "1.40" } }
-            ];
+        function processSecondaryEvents(events) {
+            let list = [];
+            events.slice(0, 30).forEach((evt, idx) => {
+                let hScore = evt.intHomeScore !== null ? evt.intHomeScore : "0";
+                let aScore = evt.intAwayScore !== null ? evt.intAwayScore : "0";
+                let isPost = evt.strStatus === "Match Finished";
+
+                list.push({
+                    id: evt.idEvent || `s_${idx}`,
+                    league: (evt.strLeague || "DÜNYA LİGİ").toUpperCase(),
+                    home: evt.strHomeTeam,
+                    away: evt.strAwayTeam,
+                    homeScore: hScore,
+                    awayScore: aScore,
+                    state: isPost ? "POST" : "PRE",
+                    statusText: isPost ? "MS" : (evt.strTime ? evt.strTime.substring(0,5) : "20:00"),
+                    bot: {
+                        pick: 'ms1',
+                        pickText: 'MS 1',
+                        confidence: 68,
+                        xG: "1.5 - 1.1"
+                    },
+                    odds: { ms1: "1.85", msX: "3.20", ms2: "2.90", alt: "1.80", ust: "1.80" }
+                });
+            });
+            rawMatches = list;
             updateCounters();
             renderMatches();
         }
@@ -216,7 +248,7 @@
         function updateCounters() {
             document.getElementById("cntAll").innerText = rawMatches.length;
             document.getElementById("cntLive").innerText = rawMatches.filter(m => m.state === 'LIVE').length;
-            document.getElementById("cntBot").innerText = rawMatches.filter(m => m.bot.confidence >= 65).length;
+            document.getElementById("cntBot").innerText = rawMatches.filter(m => m.bot.confidence >= 60).length;
             document.getElementById("cntPost").innerText = rawMatches.filter(m => m.state === 'POST').length;
         }
 
@@ -233,10 +265,10 @@
 
             if (activeFilter === 'LIVE') filtered = rawMatches.filter(m => m.state === 'LIVE');
             else if (activeFilter === 'POST') filtered = rawMatches.filter(m => m.state === 'POST');
-            else if (activeFilter === 'BOT') filtered = rawMatches.filter(m => m.bot.confidence >= 65);
+            else if (activeFilter === 'BOT') filtered = rawMatches.filter(m => m.bot.confidence >= 60);
 
             if (filtered.length === 0) {
-                container.innerHTML = `<div style="text-align:center; padding:30px; color:#94a3b8;">Maç bulunamadı.</div>`;
+                container.innerHTML = `<div style="text-align:center; padding:30px; color:#94a3b8;">Bu kategoride maç bulunamadı.</div>`;
                 return;
             }
 
