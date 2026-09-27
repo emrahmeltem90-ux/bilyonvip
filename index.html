@@ -238,9 +238,6 @@
     </div>
 
     <script>
-        // Sizin aktif Worker adresiniz doğrudan tanımlandı
-        const WORKER_URL = "https://dark-limit-3df4.emrah-meltem90.workers.dev"; 
-
         let matchesList = [];
         let currentFilter = 'all';
         let selectedBets = {};
@@ -249,25 +246,36 @@
             const statusEl = document.getElementById('status-msg');
             statusEl.innerText = "Canlı bülten çekiliyor...";
 
-            try {
-                const res = await fetch(WORKER_URL);
-                if (!res.ok) throw new Error("Ağ hatası");
+            const proxyList = [
+                'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://sportslive.iddaa.com/sportsbook/v2/bulletin/full'),
+                'https://corsproxy.io/?' + encodeURIComponent('https://sportslive.iddaa.com/sportsbook/v2/bulletin/full')
+            ];
 
-                let data = await res.json();
-                if (typeof data === 'string') data = JSON.parse(data);
+            let loaded = false;
+            for (let url of proxyList) {
+                try {
+                    const res = await fetch(url);
+                    if (!res.ok) continue;
 
-                matchesList = data.events || data.data?.events || data.m || (Array.isArray(data) ? data : []);
+                    let data = await res.json();
+                    if (typeof data === 'string') data = JSON.parse(data);
 
-                if (matchesList.length > 0) {
-                    updateHeaderStats();
-                    renderMatches();
-                    statusEl.innerText = "";
-                } else {
-                    statusEl.innerText = "Bültende gösterilecek maç bulunamadı.";
+                    matchesList = data.events || data.data?.events || data.m || (Array.isArray(data) ? data : []);
+
+                    if (matchesList.length > 0) {
+                        updateHeaderStats();
+                        renderMatches();
+                        statusEl.innerText = "";
+                        loaded = true;
+                        break;
+                    }
+                } catch (e) {
+                    console.log("Proxy denemesi başarısız, sıradakine geçiliyor...");
                 }
-            } catch (e) {
-                console.error(e);
-                statusEl.innerHTML = `<span style="color:#ef4444">Worker bağlantısı başarısız. Cloudflare Worker'ı Deploy ettiğinizden emin olun.</span>`;
+            }
+
+            if (!loaded) {
+                statusEl.innerHTML = `<span style="color:#ef4444">Bülten yüklenemedi. Lütfen sayfayı yenileyin.</span>`;
             }
         }
 
