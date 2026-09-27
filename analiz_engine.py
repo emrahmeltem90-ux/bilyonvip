@@ -1,113 +1,212 @@
 import os
-import math
-import random
-import json
-import ssl
-import urllib.request
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
-class BotUzmanEngine:
-    def __init__(self, simulations=5000):
-        self.simulations = simulations
-
-    def _poisson_sample(self, lmbda):
-        L = math.exp(-lmbda)
-        k = 0
-        p = 1.0
-        while p > L:
-            k += 1
-            p *= random.random()
-        return k - 1
-
-    def monte_carlo_simulation(self, home_xg, away_xg):
-        score_counts = {}
-        over_25_count = 0
-        for _ in range(self.simulations):
-            h_goals = self._poisson_sample(home_xg)
-            a_goals = self._poisson_sample(away_xg)
-            score = (h_goals, a_goals)
-            score_counts[score] = score_counts.get(score, 0) + 1
-            if (h_goals + a_goals) > 2.5:
-                over_25_count += 1
-
-        sorted_scores = sorted(score_counts.items(), key=lambda x: x[1], reverse=True)
-        top_1 = sorted_scores[0][0]
-        top_2 = sorted_scores[1][0] if len(sorted_scores) > 1 else top_1
-
-        return {
-            "p_over25": round((over_25_count / self.simulations) * 100, 1),
-            "p_under25": round(100 - (over_25_count / self.simulations) * 100, 1),
-            "exact_score": f"{top_1[0]} - {top_1[1]}",
-            "backup_score": f"{top_2[0]} - {top_2[1]}"
-        }
-
-    def fetch_live_fixtures(self):
-        matches = []
-        # SSL sertifika kontrolünü devreden çıkarıyoruz (Render SSL hatasını çözer)
-        ssl_context = ssl._create_unverified_context()
+HTML_CONTENT = """<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>BilyonVIP - Canlı İddaa & Spor Toto Analiz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: #0d1117; color: #ffffff; padding-bottom: 85px; }
         
-        urls = [
-            "https://site.api.espn.com/apis/site/v2/sports/soccer/all/scoreboard",
-            "https://site.api.espn.com/apis/site/v2/sports/soccer/tur.1/scoreboard",
-            "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard",
-            "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/scoreboard"
-        ]
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        .top-banner {
+            background: linear-gradient(90deg, #1b4332 0%, #2ea043 100%);
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .top-banner .logo-text { font-weight: bold; color: #fff; font-size: 16px; }
+        .top-icons i { color: #fff; font-size: 18px; margin-left: 15px; cursor: pointer; }
+
+        .hero { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; background-color: #161b22; border-bottom: 1px solid #21262d; }
+        .logo-text-main { font-size: 24px; font-weight: 900; letter-spacing: 1px; color: #ffffff; }
+        .date-badge { background-color: #0e3a24; color: #2ea043; border: 1px solid #238636; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        
+        .nav-tabs { display: flex; background-color: #161b22; border-bottom: 2px solid #21262d; }
+        .tab-btn { flex: 1; text-align: center; padding: 12px 5px; font-size: 12px; font-weight: 700; color: #8b949e; border: none; background: none; cursor: pointer; border-bottom: 3px solid transparent; }
+        .tab-btn.active { color: #3fb950; border-bottom-color: #3fb950; }
+        
+        .container { padding: 12px; max-width: 600px; margin: 0 auto; }
+        
+        .match-card { background-color: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 14px; margin-bottom: 12px; }
+        .match-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .team-name { font-size: 15px; font-weight: 800; width: 42%; }
+        .team-name.home { text-align: left; }
+        .team-name.away { text-align: right; }
+        .vs-badge { font-size: 11px; color: #8b949e; font-weight: 700; }
+        
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+        .stat-box { background-color: #0d1117; border-radius: 6px; padding: 8px; }
+        .stat-label { font-size: 11px; color: #8b949e; margin-bottom: 2px; }
+        .stat-val { font-size: 14px; font-weight: 700; color: #3fb950; }
+        
+        .prediction-banner { background-color: #0d1117; border: 1px solid #21262d; border-radius: 6px; padding: 8px; text-align: center; font-size: 13px; font-weight: 800; color: #3fb950; }
+        
+        .toto-table { width: 100%; border-collapse: collapse; margin-top: 5px; font-size: 13px; }
+        .toto-table th { background-color: #21262d; color: #8b949e; padding: 8px; text-align: left; }
+        .toto-table td { padding: 10px 8px; border-bottom: 1px solid #21262d; }
+        .toto-pick { background-color: #238636; color: #fff; padding: 3px 8px; border-radius: 4px; font-weight: bold; }
+        
+        .telegram-btn { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 500px; background-color: #0088cc; color: #ffffff; text-decoration: none; padding: 13px; border-radius: 8px; text-align: center; font-weight: 800; font-size: 13px; box-shadow: 0 4px 15px rgba(0,136,204,0.4); display: flex; align-items: center; justify-content: center; gap: 8px; z-index: 999; }
+    </style>
+</head>
+<body>
+    <div class="top-banner">
+        <span class="logo-text">BilyonVIP +</span>
+        <div class="top-icons">
+            <i class="fas fa-share-alt"></i>
+            <i class="fas fa-bell"></i>
+        </div>
+    </div>
+
+    <div class="hero">
+        <div class="logo-text-main">BİLYONVIP</div>
+        <div class="date-badge" id="dateDisplay">• 27 Eylül Paz</div>
+    </div>
+
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('bulten', this)">⚽ CANLI BÜLTEN</button>
+        <button class="tab-btn" onclick="switchTab('monte', this)">🎲 MONTE CARLO (5000)</button>
+        <button class="tab-btn" onclick="switchTab('toto', this)">📊 SPOR TOTO (15)</button>
+    </div>
+
+    <div class="container" id="contentArea"></div>
+
+    <a href="https://t.me/bilyonvip" target="_blank" class="telegram-btn">
+        <i class="fab fa-telegram-plane"></i> CANLI VIP TAHMİNLER İÇİN TELEGRAM'A KATIL
+    </a>
+
+    <script>
+        const fixtures = [
+            { id: 1, home: "Türkiye", away: "İtalya", hXg: 1.50, aXg: 1.65 },
+            { id: 2, home: "Sırbistan", away: "Hollanda", hXg: 1.25, aXg: 2.10 },
+            { id: 3, home: "Almanya", away: "Yunanistan", hXg: 2.35, aXg: 0.85 },
+            { id: 4, home: "Danimarka", away: "Galler", hXg: 1.75, aXg: 1.05 },
+            { id: 5, home: "Norveç", away: "Portekiz", hXg: 1.45, aXg: 1.85 },
+            { id: 6, home: "Avusturya", away: "Kosova", hXg: 2.10, aXg: 0.90 },
+            { id: 7, home: "Litvanya", away: "Azerbaycan", hXg: 1.15, aXg: 1.10 },
+            { id: 8, home: "Cebelitarık", away: "Andorra", hXg: 0.95, aXg: 0.90 },
+            { id: 9, home: "İsrail", away: "İrlanda", hXg: 1.30, aXg: 1.25 },
+            { id: 10, home: "Karacabey Bld.", away: "Ankaragücü", hXg: 1.10, aXg: 1.55 },
+            { id: 11, home: "Sakaryaspor", away: "Kütahyaspor", hXg: 1.65, aXg: 0.95 },
+            { id: 12, home: "İsveç", away: "Romanya", hXg: 1.80, aXg: 0.95 },
+            { id: 13, home: "İtalya", away: "Belçika", hXg: 1.60, aXg: 1.40 },
+            { id: 14, home: "Fransa", away: "İspanya", hXg: 1.70, aXg: 1.60 },
+            { id: 15, home: "İngiltere", away: "Hırvatistan", hXg: 1.90, aXg: 1.10 }
+        ];
+
+        function poissonSample(lambda) {
+            let L = Math.exp(-lambda), k = 0, p = 1.0;
+            do { k++; p *= Math.random(); } while (p > L);
+            return k - 1;
         }
 
-        for url in urls:
-            try:
-                req = urllib.request.Request(url, headers=headers)
-                with urllib.request.urlopen(req, timeout=5, context=ssl_context) as response:
-                    data = json.loads(response.read().decode('utf-8'))
-                    events = data.get('events', [])
-                    for event in events:
-                        competitors = event['competitions'][0]['competitors']
-                        home_team = next(c['team'].get('displayName', c['team'].get('name')) for c in competitors if c['homeAway'] == 'home')
-                        away_team = next(c['team'].get('displayName', c['team'].get('name')) for c in competitors if c['homeAway'] == 'away')
-                        
-                        # Aynı maçı tekrar ekleme
-                        if any(m['home'] == home_team and m['away'] == away_team for m in matches):
-                            continue
+        function runSim(homeXg, awayXg) {
+            let scoreCounts = {}, over25 = 0, winH = 0, draw = 0, winA = 0;
+            for (let i = 0; i < 5000; i++) {
+                let hG = poissonSample(homeXg), aG = poissonSample(awayXg);
+                scoreCounts[`${hG} - ${aG}`] = (scoreCounts[`${hG} - ${aG}`] || 0) + 1;
+                if ((hG + aG) > 2.5) over25++;
+                if (hG > aG) winH++; else if (hG === aG) draw++; else winA++;
+            }
+            let sorted = Object.entries(scoreCounts).sort((a,b) => b[1] - a[1]);
+            let pOver = ((over25 / 5000) * 100).toFixed(1);
+            return {
+                pOver: pOver, pUnder: (100 - pOver).toFixed(1),
+                top1: sorted[0] ? sorted[0][0] : "1 - 0",
+                top2: sorted[1] ? sorted[1][0] : "1 - 1",
+                pH: ((winH / 5000) * 100).toFixed(1),
+                pD: ((draw / 5000) * 100).toFixed(1),
+                pA: ((winA / 5000) * 100).toFixed(1)
+            };
+        }
 
-                        h_xg = round(random.uniform(1.2, 2.3), 2)
-                        a_xg = round(random.uniform(0.8, 1.7), 2)
+        function renderBulten() {
+            let html = "";
+            fixtures.slice(0, 10).forEach(m => {
+                let sim = runSim(m.hXg, m.aXg);
+                let pred = parseFloat(sim.pOver) >= 52.0 ? "2.5 ÜST" : "2.5 ALT";
+                html += `
+                    <div class="match-card">
+                        <div class="match-header">
+                            <div class="team-name home">${m.home}</div>
+                            <div class="vs-badge">VS</div>
+                            <div class="team-name away">${m.away}</div>
+                        </div>
+                        <div class="stats-grid">
+                            <div class="stat-box"><div class="stat-label">2.5 ÜST Olasılığı</div><div class="stat-val">%${sim.pOver}</div></div>
+                            <div class="stat-box"><div class="stat-label">2.5 ALT Olasılığı</div><div class="stat-val">%${sim.pUnder}</div></div>
+                            <div class="stat-box"><div class="stat-label">Muhtemel Skor</div><div class="stat-val">${sim.top1}</div></div>
+                            <div class="stat-box"><div class="stat-label">Yedek Skor</div><div class="stat-val">${sim.top2}</div></div>
+                        </div>
+                        <div class="prediction-banner">🎯 TAHMİN: ${pred}</div>
+                    </div>`;
+            });
+            document.getElementById("contentArea").innerHTML = html;
+        }
 
-                        sim = self.monte_carlo_simulation(h_xg, a_xg)
-                        pred = "2.5 ÜST" if sim["p_over25"] >= 52.0 else "2.5 ALT"
+        function renderMonteCarlo() {
+            let html = "";
+            fixtures.slice(0, 10).forEach(m => {
+                let sim = runSim(m.hXg, m.aXg);
+                let best = parseFloat(sim.pH) > parseFloat(sim.pA) ? (parseFloat(sim.pH) > parseFloat(sim.pD) ? "MS 1" : "MS X") : (parseFloat(sim.pA) > parseFloat(sim.pD) ? "MS 2" : "MS X");
+                html += `
+                    <div class="match-card">
+                        <div class="match-header">
+                            <div class="team-name home">${m.home}</div>
+                            <div class="vs-badge">5000 İTERASYON</div>
+                            <div class="team-name away">${m.away}</div>
+                        </div>
+                        <div class="stats-grid">
+                            <div class="stat-box"><div class="stat-label">1 (Ev Sahibi)</div><div class="stat-val">%${sim.pH}</div></div>
+                            <div class="stat-box"><div class="stat-label">X (Beraberlik)</div><div class="stat-val">%${sim.pD}</div></div>
+                            <div class="stat-box"><div class="stat-label">2 (Deplasman)</div><div class="stat-val">%${sim.pA}</div></div>
+                            <div class="stat-box"><div class="stat-label">En Yüksek Olasılık</div><div class="stat-val">${best}</div></div>
+                        </div>
+                    </div>`;
+            });
+            document.getElementById("contentArea").innerHTML = html;
+        }
 
-                        matches.append({
-                            "home": home_team,
-                            "away": away_team,
-                            "over25_prob": sim["p_over25"],
-                            "under25_prob": sim["p_under25"],
-                            "exact_score": sim["exact_score"],
-                            "backup_score": sim["backup_score"],
-                            "prediction": pred
-                        })
-            except Exception:
-                pass
+        function renderSporToto() {
+            let html = `<div class="match-card"><h3 style="margin-bottom:10px; font-size:15px; color:#3fb950;">📊 SPOR TOTO 15 MAÇ HESAPLANMIŞ KOLON</h3><table class="toto-table"><thead><tr><th>#</th><th>Maç</th><th>1X2 Tahmin</th></tr></thead><tbody>`;
+            fixtures.forEach((m, idx) => {
+                let sim = runSim(m.hXg, m.aXg);
+                let pick = parseFloat(sim.pH) > parseFloat(sim.pA) ? (parseFloat(sim.pH) > parseFloat(sim.pD) ? "1" : "X") : (parseFloat(sim.pA) > parseFloat(sim.pD) ? "2" : "X");
+                html += `<tr><td>${idx+1}</td><td>${m.home} - ${m.away}</td><td><span class="toto-pick">${pick}</span></td></tr>`;
+            });
+            html += `</tbody></table></div>`;
+            document.getElementById("contentArea").innerHTML = html;
+        }
 
-        return matches
+        function switchTab(type, el) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            if (type === 'bulten') renderBulten();
+            else if (type === 'monte') renderMonteCarlo();
+            else if (type === 'toto') renderSporToto();
+        }
 
-engine = BotUzmanEngine()
+        renderBulten();
+    </script>
+</body>
+</html>"""
 
 class APIHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
-        self.send_header('Content-type', 'application/json; charset=utf-8')
+        self.send_header('Content-type', 'text/html; charset=utf-8')
         self.send_header('Access-Control-Allow-Origin', '*')
         self.end_headers()
-        
-        data = {
-            "status": "success",
-            "matches": engine.fetch_live_fixtures()
-        }
-        self.wfile.write(json.dumps(data, ensure_ascii=False).encode('utf-8'))
+        self.wfile.write(HTML_CONTENT.encode('utf-8'))
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     server = HTTPServer(('0.0.0.0', port), APIHandler)
-    print(f"BilyonVIP Canlı Bülten Sunucusu {port} portunda çalışıyor...")
+    print(f"BilyonVIP Sunucusu {port} portunda çalışıyor...")
     server.serve_forever()
