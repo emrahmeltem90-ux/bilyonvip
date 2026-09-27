@@ -93,7 +93,9 @@
     </div>
 
     <div class="section-title">Günün Programı</div>
-    <div class="feed" id="matchFeed"></div>
+    <div class="feed" id="matchFeed">
+        <div style="text-align:center; color:#94a3b8; padding:30px;">Canlı bülten verisi yükleniyor...</div>
+    </div>
 
     <div id="matchModal" class="modal-overlay" onclick="closeModal(event)">
         <div class="modal-content" onclick="event.stopPropagation()">
@@ -112,79 +114,75 @@
     </div>
 
     <script>
-        const matches = [
-            {
-                league: "Arjantin • Liga Profesional",
-                home_team: "River Plate",
-                away_team: "Boca Juniors",
-                time: "23:30",
-                score: "VS",
-                ai: "Poisson: %49 MS X (Güven: %77)",
-                matrix: ["1-1", "0-0", "1-0"]
-            },
-            {
-                league: "Brezilya • Serie A",
-                home_team: "Flamengo",
-                away_team: "Palmeiras",
-                time: "01:00",
-                score: "VS",
-                ai: "Poisson: %55 MS 2 (Güven: %83)",
-                matrix: ["0-1", "1-2", "1-1"]
-            },
-            {
-                league: "ABD • MLS",
-                home_team: "Inter Miami",
-                away_team: "LA Galaxy",
-                time: "03:30",
-                score: "VS",
-                ai: "Poisson: %72 MS 1 (Güven: %90)",
-                matrix: ["2-0", "3-1", "2-1"]
-            },
-            {
-                league: "İngiltere • Premier Lig",
-                home_team: "Arsenal",
-                away_team: "Manchester City",
-                time: "18:30",
-                score: "VS",
-                ai: "Poisson: %48 MS X (Güven: %85)",
-                matrix: ["1-1", "2-2", "1-2"]
-            }
-        ];
+        let globalMatches = [];
 
-        function renderFeed() {
+        async function fetchMatches() {
             const feed = document.getElementById('matchFeed');
-            feed.innerHTML = "";
+            try {
+                // Sadece ve sadece senin matches.json dosyanı okur
+                const response = await fetch('matches.json?t=' + new Date().getTime());
+                if (!response.ok) throw new Error('matches.json bulunamadı');
+                
+                const data = await response.json();
+                globalMatches = data.matches || [];
 
-            matches.forEach((m, index) => {
-                feed.innerHTML += `
-                    <div class="match-card" onclick="openModal(${index})">
-                        <div class="match-header">
-                            <span>${m.league}</span>
-                            <span>${m.time} 🔍 Matris</span>
+                if (globalMatches.length === 0) {
+                    feed.innerHTML = "<div style='text-align:center; color:#94a3b8; padding:30px;'>Şu an aktif maç bulunmuyor. Bot verileri güncellediğinde burada görünecek.</div>";
+                    return;
+                }
+
+                feed.innerHTML = "";
+                globalMatches.forEach((m, index) => {
+                    const league = m.league || "Lig";
+                    const home = m.home_team || m.home || "Ev Sahibi";
+                    const away = m.away_team || m.away || "Deplasman";
+                    const score = m.score || "VS";
+                    const time = m.minute || m.time || "MS";
+                    
+                    let aiText = "";
+                    if (typeof m.ai === 'string') {
+                        aiText = m.ai;
+                    } else if (m.poisson) {
+                        aiText = `Poisson: %${m.poisson.rate || '65'} ${m.poisson.prediction || 'MS 1'} (Güven: %${m.poisson.confidence || '80'})`;
+                    } else {
+                        aiText = "Poisson analizi hazır";
+                    }
+
+                    feed.innerHTML += `
+                        <div class="match-card" onclick="openModal(${index})">
+                            <div class="match-header">
+                               <span>${league}</span>
+                               <span>${time} 🔍 Matris</span>
+                            </div>
+                            <div class="match-teams">
+                                <span>${home}</span>
+                                <span class="match-score-time">${score}</span>
+                                <span style="text-align:right;">${away}</span>
+                            </div>
+                            <div class="ai-bar">
+                                <span style="color:#6ee7b7; font-weight:700;">⚡ ${aiText}</span>
+                                <span class="ai-val">İncele ></span>
+                            </div>
                         </div>
-                        <div class="match-teams">
-                            <span>${m.home_team}</span>
-                            <span class="match-score-time">${m.score}</span>
-                            <span style="text-align:right;">${m.away_team}</span>
-                        </div>
-                        <div class="ai-bar">
-                            <span style="color:#6ee7b7; font-weight:700;">⚡ ${m.ai}</span>
-                            <span class="ai-val">İncele ></span>
-                        </div>
-                    </div>
-                `;
-            });
+                    `;
+                });
+
+            } catch (err) {
+                console.error(err);
+                feed.innerHTML = "<div style='text-align:center; color:#ef4444; padding:30px;'>matches.json dosyası okunamadı. Lütfen repoda dosyanın olduğundan emin olun.</div>";
+            }
         }
 
         function openModal(index) {
-            const m = matches[index];
+            const m = globalMatches[index];
             if (!m) return;
 
-            document.getElementById('modalLeague').innerText = m.league;
-            document.getElementById('modalTeams').innerText = `${m.home_team} vs ${m.away_team}`;
+            document.getElementById('modalLeague').innerText = m.league || "Lig";
+            document.getElementById('modalTeams').innerText = `${m.home_team || m.home} vs ${m.away_team || m.away}`;
             
+            const matrix = m.matrix || ["1-0", "2-0", "1-1"];
             let matrixHtml = '';
-            m.matrix.forEach((scoreVal, idx) => {
+            matrix.forEach((scoreVal, idx) => {
                 let prob = idx === 0 ? "%12 (En Yüksek)" : (idx === 1 ? "%9" : "%7");
                 matrixHtml += `
                     <div class="matrix-box">
@@ -204,7 +202,7 @@
             document.getElementById('matchModal').style.display = 'none';
         }
 
-        renderFeed();
+        fetchMatches();
     </script>
 </body>
 </html>
