@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SKORTAHMİN | Canlı Bülten ve Poisson Matrisleri</title>
+    <title>SKORTAHMİN | Global Canlı Bülten ve Poisson Matrisleri</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -89,11 +89,11 @@
     </div>
 
     <div class="hero-banner">
-        <div class="hero-title">Güncel Canlı Bülten</div>
-        <div class="hero-subtitle">Alt Ligler, Fethiyespor ve Uluslararası Fikstür Matrisleri</div>
+        <div class="hero-title">Global Maç ve Lig Bülteni</div>
+        <div class="hero-subtitle">Türkiye, Avrupa, Latin Amerika ve Tüm Alt Ligler</div>
     </div>
 
-    <div class="section-title">Günün Programı</div>
+    <div class="section-title">Günün Global Programı</div>
     <div class="feed" id="matchFeed"></div>
 
     <div id="matchModal" class="modal-overlay" onclick="closeModal(event)">
@@ -114,51 +114,15 @@
 
     <script>
         const matchesData = [
-            {
-                league: "TFF 2. Lig • Beyaz Grup",
-                home: "Serik Spor",
-                away: "Fethiyespor",
-                time: "MS",
-                score: "0 - 1",
-                ai: "Poisson: %64 MS 2 (Güven: %82)",
-                matrix: ["0-1", "0-2", "1-1"]
-            },
-            {
-                league: "UEFA Uluslar Ligi • Grup A2",
-                home: "Almanya",
-                away: "Yunanistan",
-                time: "69'",
-                score: "0 - 0",
-                ai: "Poisson: %55 MS 1 (Güven: %78)",
-                matrix: ["1-0", "2-0", "1-1"]
-            },
-            {
-                league: "UEFA Uluslar Ligi • Grup A4",
-                home: "Norveç",
-                away: "Portekiz",
-                time: "66'",
-                score: "1 - 2",
-                ai: "Poisson: %71 MS 2 (Güven: %89)",
-                matrix: ["1-2", "0-2", "1-3"]
-            },
-            {
-                league: "UEFA Uluslar Ligi • Grup A2",
-                home: "Sırbistan",
-                away: "Hollanda",
-                time: "MS",
-                score: "1 - 2",
-                ai: "Poisson: %58 MS 2 (Güven: %81)",
-                matrix: ["1-2", "0-1", "2-2"]
-            },
-            {
-                league: "UEFA Uluslar Ligi • Grup B3",
-                home: "Avusturya",
-                away: "Kosova",
-                time: "MS",
-                score: "3 - 1",
-                ai: "Poisson: %80 MS 1 (Güven: %92)",
-                matrix: ["2-0", "3-1", "3-0"]
-            }
+            { league: "Türkiye • TFF 2. Lig Beyaz Grup", home: "Serik Spor", away: "Fethiyespor", time: "MS", score: "0 - 1", ai: "Poisson: %64 MS 2 (Güven: %82)", matrix: ["0-1", "0-2", "1-1"] },
+            { league: "Türkiye • Trendyol Süper Lig", home: "Galatasaray", away: "Fenerbahçe", time: "21:00", score: "VS", ai: "Poisson: %52 MS 1 (Güven: %84)", matrix: ["1-0", "2-1", "1-1"] },
+            { league: "Hollanda • Eredivisie", home: "Ajax", away: "PSV Eindhoven", time: "20:00", score: "VS", ai: "Poisson: %61 MS X (Güven: %79)", matrix: ["2-2", "1-1", "3-2"] },
+            { league: "Belçika • Jupiler Pro League", home: "Club Brugge", away: "Anderlecht", time: "19:30", score: "VS", ai: "Poisson: %58 MS 1 (Güven: %81)", matrix: ["2-1", "1-0", "2-0"] },
+            { league: "İsviçre • Super League", home: "Young Boys", away: "Basel", time: "18:00", score: "VS", ai: "Poisson: %65 MS 1 (Güven: %86)", matrix: ["2-0", "3-1", "1-0"] },
+            { league: "Arjantin • Liga Profesional", home: "River Plate", away: "Boca Juniors", time: "23:30", score: "VS", ai: "Poisson: %49 MS X (Güven: %77)", matrix: ["1-1", "0-0", "1-0"] },
+            { league: "Brezilya • Serie A", home: "Flamengo", away: "Palmeiras", time: "01:00", score: "VS", ai: "Poisson: %55 MS 2 (Güven: %83)", matrix: ["0-1", "1-2", "1-1"] },
+            { league: "ABD • MLS", home: "Inter Miami", away: "LA Galaxy", time: "03:30", score: "VS", ai: "Poisson: %72 MS 1 (Güven: %90)", matrix: ["3-1", "2-0", "3-2"] },
+            { league: "İngiltere • Premier Lig", home: "Arsenal", away: "Manchester City", time: "18:30", score: "VS", ai: "Poisson: %48 MS X (Güven: %85)", matrix: ["1-1", "2-2", "1-2"] }
         ];
 
         function renderMatches() {
