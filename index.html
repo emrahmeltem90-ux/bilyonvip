@@ -2,328 +2,321 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BilyonVIP - Milli Maçlar & Quantum Analytics v4.0</title>
-    <!-- Google Fonts & FontAwesome -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BilyonVIP - 7/24 Yapay Zeka & Monte Carlo Analiz</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #070a0f;
-            --card-bg: #0d131d;
-            --card-border: #1a2332;
-            --neon-green: #00ff87;
-            --neon-blue: #00e5ff;
-            --neon-red: #ff2a6d;
-            --neon-gold: #ffb703;
-            --text-main: #f0f6fc;
-            --text-sub: #8b949e;
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --border-color: #30363d;
+            --text-main: #c9d1d9;
+            --accent-green: #2ea043;
+            --accent-blue: #0969da;
+            --accent-gold: #d29922;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg-dark); color: var(--text-main); padding-bottom: 90px; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
 
-        /* Header */
-        .header {
-            background: linear-gradient(180deg, #0f172a 0%, #070a0f 100%);
-            padding: 14px 16px;
-            border-bottom: 1px solid var(--card-border);
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding-bottom: 70px;
+        }
+
+        /* Top Header */
+        .top-banner {
+            background: linear-gradient(90deg, #1b4332 0%, #2ea043 100%);
+            padding: 10px 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky; top: 0; z-index: 1000;
-            backdrop-filter: blur(10px);
-        }
-        .logo-text { font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 900; color: var(--neon-green); }
-        .logo-text span { color: #fff; }
-        .radar-badge {
-            background: rgba(0, 255, 135, 0.1); border: 1px solid var(--neon-green);
-            color: var(--neon-green); padding: 5px 10px; border-radius: 20px;
-            font-size: 10px; font-weight: 800; display: flex; align-items: center; gap: 6px;
-        }
-        .pulse-dot { width: 8px; height: 8px; background: var(--neon-green); border-radius: 50%; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0,255,135,0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(0,255,135,0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0,255,135,0); } }
-
-        /* Quick Action Bar (İkonlu Hızlı Menü) */
-        .quick-nav {
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
-            padding: 12px; background: #0a0f18; border-bottom: 1px solid var(--card-border);
-        }
-        .nav-item {
-            background: var(--card-bg); border: 1px solid var(--card-border);
-            border-radius: 10px; padding: 10px 4px; text-align: center;
-            color: #fff; text-decoration: none; cursor: pointer; transition: 0.2s;
-        }
-        .nav-item:active { transform: scale(0.96); }
-        .nav-item i { font-size: 16px; color: var(--neon-green); display: block; margin-bottom: 4px; }
-        .nav-item span { font-size: 10px; font-weight: 700; color: var(--text-sub); display: block; }
-
-        .container { padding: 12px; }
-
-        /* Popüler Kombine Kutu Yapısı (Bilyoner Stil) */
-        .combo-hero-card {
-            background: linear-gradient(145deg, #0f1926 0%, #0a111a 100%);
-            border: 1px solid var(--neon-green);
-            border-radius: 16px; padding: 14px; margin-bottom: 16px;
-            box-shadow: 0 0 20px rgba(0, 255, 135, 0.15);
-        }
-        .combo-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed var(--card-border);
-        }
-        .combo-title { font-size: 13px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 6px; }
-        .combo-badge { background: var(--neon-gold); color: #000; font-size: 9px; font-weight: 900; padding: 2px 8px; border-radius: 10px; }
-
-        .combo-match-item {
-            background: rgba(0, 0, 0, 0.3); border-radius: 10px; padding: 10px;
-            margin-bottom: 8px; border: 1px solid #162233;
-        }
-        .c-match-title { font-size: 13px; font-weight: 800; color: #fff; display: flex; justify-content: space-between; margin-bottom: 6px; }
-        .c-play-count { font-size: 9px; color: var(--neon-green); font-weight: 700; }
-        .c-pick-row { display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
-        .c-pick-tag { background: #1a273a; color: var(--neon-blue); padding: 3px 8px; border-radius: 6px; font-weight: 700; }
-        .c-odd { font-weight: 900; color: #fff; background: var(--neon-green); color: #000; padding: 2px 8px; border-radius: 4px; }
-
-        .combo-footer {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--card-border);
-        }
-        .total-odd-box { font-size: 12px; color: var(--text-sub); }
-        .total-odd-box strong { font-size: 18px; color: var(--neon-green); font-family: 'Orbitron', sans-serif; display: block; }
-        .btn-play-combo {
-            background: var(--neon-green); color: #000; font-weight: 900; font-size: 13px;
-            padding: 10px 20px; border-radius: 10px; border: none; cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 255, 135, 0.4);
         }
 
-        /* Filter Tabs */
-        .filter-bar { display: flex; gap: 8px; margin-bottom: 14px; overflow-x: auto; }
-        .filter-btn {
-            background: var(--card-bg); border: 1px solid var(--card-border);
-            color: var(--text-sub); padding: 8px 14px; border-radius: 8px;
-            font-size: 11px; font-weight: 700; white-space: nowrap; cursor: pointer;
+        .top-banner .logo-text {
+            font-weight: bold;
+            color: #fff;
+            font-size: 16px;
         }
-        .filter-btn.active { background: var(--neon-green); color: #000; border-color: var(--neon-green); font-weight: 800; }
 
-        /* Standard Match Card */
+        .top-icons i {
+            color: #fff;
+            font-size: 20px;
+            margin-left: 15px;
+            cursor: pointer;
+        }
+
+        /* Main Header */
+        .main-header {
+            background-color: var(--card-bg);
+            padding: 12px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .app-title {
+            color: #fff;
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        .date-badge {
+            background-color: #064e3b;
+            color: #34d399;
+            border: 1px solid #059669;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            background-color: #161b22;
+            border-bottom: 2px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px 8px;
+            background: none;
+            border: none;
+            color: #8b949e;
+            font-size: 13px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-btn.active {
+            color: #38ef7d;
+            border-bottom-color: #38ef7d;
+        }
+
+        /* Content Area */
+        .container {
+            padding: 12px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .loading-box {
+            text-align: center;
+            padding: 40px 20px;
+            color: #e3b341;
+            font-weight: 600;
+        }
+
+        .spinner {
+            border: 3px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+            border-top: 3px solid #38ef7d;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Match Card */
         .match-card {
-            background: var(--card-bg); border-radius: 14px; border: 1px solid var(--card-border);
-            padding: 14px; margin-bottom: 12px; position: relative;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
         }
-        .card-meta { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-sub); margin-bottom: 10px; font-weight: 600; }
-        .league-name { color: var(--neon-blue); display: flex; align-items: center; gap: 6px; font-weight: 800; }
 
-        .teams-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .team { font-size: 14px; font-weight: 800; color: #fff; flex: 1; }
-        .vs-badge { font-family: 'Orbitron', sans-serif; font-size: 10px; color: var(--neon-gold); background: rgba(255, 183, 3, 0.1); padding: 4px 8px; border-radius: 6px; }
-
-        .odds-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center; margin-bottom: 10px; }
-        .odd-box { background: #121926; padding: 6px; border-radius: 6px; border: 1px solid #1e293b; }
-        .odd-lbl { font-size: 8px; color: var(--text-sub); display: block; }
-        .odd-val { font-size: 12px; font-weight: 800; color: #fff; }
-
-        /* Fixed Bottom Action */
-        .bottom-action {
-            position: fixed; bottom: 0; left: 0; right: 0; background: #090e17;
-            padding: 10px 16px; border-top: 1px solid var(--card-border);
-            display: flex; gap: 10px; z-index: 1000;
+        .match-teams {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 15px;
+            color: #fff;
+            margin-bottom: 10px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 8px;
         }
-        .btn-telegram {
-            flex: 2; background: linear-gradient(135deg, #0088cc, #006699); color: #fff;
-            font-weight: 800; font-size: 13px; padding: 12px; border-radius: 10px;
-            text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px;
+
+        .match-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            font-size: 12px;
+        }
+
+        .stat-item {
+            background-color: #0d1117;
+            padding: 6px 8px;
+            border-radius: 4px;
+        }
+
+        .stat-label {
+            color: #8b949e;
+            font-size: 11px;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .stat-value {
+            color: #38ef7d;
+            font-weight: bold;
+        }
+
+        .pred-badge {
+            grid-column: span 2;
+            background: linear-gradient(90deg, #111827 0%, #1f2937 100%);
+            border: 1px solid #374151;
+            padding: 8px;
+            border-radius: 6px;
+            text-align: center;
+            color: #f3f4f6;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        /* Bottom Fixed Telegram Button */
+        .telegram-btn {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 550px;
+            background-color: #0088cc;
+            color: #fff;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            z-index: 1000;
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="logo-text">BİLYON<span>VIP</span></div>
-        <div class="radar-badge">
-            <div class="pulse-dot"></div>
-            MİLLİ MAÇ RADARI
+    <div class="top-banner">
+        <span class="logo-text">BilyonVIP +</span>
+        <div class="top-icons">
+            <i class="fas fa-share-alt"></i>
+            <i class="fas fa-bell"></i>
         </div>
     </div>
 
-    <!-- Hızlı İkonlu Erişim Menüsü -->
-    <div class="quick-nav">
-        <div class="nav-item" onclick="filterCategory('milli')">
-            <i class="fa-solid fa-flag"></i>
-            <span>Milli Maçlar</span>
-        </div>
-        <div class="nav-item" onclick="scrollToCombo()">
-            <i class="fa-solid fa-ticket"></i>
-            <span>Kupon Getir</span>
-        </div>
-        <div class="nav-item" onclick="filterCategory('ai')">
-            <i class="fa-solid fa-brain"></i>
-            <span>Yapay Zeka</span>
-        </div>
-        <a href="https://t.me/telegram_vip_kanaliniz" target="_blank" class="nav-item">
-            <i class="fa-brands fa-telegram"></i>
-            <span>VIP Kanal</span>
-        </a>
+    <div class="main-header">
+        <div class="app-title">BİLYONVIP</div>
+        <div class="date-badge" id="current-date">• 27 Eylül Paz</div>
     </div>
 
-    <div class="container">
-
-        <!-- Günün Popüler Milli Kombinesi (Bilyoner Yapısı) -->
-        <div class="combo-hero-card" id="comboHero">
-            <div class="combo-header">
-                <div class="combo-title"><i class="fa-solid fa-fire" style="color:var(--neon-gold);"></i> BANA ÖZEL POPÜLER MİLLİ KOMBİNE</div>
-                <div class="combo-badge">VIP TAHMİN</div>
-            </div>
-
-            <div class="combo-match-item">
-                <div class="c-match-title">
-                    <span>🇹🇷 Türkiye - İzlanda</span>
-                    <span class="c-play-count">6.420 Kez Oynandı</span>
-                </div>
-                <div class="c-pick-row">
-                    <span class="c-pick-tag">Maç Sonucu: MS 1</span>
-                    <span class="c-odd">1.48</span>
-                </div>
-            </div>
-
-            <div class="combo-match-item">
-                <div class="c-match-title">
-                    <span>🇩🇪 Almanya - Hollanda</span>
-                    <span class="c-play-count">5.110 Kez Oynandı</span>
-                </div>
-                <div class="c-pick-row">
-                    <span class="c-pick-tag">Karşılıklı Gol: KG VAR</span>
-                    <span class="c-odd">1.52</span>
-                </div>
-            </div>
-
-            <div class="combo-match-item">
-                <div class="c-match-title">
-                    <span>🇫🇷 Fransa - Belçika</span>
-                    <span class="c-play-count">4.890 Kez Oynandı</span>
-                </div>
-                <div class="c-pick-row">
-                    <span class="c-pick-tag">Top. Gol: 2.5 ÜST</span>
-                    <span class="c-odd">1.65</span>
-                </div>
-            </div>
-
-            <div class="combo-footer">
-                <div class="total-odd-box">
-                    TOPLAM ORAN
-                    <strong>3.71</strong>
-                </div>
-                <button class="btn-play-combo" onclick="copyComboCode()">KUPONU OYNA / KOPYALA</button>
-            </div>
-        </div>
-
-        <!-- Filtreler -->
-        <div class="filter-bar">
-            <button class="filter-btn active" onclick="filterMatches('all', this)"><i class="fa-solid fa-globe"></i> Tüm Maçlar</button>
-            <button class="filter-btn" onclick="filterMatches('milli', this)"><i class="fa-solid fa-flag"></i> 🇹🇷 Uluslar Ligi / Milli</button>
-            <button class="filter-btn" onclick="filterMatches('value', this)"><i class="fa-solid fa-bolt"></i> 🔥 Yüksek Değerli (+EV)</button>
-        </div>
-
-        <!-- Maç Listesi -->
-        <div id="matchesList">
-            <p style="text-align:center; color:var(--neon-green); padding:20px;"><i class="fa-solid fa-spinner fa-spin"></i> Milli Maç Bültani Yükleniyor...</p>
-        </div>
-
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('bulten')">⚽ CANLI BÜLTEN</button>
+        <button class="tab-btn" onclick="switchTab('monte')">🎲 MONTE CARLO (5000)</button>
+        <button class="tab-btn" onclick="switchTab('toto')">📊 SPOR TOTO (15)</button>
     </div>
 
-    <div class="bottom-action">
-        <a href="https://t.me/telegram_vip_kanaliniz" target="_blank" class="btn-telegram">
-            <i class="fa-brands fa-telegram"></i> VIP CANLI SİNYAL KANALINA KATIL
-        </a>
+    <div class="container" id="match-container">
+        <div class="loading-box">
+            <div class="spinner"></div>
+            Şu an bültendeki maçlar güncelleniyor. Lütfen birkaç saniye sonra tekrar açınız.
+        </div>
     </div>
+
+    <a href="https://t.me" target="_blank" class="telegram-btn">
+        <i class="fab fa-telegram-plane"></i> CANLI VIP TAHMİNLER İÇİN TELEGRAM'A KATIL
+    </a>
 
     <script>
-        const fallbackNationalMatches = [
-            { home: "Türkiye", away: "İzlanda", league: "UEFA NATIONS LEAGUE", time: "21:45", odds: [1.48, 4.10, 6.20], tag: "milli" },
-            { home: "Almanya", away: "Hollanda", league: "UEFA NATIONS LEAGUE", time: "21:45", odds: [1.80, 3.60, 3.90], tag: "milli" },
-            { home: "Fransa", away: "Belçika", league: "UEFA NATIONS LEAGUE", time: "21:45", odds: [1.70, 3.50, 4.50], tag: "milli" },
-            { home: "İngiltere", away: "Finlandiya", league: "UEFA NATIONS LEAGUE", time: "21:45", odds: [1.15, 7.00, 15.00], tag: "milli" },
-            { home: "İspanya", away: "Isviçre", league: "UEFA NATIONS LEAGUE", time: "21:45", odds: [1.38, 4.50, 7.50], tag: "milli" }
-        ];
+        const API_URL = "https://bilyonvip.onrender.com";
 
-        function renderMatchCards(list) {
-            let container = document.getElementById('matchesList');
-            let html = '';
-
-            list.forEach(m => {
-                html += `
-                    <div class="match-card ${m.tag}">
-                        <div class="card-meta">
-                            <span class="league-name"><i class="fa-solid fa-trophy"></i> ${m.league}</span>
-                            <span>Saat: ${m.time}</span>
-                        </div>
-                        <div class="teams-row">
-                            <div class="team">${m.home}</div>
-                            <div class="vs-badge">VS</div>
-                            <div class="team" style="text-align:right;">${m.away}</div>
-                        </div>
-                        <div class="odds-grid">
-                            <div class="odd-box"><span class="odd-lbl">MS 1</span><span class="odd-val">${m.odds[0]}</span></div>
-                            <div class="odd-box"><span class="odd-lbl">MS X</span><span class="odd-val">${m.odds[1]}</span></div>
-                            <div class="odd-box"><span class="odd-lbl">MS 2</span><span class="odd-val">${m.odds[2]}</span></div>
-                        </div>
-                    </div>
-                `;
-            });
-            container.innerHTML = html;
+        // Tarih Bilgisini Otomatik Ayarla
+        function updateDate() {
+            const options = { day: 'numeric', month: 'long', weekday: 'short' };
+            const today = new Date().toLocaleDateString('tr-TR', options);
+            document.getElementById('current-date').innerText = `• ${today}`;
         }
 
-        async function fetchMilliMatches() {
+        async function fetchMatches() {
+            const container = document.getElementById('match-container');
             try {
-                let res = await fetch('https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.nations/scoreboard');
-                let data = await res.json();
+                const response = await fetch(API_URL);
+                const data = await response.json();
 
-                if (data && data.events && data.events.length > 0) {
-                    let parsed = data.events.map(ev => {
-                        let c = ev.competitions[0];
-                        return {
-                            home: c.competitors.find(item => item.homeAway === 'home')?.team?.displayName || 'Ev',
-                            away: c.competitors.find(item => item.homeAway === 'away')?.team?.displayName || 'Dep',
-                            league: 'UEFA NATIONS LEAGUE',
-                            time: new Date(ev.date).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }),
-                            odds: [1.65, 3.40, 4.10],
-                            tag: 'milli'
-                        };
+                if (data.status === "success" && data.matches.length > 0) {
+                    container.innerHTML = "";
+                    data.matches.forEach(m => {
+                        const card = `
+                            <div class="match-card">
+                                <div class="match-teams">
+                                    <span>${m.home}</span>
+                                    <span style="color:#6b7280; font-size:12px;">VS</span>
+                                    <span>${m.away}</span>
+                                </div>
+                                <div class="match-stats">
+                                    <div class="stat-item">
+                                        <span class="stat-label">2.5 ÜST Olasılığı</span>
+                                        <span class="stat-value">%${m.over25_prob}</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-label">2.5 ALT Olasılığı</span>
+                                        <span class="stat-value">%${m.under25_prob}</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-label">Muhtemel Skor</span>
+                                        <span class="stat-value">${m.exact_score}</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-label">Yedek Skor</span>
+                                        <span class="stat-value">${m.backup_score}</span>
+                                    </div>
+                                    <div class="pred-badge">
+                                        🎯 TAHMİN: <span style="color:#38ef7d;">${m.prediction}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        container.innerHTML += card;
                     });
-                    renderMatchCards(parsed);
                 } else {
-                    renderMatchCards(fallbackNationalMatches);
+                    container.innerHTML = '<div class="loading-box">Şu an bültende aktif maç bulunmamaktadır.</div>';
                 }
-            } catch (e) {
-                renderMatchCards(fallbackNationalMatches);
+            } catch (error) {
+                console.log("Render uyanıyor veya veri çekilemedi:", error);
+                setTimeout(fetchMatches, 4000); // Render uyanana kadar 4 saniyede bir dene
             }
         }
 
-        function filterMatches(category, btn) {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            if(btn) btn.classList.add('active');
-
-            let cards = document.querySelectorAll('.match-card');
-            cards.forEach(card => {
-                if (category === 'all') card.style.display = 'block';
-                else if (card.classList.contains(category)) card.style.display = 'block';
-                else card.style.display = 'none';
-            });
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            fetchMatches();
         }
 
-        function filterCategory(cat) {
-            filterMatches(cat, null);
-        }
-
-        function scrollToCombo() {
-            document.getElementById('comboHero').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function copyComboCode() {
-            alert("✅ Popüler VIP Kombine Kupon Kodu Kopyalandı! Telegram VIP Kanalından Anlık Sinyali Takip Edebilirsiniz.");
-        }
-
-        fetchMilliMatches();
+        updateDate();
+        fetchMatches();
     </script>
 </body>
 </html>
