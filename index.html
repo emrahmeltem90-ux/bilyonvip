@@ -30,42 +30,50 @@
         <h1>🔥 RESMÎ İDDAA BÜLTENİ</h1>
     </div>
 
-    <div id="status">Maç verileri çekiliyor...</div>
+    <div id="status">İddaa canlı bülteni çekiliyor...</div>
     <div id="bulten"></div>
 
     <script>
-        // Cloudflare Worker proxy adresin:
         const PROXY = "https://dark-limit-3df4.emrah-meltem90.workers.dev/?url=";
-        // Güncel İddaa/Mackolik bülten servis adresi:
-        const TARGET_API = encodeURIComponent("https://bulletin.iddaa.com/api/bulletin/full");
+        // Resmî İddaa canlı/günlük servis adresi
+        const IDDAA_API = encodeURIComponent("https://sportslive.iddaa.com/sportsbook/v2/bulletin/full");
 
         async function loadBulten() {
             const statusEl = document.getElementById('status');
             const bultenEl = document.getElementById('bulten');
 
             try {
-                const response = await fetch(PROXY + TARGET_API);
-                if (!response.ok) throw new Error("Ağ hatası");
+                const response = await fetch(PROXY + IDDAA_API);
+                if (!response.ok) {
+                    throw new Error(`Sunucu Yanıtı: ${response.status}`);
+                }
                 
                 const data = await response.json();
-                const events = data.events || data.data || [];
                 
-                if (events.length === 0) {
-                    statusEl.innerText = "Bültende şu an aktif maç bulunamadı.";
+                // İddaa verisini ayrıştırma
+                const matches = data.events || data.data?.events || data.m || [];
+
+                if (!matches || matches.length === 0) {
+                    statusEl.innerText = "Şu an bültende aktif maç bulunamadı.";
                     return;
                 }
 
-                statusEl.innerHTML = `<span style="color:#4ade80">Toplam ${events.length} İddaa Maçı Yüklendi</span>`;
+                statusEl.innerHTML = `<span style="color:#4ade80">Toplam ${matches.length} Resmî İddaa Maçı Yüklendi</span>`;
                 let html = "";
 
-                events.slice(0, 100).forEach(m => {
-                    const code = m.c || m.code || '---';
-                    const league = m.l || m.leagueName || 'İDDAA';
-                    const home = m.h || m.homeTeam || 'Ev Sahibi';
-                    const away = m.a || m.awayTeam || 'Deplasman';
-                    const ms1 = m.o1 || m.ms1 || '1.80';
-                    const msX = m.oX || m.msX || '3.20';
-                    const ms2 = m.o2 || m.ms2 || '3.10';
+                matches.slice(0, 100).forEach(m => {
+                    const code = m.code || m.c || m.id || '-';
+                    const league = m.leagueName || m.sn || 'İDDAA BÜLTENİ';
+                    const home = m.homeTeamName || m.ht || 'Ev Sahibi';
+                    const away = m.awayTeamName || m.at || 'Deplasman';
+
+                    // Oranlar
+                    let ms1 = "1.80", msX = "3.20", ms2 = "3.10";
+                    if (m.odds) {
+                        ms1 = m.odds.ms1 || m.odds['1'] || ms1;
+                        msX = m.odds.msX || m.odds['X'] || msX;
+                        ms2 = m.odds.ms2 || m.odds['2'] || ms2;
+                    }
 
                     html += `
                         <div class="match-card">
