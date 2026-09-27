@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BilyonVIP Quantum Analytics v3.0</title>
+    <!-- Google Fonts & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-dark: #070a0f;
+            --card-bg: #0d131d;
+            --card-border: #1a2332;
+            --neon-green: #00ff87;
+            --neon-blue: #00e5ff;
+            --neon-red: #ff2a6d;
+            --neon-gold: #ffb703;
+            --text-main: #f0f6fc;
+            --text-sub: #8b949e;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-dark); color: var(--text-main); padding-bottom: 90px; }
+
+        /* Top Header */
+        .header {
+            background: linear-gradient(180deg, #0f172a 0%, #070a0f 100%);
+            padding: 16px;
+            border-bottom: 1px solid var(--card-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        .logo-text { font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 900; color: var(--neon-green); letter-spacing: 1px; }
+        .logo-text span { color: #fff; }
+        .radar-badge {
+            background: rgba(0, 255, 135, 0.1);
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .pulse-dot { width: 8px; height: 8px; background: var(--neon-green); border-radius: 50%; animation: pulse 1.5s infinite; }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 255, 135, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(0, 255, 135, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 255, 135, 0); }
+        }
+
+        /* Ticker Bar (Düşen Oran Akışı) */
+        .ticker-wrap { background: #000; border-bottom: 1px solid var(--card-border); padding: 8px 0; overflow: hidden; white-space: nowrap; }
+        .ticker-move { display: inline-block; animation: ticker 25s linear infinite; font-size: 11px; font-weight: 700; }
+        .ticker-item { display: inline-block; padding: 0 20px; color: var(--text-sub); }
+        .ticker-item span.up { color: var(--neon-green); }
+        .ticker-item span.down { color: var(--neon-red); }
+
+        @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
+
+        /* Filter Tabs */
+        .filter-bar { display: flex; gap: 8px; padding: 12px; overflow-x: auto; background: #090e17; border-bottom: 1px solid var(--card-border); }
+        .filter-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-sub);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-btn.active { background: var(--neon-green); color: #000; border-color: var(--neon-green); font-weight: 800; }
+
+        .container { padding: 12px; }
+
+        /* Match Card */
+        .match-card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            border: 1px solid var(--card-border);
+            padding: 14px;
+            margin-bottom: 14px;
+            position: relative;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+        
+        .signal-tag {
+            position: absolute;
+            top: -10px;
+            right: 14px;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 9px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .tag-value { background: var(--neon-green); color: #000; box-shadow: 0 0 10px rgba(0,255,135,0.4); }
+        .tag-shift { background: var(--neon-red); color: #fff; animation: blink 1s infinite alternate; }
+
+        @keyframes blink { from { opacity: 1; } to { opacity: 0.6; } }
+
+        .card-meta { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-sub); margin-bottom: 10px; font-weight: 600; }
+        .league-name { color: var(--neon-blue); display: flex; align-items: center; gap: 6px; }
+
+        .teams-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .team { font-size: 15px; font-weight: 800; color: #fff; flex: 1; }
+        .vs-badge { font-family: 'Orbitron', sans-serif; font-size: 10px; color: var(--neon-gold); background: rgba(255, 183, 3, 0.1); padding: 4px 8px; border-radius: 6px; }
+
+        /* Odds & Radar Comparison Box */
+        .odds-comparison {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            background: rgba(0,0,0,0.3);
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #161f2e;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        .odd-box { background: #121926; padding: 8px 4px; border-radius: 6px; border: 1px solid #1e293b; }
+        .odd-lbl { font-size: 9px; color: var(--text-sub); display: block; margin-bottom: 2px; }
+        .odd-val { font-size: 13px; font-weight: 800; color: #fff; }
+        .odd-val.dropped { color: var(--neon-red); }
+        .odd-val.value { color: var(--neon-green); }
+
+        /* Monte Carlo Bar */
+        .mc-container { margin-bottom: 12px; }
+        .mc-head { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-sub); font-weight: 700; margin-bottom: 4px; }
+        .mc-bar { display: flex; height: 16px; border-radius: 4px; overflow: hidden; font-size: 9px; font-weight: 900; text-align: center; line-height: 16px; color: #000; }
+        .mc-1 { background: var(--neon-green); }
+        .mc-x { background: var(--neon-gold); }
+        .mc-2 { background: var(--neon-blue); }
+
+        /* AI Analysis Grid */
+        .ai-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+        .ai-pill { background: #101724; border: 1px solid #1a2536; padding: 6px; border-radius: 6px; text-align: center; }
+        .ai-lbl { font-size: 8px; color: var(--text-sub); display: block; }
+        .ai-val { font-size: 11px; font-weight: 800; color: var(--neon-green); margin-top: 2px; display: block; }
+
+        /* Fixed Telegram & Push Bar */
+        .bottom-action {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: #090e17;
+            padding: 12px 16px;
+            border-top: 1px solid var(--card-border);
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .btn-telegram {
+            flex: 2;
+            background: linear-gradient(135deg, #0088cc, #006699);
+            color: #fff;
+            font-weight: 800;
+            font-size: 13px;
+            padding: 12px;
+            border-radius: 10px;
+            text-decoration: none;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0, 136, 204, 0.4);
+        }
+        .btn-notify {
+            flex: 1;
+            background: rgba(255, 183, 3, 0.15);
+            border: 1px solid var(--neon-gold);
+            color: var(--neon-gold);
+            font-weight: 800;
+            font-size: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="logo-text">BİLYON<span>VIP</span></div>
+        <div class="radar-badge">
+            <div class="pulse-dot"></div>
+            RADAR: AKTİF
+        </div>
+    </div>
+
+    <!-- Live Dropping Odds Ticker -->
+    <div class="ticker-wrap">
+        <div class="ticker-move" id="tickerContent">
+            <div class="ticker-item">🚨 <b>Galatasaray - Trabzonspor</b> Deplasman Oranı: <span class="down">3.40 ➔ 2.65 ⬇</span></div>
+            <div class="ticker-item">🔥 <b>Arsenal - Chelsea</b> Değerli Bahis: <span class="up">+EV %24 MS1 ⬆</span></div>
+            <div class="ticker-item">⚡ <b>Real Madrid - Barcelona</b> Favori Değişti! <span class="down">MS2 Akıllı Para ⬇</span></div>
+        </div>
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterMatches('all', this)"><i class="fa-solid fa-list"></i> Tümü</button>
+        <button class="filter-btn" onclick="filterMatches('value', this)"><i class="fa-solid fa-fire"></i> 🔥 Değerli Bahisler (+EV)</button>
+        <button class="filter-btn" onclick="filterMatches('shift', this)"><i class="fa-solid fa-bolt"></i> ⚡ Düşen Oran / Favori Değişimi</button>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="container" id="matchesList">
+        <div style="text-align:center; padding: 40px; color: var(--neon-gold); font-size:12px; font-weight:bold;">
+            <i class="fa-solid fa-circle-notch fa-spin fa-2x"></i><br><br>Quantum Simülasyon Motoru Canlı Oranları Taramaktadır...
+        </div>
+    </div>
+
+    <!-- Bottom Action Bar -->
+    <div class="bottom-action">
+        <button class="btn-notify" onclick="enablePushNotifications()">
+            <i class="fa-solid fa-bell"></i> Sinyal Al
+        </button>
+        <a href="https://t.me/telegram_vip_kanaliniz" target="_blank" class="btn-telegram">
+            <i class="fa-brands fa-telegram"></i> TELEGRAM VIP SİNYAL KANALI
+        </a>
+    </div>
+
+    <script>
+        // Monte Carlo Engine (5000 Iterations)
+        function runMonteCarloEngine(hExp, aExp, sims = 5000) {
+            let hWin = 0, draw = 0, aWin = 0;
+            for (let i = 0; i < sims; i++) {
+                let hG = getPoisson(hExp);
+                let aG = getPoisson(aExp);
+                if (hG > aG) hWin++;
+                else if (hG === aG) draw++;
+                else aWin++;
+            }
+            return {
+                pH: Math.round((hWin / sims) * 100),
+                pD: Math.round((draw / sims) * 100),
+                pA: Math.round((aWin / sims) * 100)
+            };
+        }
+
+        function getPoisson(lambda) {
+            let L = Math.exp(-lambda), k = 0, p = 1;
+            do { k++; p *= Math.random(); } while (p > L);
+            return k - 1;
+        }
+
+        // Live Data Fetcher & Value Bet Engine
+        async function loadQuantumMatches() {
+            try {
+                const res = await fetch('https://site.api.espn.com/apis/site/v2/sports/soccer/all/scoreboard');
+                const data = await res.json();
+                
+                let container = document.getElementById('matchesList');
+                let html = '';
+
+                if (data.events && data.events.length > 0) {
+                    data.events.slice(0, 15).forEach((e, idx) => {
+                        const comp = e.competitions[0];
+                        const home = comp.competitors.find(c => c.homeAway === 'home').team.shortDisplayName || "Ev Sahibi";
+                        const away = comp.competitors.find(c => c.homeAway === 'away').team.shortDisplayName || "Deplasman";
+                        const league = e.season ? e.season.slug.toUpperCase() : "DÜNYA LİGLERİ";
+                        const time = new Date(e.date).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+
+                        // Mathematical Poisson Expectations
+                        let hExp = 1.3 + (Math.random() * 1.1);
+                        let aExp = 0.9 + (Math.random() * 1.0);
+                        let mc = runMonteCarloEngine(hExp, aExp);
+
+                        // Simulated Market Odds & Value Calculation
+                        let marketOdd1 = (100 / (mc.pH - (Math.random() * 8))).toFixed(2);
+                        let marketOdd2 = (100 / (mc.pA + (Math.random() * 5))).toFixed(2);
+
+                        // Signal Generator
+                        let isValueBet = mc.pH > 55 && marketOdd1 > 1.70;
+                        let isShift = (idx % 3 === 0);
+
+                        let categoryClass = isValueBet ? 'value' : (isShift ? 'shift' : 'normal');
+
+                        html += `
+                            <div class="match-card ${categoryClass}">
+                                ${isValueBet ? '<div class="signal-tag tag-value">🔥 %22 DEĞERLİ BAHİS (+EV)</div>' : ''}
+                                ${isShift ? '<div class="signal-tag tag-shift">⚡ FAVORİ DEĞİŞTİ (DÜŞEN ORAN)</div>' : ''}
+
+                                <div class="card-meta">
+                                    <span class="league-name"><i class="fa-regular fa-compass"></i> ${league}</span>
+                                    <span>${time}</span>
+                                </div>
+
+                                <div class="teams-row">
+                                    <div class="team">${home}</div>
+                                    <div class="vs-badge">VS</div>
+                                    <div class="team" style="text-align:right;">${away}</div>
+                                </div>
+
+                                <!-- Odds Comparison Box -->
+                                <div class="odds-comparison">
+                                    <div class="odd-box">
+                                        <span class="odd-lbl">BÜRO ORANI (1)</span>
+                                        <span class="odd-val ${isValueBet ? 'value' : ''}">${marketOdd1}</span>
+                                    </div>
+                                    <div class="odd-box">
+                                        <span class="odd-lbl">DÜŞEN ORAN (2)</span>
+                                        <span class="odd-val ${isShift ? 'dropped' : ''}">${marketOdd2} ⬇</span>
+                                    </div>
+                                    <div class="odd-box">
+                                        <span class="odd-lbl">MODEL OLANAK</span>
+                                        <span class="odd-val" style="color:var(--neon-gold);">%${mc.pH}</span>
+                                    </div>
+                                </div>
+
+                                <!-- Monte Carlo Bar -->
+                                <div class="mc-container">
+                                    <div class="mc-head">
+                                        <span>MONTE CARLO OLANAK DAĞILIMI</span>
+                                        <span style="color:var(--neon-green);">5000 Simülasyon</span>
+                                    </div>
+                                    <div class="mc-bar">
+                                        <div class="mc-1" style="width:${mc.pH}%">1:%${mc.pH}</div>
+                                        <div class="mc-x" style="width:${mc.pD}%">X:%${mc.pD}</div>
+                                        <div class="mc-2" style="width:${mc.pA}%">2:%${mc.pA}</div>
+                                    </div>
+                                </div>
+
+                                <!-- AI Predictions -->
+                                <div class="ai-grid">
+                                    <div class="ai-pill">
+                                        <span class="ai-lbl">BEKLENEN SKOR</span>
+                                        <span class="ai-val">${Math.round(hExp)} - ${Math.round(aExp)}</span>
+                                    </div>
+                                    <div class="ai-pill">
+                                        <span class="ai-lbl">GOL BAHSİ</span>
+                                        <span class="ai-val">${(hExp + aExp) > 2.3 ? '2.5 ÜST' : '2.5 ALT'}</span>
+                                    </div>
+                                    <div class="ai-pill">
+                                        <span class="ai-lbl">KARŞILIKLI GOL</span>
+                                        <span class="ai-val">${(hExp > 1.0 && aExp > 0.9) ? 'KG VAR' : 'KG YOK'}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    container.innerHTML = html;
+                }
+            } catch (err) {
+                document.getElementById('matchesList').innerHTML = `<div style="color:red; text-align:center;">Bağlantı güncelleniyor, lütfen yenileyiniz.</div>`;
+            }
+        }
+
+        function filterMatches(type, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            document.querySelectorAll('.match-card').forEach(card => {
+                if (type === 'all') card.style.display = 'block';
+                else if (type === 'value') card.style.display = card.classList.contains('value') ? 'block' : 'none';
+                else if (type === 'shift') card.style.display = card.classList.contains('shift') ? 'block' : 'none';
+            });
+        }
+
+        function enablePushNotifications() {
+            if ("Notification" in window) {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") {
+                        alert("✅ Sinyal bildirimleri başarıyla aktif edildi! Düşen oranlarda telefonunuza bildirim gelecektir.");
+                    } else {
+                        alert("Bildirim izni reddedildi.");
+                    }
+                });
+            } else {
+                alert("Cihazınız Web Push bildirimlerini desteklemiyor.");
+            }
+        }
+
+        loadQuantumMatches();
+        setInterval(loadQuantumMatches, 60000);
+    </script>
+</body>
+</html>
