@@ -106,7 +106,7 @@
         .teams-container { display: flex; justify-content: space-between; align-items: center; margin: 10px 0; }
         .team-name { font-size: 14px; font-weight: 700; color: #fff; width: 42%; }
         .team-name.right { text-align: right; }
-        .score-pill { background: #0b1120; border: 1px solid var(--border-card); padding: 4px 10px; border-radius: 8px; color: var(--accent-green); font-weight: 800; font-size: 13px; }
+        .score-pill { background: #0b1120; border: 1px solid var(--border-card); padding: 4px 10px; border-radius: 8px; color: var(--accent-cyan); font-weight: 800; font-size: 12px; }
 
         .ai-prediction-box {
             background: rgba(129, 140, 248, 0.1);
@@ -174,7 +174,7 @@
 
     <div class="hero-banner">
         <h1 class="hero-title">Canlı & <span>Yapay Zeka</span> Dev Bülten</h1>
-        <p class="hero-subtitle">Dünya Ligleri, Uluslar Ligi & Spor Toto</p>
+        <p class="hero-subtitle">Bilyoner Spor Toto Özel Fikstürü</p>
     </div>
 
     <div class="controls-section">
@@ -182,8 +182,7 @@
         <div class="tabs-wrapper">
             <button class="tab-chip active" onclick="setFilter('all', this)">Tüm Bülten</button>
             <button class="tab-chip" onclick="setFilter('live', this)">🔴 Canlı Maçlar</button>
-            <button class="tab-chip" onclick="setFilter('nations', this)">🇪🇺 UEFA Uluslar Ligi</button>
-            <button class="tab-chip" onclick="setFilter('toto', this)">🎯 Spor Toto</button>
+            <button class="tab-chip" onclick="setFilter('toto', this)">🎯 Spor Toto Bülteni</button>
         </div>
     </div>
 
@@ -194,26 +193,33 @@
             <div style="font-size: 11px; color: var(--text-secondary);" id="slipCount">0 Maç Seçildi</div>
             <div class="slip-odds-total">Oran: <span id="slipTotal">1.00</span></div>
         </div>
-        <button class="btn-confirm" onclick="alert('Kupon başarıyla onaylandı ve sisteme kaydedildi!')">KUPONU ONAYLA</button>
+        <button class="btn-confirm" onclick="alert('Spor Toto kuponunuz başarıyla kaydedildi!')">KUPONU ONAYLA</button>
     </div>
 
     <script>
         const matchesData = [
+            // Canlı Maçlar Örnekleri
             { id: 1, league: "Ukrayna Premier Lig", home: "Oleksandriya", away: "Yarud Mariupol", score: "1 - 1", isLive: true, category: "live", odds: { ms1: "1.13", msX: "3.97", ms2: "13.65" }, ai: "MS 1 (%82) / KG Var" },
             { id: 2, league: "İspanya La Liga 2", home: "Real Valladolid", away: "Cordoba", score: "3 - 1", isLive: true, category: "live", odds: { ms1: "1.02", msX: "8.50", ms2: "22.0" }, ai: "MS 1 (%96)" },
-            { id: 3, league: "Hollanda 1. Lig", home: "De Graafschap", away: "Den Bosch", score: "1 - 0", isLive: true, category: "live", odds: { ms1: "1.45", msX: "3.80", ms2: "5.20" }, ai: "Poisson: %65 - %20 -> MS 1" },
-            { id: 4, league: "Norveç 2. Lig", home: "FK Eik-Toensberg", away: "Bjarg", score: "0 - 1", isLive: true, category: "live", odds: { ms1: "18.15", msX: "4.89", ms2: "1.12" }, ai: "MS 2 (%89)" },
-            { id: 5, league: "İtalya Serie C", home: "AS Ostia Mare", away: "Forli FC", score: "0 - 1", isLive: true, category: "live", odds: { ms1: "8.60", msX: "3.10", ms2: "1.29" }, ai: "MS 2 (%78)" },
-            { id: 6, league: "İtalya Serie C", home: "Ravenna FBC", away: "AS Gubbio", score: "2 - 0", isLive: true, category: "live", odds: { ms1: "1.20", msX: "4.50", ms2: "8.10" }, ai: "MS 1 (%85)" },
-            { id: 7, league: "UEFA Uluslar Ligi", home: "Danimarka", away: "Galler", score: "VS", isLive: false, category: "nations", odds: { ms1: "1.23", msX: "4.60", ms2: "6.97" }, ai: "MS 1 (%81) / 2.5 Üst" },
-            { id: 8, league: "UEFA Uluslar Ligi", home: "Sırbistan", away: "Hollanda", score: "VS", isLive: false, category: "nations", odds: { ms1: "6.29", msX: "4.58", ms2: "1.25" }, ai: "MS 2 (%88) / KG Var" },
-            { id: 9, league: "UEFA Uluslar Ligi", home: "Almanya", away: "Yunanistan", score: "VS", isLive: false, category: "nations", odds: { ms1: "1.27", msX: "4.55", ms2: "5.87" }, ai: "MS 1 (%84)" },
-            { id: 10, league: "UEFA Uluslar Ligi", home: "Türkiye", away: "İtalya", score: "VS", isLive: false, category: "nations", odds: { ms1: "2.33", msX: "3.10", ms2: "2.35" }, ai: "Poisson: %41 - %29 -> MS 1X" },
-            { id: 11, league: "🎯 SPOR TOTO", home: "Belçika", away: "Türkiye", score: "VS", isLive: false, category: "toto", odds: { ms1: "1.45", msX: "3.80", ms2: "4.20" }, ai: "Poisson: %66 - %19 -> MS 1" },
-            { id: 12, league: "🎯 SPOR TOTO", home: "İtalya", away: "Türkiye", score: "VS", isLive: false, category: "toto", odds: { ms1: "2.20", msX: "3.10", ms2: "2.50" }, ai: "Poisson: %37 - %37 -> MS 1X" },
-            { id: 13, league: "🎯 SPOR TOTO", home: "Bosna Hersek", away: "İsveç", score: "VS", isLive: false, category: "toto", odds: { ms1: "3.80", msX: "3.20", ms2: "1.65" }, ai: "Poisson: %15 - %74 -> MS 2" },
-            { id: 14, league: "🎯 SPOR TOTO", home: "Fransa", away: "İtalya", score: "VS", isLive: false, category: "toto", odds: { ms1: "1.30", msX: "4.20", ms2: "6.50" }, ai: "Poisson: %85 - %11 -> MS 1" },
-            { id: 15, league: "🎯 SPOR TOTO", home: "Macaristan", away: "Gürcistan", score: "VS", isLive: false, category: "toto", odds: { ms1: "1.85", msX: "3.20", ms2: "3.40" }, ai: "Poisson: %50 - %37 -> MS 1" }
+            { id: 3, league: "Norveç 2. Lig", home: "FK Eik-Toensberg", away: "Bjarg", score: "0 - 1", isLive: true, category: "live", odds: { ms1: "18.15", msX: "4.89", ms2: "1.12" }, ai: "MS 2 (%89)" },
+            { id: 4, league: "İtalya Serie C", home: "AS Ostia Mare", away: "Forli FC", score: "0 - 1", isLive: true, category: "live", odds: { ms1: "8.60", msX: "3.10", ms2: "1.29" }, ai: "MS 2 (%78)" },
+
+            // Spor Toto Listesi (Görseldeki Fikstür)
+            { id: 101, league: "🎯 SPOR TOTO • 02 Eki 21:45", home: "Belçika", away: "Türkiye", score: "02 Eki", isLive: false, category: "toto", odds: { ms1: "2.10", msX: "3.20", ms2: "3.10" }, ai: "Poisson: %42 - %32 - %26 -> MS 1X" },
+            { id: 102, league: "🎯 SPOR TOTO • 05 Eki 21:45", home: "İtalya", away: "Türkiye", score: "05 Eki", isLive: false, category: "toto", odds: { ms1: "1.85", msX: "3.30", ms2: "3.90" }, ai: "Poisson: %50 - %30 - %20 -> MS 1" },
+            { id: 103, league: "🎯 SPOR TOTO • 02 Eki 21:45", home: "Bosna Hersek", away: "İsveç", score: "02 Eki", isLive: false, category: "toto", odds: { ms1: "2.90", msX: "3.10", ms2: "2.35" }, ai: "Poisson: %30 - %33 - %37 -> MS X2" },
+            { id: 104, league: "🎯 SPOR TOTO • 02 Eki 21:45", home: "Fransa", away: "İtalya", score: "02 Eki", isLive: false, category: "toto", odds: { ms1: "1.75", msX: "3.40", ms2: "4.20" }, ai: "Poisson: %55 - %28 - %17 -> MS 1" },
+            { id: 105, league: "🎯 SPOR TOTO • 02 Eki 21:45", home: "Macaristan", away: "Gürcistan", score: "02 Eki", isLive: false, category: "toto", odds: { ms1: "1.65", msX: "3.50", ms2: "4.80" }, ai: "Poisson: %60 - %25 - %15 -> MS 1" },
+            { id: 106, league: "🎯 SPOR TOTO • 02 Eki 21:45", home: "Polonya", away: "Romanya", score: "02 Eki", isLive: false, category: "toto", odds: { ms1: "1.95", msX: "3.20", ms2: "3.60" }, ai: "Poisson: %48 - %30 - %22 -> MS 1" },
+            { id: 107, league: "🎯 SPOR TOTO • 03 Eki 19:00", home: "Hırvatistan", away: "İngiltere", score: "03 Eki", isLive: false, category: "toto", odds: { ms1: "2.80", msX: "3.10", ms2: "2.40" }, ai: "Poisson: %32 - %32 - %36 -> MS X2" },
+            { id: 108, league: "🎯 SPOR TOTO • 03 Eki 21:45", home: "Kuzey Makedonya", away: "İskoçya", score: "03 Eki", isLive: false, category: "toto", odds: { ms1: "3.10", msX: "3.10", ms2: "2.25" }, ai: "Poisson: %28 - %33 - %39 -> MS 2" },
+            { id: 109, league: "🎯 SPOR TOTO • 03 Eki 21:45", home: "İspanya", away: "Çekya", score: "03 Eki", isLive: false, category: "toto", odds: { ms1: "1.30", msX: "4.80", ms2: "8.50" }, ai: "Poisson: %75 - %18 - %07 -> MS 1" },
+            { id: 110, league: "🎯 SPOR TOTO • 03 Eki 21:45", home: "İsviçre", away: "Slovenya", score: "03 Eki", isLive: false, category: "toto", odds: { ms1: "1.55", msX: "3.60", ms2: "5.50" }, ai: "Poisson: %62 - %24 - %14 -> MS 1" },
+            { id: 111, league: "🎯 SPOR TOTO • 04 Eki 21:45", home: "Galler", away: "Danimarka", score: "04 Eki", isLive: false, category: "toto", odds: { ms1: "2.70", msX: "3.10", ms2: "2.55" }, ai: "Poisson: %34 - %32 - %34 -> MS 1X" },
+            { id: 112, league: "🎯 SPOR TOTO • 04 Eki 21:45", home: "Hollanda", away: "Sırbistan", score: "04 Eki", isLive: false, category: "toto", odds: { ms1: "1.60", msX: "3.60", ms2: "5.00" }, ai: "Poisson: %60 - %25 - %15 -> MS 1" },
+            { id: 113, league: "🎯 SPOR TOTO • 04 Eki 21:45", home: "Portekiz", away: "Norveç", score: "04 Eki", isLive: false, category: "toto", odds: { ms1: "1.45", msX: "4.00", ms2: "6.20" }, ai: "Poisson: %68 - %21 - %11 -> MS 1" },
+            { id: 114, league: "🎯 SPOR TOTO • 04 Eki 21:45", home: "Yunanistan", away: "Almanya", score: "04 Eki", isLive: false, category: "toto", odds: { ms1: "4.50", msX: "3.60", ms2: "1.70" }, ai: "Poisson: %18 - %27 - %55 -> MS 2" },
+            { id: 115, league: "🎯 SPOR TOTO • 05 Eki 21:45", home: "Fransa", away: "Belçika", score: "05 Eki", isLive: false, category: "toto", odds: { ms1: "1.90", msX: "3.25", ms2: "3.80" }, ai: "Poisson: %49 - %31 - %20 -> MS 1" }
         ];
 
         let currentFilter = 'all';
@@ -234,13 +240,12 @@
             let filtered = matchesData.filter(m => {
                 const matchQuery = m.home.toLowerCase().includes(query) || m.away.toLowerCase().includes(query) || m.league.toLowerCase().includes(query);
                 if (currentFilter === 'live') return matchQuery && m.isLive;
-                if (currentFilter === 'nations') return matchQuery && m.category === 'nations';
                 if (currentFilter === 'toto') return matchQuery && m.category === 'toto';
                 return matchQuery;
             });
 
             if (filtered.length === 0) {
-                container.innerHTML = `<div style="text-align:center; padding: 30px; color: var(--text-secondary);">Maç bulunamadı.</div>`;
+                container.innerHTML = `<div style="text-align:center; padding: 30px; color: var(--text-secondary);">Eşleşen maç bulunamadı.</div>`;
                 return;
             }
 
@@ -250,7 +255,7 @@
                 card.innerHTML = `
                     <div class="card-header">
                         <span class="league-title">${m.league}</span>
-                        <span class="${m.isLive ? 'tag-live' : 'tag-code'}">${m.isLive ? 'CANLI' : 'BÜLTEN'}</span>
+                        <span class="${m.isLive ? 'tag-live' : 'tag-code'}">${m.isLive ? 'CANLI' : 'TOTO'}</span>
                     </div>
                     <div class="teams-container">
                         <span class="team-name">${m.home}</span>
