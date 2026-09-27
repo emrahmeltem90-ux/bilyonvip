@@ -1,144 +1,66 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SKORTAHMİN | UEFA Uluslar Ligi Bülteni</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-main: #070d0b;
-            --bg-card: #0e1814;
-            --border-card: rgba(34, 197, 94, 0.15);
-            --accent-green: #10b981;
-            --accent-gold: #fbbf24;
-            --text-primary: #ecfdf5;
-            --text-secondary: #6ee7b7;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', sans-serif; }
-        body { background-color: var(--bg-main); color: var(--text-primary); padding-bottom: 90px; }
-
-        .top-navbar {
-            background: rgba(7, 13, 11, 0.95);
-            padding: 14px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid var(--border-card);
-            position: sticky; top: 0; z-index: 100;
-        }
-        .brand { font-weight: 900; font-size: 18px; color: #fff; }
-        .brand span { background: var(--accent-green); color: #03110a; padding: 2px 6px; border-radius: 4px; }
-
-        .hero-banner { padding: 20px; background: linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, transparent 100%); border-bottom: 1px solid var(--border-card); }
-        .hero-title { font-size: 20px; font-weight: 900; }
-        .hero-subtitle { font-size: 11px; color: #94a3b8; margin-top: 4px; }
-
-        .section-title { font-size: 12px; font-weight: 800; color: #94a3b8; padding: 15px 20px 8px 20px; text-transform: uppercase; }
-        .feed { padding: 0 20px; display: flex; flex-direction: column; gap: 10px; }
-
-        .match-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-card);
-            border-radius: 12px;
-            padding: 12px 14px;
-            cursor: pointer;
-            transition: 0.15s;
-        }
-        .match-card:hover { border-color: var(--accent-green); }
-        .match-header { display: flex; justify-content: space-between; font-size: 10px; color: #94a3b8; margin-bottom: 8px; font-weight: 600; }
-        .match-teams { display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 13px; margin-bottom: 10px; color: #fff; }
-        .match-score-time { background: #040807; border: 1px solid var(--border-card); padding: 3px 8px; border-radius: 6px; font-size: 11px; color: var(--accent-green); font-weight: 800; }
-
-        .ai-bar {
-            background: rgba(16, 185, 129, 0.05);
-            border: 1px dashed rgba(16, 185, 129, 0.2);
-            border-radius: 6px;
-            padding: 7px 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 11px;
-        }
-        .ai-val { color: var(--accent-green); font-weight: 800; }
-
-        /* Modal */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.85);
-            display: none; justify-content: center; align-items: flex-end; z-index: 500;
-        }
-        .modal-content {
-            background: var(--bg-card);
-            border-top: 2px solid var(--accent-green);
-            width: 100%; max-height: 85vh;
-            border-radius: 20px 20px 0 0; padding: 20px; overflow-y: auto;
-        }
-        .matrix-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0; }
-        .matrix-box { background: #040807; border: 1px solid var(--border-card); padding: 10px; text-align: center; border-radius: 8px; }
-        .matrix-score { font-size: 15px; font-weight: 900; color: #fff; }
-        .matrix-prob { font-size: 10px; color: var(--accent-green); font-weight: 700; }
-    </style>
-</head>
-<body>
-
-    <div class="top-navbar">
-        <div class="brand">SKOR <span>TAHMİN</span></div>
-        <div style="font-size: 14px; color: var(--text-secondary);">⚙️ 👤</div>
-    </div>
-
-    <div class="hero-banner">
-        <div class="hero-title">UEFA Uluslar Ligi Bülteni</div>
-        <div class="hero-subtitle">Ekim 2026 Resmi Fikstürü ve Poisson Tahmin Matrisleri</div>
-    </div>
-
-    <div class="section-title">Günün Programı</div>
-    <div class="feed" id="matchFeed"></div>
-
-    <div id="matchModal" class="modal-overlay" onclick="closeModal(event)">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                <span style="font-size:11px; color:#94a3b8; font-weight:700;" id="modalLeague">LİG</span>
-                <span style="cursor:pointer; color:#fff; font-weight:800; font-size:12px;" onclick="closeModalForce()">✕ Kapat</span>
-            </div>
-            <h2 style="font-size:16px; margin-bottom:12px; text-align:center; color:#fff;" id="modalTeams">Takım vs Takım</h2>
-            <div class="ai-bar" style="margin-bottom:12px;">
-                <span style="color:#6ee7b7; font-weight:700;">📊 Poisson Model Analizi</span>
-                <span class="ai-val" id="modalConfidence">%89 Güven</span>
-            </div>
-            <div style="font-size:11px; font-weight:800; color:#94a3b8; margin-bottom:6px;">EN OLASI 3 SKOR MATRİSİ</div>
-            <div class="matrix-grid" id="modalMatrix"></div>
-        </div>
-    </div>
-
     <script>
-        const uefaMatches = [
-            { league: "UEFA Uluslar Ligi • Grup N", home: "Azerbaycan", away: "Lihtenştayn", time: "01.10 - 19:00", score: "VS", ai: "Poisson: %68 MS 1 (Güven: %87)", matrix: ["2-0", "1-0", "3-0"] },
-            { league: "UEFA Uluslar Ligi • Grup G", home: "İsrail", away: "Kosova", time: "01.10 - 21:45", score: "VS", ai: "Poisson: %52 MS X (Güven: %79)", matrix: ["1-1", "1-0", "0-1"] },
-            { league: "UEFA Uluslar Ligi • Grup B", home: "Yunanistan", away: "Hollanda", time: "01.10 - 21:45", score: "VS", ai: "Poisson: %45 MS 2 (Güven: %82)", matrix: ["0-1", "1-2", "1-1"] },
-            { league: "UEFA Uluslar Ligi • Grup B", home: "Almanya", away: "Sırbistan", time: "01.10 - 21:45", score: "VS", ai: "Poisson: %74 MS 1 (Güven: %91)", matrix: ["2-0", "3-1", "2-1"] },
-            { league: "UEFA Uluslar Ligi • Grup A", home: "Belçika", away: "Türkiye", time: "02.10 - 21:45", score: "VS", ai: "Poisson: %58 MS X (Güven: %85)", matrix: ["1-1", "2-1", "1-2"] },
-            { league: "UEFA Uluslar Ligi • Grup A", home: "Fransa", away: "İtalya", time: "02.10 - 21:45", score: "VS", ai: "Poisson: %61 MS 1 (Güven: %88)", matrix: ["1-0", "2-1", "2-0"] }
-        ];
+        async function fetchAndRenderMatches() {
+            const feed = document.getElementById('matchFeed');
+            feed.innerHTML = "<div style='text-align:center; color:#94a3b8; padding:20px;'>Bülten yükleniyor...</div>";
 
-        function renderMatches() {
+            try {
+                // Doğrudan GitHub'daki güncel matches.json dosyasından veriyi çekiyoruz
+                const response = await fetch('matches.json?t=' + new Date().getTime());
+                if (!response.ok) throw new Error('Veri yüklenemedi');
+                
+                const data = await response.json();
+                renderMatches(data.matches);
+            } catch (error) {
+                console.error("Hata:", error);
+                feed.innerHTML = "<div style='text-align:center; color:#ef4444; padding:20px;'>Bülten yüklenirken bir hata oluştu.</div>";
+            }
+        }
+
+        function renderMatches(matches) {
             const feed = document.getElementById('matchFeed');
             feed.innerHTML = "";
-            uefaMatches.forEach((m) => {
+            
+            if (!matches || matches.length === 0) {
+                feed.innerHTML = "<div style='text-align:center; color:#94a3b8; padding:20px;'>Aktif maç bulunamadı.</div>";
+                return;
+            }
+
+            matches.forEach((m) => {
+                // Hem eski format (home/away) hem yeni format (home_team/away_team) uyumluluğu
+                const home = m.home_team || m.home || "Ev Sahibi";
+                const away = m.away_team || m.away || "Deplasman";
+                const score = m.score || "VS";
+                const time = m.time || m.date || "";
+                const league = m.league || "Lig";
+                
+                // Poisson veri yapısı kontrolü
+                let aiText = "";
+                if (typeof m.ai === 'string') {
+                    aiText = m.ai;
+                } else if (m.poisson) {
+                    aiText = `Poisson: ${m.poisson.rate} ${m.poisson.prediction} (Güven: ${m.poisson.confidence})`;
+                } else {
+                    aiText = "Poisson analizi hazırlanıyor";
+                }
+
+                // Matris verisi yoksa varsayılan atayalım
+                const matrix = m.matrix || ["1-0", "2-0", "1-1"];
+
+                const matchObj = { league, home, away, time, score, ai: aiText, matrix };
+
                 feed.innerHTML += `
-                    <div class="match-card" onclick='openModal(${JSON.stringify(m)})'>
+                    <div class="match-card" onclick='openModal(${JSON.stringify(matchObj)})'>
                         <div class="match-header">
-                            <span>${m.league}</span>
-                            <span>${m.time} 🔍 Matris</span>
+                            <span>${league}</span>
+                            <span>${time} 🔍 Matris</span>
                         </div>
                         <div class="match-teams">
-                            <span>${m.home}</span>
-                            <span class="match-score-time">${m.score}</span>
-                            <span style="text-align:right;">${m.away}</span>
+                            <span>${home}</span>
+                            <span class="match-score-time">${score}</span>
+                            <span style="text-align:right;">${away}</span>
                         </div>
                         <div class="ai-bar">
-                            <span style="color:#6ee7b7; font-weight:700;">⚡ ${m.ai}</span>
+                            <span style="color:#6ee7b7; font-weight:700;">⚡ ${aiText}</span>
                             <span class="ai-val">İncele ></span>
                         </div>
                     </div>
@@ -165,13 +87,12 @@
         }
 
         function closeModal(e) {
-            if(e.target.id === 'matchModal') document.getElementById('matchModal').style.display = 'none';
+            if(e.target.id === 'modalMatchModal' || e.target.id === 'matchModal') document.getElementById('matchModal').style.display = 'none';
         }
         function closeModalForce() {
             document.getElementById('matchModal').style.display = 'none';
         }
 
-        renderMatches();
+        // Sayfa açıldığında JSON'dan verileri çek
+        fetchAndRenderMatches();
     </script>
-</body>
-</html>
