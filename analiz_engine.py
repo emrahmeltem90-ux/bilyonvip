@@ -4,6 +4,7 @@ import random
 import json
 import ssl
 import urllib.request
+from datetime import datetime
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
 class MonteCarloEngine:
@@ -66,27 +67,38 @@ class MonteCarloEngine:
     def fetch_live_fixtures(self):
         matches = []
         ssl_ctx = ssl._create_unverified_context()
+        today_str = datetime.now().strftime("%Y%m%d")
+        
+        # Günlük tüm ligleri ve maçları çeken 1000 limitli endpoint
         urls = [
-            "https://site.api.espn.com/apis/site/v2/sports/soccer/all/scoreboard",
-            "https://site.api.espn.com/apis/site/v2/sports/soccer/tur.1/scoreboard"
+            f"https://site.api.espn.com/apis/site/v2/sports/soccer/all/scoreboard?dates={today_str}&limit=1000",
+            "https://site.api.espn.com/apis/site/v2/sports/soccer/tur.1/scoreboard",
+            "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard",
+            "https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/scoreboard",
+            "https://site.api.espn.com/apis/site/v2/sports/soccer/ita.1/scoreboard",
+            "https://site.api.espn.com/apis/site/v2/sports/soccer/ger.1/scoreboard"
         ]
         headers = {'User-Agent': 'Mozilla/5.0'}
 
         for url in urls:
             try:
                 req = urllib.request.Request(url, headers=headers)
-                with urllib.request.urlopen(req, timeout=4, context=ssl_ctx) as resp:
+                with urllib.request.urlopen(req, timeout=5, context=ssl_ctx) as resp:
                     data = json.loads(resp.read().decode('utf-8'))
                     for event in data.get('events', []):
                         comp = event['competitions'][0]['competitors']
-                        home_t = next(c['team'].get('displayName', c['team'].get('name')) for c in comp if c['homeAway'] == 'home')
-                        away_t = next(c['team'].get('displayName', c['team'].get('name')) for c in comp if c['homeAway'] == 'away')
+                        home_t = next((c['team'].get('displayName', c['team'].get('name')) for c in comp if c['homeAway'] == 'home'), None)
+                        away_t = next((c['team'].get('displayName', c['team'].get('name')) for c in comp if c['homeAway'] == 'away'), None)
 
+                        if not home_t or not away_t:
+                            continue
+
+                        # Çift kayıt oluşmasını engelle
                         if any(m['home'] == home_t and m['away'] == away_t for m in matches):
                             continue
 
-                        h_xg = round(random.uniform(1.2, 2.3), 2)
-                        a_xg = round(random.uniform(0.8, 1.7), 2)
+                        h_xg = round(random.uniform(1.10, 2.45), 2)
+                        a_xg = round(random.uniform(0.75, 1.95), 2)
                         sim = self.run_simulation(h_xg, a_xg)
 
                         matches.append({
