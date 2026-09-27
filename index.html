@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BİLYONVIP | Otomatik Bulten & YZ Tahminleri</title>
+    <title>BİLYONVIP | Canlı Dev Bülten & YZ Tahminleri</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -187,142 +187,18 @@
     </div>
 
     <div class="hero-banner">
-        <h1 class="hero-title">Canlı & <span>Yapay Zeka</span> Bülteni</h1>
-        <p class="hero-subtitle">UEFA Uluslar Ligi, Ulusal Maçlar & Spor Toto</p>
+        <h1 class="hero-title">Canlı & <span>Yapay Zeka</span> Dev Bülten</h1>
+        <p class="hero-subtitle">Dünya Ligleri, Uluslar Ligi & Spor Toto</p>
     </div>
 
     <div class="controls-section">
-        <input type="text" id="searchInput" class="search-input" placeholder="Takım, lig veya Spor Toto arayın..." oninput="renderMatches()">
+        <input type="text" id="searchInput" class="search-input" placeholder="Takım, lig veya maç arayın..." oninput="renderMatches()">
         <div class="tabs-wrapper">
             <button class="tab-chip active" onclick="setFilter('all', this)">Tüm Bülten</button>
+            <button class="tab-chip" onclick="setFilter('live', this)">🔴 Canlı Maçlar</button>
             <button class="tab-chip" onclick="setFilter('nations', this)">🇪🇺 UEFA Uluslar Ligi</button>
-            <button class="tab-chip" onclick="setFilter('toto', this)">🎯 Spor Toto 15 Maç</button>
-            <button class="tab-chip" onclick="setFilter('live', this)">🔴 Canlı</button>
+            <button class="tab-chip" onclick="setFilter('toto', this)">🎯 Spor Toto</button>
         </div>
     </div>
 
-    <div id="status-msg" style="text-align:center; font-size:12px; color:var(--text-secondary); margin-bottom:10px;">Yükleniyor...</div>
-    <div id="bulten" class="matches-feed"></div>
-
-    <div class="slip-bar">
-        <div>
-            <div style="font-size: 11px; color: var(--text-secondary);" id="slipCount">0 Maç Seçildi</div>
-            <div class="slip-odds-total">Oran: <span id="slipTotal">1.00</span></div>
-        </div>
-        <button class="btn-confirm" onclick="alert('Kupon onaylandı!')">KUPONU ONAYLA</button>
-    </div>
-
-    <script>
-        let allMatches = [];
-        let currentFilter = 'all';
-        let selectedBets = {};
-
-        const customNationalAndToto = [
-            { id: 901, league: "UEFA Uluslar Ligi", home: "Danimarka", away: "Galler", score: "VS", isLive: false, category: "nations", odds: { ms1: "1.23", msX: "4.60", ms2: "6.97" }, ai: "MS 1 (%81) / 2.5 Üst" },
-            { id: 902, league: "UEFA Uluslar Ligi", home: "Sırbistan", away: "Hollanda", score: "VS", isLive: false, category: "nations", odds: { ms1: "6.29", msX: "4.58", ms2: "1.25" }, ai: "MS 2 (%88) / KG Var" },
-            { id: 903, league: "UEFA Uluslar Ligi", home: "Almanya", away: "Yunanistan", score: "VS", isLive: false, category: "nations", odds: { ms1: "1.27", msX: "4.55", ms2: "5.87" }, ai: "MS 1 (%84)" },
-            { id: 904, league: "UEFA Uluslar Ligi", home: "Türkiye", away: "İtalya", score: "VS", isLive: false, category: "nations", odds: { ms1: "2.33", msX: "3.10", ms2: "2.35" }, ai: "Poisson: %41 - %29 - %30 -> MS 1X" },
-            
-            { id: 801, league: "🎯 SPOR TOTO - Maç 1", home: "Belçika", away: "Türkiye", score: "VS", isLive: false, category: "toto", odds: { ms1: "1.45", msX: "3.80", ms2: "4.20" }, ai: "Poisson: %66 - %19 - %16 -> MS 1" },
-            { id: 802, league: "🎯 SPOR TOTO - Maç 2", home: "İtalya", away: "Türkiye", score: "VS", isLive: false, category: "toto", odds: { ms1: "2.20", msX: "3.10", ms2: "2.50" }, ai: "Poisson: %37 - %37 - %26 -> MS 1X" },
-            { id: 803, league: "🎯 SPOR TOTO - Maç 3", home: "Bosna Hersek", away: "İsveç", score: "VS", isLive: false, category: "toto", odds: { ms1: "3.80", msX: "3.20", ms2: "1.65" }, ai: "Poisson: %15 - %11 - %74 -> MS 2" },
-            { id: 804, league: "🎯 SPOR TOTO - Maç 4", home: "Fransa", away: "İtalya", score: "VS", isLive: false, category: "toto", odds: { ms1: "1.30", msX: "4.20", ms2: "6.50" }, ai: "Poisson: %85 - %11 - %04 -> MS 1" },
-            { id: 805, league: "🎯 SPOR TOTO - Maç 5", home: "Macaristan", away: "Gürcistan", score: "VS", isLive: false, category: "toto", odds: { ms1: "1.85", msX: "3.20", ms2: "3.40" }, ai: "Poisson: %50 - %37 - %13 -> MS 1" }
-        ];
-
-        async function initDashboard() {
-            const statusEl = document.getElementById('status-msg');
-            statusEl.innerText = "Bülten ve Poisson YZ Analizleri Yüklendi.";
-            allMatches = [...customNationalAndToto];
-            statusEl.innerText = "";
-            renderMatches();
-        }
-
-        function setFilter(type, el) {
-            currentFilter = type;
-            document.querySelectorAll('.tab-chip').forEach(c => c.classList.remove('active'));
-            el.classList.add('active');
-            renderMatches();
-        }
-
-        function renderMatches() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const container = document.getElementById('bulten');
-            container.innerHTML = "";
-
-            let filtered = allMatches.filter(m => {
-                const matchQuery = m.home.toLowerCase().includes(query) || m.away.toLowerCase().includes(query) || m.league.toLowerCase().includes(query);
-                if (currentFilter === 'nations') return matchQuery && m.category === 'nations';
-                if (currentFilter === 'toto') return matchQuery && m.category === 'toto';
-                if (currentFilter === 'live') return matchQuery && m.isLive;
-                return matchQuery;
-            });
-
-            if (filtered.length === 0) {
-                container.innerHTML = `<div style="text-align:center; padding: 30px; color: var(--text-secondary);">Bu kategoride maç bulunamadı.</div>`;
-                return;
-            }
-
-            filtered.forEach(m => {
-                const card = document.createElement('div');
-                card.className = 'match-card';
-                card.innerHTML = `
-                    <div class="card-header">
-                        <span class="league-title">${m.league}</span>
-                        <span class="${m.isLive ? 'tag-live' : 'tag-code'}">${m.isLive ? 'CANLI' : 'BÜLTEN'}</span>
-                    </div>
-                    <div class="teams-container">
-                        <span class="team-name">${m.home}</span>
-                        <span class="score-pill">${m.score}</span>
-                        <span class="team-name right">${m.away}</span>
-                    </div>
-                    <div class="ai-prediction-box">
-                        <span class="ai-tag">⚡ YZ Poisson Analizi:</span>
-                        <span class="ai-val">${m.ai}</span>
-                    </div>
-                    <div class="odds-row">
-                        <div class="odd-tile ${isSelected(m.id, '1')}" onclick="toggleBet(${m.id}, '1', '${m.odds.ms1}')">
-                            <span class="o-label">MS 1</span>
-                            <span class="o-val">${m.odds.ms1}</span>
-                        </div>
-                        <div class="odd-tile ${isSelected(m.id, 'X')}" onclick="toggleBet(${m.id}, 'X', '${m.odds.msX}')">
-                            <span class="o-label">MS X</span>
-                            <span class="o-val">${m.odds.msX}</span>
-                        </div>
-                        <div class="odd-tile ${isSelected(m.id, '2')}" onclick="toggleBet(${m.id}, '2', '${m.odds.ms2}')">
-                            <span class="o-label">MS 2</span>
-                            <span class="o-val">${m.odds.ms2}</span>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function toggleBet(id, type, val) {
-            if (selectedBets[id] && selectedBets[id].type === type) {
-                delete selectedBets[id];
-            } else {
-                selectedBets[id] = { type, val: parseFloat(val) };
-            }
-            renderMatches();
-            updateSlipUI();
-        }
-
-        function isSelected(id, type) {
-            return (selectedBets[id] && selectedBets[id].type === type) ? 'selected' : '';
-        }
-
-        function updateSlipUI() {
-            const keys = Object.keys(selectedBets);
-            document.getElementById('slipCount').innerText = `${keys.length} Maç Seçildi`;
-
-            let total = 1.0;
-            keys.forEach(k => { total *= selectedBets[k].val; });
-            document.getElementById('slipTotal').innerText = keys.length > 0 ? total.toFixed(2) : "1.00";
-        }
-
-        initDashboard();
-    </script>
-</body>
-</html>
+    <div
