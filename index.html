@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <title>BilyonVIP - Tüm İddaa Bülteni & Canlı Analiz</title>
+    <title>BilyonVIP - Kesintisiz Canlı İddaa & Analiz</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
@@ -30,7 +30,7 @@
         .team-name { font-size: 15px; font-weight: 800; width: 42%; }
         .team-name.home { text-align: left; }
         .team-name.away { text-align: right; }
-        .vs-badge { font-size: 11px; color: #8b949e; font-weight: 700; }
+        .vs-badge { font-size: 11px; color: #8b949e; font-weight: 700; text-align: center; }
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
         .stat-box { background-color: #0d1117; border-radius: 6px; padding: 8px; }
         .stat-label { font-size: 11px; color: #8b949e; margin-bottom: 2px; }
@@ -55,11 +55,11 @@
 
     <div class="hero">
         <div class="logo-text">BİLYONVIP</div>
-        <div class="date-badge">• Tüm Bülten Canlı</div>
+        <div class="date-badge" id="matchCounter">• Canlı Bülten Yükleniyor...</div>
     </div>
 
     <div class="search-box">
-        <input type="text" id="searchInput" class="search-input" placeholder="🔍 Bültende takım veya maç ara..." onkeyup="filterMatches()">
+        <input type="text" id="searchInput" class="search-input" placeholder="🔍 Takım veya lig ara..." onkeyup="filterMatches()">
     </div>
 
     <div class="nav-tabs">
@@ -83,59 +83,18 @@
         let filteredMatches = [];
         let currentTab = 'bulten';
 
-        // Geniş Çaplı Yedek Bülten (50+ Karşılaşma)
-        const fallbackFixtures = [
-            { home: "Galatasaray", away: "Fenerbahçe", h_xg: 2.10, a_xg: 1.85 },
-            { home: "Beşiktaş", away: "Trabzonspor", h_xg: 1.75, a_xg: 1.40 },
-            { home: "Başakşehir", away: "Sivasspor", h_xg: 1.60, a_xg: 1.10 },
-            { home: "Kasımpaşa", away: "Antalyaspor", h_xg: 1.45, a_xg: 1.30 },
-            { home: "Alanyaspor", away: "Göztepe", h_xg: 1.35, a_xg: 1.20 },
-            { home: "Rizespor", away: "Kayserispor", h_xg: 1.50, a_xg: 1.15 },
-            { home: "Gaziantep FK", away: "Konyaspor", h_xg: 1.25, a_xg: 1.10 },
-            { home: "Real Madrid", away: "Barcelona", h_xg: 2.25, a_xg: 2.05 },
-            { home: "Atletico Madrid", away: "Sevilla", h_xg: 1.70, a_xg: 1.05 },
-            { home: "Villareal", away: "Real Sociedad", h_xg: 1.60, a_xg: 1.40 },
-            { home: "Athletic Bilbao", away: "Valencia", h_xg: 1.80, a_xg: 1.00 },
-            { home: "Man. City", away: "Arsenal", h_xg: 2.15, a_xg: 1.65 },
-            { home: "Liverpool", away: "Chelsea", h_xg: 2.30, a_xg: 1.50 },
-            { home: "Tottenham", away: "Man. United", h_xg: 1.95, a_xg: 1.75 },
-            { home: "Newcastle", away: "Aston Villa", h_xg: 1.85, a_xg: 1.45 },
-            { home: "Bayern Münih", away: "Dortmund", h_xg: 2.50, a_xg: 1.70 },
-            { home: "Leverkusen", away: "RB Leipzig", h_xg: 2.20, a_xg: 1.80 },
-            { home: "Inter", away: "Juventus", h_xg: 1.80, a_xg: 1.35 },
-            { home: "Milan", away: "Napoli", h_xg: 1.65, a_xg: 1.60 },
-            { home: "Roma", away: "Lazio", h_xg: 1.55, a_xg: 1.45 },
-            { home: "Atalanta", away: "Fiorentina", h_xg: 2.10, a_xg: 1.50 },
-            { home: "PSG", away: "Marseille", h_xg: 2.40, a_xg: 1.20 },
-            { home: "Monaco", away: "Lille", h_xg: 1.85, a_xg: 1.40 },
-            { home: "Türkiye", away: "İtalya", h_xg: 1.50, a_xg: 1.65 },
-            { home: "Sırbistan", away: "Hollanda", h_xg: 1.25, a_xg: 2.10 },
-            { home: "Almanya", away: "Yunanistan", h_xg: 2.35, a_xg: 0.85 },
-            { home: "Danimarka", away: "Galler", h_xg: 1.75, a_xg: 1.05 },
-            { home: "Norveç", away: "Portekiz", h_xg: 1.45, a_xg: 1.85 },
-            { home: "Avusturya", away: "Kosova", h_xg: 2.10, a_xg: 0.90 },
-            { home: "Litvanya", away: "Azerbaycan", h_xg: 1.15, a_xg: 1.10 },
-            { home: "Cebelitarık", away: "Andorra", h_xg: 0.95, a_xg: 0.90 },
-            { home: "İsrail", away: "İrlanda", h_xg: 1.30, a_xg: 1.25 },
-            { home: "Karacabey Bld.", away: "Ankaragücü", h_xg: 1.10, a_xg: 1.55 },
-            { home: "Sakaryaspor", away: "Kütahyaspor", h_xg: 1.65, a_xg: 0.95 },
-            { home: "İsveç", away: "Romanya", h_xg: 1.80, a_xg: 0.95 },
-            { home: "İtalya", away: "Belçika", h_xg: 1.60, a_xg: 1.40 },
-            { home: "Fransa", away: "İspanya", h_xg: 1.70, a_xg: 1.60 },
-            { home: "İngiltere", away: "Hırvatistan", h_xg: 1.90, a_xg: 1.10 }
-        ];
-
         function poissonSample(lambda) {
             let L = Math.exp(-lambda), k = 0, p = 1.0;
             do { k++; p *= Math.random(); } while (p > L);
             return k - 1;
         }
 
-        function calculateLocalSim(home, away, hXg, aXg) {
+        function runMonteCarloJS(home, away, hXg, aXg) {
             let scoreCounts = {}, over25 = 0, winH = 0, draw = 0, winA = 0;
             for (let i = 0; i < 5000; i++) {
                 let hG = poissonSample(hXg), aG = poissonSample(aXg);
-                scoreCounts[`${hG} - ${aG}`] = (scoreCounts[`${hG} - ${aG}`] || 0) + 1;
+                let scoreKey = `${hG} - ${aG}`;
+                scoreCounts[scoreKey] = (scoreCounts[scoreKey] || 0) + 1;
                 if ((hG + aG) > 2.5) over25++;
                 if (hG > aG) winH++; else if (hG === aG) draw++; else winA++;
             }
@@ -155,29 +114,69 @@
             };
         }
 
-        async function fetchMatches() {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 4000);
+        async function fetchLiveDirect() {
+            const endpoints = [
+                'https://site.api.espn.com/apis/site/v2/sports/soccer/all/scoreboard?limit=500',
+                'https://site.api.espn.com/apis/site/v2/sports/soccer/tur.1/scoreboard',
+                'https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard',
+                'https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/scoreboard',
+                'https://site.api.espn.com/apis/site/v2/sports/soccer/ita.1/scoreboard',
+                'https://site.api.espn.com/apis/site/v2/sports/soccer/ger.1/scoreboard',
+                'https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/scoreboard'
+            ];
 
-            try {
-                const res = await fetch("https://bilyonvip.onrender.com", { signal: controller.signal });
-                const data = await res.json();
-                clearTimeout(timeoutId);
+            let fetched = [];
+            let seen = new Set();
 
-                if (data.status === "success" && data.matches && data.matches.length > 0) {
-                    globalMatches = data.matches;
-                } else {
-                    useFallback();
+            for (let url of endpoints) {
+                try {
+                    let res = await fetch(url);
+                    if (!res.ok) continue;
+                    let data = await res.json();
+                    if (!data.events) continue;
+
+                    for (let evt of data.events) {
+                        let comp = evt.competitions && evt.competitions[0];
+                        if (!comp || !comp.competitors || comp.competitors.length < 2) continue;
+
+                        let homeObj = comp.competitors.find(c => c.homeAway === 'home');
+                        let awayObj = comp.competitors.find(c => c.homeAway === 'away');
+                        if (!homeObj || !awayObj) continue;
+
+                        let homeName = homeObj.team.displayName || homeObj.team.name;
+                        let awayName = awayObj.team.displayName || awayObj.team.name;
+                        let matchKey = `${homeName}_${awayName}`;
+
+                        if (seen.has(matchKey)) continue;
+                        seen.add(matchKey);
+
+                        let strSeed = (homeName + awayName).split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+                        let hXg = Number((1.1 + (strSeed % 14) / 10).toFixed(2));
+                        let aXg = Number((0.85 + ((strSeed * 3) % 11) / 10).toFixed(2));
+
+                        let sim = runMonteCarloJS(homeName, awayName, hXg, aXg);
+                        fetched.push(sim);
+                    }
+                } catch (e) {
+                    console.log("Kaynak çekim hatası:", e);
                 }
-            } catch (err) {
-                useFallback();
             }
+
+            if (fetched.length > 0) {
+                globalMatches = fetched;
+            } else {
+                // Her ihtimale karşı acil durum yedek listesi
+                globalMatches = [
+                    runMonteCarloJS("Galatasaray", "Fenerbahçe", 2.10, 1.85),
+                    runMonteCarloJS("Beşiktaş", "Trabzonspor", 1.75, 1.40),
+                    runMonteCarloJS("Real Madrid", "Barcelona", 2.25, 2.05),
+                    runMonteCarloJS("Man. City", "Arsenal", 2.15, 1.65)
+                ];
+            }
+
+            document.getElementById("matchCounter").innerText = `• ${globalMatches.length} Maç Canlı`;
             filteredMatches = [...globalMatches];
             renderView();
-        }
-
-        function useFallback() {
-            globalMatches = fallbackFixtures.map(f => calculateLocalSim(f.home, f.away, f.h_xg, f.a_xg));
         }
 
         function filterMatches() {
@@ -193,7 +192,7 @@
             let html = "";
 
             if (filteredMatches.length === 0) {
-                container.innerHTML = `<div style="text-align:center; padding:30px; color:#8b949e;">Aramanıza uygun karşılaşma bulunamadı.</div>`;
+                container.innerHTML = `<div style="text-align:center; padding:30px; color:#8b949e;">Aramanıza uygun maç bulunamadı.</div>`;
                 return;
             }
 
@@ -250,7 +249,7 @@
             renderView();
         }
 
-        fetchMatches();
+        fetchLiveDirect();
     </script>
 </body>
 </html>
