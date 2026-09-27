@@ -27,7 +27,7 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
-            padding: 20px;
+            padding: 15px;
         }
 
         .container {
@@ -37,31 +37,29 @@
 
         header {
             text-align: center;
-            margin-bottom: 20px;
-            padding: 25px;
+            margin-bottom: 15px;
+            padding: 20px;
             background: var(--card-bg);
-            border-radius: 14px;
+            border-radius: 12px;
             border-bottom: 4px solid var(--accent-green);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
         header h1 {
-            font-size: 2rem;
+            font-size: 1.8rem;
             color: var(--accent-green);
-            margin-bottom: 5px;
-            letter-spacing: 1px;
+            margin-bottom: 4px;
         }
 
         header p {
             color: var(--text-muted);
-            font-size: 0.95rem;
+            font-size: 0.85rem;
         }
 
-        /* 3'lü Sekme Menüsü */
+        /* Sekme Menüsü */
         .tabs {
             display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
+            gap: 6px;
+            margin-bottom: 15px;
         }
 
         .tab-btn {
@@ -69,12 +67,11 @@
             background: var(--card-bg);
             color: var(--text-muted);
             border: 1px solid var(--border-color);
-            padding: 12px 8px;
-            font-size: 0.85rem;
+            padding: 10px 6px;
+            font-size: 0.8rem;
             font-weight: bold;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: 0.2s;
             text-align: center;
         }
 
@@ -92,26 +89,27 @@
             display: block;
         }
 
+        /* Kontrol Paneli - Mobilde taşmayı önlemek için alt alta tasarlandı */
         .control-panel {
             background: var(--card-bg);
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 12px;
             border: 1px solid var(--border-color);
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .control-group {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
 
         .control-group label {
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--text-main);
         }
 
@@ -123,47 +121,54 @@
             border-radius: 8px;
             font-size: 1rem;
             font-weight: bold;
+            width: 100%;
         }
 
         .total-cost-badge {
             background: var(--bg-color);
             border: 1px solid var(--accent-green);
             color: var(--accent-green);
-            padding: 10px;
+            padding: 12px;
             border-radius: 8px;
             font-weight: bold;
             text-align: center;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-size: 1rem;
+            margin-bottom: 15px;
         }
 
         .match-card {
             background: var(--card-bg);
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 12px;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 8px;
             border: 1px solid var(--border-color);
+        }
+
+        @media(min-width: 500px) {
+            .match-card {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
         }
 
         .match-info {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 2px;
         }
 
         .match-date {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--accent-green);
             font-weight: bold;
         }
 
         .match-teams {
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
         }
 
@@ -173,14 +178,15 @@
         }
 
         .btn-opt {
+            flex: 1;
             background: var(--bg-color);
             color: var(--text-main);
             border: 1px solid var(--border-color);
-            padding: 8px 14px;
+            padding: 8px 12px;
             border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
-            transition: 0.2s;
+            text-align: center;
         }
 
         .btn-opt.active {
@@ -190,7 +196,7 @@
         }
 
         .actions {
-            margin-top: 25px;
+            margin-top: 20px;
             text-align: center;
         }
 
@@ -198,12 +204,11 @@
             background: var(--accent-green);
             color: #fff;
             border: none;
-            padding: 14px 28px;
-            font-size: 1.05rem;
+            padding: 14px;
+            font-size: 1rem;
             font-weight: bold;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: 0.2s;
             width: 100%;
         }
 
@@ -212,97 +217,86 @@
         }
 
         #results {
-            margin-top: 25px;
+            margin-top: 20px;
             background: var(--card-bg);
-            padding: 20px;
-            border-radius: 12px;
+            padding: 15px;
+            border-radius: 10px;
             display: none;
             border: 1px solid var(--border-color);
         }
 
         #results h3 {
             color: var(--accent-green);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
         }
 
         .summary-info {
             background: var(--bg-color);
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            font-size: 0.95rem;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            font-size: 0.85rem;
             color: var(--text-muted);
-            border-left: 4px solid var(--accent-green);
-            line-height: 1.6;
+            border-left: 3px solid var(--accent-green);
+            line-height: 1.5;
         }
 
         .column-list {
             font-family: monospace;
             background: var(--bg-color);
-            padding: 15px;
-            border-radius: 8px;
+            padding: 12px;
+            border-radius: 6px;
             white-space: pre-wrap;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--text-main);
-            max-height: 300px;
+            max-height: 250px;
             overflow-y: auto;
             border: 1px solid var(--border-color);
         }
 
-        /* Analiz ve BankoBot Kartları */
-        .analysis-card {
+        .analysis-card, .bot-card {
             background: var(--card-bg);
-            border-radius: 10px;
-            padding: 18px;
-            margin-bottom: 15px;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
             border: 1px solid var(--border-color);
-        }
-
-        .analysis-card h4 {
-            color: var(--accent-green);
-            margin-bottom: 8px;
-            font-size: 1.1rem;
-        }
-
-        .analysis-card p {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            line-height: 1.5;
         }
 
         .bot-card {
             background: var(--bot-bg);
-            border-radius: 10px;
-            padding: 18px;
-            margin-bottom: 15px;
-            border: 1px solid var(--bot-border);
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+            border-color: var(--bot-border);
+        }
+
+        .analysis-card h4, .bot-card h4 {
+            color: var(--accent-green);
+            margin-bottom: 6px;
+            font-size: 1rem;
         }
 
         .bot-card h4 {
             color: #818cf8;
-            margin-bottom: 6px;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
-        .bot-card .prediction-badge {
+        .prediction-badge {
             display: inline-block;
             background: #4338ca;
             color: #fff;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.85rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
             font-weight: bold;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
+        }
+
+        .analysis-card p, .bot-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.4;
         }
 
         .bot-card p {
-            font-size: 0.95rem;
             color: #e2e8f0;
-            line-height: 1.5;
         }
     </style>
 </head>
@@ -314,12 +308,14 @@
             <p>Monte Carlo Simülasyonu & BankoBot Akıllı Spor Toto Sistemi</p>
         </header>
 
+        <!-- Sekme Menüsü -->
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('bulten', this)">Bülten & Kolon</button>
             <button class="tab-btn" onclick="switchTab('analiz', this)">Maç Analizleri</button>
             <button class="tab-btn" onclick="switchTab('bankobot', this)">🤖 BankoBot</button>
         </div>
 
+        <!-- 1. SEKME: BÜLTEN VE KOLON ÜRETİCİ -->
         <div id="tab-bulten" class="tab-content active">
             <div class="control-panel">
                 <div class="control-group">
@@ -327,16 +323,16 @@
                     <input type="number" id="budgetInput" value="250" min="10" step="10" oninput="calculateColumnsFromBudget()">
                 </div>
                 <div class="control-group">
-                    <label for="columnCountInput">Kaç Kolon Olsun? (Seç/Değiştir)</label>
+                    <label for="columnCountInput">Kaç Kolon Olsun?</label>
                     <input type="number" id="columnCountInput" value="25" min="1" max="100" oninput="updateCost()">
                 </div>
             </div>
-            <div style="margin-bottom: 20px;">
-                <div class="total-cost-badge" id="totalCostDisplay">Toplam Tutar: 250 TL (25 Kolon)</div>
-            </div>
+
+            <div class="total-cost-badge" id="totalCostDisplay">Toplam Tutar: 250 TL (25 Kolon)</div>
 
             <div id="matches-container">
-                </div>
+                <!-- Maçlar buraya yüklenecek -->
+            </div>
 
             <div class="actions">
                 <button class="btn-main" onclick="generateColumns()">Uygula & Kolonları Oluştur</button>
@@ -349,19 +345,157 @@
             </div>
         </div>
 
+        <!-- 2. SEKME: ANALİZLER -->
         <div id="tab-analiz" class="tab-content">
-            <div id="analysis-container">
-                </div>
+            <div id="analysis-container"></div>
         </div>
 
+        <!-- 3. SEKME: BANKOBOT -->
         <div id="tab-bankobot" class="tab-content">
-            <div id="bot-container">
-                </div>
+            <div id="bot-container"></div>
         </div>
     </div>
 
     <script>
-        const unitPrice = 10; // 1 Kolon = 10 TL
+        const unitPrice = 10;
 
         const bulten = [
-            { id: 1, date: "02 Eki 21:45", home: "Belçika", away: "Türkiye", analysis: "Belçika ev sahibi avantajı ve hücum hattıyla baskılı başlayacak. Türkiye'nin deplasman direnci yüksek.", bot
+            { id: 1, date: "02 Eki 21:45", home: "Belçika", away: "Türkiye", analysis: "Belçika ev sahibi avantajı ve hücum hattıyla baskılı başlayacak. Türkiye'nin deplasman direnci yüksek.", botPick: "MS 1", botComment: "Kardeşim bu maçta Belçika evinde çok baskı kuracak. Ben maçın 2-1 ev sahibi lehine biteceğini ve net MS 1 olacağını düşünüyorum, kaçırmayın." },
+            { id: 2, date: "05 Eki 21:45", home: "İtalya", away: "Türkiye", analysis: "İtalya taktik disiplini elden bırakmıyor. Düşük skorlu geçmesi bekleniyor.", botPick: "0-2 Çifte Şans (Sürpriz)", botComment: "İtalya kapalı oynayacak ama bizim milliler bu tarz deplasmanları sever. Sürpriz arayanlar kuponuna 0-2 yazsın, maç 1-1 bitebilir." },
+            { id: 3, date: "02 Eki 21:45", home: "Bosna Hersek", away: "İsveç", analysis: "İki takımın form grafiği dengeli. Çift ihtimal önerilir.", botPick: "0 (Beraberlik)", botComment: "Ortada geçen bir maç olacak. İki taraf da risk almak istemez, tahminim 0-0 veya 1-1 beraberlik." },
+            { id: 4, date: "02 Eki 21:45", home: "Fransa", away: "İtalya", analysis: "Dev mücadele. Bireysel yetenekler maçı çözecek.", botPick: "MS 1", botComment: "Fransa kadro kalitesiyle bu maçı 2-0 alır geçer. Ev sahibi net favorim." },
+            { id: 5, date: "02 Eki 21:45", home: "Macaristan", away: "Gürcistan", analysis: "Macaristan iç sahada çok etkili.", botPick: "MS 1", botComment: "Macaristan kendi seyircisi önünde affetmez. Maç rahat 2-0 veya 3-1 biter." },
+            { id: 6, date: "02 Eki 21:45", home: "Polonya", away: "Romanya", analysis: "Orta saha mücadelesi. Az gol bekleniyor.", botPick: "0 (Beraberlik)", botComment: "İki takım da birbirine diş geçiremez. Kilitlenir kalır, bol faullü berabere biter." },
+            { id: 7, date: "03 Eki 19:00", home: "Hırvatistan", away: "İngiltere", analysis: "İngiltere kadrosu üstün ama Hırvatistan tecrübeli.", botPick: "MS 2", botComment: "İngiltere bu kez hata yapmaz, tempoyu erken ele alıp maçı 1-2 kazanır." },
+            { id: 8, date: "03 Eki 21:45", home: "Kuzey Makedonya", away: "İskoçya", analysis: "İskoçya fizik gücüyle önde.", botPick: "MS 2", botComment: "İskoçya duran toplardan işi bitirir. Tek farkla da olsa maçı alır." },
+            { id: 9, date: "03 Eki 21:45", home: "İspanya", away: "Çekya", analysis: "İspanya pas oyunuyla kontrolü elinde tutacak.", botPick: "MS 1 (Banko)", botComment: "Günün en banko maçı diyebilirim. İspanya pasla ezdirir, en az 3-0 kazanır." },
+            { id: 10, date: "03 Eki 21:45", home: "İsviçre", away: "Slovenya", analysis: "İsviçre savunma güvenliğini ön planda tutuyor.", botPick: "MS 1", botComment: "İsviçre evinde disiplini elden bırakmaz, 1-0 maçı koparır." },
+            { id: 11, date: "04 Eki 21:45", home: "Galler", away: "Danimarka", analysis: "Danimarka formda, Galler iç sahada dirençli.", botPick: "MS 2", botComment: "Danimarka ayağa paslarla deplasmanda iş yapar. Tahminim 1-2." },
+            { id: 12, date: "04 Eki 21:45", home: "Hollanda", away: "Sırbistan", analysis: "Hollanda hücum hattı skoru erken bulmak isteyecektir.", botPick: "MS 1", botComment: "Portakallar taraftarı önünde şov yapar. Maç bol golü ve ev sahibi lehine biter." },
+            { id: 13, date: "04 Eki 21:45", home: "Portekiz", away: "Norveç", analysis: "Portekiz saha ve seyirci avantajıyla net baskı kurar.", botPick: "MS 1", botComment: "Yıldızlar topluluğu hata yapmaz. Rahat bir galibiyet bekliyorum." },
+            { id: 14, date: "04 Eki 21:45", home: "Yunanistan", away: "Almanya", analysis: "Almanya taktik üstünlüğe sahip.", botPick: "MS 2", botComment: "Almanlar sert savunmayı açmayı bilir. Maçı 0-2 alır giderler." },
+            { id: 15, date: "05 Eki 21:45", home: "Fransa", away: "Belçika", analysis: "Haftanın kapanış mücadelesi. Bol gol bekleniyor.", botPick: "MS 1", botComment: "Dev maçta nefesler kesilecek ama Fransa son dakikalarda fişi çeker." }
+        ];
+
+        const userSelections = {};
+
+        function renderMatches() {
+            const container = document.getElementById('matches-container');
+            container.innerHTML = '';
+
+            bulten.forEach(m => {
+                if (!userSelections[m.id]) {
+                    userSelections[m.id] = ['1', '0', '2'];
+                }
+
+                const card = document.createElement('div');
+                card.className = 'match-card';
+                card.innerHTML = `
+                    <div class="match-info">
+                        <span class="match-date">${m.date}</span>
+                        <span class="match-teams">${m.home} - ${m.away}</span>
+                    </div>
+                    <div class="match-options">
+                        <button class="btn-opt ${userSelections[m.id].includes('1') ? 'active' : ''}" onclick="toggleOption(${m.id}, '1', this)">1</button>
+                        <button class="btn-opt ${userSelections[m.id].includes('0') ? 'active' : ''}" onclick="toggleOption(${m.id}, '0', this)">0</button>
+                        <button class="btn-opt ${userSelections[m.id].includes('2') ? 'active' : ''}" onclick="toggleOption(${m.id}, '2', this)">2</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            updateCost();
+        }
+
+        function calculateColumnsFromBudget() {
+            const budget = parseFloat(document.getElementById('budgetInput').value) || 0;
+            const calculatedColumns = Math.max(1, Math.floor(budget / unitPrice));
+            document.getElementById('columnCountInput').value = calculatedColumns;
+            updateCost();
+        }
+
+        function updateCost() {
+            const count = parseInt(document.getElementById('columnCountInput').value) || 1;
+            const total = count * unitPrice;
+            document.getElementById('budgetInput').value = total;
+            document.getElementById('totalCostDisplayinnerText', `Toplam Tutar: ${total} TL (${count} Kolon)`);
+            document.getElementById('totalCostDisplay').innerText = `Toplam Tutar: ${total} TL (${count} Kolon)`;
+        }
+
+        function renderAnalysis() {
+            const container = document.getElementById('analysis-container');
+            container.innerHTML = '';
+            bulten.forEach(m => {
+                const card = document.createElement('div');
+                card.className = 'analysis-card';
+                card.innerHTML = `<h4>${m.date} | ${m.home} vs ${m.away}</h4><p>${m.analysis}</p>`;
+                container.appendChild(card);
+            });
+        }
+
+        function renderBankoBot() {
+            const container = document.getElementById('bot-container');
+            container.innerHTML = '';
+            bulten.forEach(m => {
+                const card = document.createElement('div');
+                card.className = 'bot-card';
+                card.innerHTML = `<h4>🤖 ${m.home} vs ${m.away}</h4><div class="prediction-badge">Tercih: ${m.botPick}</div><p>"${m.botComment}"</p>`;
+                container.appendChild(card);
+            });
+        }
+
+        function switchTab(tabName, btnElement) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            if (btnElement) btnElement.classList.add('active');
+
+            if (tabName === 'bulten') document.getElementById('tab-bulten').classList.add('active');
+            else if (tabName === 'analiz') document.getElementById('tab-analiz').classList.add('active');
+            else if (tabName === 'bankobot') document.getElementById('tab-bankobot').classList.add('active');
+        }
+
+        function toggleOption(matchId, option, btnElement) {
+            let list = userSelections[matchId];
+            if (list.includes(option)) {
+                if (list.length > 1) {
+                    userSelections[matchId] = list.filter(item => item !== option);
+                    btnElement.classList.remove('active');
+                }
+            } else {
+                list.push(option);
+                btnElement.classList.add('active');
+            }
+        }
+
+        function generateColumns() {
+            const targetColumnCount = parseInt(document.getElementById('columnCountInput').value) || 3;
+            const totalCost = targetColumnCount * unitPrice;
+            const resultsDiv = document.getElementById('results');
+            const summaryDiv = document.getElementById('summaryText');
+            const outputDiv = document.getElementById('columnOutput');
+            
+            resultsDiv.style.display = 'block';
+            summaryDiv.innerHTML = "Monte Carlo simülasyonu ve oran matrisleri hesaplanıyor...";
+            outputDiv.innerHTML = "";
+
+            setTimeout(() => {
+                summaryDiv.innerHTML = `Seçilen Kolon Adedi: <b>${targetColumnCount} Kolon</b> | Toplam Maliyet: <b>${totalCost} TL</b><br>BankoBot tercihleri harmanlanarak kolonlar üretildi.`;
+                let text = "";
+                for(let i = 1; i <= targetColumnCount; i++) {
+                    let colStr = `Kolon ${i < 10 ? '0'+i : i}: `;
+                    bulten.forEach(m => {
+                        const opts = userSelections[m.id];
+                        const randomOpt = opts[Math.floor(Math.random() * opts.length)];
+                        colStr += `[${randomOpt}] `;
+                    });
+                    text += colStr + "\n";
+                }
+                outputDiv.innerHTML = text;
+            }, 400);
+        }
+
+        renderMatches();
+        renderAnalysis();
+        renderBankoBot();
+    </script>
+</body>
+</html>
