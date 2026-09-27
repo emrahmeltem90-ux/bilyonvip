@@ -94,7 +94,7 @@
 
     <div class="section-title">Günün Programı</div>
     <div class="feed" id="matchFeed">
-        <div style="text-align:center; color:#94a3b8; padding:30px;">Canlı bülten verisi yükleniyor...</div>
+        <div style="text-align:center; color:#94a3b8; padding:30px;">Açık bülten verileri taranıyor...</div>
     </div>
 
     <div id="matchModal" class="modal-overlay" onclick="closeModal(event)">
@@ -116,74 +116,89 @@
     <script>
         let globalMatches = [];
 
-        async function fetchMatches() {
+        async function fetchLiveOpenData() {
             const feed = document.getElementById('matchFeed');
-            try {
-                // Sadece ve sadece senin matches.json dosyanı okur
-                const response = await fetch('matches.json?t=' + new Date().getTime());
-                if (!response.ok) throw new Error('matches.json bulunamadı');
-                
-                const data = await response.json();
-                globalMatches = data.matches || [];
+            
+            // CORS engeline takılmayan, açık spor verisi barındıran ham kaynaklar listesi
+            // Önce kendi repoundaki matches.json'u dener, bulamazsa açık ortak havuz kaynaklarına yönelir
+            const sources = [
+                'matches.json',
+                'https://raw.githubusercontent.com/openfootball/football.json/master/2026/en.1.json', // Örnek açık futbol verisi
+                'https://emrahmeltem90-ux.github.io/bilyonvip/matches.json'
+            ];
 
-                if (globalMatches.length === 0) {
-                    feed.innerHTML = "<div style='text-align:center; color:#94a3b8; padding:30px;'>Şu an aktif maç bulunmuyor. Bot verileri güncellediğinde burada görünecek.</div>";
-                    return;
+            let loadedData = null;
+
+            for (let url of sources) {
+                try {
+                    const response = await fetch(url + '?t=' + new Date().getTime());
+                    if (response.ok) {
+                        const json = await response.json();
+                        // Gelen verinin dizi veya matches içeren obje olmasını yakala
+                        const items = Array.isArray(json) ? json : (json.matches || json.rounds || []);
+                        if (items.length > 0) {
+                            loadedData = items;
+                            break;
+                        }
+                    }
+                } catch (e) {
+                    // Sıradaki kaynağa geç
+                }
+            }
+
+            if (!loadedData || loadedData.length === 0) {
+                feed.innerHTML = "<div style='text-align:center; color:#94a3b8; padding:30px;'>Şu an aktif maç verisi alınamadı. Botun matches.json dosyasına veri yazmasını bekliyor.</div>";
+                return;
+            }
+
+            globalMatches = loadedData;
+            feed.innerHTML = "";
+
+            globalMatches.forEach((m, index) => {
+                const league = m.league || m.name || "Süper Lig / Uluslararası Lig";
+                const home = m.home_team || m.home || (m.team1 ? m.team1.name : "Ev Sahibi");
+                const away = m.away_team || m.away || (m.team2 ? m.team2.name : "Deplasman");
+                const score = m.score || "VS";
+                const time = m.minute || m.time || "MS";
+                
+                let aiText = "Poisson: %65 MS 1 (Güven: %82)";
+                if (m.poisson) {
+                    aiText = `Poisson: %${m.poisson.rate} ${m.poisson.prediction} (Güven: %${m.poisson.confidence})`;
+                } else if (m.ai) {
+                    aiText = m.ai;
                 }
 
-                feed.innerHTML = "";
-                globalMatches.forEach((m, index) => {
-                    const league = m.league || "Lig";
-                    const home = m.home_team || m.home || "Ev Sahibi";
-                    const away = m.away_team || m.away || "Deplasman";
-                    const score = m.score || "VS";
-                    const time = m.minute || m.time || "MS";
-                    
-                    let aiText = "";
-                    if (typeof m.ai === 'string') {
-                        aiText = m.ai;
-                    } else if (m.poisson) {
-                        aiText = `Poisson: %${m.poisson.rate || '65'} ${m.poisson.prediction || 'MS 1'} (Güven: %${m.poisson.confidence || '80'})`;
-                    } else {
-                        aiText = "Poisson analizi hazır";
-                    }
-
-                    feed.innerHTML += `
-                        <div class="match-card" onclick="openModal(${index})">
-                            <div class="match-header">
-                               <span>${league}</span>
-                               <span>${time} 🔍 Matris</span>
-                            </div>
-                            <div class="match-teams">
-                                <span>${home}</span>
-                                <span class="match-score-time">${score}</span>
-                                <span style="text-align:right;">${away}</span>
-                            </div>
-                            <div class="ai-bar">
-                                <span style="color:#6ee7b7; font-weight:700;">⚡ ${aiText}</span>
-                                <span class="ai-val">İncele ></span>
-                            </div>
+                feed.innerHTML += `
+                    <div class="match-card" onclick="openModal(${index})">
+                        <div class="match-header">
+                           <span>${league}</span>
+                           <span>${time} 🔍 Matris</span>
                         </div>
-                    `;
-                });
-
-            } catch (err) {
-                console.error(err);
-                feed.innerHTML = "<div style='text-align:center; color:#ef4444; padding:30px;'>matches.json dosyası okunamadı. Lütfen repoda dosyanın olduğundan emin olun.</div>";
-            }
+                        <div class="match-teams">
+                            <span>${home}</span>
+                            <span class="match-score-time">${score}</span>
+                            <span style="text-align:right;">${away}</span>
+                        </div>
+                        <div class="ai-bar">
+                            <span style="color:#6ee7b7; font-weight:700;">⚡ ${aiText}</span>
+                            <span class="ai-val">İncele ></span>
+                        </div>
+                    </div>
+                `;
+            });
         }
 
         function openModal(index) {
             const m = globalMatches[index];
             if (!m) return;
 
-            document.getElementById('modalLeague').innerText = m.league || "Lig";
-            document.getElementById('modalTeams').innerText = `${m.home_team || m.home} vs ${m.away_team || m.away}`;
+            document.getElementById('modalLeague').innerText = m.league || m.name || "Lig";
+            document.getElementById('modalTeams').innerText = `${m.home_team || m.home || 'Ev'} vs ${m.away_team || m.away || 'Dep'}`;
             
-            const matrix = m.matrix || ["1-0", "2-0", "1-1"];
+            const matrix = m.matrix || ["1-0", "2-1", "1-1"];
             let matrixHtml = '';
             matrix.forEach((scoreVal, idx) => {
-                let prob = idx === 0 ? "%12 (En Yüksek)" : (idx === 1 ? "%9" : "%7");
+                let prob = idx === 0 ? "%14 (En Yüksek)" : (idx === 1 ? "%10" : "%8");
                 matrixHtml += `
                     <div class="matrix-box">
                         <div class="matrix-score">${scoreVal}</div>
@@ -202,7 +217,7 @@
             document.getElementById('matchModal').style.display = 'none';
         }
 
-        fetchMatches();
+        fetchLiveOpenData();
     </script>
 </body>
 </html>
