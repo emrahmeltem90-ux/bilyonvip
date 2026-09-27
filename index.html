@@ -116,22 +116,45 @@
     <script>
         let globalMatches = [];
 
+        // Yedek statik veri (matches.json dosyası okunamazsa site boş kalmasın diye)
+        const fallbackMatches = [
+            {
+                league: "Türkiye • TFF 2. Lig Beyaz Grup",
+                home_team: "Serik Spor",
+                away_team: "Fethiyespor",
+                time: "MS",
+                score: "0 - 1",
+                ai: "Poisson: %64 MS 2 (Güven: %82)",
+                matrix: ["0-1", "0-2", "1-1"]
+            },
+            {
+                league: "UEFA Uluslar Ligi • Grup A2",
+                home_team: "Almanya",
+                away_team: "Yunanistan",
+                time: "69'",
+                score: "0 - 0",
+                ai: "Poisson: %55 MS 1 (Güven: %78)",
+                matrix: ["1-0", "2-0", "1-1"]
+            }
+        ];
+
         async function loadMatches() {
             try {
                 const response = await fetch('matches.json?t=' + new Date().getTime());
-                if (!response.ok) throw new Error('Veri çekilemedi');
+                if (!response.ok) throw new Error('matches.json bulunamadı');
                 const data = await response.json();
-                globalMatches = data.matches || [];
+                globalMatches = data.matches || fallbackMatches;
                 renderFeed(globalMatches);
             } catch (err) {
-                console.error(err);
-                document.getElementById('matchFeed').innerHTML = "<div style='text-align:center; color:#ef4444; padding:20px;'>Bülten yüklenirken hata oluştu.</div>";
+                console.warn("matches.json yüklenemedi, yedek bülten gösteriliyor:", err);
+                globalMatches = fallbackMatches;
+                renderFeed(globalMatches);
             }
         }
 
         function renderFeed(matches) {
             const feed = document.getElementById('matchFeed');
-            if.length === 0 {
+            if (!matches || matches.length === 0) {
                 feed.innerHTML = "<div style='text-align:center; color:#94a3b8; padding:20px;'>Aktif maç bulunamadı.</div>";
                 return;
             }
@@ -145,10 +168,12 @@
                 const time = m.minute || m.time || "MS";
                 
                 let aiText = "";
-                if (m.poisson) {
+                if (typeof m.ai === 'string') {
+                    aiText = m.ai;
+                } else if (m.poisson) {
                     aiText = `Poisson: %${m.poisson.rate || '65'} ${m.poisson.prediction || 'MS 1'} (Güven: %${m.poisson.confidence || '80'})`;
                 } else {
-                    aiText = m.ai || "Poisson analizi hazır";
+                    aiText = "Poisson analizi hazır";
                 }
 
                 feed.innerHTML += `
@@ -161,6 +186,10 @@
                             <span>${home}</span>
                             <span class="match-score-time">${score}</span>
                             <span style="text-align:right;">${away}</span>
+                        </div>
+                        <div class="ai-bar">
+                            <span style="color:#6ee7b7; font-weight:700;">⚡ ${aiText}</span>
+                            <span class="ai-val">İncele ></span>
                         </div>
                     </div>
                 `;
