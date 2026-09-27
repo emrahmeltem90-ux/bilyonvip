@@ -31,6 +31,7 @@
         .league-title { display: flex; align-items: center; gap: 6px; font-weight: 800; color: #38bdf8; letter-spacing: 0.5px; }
         .time-badge { background: #334155; color: #e2e8f0; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-size: 10px; }
         .time-badge.live { background: #ef4444; color: #fff; }
+        .time-badge.pre { background: #0284c722; color: #38bdf8; border: 1px solid #0284c744; }
 
         /* Teams & Score Row */
         .teams-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
@@ -69,7 +70,7 @@
     <div class="header">
         <div class="logo"><i class="fas fa-chart-line"></i> BİLYONVIP</div>
         <div class="status-badge" id="statusBadge">
-            <i class="fas fa-sync fa-spin"></i> CANLI AKIŞ BAĞLANIYOR
+            <i class="fas fa-sync fa-spin"></i> TÜM BÜLTEN TARANIYOR
         </div>
     </div>
 
@@ -80,6 +81,9 @@
         </div>
         <div class="filter-pill" onclick="setFilter('LIVE', this)">
             🔴 Canlı <span class="pill-badge" id="cntLive">0</span>
+        </div>
+        <div class="filter-pill" onclick="setFilter('PRE', this)">
+            ⏳ Gelecek <span class="pill-badge" id="cntPre">0</span>
         </div>
         <div class="filter-pill" onclick="setFilter('BOT', this)">
             🤖 Bot Tahminleri <span class="pill-badge" id="cntBot">0</span>
@@ -109,61 +113,44 @@
         let activeFilter = 'ALL';
         let selectedOdds = {};
 
-        // Sadece İddaa severlerin takip ettiği Ana Popüler Ligler
-        const TARGET_LEAGUES = [
-            { slug: 'tur.1', name: 'TÜRKİYE SÜPER LİG' },
-            { slug: 'eng.1', name: 'İNGİLTERE PREMIER LİG' },
-            { slug: 'esp.1', name: 'İSPANYA LALİGA' },
-            { slug: 'ita.1', name: 'İTALYA SERİE A' },
-            { slug: 'ger.1', name: 'ALMANYA BUNDESLİGA' },
-            { slug: 'fra.1', name: 'FRANSA LİGUE 1' },
-            { slug: 'uefa.champions', name: 'ŞAMPİYONLAR LİGİ' },
-            { slug: 'uefa.europa', name: 'AVRUPA LİGİ' }
-        ];
-
         async function fetchBulten() {
             const container = document.getElementById("matchContainer");
             container.innerHTML = `<div class="skeleton"></div><div class="skeleton"></div>`;
 
-            let validMatches = [];
+            // Bugünü YYYYMMDD formatında dinamik alıyoruz
+            const todayStr = new Date().toISOString().split('T')[0].replace(/-/g, '');
+            const targetUrl = `https://site.api.espn.com/apis/site/v2/sports/soccer/scoreboard?dates=${todayStr}&limit=1000`;
 
-            // Tüm popüler ligleri eş zamanlı sorgula
-            const fetchPromises = TARGET_LEAGUES.map(async (lg) => {
+            const endpoints = [
+                targetUrl,
+                "https://api.allorigins.win/raw?url=" + encodeURIComponent(targetUrl),
+                "https://corsproxy.io/?" + encodeURIComponent(targetUrl)
+            ];
+
+            let events = null;
+
+            for (let url of endpoints) {
                 try {
-                    const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/${lg.slug}/scoreboard`;
-                    const res = await fetch(url, { cache: 'no-store' });
+                    let res = await fetch(url, { cache: 'no-store' });
                     if (res.ok) {
-                        const data = await res.json();
+                        let data = await res.json();
                         if (data && data.events && data.events.length > 0) {
-                            return parseEvents(data.events, lg.name);
+                            events = data.events;
+                            break;
                         }
                     }
-                } catch (e) {}
-                return [];
-            });
+                } catch(e) {}
+            }
 
-            const results = await Promise.all(fetchPromises);
-            results.forEach(mList => { validMatches = validMatches.concat(mList); });
-
-            if (validMatches.length > 0) {
-                document.getElementById("statusBadge").innerHTML = `<i class="fas fa-check-circle" style="color:#22c55e;"></i> GERÇEK BÜLTEN`;
-                rawMatches = validMatches;
-                updateCounters();
-                renderMatches();
+            if (events && events.length > 0) {
+                document.getElementById("statusBadge").innerHTML = `<i class="fas fa-check-circle" style="color:#22c55e;"></i> BÜLTEN YÜKLENDİ`;
+                processEvents(events);
             } else {
-                // Popüler liglerde maç yoksa kullanıcıya dürüstçe bildir (Uydurma maç basma!)
-                document.getElementById("statusBadge").innerHTML = `<i class="fas fa-clock"></i> CANLI MAÇ YOK`;
-                container.innerHTML = `
-                    <div style="text-align:center; padding:50px 15px; background:#1e293b; border-radius:12px; border:1px solid #334155; margin-top:10px;">
-                        <i class="fas fa-calendar-day" style="font-size:36px; color:#38bdf8; margin-bottom:12px; display:block;"></i>
-                        <h4 style="color:#f8fafc; font-size:15px; font-weight:800; margin-bottom:6px;">Şu Anda Popüler Liglerde Canlı Maç Yok</h4>
-                        <p style="color:#94a3b8; font-size:12px; line-height:1.5;">Süper Lig, Premier Lig ve Avrupa Liglerinde maç saatleri yaklaştığında canlı skorlar ve bot tahminleri otomatik olarak bu ekrana düşecektir.</p>
-                    </div>`;
-                updateCounters();
+                container.innerHTML = `<div style="text-align:center; padding:40px; color:#94a3b8;">Bülten çekilemedi, lütfen tekrar deneyin.</div>`;
             }
         }
 
-        function parseEvents(events, leagueTitle) {
+        function processEvents(events) {
             let list = [];
             events.forEach((evt, idx) => {
                 let comp = evt.competitions && evt.competitions[0];
@@ -187,9 +174,11 @@
                         let oX = (100 / Math.max(dProb, 10) * 0.9).toFixed(2);
                         let o2 = (100 / Math.max(aProb, 10) * 0.9).toFixed(2);
 
+                        let leagueName = (comp.league?.name || evt.season?.slug || "FUTBOL LİGİ").toUpperCase();
+
                         list.push({
                             id: evt.id || `m_${idx}`,
-                            league: leagueTitle,
+                            league: leagueName,
                             home: hTeam.team.displayName || hTeam.team.name,
                             away: aTeam.team.displayName || aTeam.team.name,
                             homeScore: hTeam.score || "0",
@@ -207,12 +196,16 @@
                     }
                 }
             });
-            return list;
+
+            rawMatches = list;
+            updateCounters();
+            renderMatches();
         }
 
         function updateCounters() {
             document.getElementById("cntAll").innerText = rawMatches.length;
             document.getElementById("cntLive").innerText = rawMatches.filter(m => m.state === 'LIVE').length;
+            document.getElementById("cntPre").innerText = rawMatches.filter(m => m.state === 'PRE').length;
             document.getElementById("cntBot").innerText = rawMatches.filter(m => m.bot.confidence >= 60).length;
             document.getElementById("cntPost").innerText = rawMatches.filter(m => m.state === 'POST').length;
         }
@@ -226,28 +219,29 @@
 
         function renderMatches() {
             const container = document.getElementById("matchContainer");
-            if (rawMatches.length === 0) return;
-
             let filtered = rawMatches;
+
             if (activeFilter === 'LIVE') filtered = rawMatches.filter(m => m.state === 'LIVE');
+            else if (activeFilter === 'PRE') filtered = rawMatches.filter(m => m.state === 'PRE');
             else if (activeFilter === 'POST') filtered = rawMatches.filter(m => m.state === 'POST');
             else if (activeFilter === 'BOT') filtered = rawMatches.filter(m => m.bot.confidence >= 60);
 
             if (filtered.length === 0) {
-                container.innerHTML = `<div style="text-align:center; padding:30px; color:#94a3b8;">Bu kategoride şu an maç bulunmuyor.</div>`;
+                container.innerHTML = `<div style="text-align:center; padding:30px; color:#94a3b8;">Bu filtrede maç bulunmuyor.</div>`;
                 return;
             }
 
             let html = "";
             filtered.forEach(m => {
                 let isLive = m.state === 'LIVE';
+                let isPre = m.state === 'PRE';
                 let b = m.bot;
 
                 html += `
                     <div class="match-card">
                         <div class="card-header">
                             <span class="league-title"><i class="fas fa-trophy" style="color:#f59e0b;"></i> ${m.league}</span>
-                            <span class="time-badge ${isLive ? 'live' : ''}">${isLive ? '🔴 ' : ''}${m.statusText}</span>
+                            <span class="time-badge ${isLive ? 'live' : (isPre ? 'pre' : '')}">${isLive ? '🔴 ' : ''}${isPre ? 'Saat: ' : ''}${m.statusText}</span>
                         </div>
                         
                         <div class="teams-row">
