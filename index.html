@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BilyonVIP Quantum Analytics v3.1</title>
+    <title>BilyonVIP Quantum Analytics v3.2</title>
     <!-- Google Fonts & FontAwesome -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -152,6 +152,8 @@
         .ai-lbl { font-size: 8px; color: var(--text-sub); display: block; }
         .ai-val { font-size: 11px; font-weight: 800; color: var(--neon-green); margin-top: 2px; display: block; }
 
+        .loading-state { text-align: center; padding: 40px 20px; color: var(--neon-green); font-weight: 700; }
+
         /* Fixed Bottom Bar */
         .bottom-action {
             position: fixed;
@@ -201,15 +203,15 @@
         <div class="logo-text">BİLYON<span>VIP</span></div>
         <div class="radar-badge">
             <div class="pulse-dot"></div>
-            RADAR: AKTİF
+            RADAR: CANLI
         </div>
     </div>
 
     <div class="ticker-wrap">
         <div class="ticker-move">
-            <div class="ticker-item">🚨 <b>Galatasaray - Trabzonspor</b> Deplasman Oranı: <span class="down">3.40 ➔ 2.65 ⬇</span></div>
-            <div class="ticker-item">🔥 <b>Arsenal - Chelsea</b> Değerli Bahis: <span class="up">+EV %24 MS1 ⬆</span></div>
-            <div class="ticker-item">⚡ <b>Real Madrid - Barcelona</b> Favori Değişti! <span class="down">MS2 Akıllı Para ⬇</span></div>
+            <div class="ticker-item">🚨 <b>Günün Maçları Çekiliyor</b> - Yapay Zeka Radar Taramada...</div>
+            <div class="ticker-item">🔥 <b>Monte Carlo Simülasyonu:</b> 5000 Senaryo İşleniyor ⬇</div>
+            <div class="ticker-item">⚡ <b>Oran Değişim Tespiti:</b> Otomatik Güncelleniyor ⬆</div>
         </div>
     </div>
 
@@ -219,7 +221,12 @@
         <button class="filter-btn" onclick="filterMatches('shift', this)"><i class="fa-solid fa-bolt"></i> ⚡ Düşen Oran / Favori Değişimi</button>
     </div>
 
-    <div class="container" id="matchesList"></div>
+    <div class="container" id="matchesList">
+        <div class="loading-state">
+            <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
+            <p style="margin-top:10px;">Günün Canlı Maçları Taranıyor...</p>
+        </div>
+    </div>
 
     <div class="bottom-action">
         <button class="btn-notify" onclick="enablePushNotifications()">
@@ -241,9 +248,9 @@
                 else aWin++;
             }
             return {
-                pH: Math.round((hWin / sims) * 100),
-                pD: Math.round((draw / sims) * 100),
-                pA: Math.round((aWin / sims) * 100)
+                pH: Math.max(1, Math.round((hWin / sims) * 100)),
+                pD: Math.max(1, Math.round((draw / sims) * 100)),
+                pA: Math.max(1, Math.round((aWin / sims) * 100))
             };
         }
 
@@ -253,25 +260,16 @@
             return k - 1;
         }
 
-        const fallbackMatches = [
-            { home: "Galatasaray", away: "Fenerbahçe", league: "SÜPER LİG", time: "20:00", hExp: 1.8, aExp: 1.2 },
-            { home: "Real Madrid", away: "Barcelona", league: "LA LIGA", time: "22:00", hExp: 1.6, aExp: 1.4 },
-            { home: "Arsenal", away: "Chelsea", league: "PREMIER LEAGUE", time: "18:30", hExp: 2.1, aExp: 0.8 },
-            { home: "Bayern Münih", away: "Dortmund", league: "BUNDESLIGA", time: "19:30", hExp: 2.4, aExp: 1.1 },
-            { home: "Inter", away: "AC Milan", league: "SERIE A", time: "21:45", hExp: 1.4, aExp: 1.3 },
-            { home: "Manchester City", away: "Liverpool", league: "PREMIER LEAGUE", time: "17:00", hExp: 1.9, aExp: 1.5 }
-        ];
-
         function renderMatches(dataList) {
             let container = document.getElementById('matchesList');
             let html = '';
 
             dataList.forEach((m, idx) => {
                 let mc = runMonteCarloEngine(m.hExp, m.aExp);
-                let marketOdd1 = (100 / (mc.pH - (Math.random() * 5 + 1))).toFixed(2);
-                let marketOdd2 = (100 / (mc.pA + (Math.random() * 5 + 1))).toFixed(2);
+                let marketOdd1 = (100 / Math.max(10, mc.pH - (Math.random() * 5 + 1))).toFixed(2);
+                let marketOdd2 = (100 / Math.max(10, mc.pA + (Math.random() * 5 + 1))).toFixed(2);
 
-                let isValueBet = mc.pH > 52 && marketOdd1 > 1.65;
+                let isValueBet = mc.pH > 50 && marketOdd1 > 1.60;
                 let isShift = (idx % 2 === 1);
                 let categoryClass = isValueBet ? 'value' : (isShift ? 'shift' : 'normal');
 
@@ -325,7 +323,7 @@
                             </div>
                             <div class="ai-pill">
                                 <span class="ai-lbl">GOL BAHSİ</span>
-                                <span class="ai-val">${(m.hExp + m.aExp) > 2.3 ? '2.5 ÜST' : '2.5 ALT'}</span>
+                                <span class="ai-val">${(m.hExp + m.aExp) > 2.2 ? '2.5 ÜST' : '2.5 ALT'}</span>
                             </div>
                             <div class="ai-pill">
                                 <span class="ai-lbl">KARŞILIKLI GOL</span>
@@ -340,28 +338,58 @@
         }
 
         async function loadQuantumMatches() {
+            const leagueEndpoints = [
+                { code: 'tur.1', name: 'SÜPER LİG' },
+                { code: 'eng.1', name: 'PREMIER LEAGUE' },
+                { code: 'esp.1', name: 'LA LIGA' },
+                { code: 'ita.1', name: 'SERIE A' },
+                { code: 'ger.1', name: 'BUNDESLIGA' },
+                { code: 'fra.1', name: 'LIGUE 1' }
+            ];
+
+            let liveMatches = [];
+
             try {
-                const res = await fetch('https://site.api.espn.com/apis/site/v2/sports/soccer/all/scoreboard');
-                const data = await res.json();
-                
-                if (data.events && data.events.length > 0) {
-                    let liveList = data.events.slice(0, 10).map(e => {
-                        const comp = e.competitions[0];
-                        return {
-                            home: comp.competitors.find(c => c.homeAway === 'home').team.shortDisplayName || "Ev Sahibi",
-                            away: comp.competitors.find(c => c.homeAway === 'away').team.shortDisplayName || "Deplasman",
-                            league: e.season ? e.season.slug.toUpperCase() : "DÜNYA LİGLERİ",
-                            time: new Date(e.date).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }),
-                            hExp: 1.3 + (Math.random() * 1.1),
-                            aExp: 0.9 + (Math.random() * 1.0)
-                        };
-                    });
-                    renderMatches(liveList);
+                const requests = leagueEndpoints.map(l => 
+                    fetch(`https://site.api.espn.com/apis/site/v2/sports/soccer/${l.code}/scoreboard`)
+                        .then(r => r.ok ? r.json() : null)
+                        .then(d => {
+                            if (d && d.events && d.events.length > 0) {
+                                return d.events.map(ev => {
+                                    const c = ev.competitions[0];
+                                    const home = c.competitors.find(item => item.homeAway === 'home')?.team?.displayName || 'Ev Sahibi';
+                                    const away = c.competitors.find(item => item.homeAway === 'away')?.team?.displayName || 'Deplasman';
+                                    const timeStr = new Date(ev.date).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+
+                                    return {
+                                        home: home,
+                                        away: away,
+                                        league: l.name,
+                                        time: timeStr,
+                                        hExp: 1.2 + (Math.random() * 1.2),
+                                        aExp: 0.8 + (Math.random() * 1.1)
+                                    };
+                                });
+                            }
+                            return [];
+                        })
+                        .catch(() => [])
+                );
+
+                const results = await Promise.all(requests);
+                results.forEach(mArr => { if (mArr) liveMatches.push(...mArr); });
+
+                if (liveMatches.length > 0) {
+                    renderMatches(liveMatches);
                 } else {
-                    renderMatches(fallbackMatches);
+                    renderMatches([
+                        { home: "Columbus Crew", away: "Inter Miami CF", league: "USA MLS", time: "16:00", hExp: 1.7, aExp: 1.5 },
+                        { home: "Mallorca", away: "Almeria", league: "LA LIGA 2", time: "17:15", hExp: 1.4, aExp: 1.0 },
+                        { home: "Real Oviedo", away: "Sporting Gijon", league: "LA LIGA 2", time: "18:00", hExp: 1.2, aExp: 0.9 }
+                    ]);
                 }
-            } catch (err) {
-                renderMatches(fallbackMatches);
+            } catch (e) {
+                console.error(e);
             }
         }
 
