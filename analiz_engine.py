@@ -2,11 +2,11 @@ import os
 import time
 import math
 import random
-import threading
+import json
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
 class BotUzmanEngine:
-    def __init__(self, simulations=10000):
+    def __init__(self, simulations=5000):
         self.simulations = simulations
 
     def _poisson_sample(self, lmbda):
@@ -40,25 +40,49 @@ class BotUzmanEngine:
             "backup_score": f"{top_2[0]} - {top_2[1]}"
         }
 
-def background_bot():
-    bot = BotUzmanEngine()
-    while True:
-        res = bot.monte_carlo_simulation(1.1, 1.2)
-        print("⚡ [7/24 Bot] Monte Carlo Taraması Yapıldı:", res)
-        time.sleep(300)
+    def generate_bulten(self):
+        match_fixtures = [
+            ("Galatasaray", "Fenerbahçe", 1.85, 1.40),
+            ("Beşiktaş", "Trabzonspor", 1.50, 1.25),
+            ("Fethiyespor", "Amedspor", 1.35, 1.10),
+            ("Real Madrid", "Barcelona", 2.10, 1.85),
+            ("Manchester City", "Arsenal", 1.95, 1.50),
+            ("Inter", "Milan", 1.45, 1.30),
+            ("Bayern München", "Dortmund", 2.20, 1.65)
+        ]
+        
+        matches = []
+        for home, away, h_xg, a_xg in match_fixtures:
+            sim = self.monte_carlo_simulation(h_xg, a_xg)
+            pred = "2.5 ÜST" if sim["p_over25"] >= 52.0 else "2.5 ALT"
+            matches.append({
+                "home": home,
+                "away": away,
+                "over25_prob": sim["p_over25"],
+                "under25_prob": sim["p_under25"],
+                "exact_score": sim["exact_score"],
+                "backup_score": sim["backup_score"],
+                "prediction": pred
+            })
+        return matches
 
-class HealthCheckHandler(BaseHTTPRequestHandler):
+engine = BotUzmanEngine()
+
+class APIHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
-        self.send_header('Content-type', 'text/plain; charset=utf-8')
+        self.send_header('Content-type', 'application/json; charset=utf-8')
+        self.send_header('Access-Control-Allow-Origin', '*')
         self.end_headers()
-        self.wfile.write(b"BilyonVIP Bot Engine 7/24 Aktif!")
+        
+        data = {
+            "status": "success",
+            "matches": engine.generate_bulten()
+        }
+        self.wfile.write(json.dumps(data, ensure_ascii=False).encode('utf-8'))
 
 if __name__ == "__main__":
-    t = threading.Thread(target=background_bot, daemon=True)
-    t.start()
-
     port = int(os.environ.get("PORT", 10000))
-    server = HTTPServer(('0.0.0.0', port), HealthCheckHandler)
-    print(f"Sunucu {port} portunda 7/24 aktif...")
+    server = HTTPServer(('0.0.0.0', port), APIHandler)
+    print(f"BilyonVIP API Sunucusu {port} portunda yayında...")
     server.serve_forever()
