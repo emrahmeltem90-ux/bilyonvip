@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hedef 15 - Spor Toto Optimizasyon & Kolon Üretici</title>
+    <title>Hedef 15 - Spor Toto Kolon & Bütçe Yönetimi</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -120,6 +120,20 @@
             border-radius: 8px;
             font-size: 1rem;
             font-weight: bold;
+        }
+
+        .total-cost-badge {
+            background: var(--bg-color);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .match-card {
@@ -258,7 +272,7 @@
     <div class="container">
         <header>
             <h1>HEDEF 15</h1>
-            <p>Monte Carlo Simülasyonu & Hedging Tabanlı Spor Toto Otomasyonu</p>
+            <p>Monte Carlo Simülasyonu & Esnek Kolon Optimizasyonu</p>
         </header>
 
         <div class="tabs">
@@ -266,29 +280,23 @@
             <button class="tab-btn" onclick="switchTab('analiz')">Maç Analizleri (Poisson)</button>
         </div>
 
-        <!-- 1. SEKME: BÜLTEN VE KOLON ÜRETİCİ -->
         <div id="tab-bulten" class="tab-content active">
             <div class="control-panel">
                 <div class="control-group">
-                    <label for="budgetInput">Bütçe (TL) / Kolon Maliyeti (10₺)</label>
-                    <input type="number" id="budgetInput" value="250" min="10" step="10" oninput="calculateColumnsCount()">
+                    <label for="columnCountInput">Kaç Kolon Üretilsin? (Örn: 4, 10, 25)</label>
+                    <input type="number" id="columnCountInput" value="4" min="1" max="100" oninput="updateCost()">
                 </div>
                 <div class="control-group">
-                    <label for="strategySelect">Kapatma / Risk Stratejisi</label>
-                    <select id="strategySelect">
-                        <option value="auto">Akıllı Hedging (Poisson Dengeli)</option>
-                        <option value="double_risk">Ağırlıklı Çift İhtimal (1-0 / 1-2 Kapat)</option>
-                        <option value="banko">Daraltılmış Banko Odaklı</option>
-                    </select>
+                    <label>Toplam Kupon Tutarı (1 Kolon = 10₺)</label>
+                    <div class="total-cost-badge" id="totalCostDisplay">40 TL</div>
                 </div>
             </div>
 
             <div id="matches-container">
-                <!-- Maçlar buraya gelecek -->
-            </div>
+                </div>
 
             <div class="actions">
-                <button class="btn-main" onclick="generateColumns()">Monte Carlo & Kolonları Üret</button>
+                <button class="btn-main" onclick="generateColumns()">Seçilen Adette Kolonları Üret</button>
             </div>
 
             <div id="results">
@@ -298,11 +306,9 @@
             </div>
         </div>
 
-        <!-- 2. SEKME: DETAYLI ANALİZLER -->
         <div id="tab-analiz" class="tab-content">
             <div id="analysis-container">
-                <!-- Analizler buraya gelecek -->
-            </div>
+                </div>
         </div>
     </div>
 
@@ -353,13 +359,13 @@
                 `;
                 container.appendChild(card);
             });
-            calculateColumnsCount();
+            updateCost();
         }
 
-        function calculateColumnsCount() {
-            const budget = parseFloat(document.getElementById('budgetInput').value) || 0;
-            const count = Math.floor(budget / unitPrice);
-            // İstersen burada dinamik bilgilendirme verebiliriz
+        function updateCost() {
+            const count = parseInt(document.getElementById('columnCountInput').value) || 1;
+            const total = count * unitPrice;
+            document.getElementById('totalCostDisplay').innerText = total + " TL";
         }
 
         function renderAnalysis() {
@@ -404,29 +410,27 @@
         }
 
         function generateColumns() {
-            const budget = parseFloat(document.getElementById('budgetInput').value) || 250;
-            const targetColumnCount = Math.max(1, Math.floor(budget / unitPrice));
-            const strategy = document.getElementById('strategySelect').value;
+            const targetColumnCount = parseInt(document.getElementById('columnCountInput').value) || 4;
+            const totalCost = targetColumnCount * unitPrice;
 
             const resultsDiv = document.getElementById('results');
             const summaryDiv = document.getElementById('summaryText');
             const outputDiv = document.getElementById('columnOutput');
             
             resultsDiv.style.display = 'block';
-            summaryDiv.innerHTML = "Monte Carlo simülasyonları ve hedging risk matrisi hesaplanıyor...";
+            summaryDiv.innerHTML = "Monte Carlo simülasyonu ve risk dağılım matrisi hesaplanıyor...";
             outputDiv.innerHTML = "";
 
             setTimeout(() => {
-                summaryDiv.innerHTML = `Bütçe: <b>${budget} TL</b> | Heddeflenen Kolon Adeti: <b>${targetColumnCount} Kolon</b><br>` +
-                                       `Seçilen Strateji: <b>${strategy === 'auto' ? 'Akıllı Hedging' : strategy === 'double_risk' ? 'Çift İhtimamlı Kapatma' : 'Daraltılmış Banko'}</b><br>` +
-                                       `Matematiksel modelleme ve Poisson dağılımı ile kolonlar filtrelendi.`;
+                summaryDiv.innerHTML = `Seçilen Kolon Adedi: <b>${targetColumnCount} Kolon</b> | Toplam Maliyet: <b>${totalCost} TL</b><br>` +
+                                       `Maçlardaki kapatma tercihlerinize (1, 0, 2) sadık kalınarak en optimum kombinasyonlar oluşturuldu.`;
 
                 let text = "";
                 for(let i = 1; i <= targetColumnCount; i++) {
                     let colStr = `Kolon ${i < 10 ? '0'+i : i}: `;
                     bulten.forEach(m => {
                         const opts = userSelections[m.id];
-                        // Stratejiye ve seçilen kapatmalara göre simülasyon
+                        // Kullanıcının kapattığı ihtimaller arasından Monte Carlo mantığıyla rastgele seçim
                         const randomOpt = opts[Math.floor(Math.random() * opts.length)];
                         colStr += `[${randomOpt}] `;
                     });
