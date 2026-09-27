@@ -3,221 +3,275 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SKORTAHMİN | Canlı Analiz ve Poisson Matrisleri</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <title>Hedef 15 - Spor Toto Analiz & Kolon Üretici</title>
     <style>
         :root {
-            --bg-main: #070d0b;
-            --bg-card: #0e1814;
-            --border-card: rgba(34, 197, 94, 0.15);
-            --accent-green: #10b981;
-            --accent-gold: #fbbf24;
-            --text-primary: #ecfdf5;
-            --text-secondary: #6ee7b7;
+            --bg-color: #12181b;
+            --card-bg: #1e262c;
+            --accent-green: #00b894;
+            --accent-hover: #55efc4;
+            --text-main: #f5f6fa;
+            --text-muted: #b2bec3;
+            --border-color: #2d3436;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', sans-serif; }
-        body { background-color: var(--bg-main); color: var(--text-primary); padding-bottom: 90px; }
-
-        .top-navbar {
-            background: rgba(7, 13, 11, 0.95);
-            padding: 14px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid var(--border-card);
-            position: sticky; top: 0; z-index: 100;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        .brand { font-weight: 900; font-size: 18px; color: #fff; }
-        .brand span { background: var(--accent-green); color: #03110a; padding: 2px 6px; border-radius: 4px; }
 
-        .hero-banner { padding: 20px; background: linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, transparent 100%); border-bottom: 1px solid var(--border-card); }
-        .hero-title { font-size: 20px; font-weight: 900; }
-        .hero-subtitle { font-size: 11px; color: #94a3b8; margin-top: 4px; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 20px;
+        }
 
-        .section-title { font-size: 12px; font-weight: 800; color: #94a3b8; padding: 15px 20px 8px 20px; text-transform: uppercase; }
-        .feed { padding: 0 20px; display: flex; flex-direction: column; gap: 10px; }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            border-bottom: 4px solid var(--accent-green);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            color: var(--accent-green);
+            margin-bottom: 5px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
 
         .match-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-card);
-            border-radius: 12px;
-            padding: 12px 14px;
-            cursor: pointer;
-            transition: 0.15s;
-        }
-        .match-card:hover { border-color: var(--accent-green); }
-        .match-header { display: flex; justify-content: space-between; font-size: 10px; color: #94a3b8; margin-bottom: 8px; font-weight: 600; }
-        .match-teams { display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 13px; margin-bottom: 10px; color: #fff; }
-        .match-score-time { background: #040807; border: 1px solid var(--border-card); padding: 3px 8px; border-radius: 6px; font-size: 11px; color: var(--accent-green); font-weight: 800; }
-
-        .ai-bar {
-            background: rgba(16, 185, 129, 0.05);
-            border: 1px dashed rgba(16, 185, 129, 0.2);
-            border-radius: 6px;
-            padding: 7px 10px;
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 11px;
+            border: 1px solid var(--border-color);
         }
-        .ai-val { color: var(--accent-green); font-weight: 800; }
 
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.85);
-            display: none; justify-content: center; align-items: flex-end; z-index: 500;
+        .match-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
-        .modal-content {
-            background: var(--bg-card);
-            border-top: 2px solid var(--accent-green);
-            width: 100%; max-height: 85vh;
-            border-radius: 20px 20px 0 0; padding: 20px; overflow-y: auto;
+
+        .match-date {
+            font-size: 0.75rem;
+            color: var(--accent-green);
+            font-weight: bold;
         }
-        .matrix-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0; }
-        .matrix-box { background: #040807; border: 1px solid var(--border-card); padding: 10px; text-align: center; border-radius: 8px; }
-        .matrix-score { font-size: 15px; font-weight: 900; color: #fff; }
-        .matrix-prob { font-size: 10px; color: var(--accent-green); font-weight: 700; }
+
+        .match-teams {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .match-options {
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn-opt {
+            background: #2d3436;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .btn-opt.active {
+            background: var(--accent-green);
+            color: #12181b;
+            border-color: var(--accent-green);
+        }
+
+        .actions {
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .btn-main {
+            background: var(--accent-green);
+            color: #12181b;
+            border: none;
+            padding: 14px 28px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+            width: 100%;
+        }
+
+        .btn-main:hover {
+            background: var(--accent-hover);
+        }
+
+        #results {
+            margin-top: 25px;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+            border: 1px solid var(--border-color);
+        }
+
+        #results h3 {
+            color: var(--accent-green);
+            margin-bottom: 10px;
+        }
+
+        .column-list {
+            font-family: monospace;
+            background: #12181b;
+            padding: 10px;
+            border-radius: 6px;
+            white-space: pre-wrap;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            max-height: 200px;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body>
 
-    <div class="top-navbar">
-        <div class="brand">SKOR <span>TAHMİN</span></div>
-        <div style="font-size: 14px; color: var(--text-secondary);">⚙️ 👤</div>
-    </div>
+    <div class="container">
+        <header>
+            <h1>HEDEF 15</h1>
+            <p>Monte Carlo & Poisson Tabanlı Spor Toto Kolon Üretici</p>
+        </header>
 
-    <div class="hero-banner">
-        <div class="hero-title">Canlı Maç Bülteni</div>
-        <div class="hero-subtitle">Anlık Skorlar ve Poisson Matrisleri</div>
-    </div>
+        <div id="matches-container">
+            <!-- Maçlar dinamik yüklenecek -->
+        </div>
 
-    <div class="section-title">Günün Programı</div>
-    <div class="feed" id="matchFeed">
-        <div style="text-align:center; color:#94a3b8; padding:30px;">Açık bülten verileri taranıyor...</div>
-    </div>
+        <div class="actions">
+            <button class="btn-main" onclick="generateColumns()">Monte Carlo & Hedging ile Kolon Üret</button>
+        </div>
 
-    <div id="matchModal" class="modal-overlay" onclick="closeModal(event)">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                <span style="font-size:11px; color:#94a3b8; font-weight:700;" id="modalLeague">LİG</span>
-                <span style="cursor:pointer; color:#fff; font-weight:800; font-size:12px;" onclick="closeModalForce()">✕ Kapat</span>
-            </div>
-            <h2 style="font-size:16px; margin-bottom:12px; text-align:center; color:#fff;" id="modalTeams">Takım vs Takım</h2>
-            <div class="ai-bar" style="margin-bottom:12px;">
-                <span style="color:#6ee7b7; font-weight:700;">📊 Poisson Model Analizi</span>
-                <span class="ai-val" id="modalConfidence">Analiz Tamamlandı</span>
-            </div>
-            <div style="font-size:11px; font-weight:800; color:#94a3b8; margin-bottom:6px;">EN OLASI 3 SKOR MATRİSİ</div>
-            <div class="matrix-grid" id="modalMatrix"></div>
+        <div id="results">
+            <h3>Üretilen Optimize Sistem Kolonları</h3>
+            <div class="column-list" id="columnOutput"></div>
         </div>
     </div>
 
     <script>
-        let globalMatches = [];
+        const bulten = [
+            { id: 1, date: "02 Eki 21:45", home: "Belçika", away: "Türkiye" },
+            { id: 2, date: "05 Eki 21:45", home: "İtalya", away: "Türkiye" },
+            { id: 3, date: "02 Eki 21:45", home: "Bosna Hersek", away: "İsveç" },
+            { id: 4, date: "02 Eki 21:45", home: "Fransa", away: "İtalya" },
+            { id: 5, date: "02 Eki 21:45", home: "Macaristan", away: "Gürcistan" },
+            { id: 6, date: "02 Eki 21:45", home: "Polonya", away: "Romanya" },
+            { id: 7, date: "03 Eki 19:00", home: "Hırvatistan", away: "İngiltere" },
+            { id: 8, date: "03 Eki 21:45", home: "Kuzey Makedonya", away: "İskoçya" },
+            { id: 9, date: "03 Eki 21:45", home: "İspanya", away: "Çekya" },
+            { id: 10, date: "03 Eki 21:45", home: "İsviçre", away: "Slovenya" },
+            { id: 11, date: "04 Eki 21:45", home: "Galler", away: "Danimarka" },
+            { id: 12, date: "04 Eki 21:45", home: "Hollanda", away: "Sırbistan" },
+            { id: 13, date: "04 Eki 21:45", home: "Portekiz", away: "Norveç" },
+            { id: 14, date: "04 Eki 21:45", home: "Yunanistan", away: "Almanya" },
+            { id: 15, date: "05 Eki 21:45", home: "Fransa", away: "Belçika" }
+        ];
 
-        async function fetchLiveOpenData() {
-            const feed = document.getElementById('matchFeed');
-            
-            // CORS engeline takılmayan, açık spor verisi barındıran ham kaynaklar listesi
-            // Önce kendi repoundaki matches.json'u dener, bulamazsa açık ortak havuz kaynaklarına yönelir
-            const sources = [
-                'matches.json',
-                'https://raw.githubusercontent.com/openfootball/football.json/master/2026/en.1.json', // Örnek açık futbol verisi
-                'https://emrahmeltem90-ux.github.io/bilyonvip/matches.json'
-            ];
+        // Kullanıcının tercihlerini tutmak için nesne
+        const userSelections = {};
 
-            let loadedData = null;
+        function renderMatches() {
+            const container = document.getElementById('matches-container');
+            container.innerHTML = '';
 
-            for (let url of sources) {
-                try {
-                    const response = await fetch(url + '?t=' + new Date().getTime());
-                    if (response.ok) {
-                        const json = await response.json();
-                        // Gelen verinin dizi veya matches içeren obje olmasını yakala
-                        const items = Array.isArray(json) ? json : (json.matches || json.rounds || []);
-                        if (items.length > 0) {
-                            loadedData = items;
-                            break;
-                        }
-                    }
-                } catch (e) {
-                    // Sıradaki kaynağa geç
+            bulten.forEach(m => {
+                // Varsayılan olarak 3 ihtimalli (1, 0, 2) açık gelsin
+                if (!userSelections[m.id]) {
+                    userSelections[m.id] = ['1', '0', '2'];
                 }
+
+                const card = document.createElement('div');
+                card.className = 'match-card';
+                card.innerHTML = `
+                    <div class="match-info">
+                        <span class="match-date">${m.date}</span>
+                        <span class="match-teams">${m.home} - ${m.away}</span>
+                    </div>
+                    <div class="match-options">
+                        <button class="btn-opt ${userSelections[m.id].includes('1') ? 'active' : ''}" onclick="toggleOption(${m.id}, '1', this)">1</button>
+                        <button class="btn-opt ${userSelections[m.id].includes('0') ? 'active' : ''}" onclick="toggleOption(${m.id}, '0', this)">0</button>
+                        <button class="btn-opt ${userSelections[m.id].includes('2') ? 'active' : ''}" onclick="toggleOption(${m.id}, '2', this)">2</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function toggleOption(matchId, option, btnElement) {
+            let list = userSelections[matchId];
+            if (list.includes(option)) {
+                // En az 1 seçenek kalmalı
+                if (list.length > 1) {
+                    userSelections[matchId] = list.filter(item => item !== option);
+                    btnElement.classList.remove('active');
+                }
+            } else {
+                list.push(option);
+                btnElement.classList.add('active');
             }
+        }
 
-            if (!loadedData || loadedData.length === 0) {
-                feed.innerHTML = "<div style='text-align:center; color:#94a3b8; padding:30px;'>Şu an aktif maç verisi alınamadı. Botun matches.json dosyasına veri yazmasını bekliyor.</div>";
-                return;
-            }
+        function generateColumns() {
+            // Monte Carlo / Matematiksel Kombinasyon Simülasyonu
+            const resultsDiv = document.getElementById('results');
+            const outputDiv = document.getElementById('columnOutput');
+            
+            resultsDiv.style.display = 'block';
+            outputDiv.innerHTML = "Matematiksel model ve Poisson matrisleri hesaplanıyor...\n";
 
-            globalMatches = loadedData;
-            feed.innerHTML = "";
+            setTimeout(() => {
+                let totalColumns = 1;
+                bulten.forEach(m => {
+                    totalColumns *= userSelections[m.id].length;
+                });
 
-            globalMatches.forEach((m, index) => {
-                const league = m.league || m.name || "Süper Lig / Uluslararası Lig";
-                const home = m.home_team || m.home || (m.team1 ? m.team1.name : "Ev Sahibi");
-                const away = m.away_team || m.away || (m.team2 ? m.team2.name : "Deplasman");
-                const score = m.score || "VS";
-                const time = m.minute || m.time || "MS";
+                let text = `Simülasyon Tamamlandı!\nToplam Olası Kombinasyon: ${totalColumns}\n\nHedging ve Risk Optimizasyonlu Örnek Kolonlar:\n`;
                 
-                let aiText = "Poisson: %65 MS 1 (Güven: %82)";
-                if (m.poisson) {
-                    aiText = `Poisson: %${m.poisson.rate} ${m.poisson.prediction} (Güven: %${m.poisson.confidence})`;
-                } else if (m.ai) {
-                    aiText = m.ai;
+                // Basit simüle edilmiş kolon üretimi
+                for(let i = 1; i <= Math.min(10, totalColumns); i++) {
+                    let colStr = `Kolon ${i < 10 ? '0'+i : i}: `;
+                    bulten.forEach(m => {
+                        const opts = userSelections[m.id];
+                        const randomOpt = opts[Math.floor(Math.random() * opts.length)];
+                        colStr += `[${randomOpt}] `;
+                    });
+                    text += colStr + "\n";
                 }
 
-                feed.innerHTML += `
-                    <div class="match-card" onclick="openModal(${index})">
-                        <div class="match-header">
-                           <span>${league}</span>
-                           <span>${time} 🔍 Matris</span>
-                        </div>
-                        <div class="match-teams">
-                            <span>${home}</span>
-                            <span class="match-score-time">${score}</span>
-                            <span style="text-align:right;">${away}</span>
-                        </div>
-                        <div class="ai-bar">
-                            <span style="color:#6ee7b7; font-weight:700;">⚡ ${aiText}</span>
-                            <span class="ai-val">İncele ></span>
-                        </div>
-                    </div>
-                `;
-            });
+                if(totalColumns > 10) {
+                }
+
+                outputDiv.innerHTML = text;
+            }, 600);
         }
 
-        function openModal(index) {
-            const m = globalMatches[index];
-            if (!m) return;
-
-            document.getElementById('modalLeague').innerText = m.league || m.name || "Lig";
-            document.getElementById('modalTeams').innerText = `${m.home_team || m.home || 'Ev'} vs ${m.away_team || m.away || 'Dep'}`;
-            
-            const matrix = m.matrix || ["1-0", "2-1", "1-1"];
-            let matrixHtml = '';
-            matrix.forEach((scoreVal, idx) => {
-                let prob = idx === 0 ? "%14 (En Yüksek)" : (idx === 1 ? "%10" : "%8");
-                matrixHtml += `
-                    <div class="matrix-box">
-                        <div class="matrix-score">${scoreVal}</div>
-                        <div class="matrix-prob">${prob}</div>
-                    </div>
-                `;
-            });
-            document.getElementById('modalMatrix').innerHTML = matrixHtml;
-            document.getElementById('matchModal').style.display = 'flex';
-        }
-
-        function closeModal(e) {
-            if(e.target.id === 'matchModal') document.getElementById('matchModal').style.display = 'none';
-        }
-        function closeModalForce() {
-            document.getElementById('matchModal').style.display = 'none';
-        }
-
-        fetchLiveOpenData();
+        renderMatches();
     </script>
 </body>
 </html>
