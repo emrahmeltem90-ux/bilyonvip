@@ -4,20 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <title>BilyonVIP - Profesyonel İddaa & Spor Toto Analiz</title>
+    <title>BilyonVIP - Tüm İddaa Bülteni & Canlı Analiz</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background-color: #0d1117; color: #ffffff; padding-bottom: 80px; }
+        body { background-color: #0d1117; color: #ffffff; padding-bottom: 85px; }
         .header { background: linear-gradient(135deg, #102e1b 0%, #161b22 100%); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #21262d; }
         .header-title { font-size: 16px; font-weight: 700; color: #ffffff; }
         .header-icons i { font-size: 18px; margin-left: 15px; color: #8b949e; }
         .hero { padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; background-color: #161b22; border-bottom: 1px solid #21262d; }
         .logo-text { font-size: 22px; font-weight: 900; letter-spacing: 1px; color: #ffffff; }
         .date-badge { background-color: #0e3a24; color: #2ea043; border: 1px solid #238636; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        
+        .search-box { padding: 10px 12px; background-color: #161b22; border-bottom: 1px solid #21262d; }
+        .search-input { width: 100%; background-color: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: 10px 12px; color: #fff; font-size: 13px; outline: none; }
+        .search-input:focus { border-color: #2ea043; }
+
         .nav-tabs { display: flex; background-color: #161b22; border-bottom: 2px solid #21262d; }
         .tab-btn { flex: 1; text-align: center; padding: 12px 4px; font-size: 12px; font-weight: 700; color: #8b949e; border: none; background: none; cursor: pointer; border-bottom: 3px solid transparent; }
         .tab-btn.active { color: #3fb950; border-bottom-color: #3fb950; }
+        
         .container { padding: 12px; max-width: 600px; margin: 0 auto; }
         .match-card { background-color: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 14px; margin-bottom: 12px; }
         .match-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
@@ -30,13 +36,13 @@
         .stat-label { font-size: 11px; color: #8b949e; margin-bottom: 2px; }
         .stat-val { font-size: 14px; font-weight: 700; color: #3fb950; }
         .prediction-banner { background-color: #0d1117; border: 1px solid #21262d; border-radius: 6px; padding: 8px; text-align: center; font-size: 13px; font-weight: 800; color: #3fb950; }
+        
         .toto-table { width: 100%; border-collapse: collapse; margin-top: 5px; font-size: 13px; }
         .toto-table th { background-color: #21262d; color: #8b949e; padding: 8px; text-align: left; }
         .toto-table td { padding: 10px 8px; border-bottom: 1px solid #21262d; }
         .toto-pick { background-color: #238636; color: #fff; padding: 3px 8px; border-radius: 4px; font-weight: bold; }
         .telegram-btn { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 500px; background-color: #0088cc; color: #ffffff; text-decoration: none; padding: 13px; border-radius: 8px; text-align: center; font-weight: 800; font-size: 13px; box-shadow: 0 4px 15px rgba(0,136,204,0.4); display: flex; align-items: center; justify-content: center; gap: 8px; z-index: 999; }
         
-        /* Skeleton Loading Effect */
         .skeleton { background: linear-gradient(90deg, #161b22 25%, #21262d 50%, #161b22 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 8px; height: 110px; margin-bottom: 12px; }
         @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
     </style>
@@ -49,7 +55,11 @@
 
     <div class="hero">
         <div class="logo-text">BİLYONVIP</div>
-        <div class="date-badge">• 27 Eylül Paz</div>
+        <div class="date-badge">• Tüm Bülten Canlı</div>
+    </div>
+
+    <div class="search-box">
+        <input type="text" id="searchInput" class="search-input" placeholder="🔍 Bültende takım veya maç ara..." onkeyup="filterMatches()">
     </div>
 
     <div class="nav-tabs">
@@ -70,10 +80,34 @@
 
     <script>
         let globalMatches = [];
+        let filteredMatches = [];
         let currentTab = 'bulten';
 
-        // İstemci Yedek Veri & Simülasyon Motoru (API yanıt vermezse asla kilitlenmez)
+        // Geniş Çaplı Yedek Bülten (50+ Karşılaşma)
         const fallbackFixtures = [
+            { home: "Galatasaray", away: "Fenerbahçe", h_xg: 2.10, a_xg: 1.85 },
+            { home: "Beşiktaş", away: "Trabzonspor", h_xg: 1.75, a_xg: 1.40 },
+            { home: "Başakşehir", away: "Sivasspor", h_xg: 1.60, a_xg: 1.10 },
+            { home: "Kasımpaşa", away: "Antalyaspor", h_xg: 1.45, a_xg: 1.30 },
+            { home: "Alanyaspor", away: "Göztepe", h_xg: 1.35, a_xg: 1.20 },
+            { home: "Rizespor", away: "Kayserispor", h_xg: 1.50, a_xg: 1.15 },
+            { home: "Gaziantep FK", away: "Konyaspor", h_xg: 1.25, a_xg: 1.10 },
+            { home: "Real Madrid", away: "Barcelona", h_xg: 2.25, a_xg: 2.05 },
+            { home: "Atletico Madrid", away: "Sevilla", h_xg: 1.70, a_xg: 1.05 },
+            { home: "Villareal", away: "Real Sociedad", h_xg: 1.60, a_xg: 1.40 },
+            { home: "Athletic Bilbao", away: "Valencia", h_xg: 1.80, a_xg: 1.00 },
+            { home: "Man. City", away: "Arsenal", h_xg: 2.15, a_xg: 1.65 },
+            { home: "Liverpool", away: "Chelsea", h_xg: 2.30, a_xg: 1.50 },
+            { home: "Tottenham", away: "Man. United", h_xg: 1.95, a_xg: 1.75 },
+            { home: "Newcastle", away: "Aston Villa", h_xg: 1.85, a_xg: 1.45 },
+            { home: "Bayern Münih", away: "Dortmund", h_xg: 2.50, a_xg: 1.70 },
+            { home: "Leverkusen", away: "RB Leipzig", h_xg: 2.20, a_xg: 1.80 },
+            { home: "Inter", away: "Juventus", h_xg: 1.80, a_xg: 1.35 },
+            { home: "Milan", away: "Napoli", h_xg: 1.65, a_xg: 1.60 },
+            { home: "Roma", away: "Lazio", h_xg: 1.55, a_xg: 1.45 },
+            { home: "Atalanta", away: "Fiorentina", h_xg: 2.10, a_xg: 1.50 },
+            { home: "PSG", away: "Marseille", h_xg: 2.40, a_xg: 1.20 },
+            { home: "Monaco", away: "Lille", h_xg: 1.85, a_xg: 1.40 },
             { home: "Türkiye", away: "İtalya", h_xg: 1.50, a_xg: 1.65 },
             { home: "Sırbistan", away: "Hollanda", h_xg: 1.25, a_xg: 2.10 },
             { home: "Almanya", away: "Yunanistan", h_xg: 2.35, a_xg: 0.85 },
@@ -123,10 +157,9 @@
 
         async function fetchMatches() {
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 saniye zaman aşımı
+            const timeoutId = setTimeout(() => controller.abort(), 4000);
 
             try {
-                // Render API adresi
                 const res = await fetch("https://bilyonvip.onrender.com", { signal: controller.signal });
                 const data = await res.json();
                 clearTimeout(timeoutId);
@@ -139,6 +172,7 @@
             } catch (err) {
                 useFallback();
             }
+            filteredMatches = [...globalMatches];
             renderView();
         }
 
@@ -146,12 +180,25 @@
             globalMatches = fallbackFixtures.map(f => calculateLocalSim(f.home, f.away, f.h_xg, f.a_xg));
         }
 
+        function filterMatches() {
+            const query = document.getElementById("searchInput").value.toLowerCase();
+            filteredMatches = globalMatches.filter(m => 
+                m.home.toLowerCase().includes(query) || m.away.toLowerCase().includes(query)
+            );
+            renderView();
+        }
+
         function renderView() {
             const container = document.getElementById("mainContainer");
             let html = "";
 
+            if (filteredMatches.length === 0) {
+                container.innerHTML = `<div style="text-align:center; padding:30px; color:#8b949e;">Aramanıza uygun karşılaşma bulunamadı.</div>`;
+                return;
+            }
+
             if (currentTab === 'bulten') {
-                globalMatches.slice(0, 10).forEach(m => {
+                filteredMatches.forEach(m => {
                     html += `
                         <div class="match-card">
                             <div class="match-header">
@@ -169,7 +216,7 @@
                         </div>`;
                 });
             } else if (currentTab === 'monte') {
-                globalMatches.slice(0, 10).forEach(m => {
+                filteredMatches.forEach(m => {
                     html += `
                         <div class="match-card">
                             <div class="match-header">
@@ -187,7 +234,7 @@
                 });
             } else if (currentTab === 'toto') {
                 html = `<div class="match-card"><h3 style="margin-bottom:10px; font-size:15px; color:#3fb950;">📊 SPOR TOTO 15 MAÇ HESAPLANMIŞ KOLON</h3><table class="toto-table"><thead><tr><th>#</th><th>Maç</th><th>1X2 Tahmin</th></tr></thead><tbody>`;
-                globalMatches.forEach((m, idx) => {
+                filteredMatches.slice(0, 15).forEach((m, idx) => {
                     html += `<tr><td>${idx+1}</td><td>${m.home} - ${m.away}</td><td><span class="toto-pick">${m.prediction_1x2}</span></td></tr>`;
                 });
                 html += `</tbody></table></div>`;
@@ -203,7 +250,6 @@
             renderView();
         }
 
-        // İlk Yükleme
         fetchMatches();
     </script>
 </body>
