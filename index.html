@@ -402,6 +402,7 @@
             <button class="tab-btn" onclick="switchTab('kayitli', this)">💾 Kuponlarım</button>
         </div>
 
+        <!-- 1. BÜLTEN SEKMESİ -->
         <div id="tab-bulten" class="tab-content active">
             <div class="control-panel">
                 <div class="control-group">
@@ -414,11 +415,11 @@
                 </div>
                 <div class="control-group">
                     <label for="budgetInput">Bütçe Gir (TL):</label>
-                    <input type="text" id="budgetInput" value="200" inputmode="numeric" oninput="calculateBudgetAndColumns('budget')">
+                    <input type="number" id="budgetInput" value="200" oninput="onBudgetChange()">
                 </div>
                 <div class="control-group">
                     <label for="columnCountInput">Kaç Kolon Olsun?</label>
-                    <input type="text" id="columnCountInput" value="20" inputmode="numeric" oninput="calculateBudgetAndColumns('column')">
+                    <input type="number" id="columnCountInput" value="20" oninput="onColumnChange()">
                 </div>
             </div>
 
@@ -438,10 +439,12 @@
             </div>
         </div>
 
+        <!-- 2. ANALİZ SEKMESİ -->
         <div id="tab-analiz" class="tab-content">
             <div id="analysis-container"></div>
         </div>
 
+        <!-- 3. BANKOBOT SEKMESİ -->
         <div id="tab-bankobot" class="tab-content">
             <div class="bot-card" style="margin-bottom: 12px;">
                 <h4>💬 BankoBot Asistanı</h4>
@@ -457,6 +460,268 @@
             <div id="bot-matches-list" style="margin-top:15px;"></div>
         </div>
 
+        <!-- 4. KAYITLI KUPONLAR SEKMESİ -->
         <div id="tab-kayitli" class="tab-content">
             <div class="analysis-card">
-                <h4>💾 Kaydedilen Kupon Ar
+                <h4>💾 Kaydedilen Kupon Arşivi</h4>
+                <p>Daha önce kaydettiğin kolonlar burada listelenir.</p>
+            </div>
+            <div id="savedCouponsContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        const bulten = [
+            { id: 1, date: "02 Eki", home: "Belçika", away: "Türkiye", analysis: "Poisson xG modellemesine göre Belçika iç saha beklentisi 1.85 gol.", botPick: "MS 1", botComment: "Ev sahibinin iç saha baskı verileri maçı önde taşıyor." },
+            { id: 2, date: "05 Eki", home: "İtalya", away: "Türkiye", analysis: "İtalya'nın savunma direnci yüksek, düşük skor bekleniyor.", botPick: "0-2 Çifte Şans", botComment: "Sürpriz arayanlar için ideal." },
+            { id: 3, date: "02 Eki", home: "Bosna", away: "İsveç", analysis: "xG dengeleri kafa kafaya.", botPick: "0 (Beraberlik)", botComment: "Skorun kilitlenme ihtimali kuvvetli." },
+            { id: 4, date: "02 Eki", home: "Fransa", away: "İtalya", analysis: "Fransa kadro kalitesiyle önde.", botPick: "MS 1", botComment: "Bireysel yetenek maçı çözer." },
+            { id: 5, date: "02 Eki", home: "Macaristan", away: "Gürcistan", analysis: "Macaristan iç sahada etkili.", botPick: "MS 1", botComment: "Alan presiyle maçı domine eder." },
+            { id: 6, date: "02 Eki", home: "Polonya", away: "Romanya", analysis: "Katı savunma blokları ön planda.", botPick: "0 (Beraberlik)", botComment: "Az pozisyonlu beraberlik maçı." },
+            { id: 7, date: "03 Eki", home: "Hırvatistan", away: "İngiltere", analysis: "İngiltere kanat hücumlarında etkili.", botPick: "MS 2", botComment: "Tempo kontrolüyle sonuca gider." },
+            { id: 8, date: "03 Eki", home: "K.Makedonya", away: "İskoçya", analysis: "İskoçya'nın hava topları üstünlüğü var.", botPick: "MS 2", botComment: "Fizik gücüyle maçı alır." },
+            { id: 9, date: "03 Eki", home: "İspanya", away: "Çekya", analysis: "İspanya pas ortalamasında zirvede.", botPick: "MS 1 (Banko)", botComment: "Tek kale geçecek bir 90 dakika." },
+            { id: 10, date: "03 Eki", home: "İsviçre", away: "Slovenya", analysis: "İsviçre evinde az şut veriyor.", botPick: "MS 1", botComment: "Disiplinle skoru korur." },
+            { id: 11, date: "04 Eki", home: "Galler", away: "Danimarka", analysis: "Danimarka deplasmanda formda.", botPick: "MS 2", botComment: "Dış sahada üç puanı alır." },
+            { id: 12, date: "04 Eki", home: "Hollanda", away: "Sırbistan", analysis: "Hollanda kanat organizasyonları güçlü.", botPick: "MS 1", botComment: "Erken üstünlüğü yakalar." },
+            { id: 13, date: "04 Eki", home: "Portekiz", away: "Norveç", analysis: "Portekiz pres gücüyle zorlayacak.", botPick: "MS 1", botComment: "Yıldız ayaklar maçı belirler." },
+            { id: 14, date: "04 Eki", home: "Yunanistan", away: "Almanya", analysis: "Almanya alan kontrolünde iyi.", botPick: "MS 2", botComment: "Taktik disiplinle skoru alır." },
+            { id: 15, date: "04 Eki", home: "Fransa", away: "Belçika", analysis: "Avrupa'nın iki devinin maçı.", botPick: "MS 1", botComment: "Kulübe zenginliği galibiyeti getirir." }
+        ];
+
+        const userSelections = {};
+        let lastGeneratedCoupons = [];
+
+        function renderMatches() {
+            const container = document.getElementById('matches-container');
+            if(!container) return;
+            container.innerHTML = '';
+
+            bulten.forEach(m => {
+                if (!userSelections[m.id]) {
+                    userSelections[m.id] = ['1', '0', '2'];
+                }
+
+                const card = document.createElement('div');
+                card.className = 'match-card';
+                card.innerHTML = `
+                    <div class="match-info">
+                        <span class="match-date">${m.date}</span>
+                        <span class="match-teams">${m.home} - ${m.away}</span>
+                    </div>
+                    <div class="match-options">
+                        <button class="btn-opt ${userSelections[m.id].includes('1') ? 'active' : ''}" onclick="toggleOption(${m.id}, '1', this)">1</button>
+                        <button class="btn-opt ${userSelections[m.id].includes('0') ? 'active' : ''}" onclick="toggleOption(${m.id}, '0', this)">0</button>
+                        <button class="btn-opt ${userSelections[m.id].includes('2') ? 'active' : ''}" onclick="toggleOption(${m.id}, '2', this)">2</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function onBudgetChange() {
+            const budgetInput = document.getElementById('budgetInput');
+            const columnInput = document.getElementById('columnCountInput');
+            const display = document.getElementById('totalCostDisplay');
+
+            let budget = parseFloat(budgetInput.value) || 0;
+            let columns = Math.max(1, Math.round(budget / 10));
+            
+            columnInput.value = columns;
+            display.innerText = `Toplam Tutar: ${budget} TL (${columns} Kolon - Kolon Başı: 10 TL)`;
+        }
+
+        function onColumnChange() {
+            const budgetInput = document.getElementById('budgetInput');
+            const columnInput = document.getElementById('columnCountInput');
+            const display = document.getElementById('totalCostDisplay');
+
+            let columns = parseInt(columnInput.value) || 1;
+            let budget = columns * 10;
+
+            budgetInput.value = budget;
+            display.innerText = `Toplam Tutar: ${budget} TL (${columns} Kolon - Kolon Başı: 10 TL)`;
+        }
+
+        function renderAnalysis() {
+            const container = document.getElementById('analysis-container');
+            if(!container) return;
+            container.innerHTML = '';
+            bulten.forEach(m => {
+                const card = document.createElement('div');
+                card.className = 'analysis-card';
+                card.innerHTML = `<h4>📊 ${m.date} | ${m.home} vs ${m.away}</h4><p>${m.analysis}</p>`;
+                container.appendChild(card);
+            });
+        }
+
+        function renderBankoBotAIList() {
+            const container = document.getElementById('bot-matches-list');
+            if(!container) return;
+            container.innerHTML = '<h4 style="color:#818cf8; margin-bottom:8px;">🤖 BankoBot Tavsiyeleri</h4>';
+            bulten.forEach(m => {
+                const card = document.createElement('div');
+                card.className = 'bot-card';
+                card.innerHTML = `<h4>${m.home} vs ${m.away}</h4><div class="prediction-badge">Tercih: ${m.botPick}</div><p>"${m.botComment}"</p>`;
+                container.appendChild(card);
+            });
+        }
+
+        function switchTab(tabName, btnElement) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            if (btnElement) btnElement.classList.add('active');
+
+            if (tabName === 'bulten') document.getElementById('tab-bulten').classList.add('active');
+            else if (tabName === 'analiz') document.getElementById('tab-analiz').classList.add('active');
+            else if (tabName === 'bankobot') {
+                document.getElementById('tab-bankobot').classList.add('active');
+                renderBankoBotAIList();
+            }
+            else if (tabName === 'kayitli') {
+                document.getElementById('tab-kayitli').classList.add('active');
+                loadSavedCouponsView();
+            }
+        }
+
+        function toggleOption(matchId, option, btnElement) {
+            let list = userSelections[matchId];
+            if (list.includes(option)) {
+                if (list.length > 1) {
+                    userSelections[matchId] = list.filter(item => item !== option);
+                    btnElement.classList.remove('active');
+                }
+            } else {
+                list.push(option);
+                btnElement.classList.add('active');
+            }
+        }
+
+        function generateColumns() {
+            const targetColumnCount = parseInt(document.getElementById('columnCountInput').value) || 20;
+            const totalBudget = parseFloat(document.getElementById('budgetInput').value) || 200;
+            const resultsDiv = document.getElementById('results');
+            const summaryDiv = document.getElementById('summaryText');
+            const outputContainer = document.getElementById('columnOutputContainer');
+            
+            resultsDiv.style.display = 'block';
+            summaryDiv.innerHTML = "Kolonlar hesaplanıyor...";
+            outputContainer.innerHTML = "";
+
+            setTimeout(() => {
+                summaryDiv.innerHTML = `Bütçe: <b>${totalBudget} TL</b> | Kolon Adedi: <b>${targetColumnCount} Kolon</b> (Kolon Başı: 10 TL)<br>Tercihleriniz doğrultusunda optimize edildi.`;
+                
+                let htmlContent = "";
+                lastGeneratedCoupons = [];
+
+                for(let i = 1; i <= targetColumnCount; i++) {
+                    let matchesHtml = "";
+                    let couponArray = [];
+
+                    bulten.forEach((m, index) => {
+                        let opts = userSelections[m.id] && userSelections[m.id].length > 0 
+                            ? [...userSelections[m.id]] 
+                            : ['1', '0', '2'];
+                        
+                        const chosenOpt = opts[Math.floor(Math.random() * opts.length)];
+                        couponArray.push({ match: `M${index+1}`, pick: chosenOpt });
+
+                        matchesHtml += `
+                            <div class="match-badge">
+                                <span>M${index+1}</span>
+                                <strong>[${chosenOpt}]</strong>
+                            </div>
+                        `;
+                    });
+
+                    lastGeneratedCoupons.push({ id: i, matches: couponArray });
+
+                    htmlContent += `
+                        <div class="coupon-card">
+                            <div class="coupon-header">
+                                <div class="coupon-title">Kolon #${i < 10 ? '0'+i : i}</div>
+                                <button class="btn-copy-mini" onclick="copySingleCoupon(${i})">Kopyala</button>
+                            </div>
+                            <div class="coupon-matches">${matchesHtml}</div>
+                        </div>
+                    `;
+                }
+                outputContainer.innerHTML = htmlContent;
+            }, 200);
+        }
+
+        function copySingleCoupon(index) {
+            const coupon = lastGeneratedCoupons.find(c => c.id === index);
+            if (!coupon) return;
+            const text = `Kolon #${index}: ` + coupon.matches.map(m => `${m.match}[${m.pick}]`).join(' ');
+            navigator.clipboard.writeText(text).then(() => {
+                alert(`Kolon #${index} panoya kopyalandı!`);
+            });
+        }
+
+        function saveCurrentCoupons() {
+            if (lastGeneratedCoupons.length === 0) {
+                alert("Önce kolon üretmelisiniz!");
+                return;
+            }
+            let saved = JSON.parse(localStorage.getItem('saved_toto_coupons') || '[]');
+            saved.push({ date: new Date().toLocaleString(), coupons: lastGeneratedCoupons });
+            localStorage.setItem('saved_toto_coupons', JSON.stringify(saved));
+            alert("Kuponlar başarıyla kaydedildi!");
+        }
+
+        function loadSavedCouponsView() {
+            const container = document.getElementById('savedCouponsContainer');
+            if(!container) return;
+            let saved = JSON.parse(localStorage.getItem('saved_toto_coupons') || '[]');
+            if (saved.length === 0) {
+                container.innerHTML = '<p style="color:var(--text-muted); font-size:0.85rem;">Henüz kayıtlı kupon bulunmuyor.</p>';
+                return;
+            }
+            container.innerHTML = '';
+            saved.forEach((group, gIdx) => {
+                let groupHtml = `<div class="coupon-card"><div class="coupon-title">Kayıt Grubu #${gIdx+1} (${group.date})</div>`;
+                group.coupons.forEach(c => {
+                    let mStr = c.matches.map(m => `${m.match}:[${m.pick}]`).join(', ');
+                    groupHtml += `<div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">Kolon #${c.id} -> ${mStr}</div>`;
+                });
+                groupHtml += `</div>`;
+                container.innerHTML += groupHtml;
+            });
+        }
+
+        function sendChatQuery() {
+            const input = document.getElementById('chatInput');
+            if(!input) return;
+            const query = input.value.trim();
+            if (!query) return;
+
+            const chatBox = document.getElementById('chatBox');
+            chatBox.innerHTML += `<div class="chat-msg user">${query}</div>`;
+            input.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            setTimeout(() => {
+                let botReply = "Bültendeki genel xG dengelerine bakarak sürpriz ihtimallerini değerlendirebilirsin.";
+                const qLower = query.toLowerCase();
+
+                if (qLower.includes('banko') || qLower.includes('sağlam')) {
+                    botReply = "Bu haftanın en banko mücadelesi İspanya - Çekya maçı (MS 1) olarak öne çıkıyor.";
+                } else if (qLower.includes('türkiye') || qLower.includes('milli')) {
+                    botReply = "Belçika deplasmanı sert geçecek, İtalya maçında ise '0-2 Çifte Şans' denenebilir.";
+                } else if (qLower.includes('sürpriz')) {
+                    botReply = "İtalya - Türkiye ve Polonya - Romanya maçları yüksek beraberlik potansiyeli barındırıyor.";
+                }
+
+                chatBox.innerHTML += `<div class="chat-msg bot">${botReply}</div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 300);
+        }
+
+        window.onload = function() {
+            renderMatches();
+            renderAnalysis();
+        };
+    </script>
+</body>
+</html>
