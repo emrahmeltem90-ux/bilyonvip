@@ -1,0 +1,29 @@
+name: Otomatik Maç Verisi Güncelleyici
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */3 * * *' # Her 3 saatte bir otomatik çalışır
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repo Kopyasını Al
+        uses: actions/checkout@v3
+
+      - name: Python Kur
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Botu Çalıştır ve JSON Üret
+        run: python update_data.py
+
+      - name: Değişiklikleri GitHub'a Kaydet
+        run: |
+          git config --global user.name "Bot"
+          git config --global user.email "bot@example.com"
+          git add matches.json
+          git commit -m "Otomatik bülten güncellemesi" || exit 0
+          git push
