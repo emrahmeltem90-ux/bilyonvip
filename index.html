@@ -160,16 +160,41 @@ button:active{transform:scale(.98)}button:disabled{opacity:.5}
 <p class="note">Olasılıklar bülten yüzdelerinden ve son form sonuçlarından hesaplanır, sonucu garanti etmez.</p>
 </div>
 
-<script src="maclar.js"></script>
 <script>
-const SYM=["1","0","2"];
-let PR=matchesData.map(m=>{const t=m.p.reduce((a,b)=>a+b,0);return m.p.map(x=>x/t)});
-let cols=[],used=matchesData.map(()=>[]);
+let matchesData=[];
+let PR=[];
+let cols=[],used=[];
 let currentMode='guvenli';
+const SYM=["1","0","2"];
 const $=id=>document.getElementById(id);
 const pc=x=>(x*100).toFixed(1);
 const ordr=i=>[0,1,2].sort((a,b)=>PR[i][b]-PR[i][a]);
 const topP=i=>Math.max(...PR[i]);
+
+async function loadMatches(){
+  try{
+    const res=await fetch('matches.json');
+    const raw=await res.json();
+    matchesData=raw.map(m=>({
+      id:m.id,
+      home:m.home_team,
+      away:m.away_team,
+      date:m.date+' '+m.time,
+      p:m.p,
+      form:m.form||'',
+      series:m.series||[],
+      league:m.league||'',
+      poisson:m.poisson||{}
+    }));
+    PR=matchesData.map(m=>{const t=m.p.reduce((a,b)=>a+b,0);return m.p.map(x=>x/t)});
+    used=matchesData.map(()=>[]);
+    initApp();updateBar();renderHeatmap();setMode('guvenli');
+    say('🤖 <b>Merhaba, ben Bankobot Pro.</b><br><br>Bültenin olasılıklarına, form sonuçlarına ve risk profiline göre analiz yapıyorum.<br><br>'+summary(),'bot');
+  }catch(e){
+    document.body.innerHTML='<div style="padding:20px;color:#ef4444;font-size:.9rem">⚠️ matches.json yüklenemedi.<br><br>Hata: '+e.message+'<br><br>Dosya adının doğru olduğundan ve GitHub Pages\'te olduğundan emin ol.</div>';
+  }
+}
+
 function level(i){
   const o=ordr(i),mx=PR[i][o[0]],gap=mx-PR[i][o[1]];
   return mx>=.7?'Banko':mx>=.55?'Güçlü favori':gap<.12?'Çok dengeli':'Hafif favori';
@@ -233,7 +258,7 @@ function generate(){
    <br><br><div id="mcOut">Simülasyon çalışıyor...<div class="progress"><div id="bar-a"></div></div></div>`;
   $('outputContainer').innerHTML=r.map((x,i)=>`<div class="coupon"><b>Kolon #${String(i+1).padStart(2,'0')}</b> &nbsp;<span class="muted">%${(x.p*100).toFixed(3)}</span> <button onclick="copySingle(${i})" style="width:auto;padding:4px 8px;font-size:.7rem;float:right">📋</button><br>
   <span style="letter-spacing:1px">${x.pick.map((o,k)=>`<span class="muted">${k+1}:</span><b>${SYM[o]}</b>`).join(' ')}</span></div>`).join('');
-  $('outputContainer').innerHTML += `<button class="copy-btn" id="copyBtn" onclick="copyCoupon()">📋 Tüm Kuponu Kopyala (WhatsApp/Telegram)</button>`;
+  $('outputContainer').innerHTML += `<button class="copy-btn" id="copyBtn" onclick="copyCoupon()">📋 Tüm Kuponu Kopyala</button>`;
   $('outputCard').scrollIntoView({behavior:'smooth'});
   runMC('mcOut','bar-a',false);
 }
@@ -293,7 +318,6 @@ function runLab(){
   $('runBtn').disabled=true;runMC('res-full','bar-full',true);
 }
 
-/* ============ BANKOBOT PRO ============ */
 function say(html,who){
   const d=document.createElement('div');d.className='b '+who;d.innerHTML=html;
   $('chat').appendChild(d);d.scrollIntoView({block:'end',behavior:'smooth'});
@@ -462,10 +486,7 @@ function reply(t){
 function ask(t){say(t,'usr');setTimeout(()=>say(reply(t),'bot'),250)}
 function send(){const v=$('q').value.trim();if(!v)return;$('q').value='';ask(v)}
 
-window.onload=()=>{
-  initApp();updateBar();renderHeatmap();setMode('guvenli');
-  say('🤖 <b>Merhaba, ben Bankobot Pro.</b><br><br>Bültenin olasılıklarına, form sonuçlarına ve risk profiline göre analiz yapıyorum.<br><br>'+summary(),'bot');
-};
+window.onload=loadMatches;
 </script>
 </body>
 </html>
