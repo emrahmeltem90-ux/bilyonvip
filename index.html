@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hedef 15 - Monte Carlo & Bankobot Akıllı Matris</title>
+    <title>Hedef 15 - İddaa & Toto</title>
     <style>
         :root {
             --spor-green: #008751;
             --spor-green-dark: #00683e;
-            --bg-color: #f0f2f5;
-            --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
             --accent-orange: #f59e0b;
-            --border-color: #e2e8f0;
+            --border-color: #334155;
         }
 
         * {
@@ -29,15 +29,13 @@
             padding-bottom: 70px;
         }
 
-        /* Üst Header / Mobil Uygulama Barı */
+        /* Üst Header */
         .app-header {
             background-color: var(--spor-green);
             color: white;
             padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
         .app-title h2 {
@@ -50,18 +48,10 @@
             opacity: 0.85;
         }
 
-        .balance-badge {
-            background: rgba(255,255,255,0.2);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: bold;
-        }
-
-        /* 3'lü Sekme Yapısı (Tab Menü) */
+        /* 3'lü Sekme Yapısı */
         .tabs-nav {
             display: flex;
-            background: white;
+            background: #162032;
             border-bottom: 1px solid var(--border-color);
             position: sticky;
             top: 0;
@@ -72,7 +62,7 @@
             flex: 1;
             text-align: center;
             padding: 14px 6px;
-            font-size: 0.82rem;
+            font-size: 0.78rem;
             font-weight: bold;
             color: var(--text-muted);
             cursor: pointer;
@@ -80,9 +70,9 @@
         }
 
         .tab-item.active {
-            color: var(--spor-green);
-            border-bottom-color: var(--spor-green);
-            background: #f8fafc;
+            color: var(--accent-orange);
+            border-bottom-color: var(--accent-orange);
+            background: var(--card-bg);
         }
 
         .container {
@@ -99,13 +89,12 @@
             display: block;
         }
 
-        /* 1. SAYFA STİLLERİ: BÜTÇE & KASA */
+        /* Kasa Paneli */
         .panel-box {
             background: var(--card-bg);
             border-radius: 12px;
             padding: 15px;
             margin-bottom: 15px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
             border: 1px solid var(--border-color);
         }
 
@@ -121,10 +110,12 @@
             margin-bottom: 5px;
         }
 
-        .form-group input, .form-group select {
+        .form-group input {
             width: 100%;
             padding: 10px;
+            background: var(--bg-color);
             border: 1px solid var(--border-color);
+            color: var(--text-main);
             border-radius: 8px;
             font-size: 0.95rem;
             font-weight: bold;
@@ -144,16 +135,12 @@
             text-align: center;
         }
 
-        .btn-primary-custom:active {
-            background-color: var(--spor-green-dark);
-        }
-
-        /* Maç Kartları Tasarımı (Uygulama Tarzı) */
+        /* Maç Kartları (Gönderdiğin orijinal ekran görüntüsüne birebir) */
         .match-row-card {
-            background: white;
+            background: var(--card-bg);
             border-radius: 8px;
             padding: 12px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             border: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
@@ -164,16 +151,14 @@
             display: flex;
             justify-content: space-between;
             font-size: 0.72rem;
-            color: var(--text-muted);
+            color: var(--accent-orange);
+            font-weight: bold;
         }
 
         .teams-info {
             font-size: 0.9rem;
             font-weight: bold;
             color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 6px;
         }
 
         .odds-container {
@@ -183,66 +168,60 @@
         }
 
         .odd-btn {
-            background: #f8fafc;
+            background: var(--bg-color);
             border: 1px solid var(--border-color);
             border-radius: 6px;
             padding: 8px;
             text-align: center;
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-weight: bold;
+            color: var(--text-main);
         }
 
         .odd-btn span {
             display: block;
             font-size: 0.65rem;
-            color: var(--text-muted);
+            color: #10b981;
             font-weight: normal;
+            margin-top: 2px;
         }
 
         .odd-btn.selected {
-            background: var(--spor-green);
-            color: white;
-            border-color: var(--spor-green);
+            background: var(--accent-orange);
+            color: #0f172a;
+            border-color: var(--accent-orange);
         }
 
         .odd-btn.selected span {
-            color: rgba(255,255,255,0.8);
+            color: #0f172a;
+            font-weight: bold;
         }
 
-        /* 2. SAYFA STİLLERİ: BAYRAKLI & BANKOBOT ANALİZLERİ */
+        /* 2. Sayfa Analiz Stili */
         .analysis-card {
-            background: white;
+            background: var(--card-bg);
             border-radius: 10px;
             padding: 14px;
             margin-bottom: 12px;
             border-left: 4px solid var(--accent-orange);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
-        .analysis-title {
-            font-size: 0.9rem;
-            font-weight: bold;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            border: 1px solid var(--border-color);
         }
 
         .bankobot-comment {
-            background: #fffbeb;
-            border: 1px solid #fef3c7;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
             padding: 10px;
             border-radius: 6px;
             font-size: 0.8rem;
-            color: #92400e;
+            color: var(--text-main);
             line-height: 1.4;
             margin-top: 6px;
         }
 
-        /* 3. SAYFA STİLLERİ: MONTE CARLO LABORATUVARI */
+        /* 3. Sayfa Laboratuvar */
         .lab-card {
-            background: white;
+            background: var(--card-bg);
             border-radius: 10px;
             padding: 15px;
             margin-bottom: 12px;
@@ -250,43 +229,28 @@
         }
 
         .lab-title {
-            color: var(--spor-green);
+            color: var(--accent-orange);
             font-size: 0.95rem;
             font-weight: bold;
             margin-bottom: 6px;
         }
 
-        .simulation-progress {
-            background: #e2e8f0;
-            border-radius: 6px;
-            height: 8px;
-            width: 100%;
-            margin: 8px 0;
-            overflow: hidden;
-        }
-
-        .simulation-bar {
-            background: var(--spor-green);
-            height: 100%;
-            width: 78%;
-        }
-
-        /* Sonuç Paneli */
+        /* Sonuç Alanı */
         #resultsArea {
             display: none;
             margin-top: 15px;
-            background: white;
+            background: var(--card-bg);
             padding: 15px;
             border-radius: 10px;
             border: 1px solid var(--border-color);
         }
 
         .coupon-box-output {
-            background: #f8fafc;
+            background: var(--bg-color);
             border: 1px solid var(--border-color);
             padding: 10px;
             border-radius: 8px;
-            margin-top: 10px;
+            margin-top: 8px;
             font-size: 0.8rem;
         }
     </style>
@@ -296,9 +260,8 @@
     <header class="app-header">
         <div class="app-title">
             <h2>HEDEF 15 - İDDAA & TOTO</h2>
-            <span>Monte Carlo & Bankobot Destekli</span>
+            <span>Monte Carlo & Bankobot Destekli Matris</span>
         </div>
-        <div class="balance-badge">Bakiye: 240,00 ₺</div>
     </header>
 
     <nav class="tabs-nav">
@@ -325,4 +288,41 @@
             <div id="matchesContainer"></div>
 
             <div id="resultsArea">
-                <h3 style="font-size:0.95rem
+                <h3 style="font-size:0.95rem; color:var(--accent-orange); margin-bottom:8px;">🎯 Hesaplanan Kupon / Kolon Raporu</h3>
+                <div id="couponSummaryText" style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px;"></div>
+                <div id="couponItemsList"></div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="tab-1">
+            <div id="analysisContainer"></div>
+        </div>
+
+        <div class="tab-content" id="tab-2">
+            <div class="lab-card">
+                <div class="lab-title">🔬 10.000'li Simülasyon Motoru</div>
+                <p style="font-size:0.8rem; color:var(--text-muted);">Sistem bültenindeki tüm maçların xG, sakatlık ve form verilerini saniyede 10.000 kez simüle ederek en ideal sürpriz matrisini test eder.</p>
+                <div style="margin-top:10px; font-size:0.8rem; font-weight:bold; color:var(--accent-orange);">Genel Simülasyon Başarı Olasılığı: %78.4</div>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-title">⚖️ Varyans & Risk Analiz Cihazı</div>
+                <p style="font-size:0.8rem; color:var(--text-muted); line-height: 1.4;">
+                    <b>Bankobot Tavsiyesi:</b> Yunanistan-Almanya ve Belçika-Türkiye gibi kritik eşiklerde simülasyon %42 oranında sürpriz patlaması öngörüyor. Tekli maç bırakmak yerine çifte şans (1-2) kullanmanız matrisin 15 bilme şansını artıracaktır.
+                </p>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-title">📊 Poisson & Oran Matrisi Dağılımı</div>
+                <p style="font-size:0.8rem; color:var(--text-muted);">Geçmiş 5 yıllık Toto verilerine göre en çok kazandıran oran aralığı: <b>%60 Ev sahibi - %30 Sürpriz / Beraberlik</b></p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const bultenData = [
+            { id: 1, flag: "🇧🇪🇹🇷", home: "Belçika", away: "Türkiye", date: "02 Eki 21:45", p1: "%64.2", p0: "%18.5", p2: "%17.3", comment: "Millet Belçika'ya banko 1 basacak. Biz diyoruz ki Türkiye burayı darma dağın eder; dikkat, gizli sürpriz 2 potansiyeli yüksek! Sütten ağzı yanan yoğurdu üfleyerek yermiş, temkinli olalım." },
+            { id: 2, flag: "🇮🇹🇹🇷", home: "İtalya", away: "Türkiye", date: "05 Eki 21:45", p1: "%56.2", p0: "%24.7", p2: "%19.1", comment: "Herkes İtalya evinde kilitler diyor ama bu maç 0-2 patlamaya çok müsait. Sürpriz arayan matriste 1'i tamamen silebilir." },
+            { id: 3, flag: "🇧🇦🇸🇪", home: "Bosna Hersek", away: "İsveç", date: "02 Eki 21:45", p1: "%17.6", p0: "%26.3", p2: "%56.1", comment: "Orantısız güç değil, tam bir bitik maç. Kimse buraya bakmaz ama 0 (beraberlik) matrislerin kilit taşı olacak." },
+            { id: 4, flag: "🇫🇷🇮🇹", home: "Fransa", away
