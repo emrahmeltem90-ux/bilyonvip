@@ -380,7 +380,6 @@ function generateReducedCoupons(){
         if(len > 1) closureCount++;
     });
 
-    // Gerçekçi istatistiksel başarı/tutma ihtimali hesaplaması
     let successRate = Math.max(14, Math.min(68, Math.round(55 - (closureCount * 1.8) + (targetCount * 0.3))));
     summary.innerHTML = `Üretilen Kolon: <b>${targetCount}</b> | Aktif Kapama: <b>${closureCount} Maç</b><br>Gerçekçi Kupon Tutma İhtimali (15/15): <b class="green">%${successRate}</b>`;
 
