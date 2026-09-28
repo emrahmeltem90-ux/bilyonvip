@@ -50,21 +50,15 @@ button:active{transform:scale(.98)}button:disabled{opacity:.5}
 .chip{background:var(--card2);border:1px solid var(--border);color:var(--orange);border-radius:16px;padding:7px 11px;font-size:.75rem;font-weight:bold;cursor:pointer}
 .askrow{display:flex;gap:8px}
 .askrow input{margin:0}.askrow button{width:90px}
-
-/* ===== FORM SERİSİ ===== */
 .series{display:flex;gap:4px;margin:6px 0;align-items:center}
 .series-dot{width:14px;height:14px;border-radius:50%;display:inline-block;border:1px solid rgba(255,255,255,.15)}
 .series-dot.W{background:#10b981}
 .series-dot.D{background:#f59e0b}
 .series-dot.L{background:#ef4444}
 .series-label{font-size:.68rem;color:var(--muted);margin-left:6px;font-weight:bold}
-
-/* ===== KUPON KOPYALA ===== */
 .copy-btn{background:var(--card2);border:1px solid var(--border);color:var(--orange);padding:8px 12px;border-radius:7px;font-size:.78rem;font-weight:bold;cursor:pointer;margin-top:8px;width:100%}
 .copy-btn:active{transform:scale(.98)}
 .copy-btn.copied{background:var(--green);color:#fff;border-color:var(--green2)}
-
-/* ===== VALUE BET ===== */
 .value-badge{display:inline-block;padding:2px 7px;border-radius:5px;font-size:.65rem;font-weight:bold;margin-left:5px}
 .value-badge.high{background:rgba(16,185,129,.2);color:#10b981}
 .value-badge.low{background:rgba(239,68,68,.2);color:#ef4444}
@@ -72,8 +66,6 @@ button:active{transform:scale(.98)}button:disabled{opacity:.5}
 .value-row{display:flex;gap:6px;align-items:center;margin-top:6px;font-size:.75rem}
 .value-row input{padding:7px;font-size:.8rem;margin:0;flex:1}
 .value-row button{width:auto;padding:7px 12px;font-size:.78rem;flex:0 0 auto}
-
-/* ===== BANKOBOT PRO ===== */
 .heatmap{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin:10px 0}
 .heatmap .hm{aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:bold;color:#fff;cursor:pointer}
 .heatmap .hm.green{background:#10b981}
@@ -190,7 +182,7 @@ function initApp(){
   <div class="match">
     <div class="match-head"><span>${m.date}</span><span>Maç #${m.id}</span></div>
     <div class="teams">${m.home} - ${m.away}<span class="badge">${level(i)}</span></div>
-    <div class="series">${(m.series||[]).map(s=>`<span class="series-dot ${s}" title="${s}"></span>`).join('')}<span class="series-label">Son ${(m.series||[]).length} maç (ev)</span></div>
+    <div class="series">${(m.series||[]).map(s=>`<span class="series-dot ${s}"></span>`).join('')}<span class="series-label">Son ${(m.series||[]).length} maç (ev)</span></div>
     <div class="formline">${m.form}</div>
     <div class="probs">${[0,1,2].map(o=>`<div class="pick ${used[i].includes(o)?'selected':''}">${SYM[o]} <span>%${m.p[o]}</span></div>`).join('')}</div>
     <div class="value-row">
@@ -206,7 +198,6 @@ function switchTab(i,el){
   el.classList.add('active');$('page-'+i).classList.add('active');
 }
 
-/* ===== REDÜKSİYON ===== */
 function topColumns(n){
   const ord=matchesData.map((_,i)=>ordr(i));
   const lp=s=>s.reduce((t,r,i)=>t+Math.log(PR[i][ord[i][r]]),0);
@@ -247,7 +238,6 @@ function generate(){
   runMC('mcOut','bar-a',false);
 }
 
-/* ===== VALUE BET ===== */
 function calcValue(i){
   const input=$('odd-'+i),res=$('valres-'+i);
   const odd=parseFloat(input.value);
@@ -260,7 +250,6 @@ function calcValue(i){
   res.innerHTML=`${badge}<br><span class="muted" style="font-size:.68rem">Adil: ${fairOdd.toFixed(2)} | Model: %${(modelProb*100).toFixed(1)}</span>`;
 }
 
-/* ===== KOPYALAMA ===== */
 function copyCoupon(){
   if(!cols.length){alert('Önce kupon oluştur.');return}
   let text='🎯 HEDEF 15 - KUPONUM\n────────────────\n';
@@ -277,7 +266,6 @@ function copySingle(idx){
   navigator.clipboard.writeText(text);
 }
 
-/* ===== MONTE CARLO ===== */
 function draw(p){let r=Math.random();for(let o=0;o<3;o++){r-=p[o];if(r<0)return o}return 2}
 function runMC(out,bar,clear){
   const N=10000,STEP=1000,L=matchesData.length,hist=new Array(L+1).fill(0);
@@ -315,7 +303,7 @@ function outName(m,o){return o==0?m.home+' (1)':o==1?'Beraberlik (0)':m.away+' (
 function renderHeatmap(){
   const hm=$('heatmap');if(!hm)return;
   hm.innerHTML=matchesData.map((m,i)=>{
-    const mx=topP(i),cls=mx>=.65?'green':mx>=.5?'yellow':'red',o=ordr(i)[0];
+    const mx=topP(i),cls=mx>=.65?'green':mx>=.5?'yellow':'red';
     return `<div class="hm ${cls}" onclick="ask('maç ${m.id}')">${m.id}</div>`;
   }).join('');
 }
@@ -376,4 +364,108 @@ function recoText(){
 function listBanko(){
   const b=matchesData.map((m,i)=>[m,i]).filter(x=>topP(x[1])>=.7);
   const g=matchesData.map((m,i)=>[m,i]).filter(x=>topP(x[1])>=.55&&topP(x[1])<.7);
-  let s
+  let s='';
+  if(b.length)s+=`<b style="color:#10b981">🏦 Bankolar (≥%70):</b><br>`+b.map(([m,i])=>`#${m.id} ${m.home} - ${m.away}: <b>${outName(m,ordr(i)[0])}</b> %${pc(topP(i))}`).join('<br>');
+  else s+='<b>Banko yok.</b><br>';
+  if(g.length)s+=`<br><br><b style="color:var(--orange)">⭐ Güçlü Favoriler (%55-70):</b><br>`+g.map(([m,i])=>`#${m.id} ${m.home} - ${m.away}: <b>${outName(m,ordr(i)[0])}</b> %${pc(topP(i))}`).join('<br>');
+  return s;
+}
+
+function listRisk(){
+  const r=matchesData.map((m,i)=>[m,i]).filter(x=>topP(x[1])<.5).sort((a,b)=>topP(a[1])-topP(b[1]));
+  if(!r.length)return 'Riskli maç yok, tüm maçların favorisi belli.';
+  return `<b>⚠️ Riskli / Dengeli Maçlar:</b><br>`+r.map(([m,i])=>`#${m.id} ${m.home} - ${m.away}<br>&nbsp;&nbsp;→ ${outName(m,ordr(i)[0])} %${pc(topP(i))}`).join('<br><br>');
+}
+
+function top5Safe(){
+  const t=matchesData.map((m,i)=>[m,i]).sort((a,b)=>topP(b[1])-topP(a[1])).slice(0,5);
+  return `<b>🛡️ En Güvenli 5 Maç (Banko Adayları):</b><br><br>`+
+    t.map(([m,i],k)=>`<b>${k+1}.</b> #${m.id} ${m.home} - ${m.away}<br>&nbsp;&nbsp;→ <b style="color:var(--orange)">${outName(m,ordr(i)[0])}</b> %${pc(topP(i))}`).join('<br><br>')+
+    `<br><br>💡 Bu 5 maçı banko yaparsan, kalan 10 maçta 7 doğru = 12/15 hedefi.`;
+}
+
+function surpriseCandidates(){
+  const s=matchesData.map((m,i)=>{
+    const fav=ordr(i)[0],pFav=PR[i][fav];
+    return {m,i,pFav};
+  }).filter(x=>x.pFav<.65&&x.pFav>.4).sort((a,b)=>a.pFav-b.pFav).slice(0,3);
+  if(!s.length)return 'Bu hafta belirgin sürpriz adayı yok.';
+  return `<b>🎲 Sürpriz Adayları (Favori kaybedebilir):</b><br><br>`+
+    s.map(x=>`#${x.m.id} <b>${x.m.home} - ${x.m.away}</b><br>&nbsp;&nbsp;Favori: ${outName(x.m,ordr(x.i)[0])} %${pc(x.pFav)}<br>&nbsp;&nbsp;Sürpriz ihtimali: <b style="color:#ef4444">%${pc(100-x.pFav*100)}</b>`).join('<br><br>');
+}
+
+function difficulty(){
+  const dengeli=matchesData.filter((_,i)=>topP(i)<.5).length;
+  const banko=matchesData.filter((_,i)=>topP(i)>=.7).length;
+  const exp=PR.reduce((t,_,i)=>t+topP(i),0);
+  let seviye,renk,yorum;
+  if(banko>=5){seviye='KOLAY';renk='#10b981';yorum='Banko bol, güvenli oyna.'}
+  else if(banko>=2&&dengeli<=5){seviye='ORTA';renk='#f59e0b';yorum='Dengeli strateji ideal.'}
+  else{seviye='ZOR';renk='#ef4444';yorum='Çift şans ve kapama şart.'}
+  return `<b>📅 Hafta Zorluk Analizi</b><br><br>
+  Seviye: <b style="color:${renk};font-size:1.1rem">${seviye}</b><br>
+  Banko sayısı: <b>${banko}</b><br>
+  Dengeli maç: <b>${dengeli}</b><br>
+  Beklenen doğru: <b>${exp.toFixed(1)}/15</b><br><br>
+  💡 <b>Öneri:</b> ${yorum}`;
+}
+
+function analyze(i){
+  const m=matchesData[i],p=PR[i],o=ordr(i),mx=p[o[0]],dc=mx+p[o[1]];
+  let s=`<b>📊 Maç #${m.id}: ${m.home} - ${m.away}</b><br>`;
+  s+=`<span class="muted">${m.date} | ${m.league||''}</span><br>`;
+  s+=`Seviye: <b style="color:var(--orange)">${level(i)}</b><br><br>`;
+  s+=`${m.form}<br><br>`;
+  s+=`<b>Olasılıklar:</b><br>1: %${pc(p[0])} | 0: %${pc(p[1])} | 2: %${pc(p[2])}<br><br>`;
+  s+=`🎯 En olası: <b>${outName(m,o[0])}</b> (adil oran ${(1/mx).toFixed(2)})<br>`;
+  s+=`📊 Çifte şans ${SYM[o[0]]}-${SYM[o[1]]}: %${pc(dc)} (adil ${(1/dc).toFixed(2)})<br>`;
+  if(p[1]>=.28)s+=`⚠️ Beraberlik payı yüksek: %${pc(p[1])}<br>`;
+  s+=`<br><b>💡 Öneri:</b> `+(mx>=.7?`Tek <b>${SYM[o[0]]}</b> yeterli.`:
+    mx>=.55?`Ana seçim <b>${SYM[o[0]]}</b>, bütçe varsa <b>${SYM[o[1]]}</b> ekle.`:
+    `<b>${SYM[o[0]]}-${SYM[o[1]]}</b> çift şans ile kapat.`);
+  return s;
+}
+
+function compare(i1,i2){
+  if(!matchesData[i1]||!matchesData[i2])return 'Geçersiz maç numarası.';
+  const m1=matchesData[i1],m2=matchesData[i2];
+  const g1=topP(i1),g2=topP(i2);
+  const safe=g1>g2?1:2;
+  return `<b>⚖️ Karşılaştırma</b><br><br>
+  <b>#${m1.id} ${m1.home}-${m1.away}</b><br>Güven: %${pc(g1)} | Seviye: ${level(i1)}<br><br>
+  <b>#${m2.id} ${m2.home}-${m2.away}</b><br>Güven: %${pc(g2)} | Seviye: ${level(i2)}<br><br>
+  🏆 Daha güvenli: <b style="color:#10b981">#${safe===1?m1.id:m2.id}</b> (fark: %${pc(Math.abs(g1-g2))})<br>
+  💡 Öneri: Daha güvenli olanı banko yap, diğerini çift şansla kapat.`;
+}
+
+function reply(t){
+  const q=t.toLocaleLowerCase('tr');
+  if(/karşılaştır|kıyasla/.test(q)){
+    const nums=q.match(/\d+/g);
+    if(nums&&nums.length>=2)return compare(parseInt(nums[0])-1,parseInt(nums[1])-1);
+    return 'Karşılaştırmak için "karşılaştır 1 ve 4" gibi yaz.';
+  }
+  if(/kupon|kapama|öner|redüks|kolon|bütçe/.test(q))return recoText();
+  if(/banko/.test(q))return listBanko();
+  if(/risk|dengeli/.test(q)&&!/zor mu/.test(q))return listRisk();
+  if(/sürpriz aday|sürpriz maç/.test(q))return surpriseCandidates();
+  if(/en güvenli|en iyi 5|top 5|banko aday/.test(q))return top5Safe();
+  if(/zor mu|kolay mı|zorluk|hafta nasıl/.test(q))return difficulty();
+  if(/özet|bülten|genel/.test(q))return summary();
+  const nm=q.match(/(?:maç\s*#?|#)\s*(\d+)/)||q.match(/^\s*(\d+)\s*$/);
+  if(nm){const i=parseInt(nm[1])-1;if(matchesData[i])return analyze(i)}
+  const hits=matchesData.map((m,i)=>i).filter(i=>q.includes(matchesData[i].home.toLocaleLowerCase('tr'))||q.includes(matchesData[i].away.toLocaleLowerCase('tr')));
+  if(hits.length)return hits.map(analyze).join('<br><br>');
+  return '🤖 Şunları sorabilirsin:<br>• <b>Kupon öner</b> (bütçe gir)<br>• <b>Bülten özeti</b><br>• <b>Bankolar</b> / <b>Riskli maçlar</b><br>• <b>En güvenli 5 maç</b><br>• <b>Sürpriz adayları</b><br>• <b>Hafta zor mu?</b><br>• <b>Karşılaştır 1 ve 4</b><br>• Takım adı: <b>Fransa</b> veya <b>maç 7</b>';
+}
+
+function ask(t){say(t,'usr');setTimeout(()=>say(reply(t),'bot'),250)}
+function send(){const v=$('q').value.trim();if(!v)return;$('q').value='';ask(v)}
+
+window.onload=()=>{
+  initApp();updateBar();renderHeatmap();setMode('guvenli');
+  say('🤖 <b>Merhaba, ben Bankobot Pro.</b><br><br>Bültenin olasılıklarına, form sonuçlarına ve risk profiline göre analiz yapıyorum.<br><br>'+summary(),'bot');
+};
+</script>
+</body>
+</html>
