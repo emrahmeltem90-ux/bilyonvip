@@ -3,11 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Hedef 15 - Akıllı Sistem</title>
-
 <style>
-
 :root{
     --green:#008751;
     --green2:#00a866;
@@ -20,35 +17,29 @@
     --border:#334155;
     --red:#ef4444;
 }
-
 *{
     box-sizing:border-box;
     margin:0;
     padding:0;
     font-family:Arial,Segoe UI,sans-serif;
 }
-
 body{
     background:var(--bg);
     color:var(--text);
     padding-bottom:50px;
 }
-
 header{
     background:var(--green);
     padding:17px 12px;
     text-align:center;
 }
-
 header h2{
     font-size:1.15rem;
 }
-
 header span{
     font-size:.75rem;
     opacity:.85;
 }
-
 .tabs{
     display:flex;
     background:var(--card2);
@@ -56,7 +47,6 @@ header span{
     top:0;
     z-index:20;
 }
-
 .tab{
     flex:1;
     text-align:center;
@@ -67,26 +57,21 @@ header span{
     border-bottom:3px solid transparent;
     cursor:pointer;
 }
-
 .tab.active{
     color:var(--orange);
     border-bottom-color:var(--orange);
 }
-
 .container{
     max-width:650px;
     margin:auto;
     padding:12px;
 }
-
 .page{
     display:none;
 }
-
 .page.active{
     display:block;
 }
-
 .card{
     background:var(--card);
     border:1px solid var(--border);
@@ -94,7 +79,6 @@ header span{
     padding:15px;
     margin-bottom:12px;
 }
-
 label{
     display:block;
     color:var(--muted);
@@ -102,7 +86,6 @@ label{
     font-weight:bold;
     margin-bottom:5px;
 }
-
 input,select{
     width:100%;
     padding:12px;
@@ -115,7 +98,6 @@ input,select{
     margin-bottom:12px;
     outline:none;
 }
-
 button{
     width:100%;
     padding:13px;
@@ -127,11 +109,9 @@ button{
     font-weight:bold;
     cursor:pointer;
 }
-
 button:active{
     transform:scale(.98);
 }
-
 .match{
     background:var(--card);
     border:1px solid var(--border);
@@ -139,7 +119,6 @@ button:active{
     padding:12px;
     margin-bottom:9px;
 }
-
 .match-head{
     display:flex;
     justify-content:space-between;
@@ -148,19 +127,16 @@ button:active{
     font-weight:bold;
     margin-bottom:7px;
 }
-
 .teams{
     font-weight:bold;
     font-size:.92rem;
     margin-bottom:8px;
 }
-
 .probs{
     display:grid;
     grid-template-columns:repeat(3,1fr);
     gap:6px;
 }
-
 .pick{
     background:var(--bg);
     border:1px solid var(--border);
@@ -173,25 +149,21 @@ button:active{
     cursor:pointer;
     user-select:none;
 }
-
 .pick span{
     display:block;
     font-size:.68rem;
     color:#10b981;
     margin-top:2px;
 }
-
-.pick.selected {
-    background: var(--orange);
-    color: #0f172a;
-    border-color: var(--orange);
+.pick.selected{
+    background:var(--orange);
+    color:#0f172a;
+    border-color:var(--orange);
 }
-
-.pick.selected span {
-    color: #0f172a;
-    font-weight: bold;
+.pick.selected span{
+    color:#0f172a;
+    font-weight:bold;
 }
-
 .result{
     background:var(--bg);
     border:1px solid var(--border);
@@ -199,35 +171,29 @@ button:active{
     padding:12px;
     margin-top:10px;
 }
-
 .result-title{
     color:var(--orange);
     font-weight:bold;
     font-size:.95rem;
     margin-bottom:8px;
 }
-
 .stat-grid{
     display:grid;
     grid-template-columns:repeat(2,1fr);
     gap:7px;
 }
-
 .stat{
     background:var(--card2);
     border-radius:7px;
     padding:9px;
 }
-
 .stat small{
     color:var(--muted);
     display:block;
 }
-
 .stat b{
     font-size:1rem;
 }
-
 .system-line{
     background:var(--card2);
     border:1px solid var(--border);
@@ -237,7 +203,6 @@ button:active{
     font-size:.78rem;
     line-height:1.6;
 }
-
 .coupon{
     background:var(--bg);
     border:1px solid var(--border);
@@ -247,11 +212,9 @@ button:active{
     font-size:.78rem;
     line-height:1.8;
 }
-
 .coupon b{
     color:var(--orange);
 }
-
 .badge{
     display:inline-block;
     padding:3px 7px;
@@ -261,23 +224,18 @@ button:active{
     font-size:.68rem;
     font-weight:bold;
 }
-
 .green{
     color:#10b981;
 }
-
 .muted{
     color:var(--muted);
 }
-
 .warning{
     color:#fbbf24;
 }
-
 .danger{
     color:#f87171;
 }
-
 .progress{
     height:8px;
     background:var(--bg);
@@ -285,12 +243,11 @@ button:active{
     overflow:hidden;
     margin-top:7px;
 }
-
 .progress div{
     height:100%;
     background:var(--green);
     width:0%;
-    transition: width 0.4s ease;
+    transition:width 0.4s ease;
 }
 </style>
 </head>
@@ -308,7 +265,6 @@ button:active{
 </nav>
 
 <div class="container">
-    <!-- SAYFA 1 -->
     <div class="page active" id="page-0">
         <div class="card">
             <label>Toplam Bütçe (TL)</label>
@@ -329,12 +285,10 @@ button:active{
         </div>
     </div>
 
-    <!-- SAYFA 2 -->
     <div class="page" id="page-1">
         <div id="analysisList"></div>
     </div>
 
-    <!-- SAYFA 3 -->
     <div class="page" id="page-2">
         <div class="card" style="cursor:pointer;" onclick="runSimulation(1)">
             <div class="result-title">10.000'li Simülasyon Motoru <span class="badge">Çalıştır</span></div>
@@ -354,26 +308,26 @@ button:active{
 
 <script>
 const matchesData = [
-    { id: 1, home: "Belçika 🇧🇪", away: "Türkiye 🇹🇷", date: "02 Eki 21:45", p1: "%64.2", p0: "%18.5", p2: "%17.3", comment: "Türkiye deplasmanda sürpriz yapmaya çok yakın, gizli 2 potansiyeli var." },
-    { id: 2, home: "İtalya 🇮🇹", away: "Türkiye 🇹🇷", date: "05 Eki 21:45", p1: "%56.2", p0: "%24.7", p2: "%19.1", comment: "Herkes İtalya derken maç 0-2 bitebilir, dikkat." },
-    { id: 3, home: "Bosna Hersek 🇧🇦", away: "İsveç 🇸🇪", date: "02 Eki 21:45", p1: "%17.6", p0: "%26.3", p2: "%56.1", comment: "İsveç ağır basıyor ama beraberlik matrisin kilit taşı." },
-    { id: 4, home: "Fransa 🇫🇷", away: "İtalya 🇮🇹", date: "02 Eki 21:45", p1: "%78.8", p0: "%14.0", p2: "%7.2", comment: "Fransa evinde hata yapmaz, net banko." },
-    { id: 5, home: "Macaristan 🇭🇺", away: "Gürcistan 🇬🇪", date: "02 Eki 21:45", p1: "%63.2", p0: "%24.1", p2: "%12.8", comment: "Macaristan iç sahasında rakibe şans tanımıyor." },
-    { id: 6, home: "Polonya 🇵🇱", away: "Romanya 🇷🇴", date: "02 Eki 21:45", p1: "%64.5", p0: "%24.0", p2: "%11.5", comment: "Komple kapatılabilecek ters bir derbi havasında maç." },
-    { id: 7, home: "Hırvatistan 🇭🇷", away: "İngiltere 🏴󠁧󠁢󠁥󠁮󠁧󠁿", date: "03 Eki 21:45", p1: "%30.0", p0: "%30.0", p2: "%40.0", comment: "Sıkı bir mücadele, İngiltere bir adım önde." },
-    { id: 8, home: "K.Makedonya 🇲🇰", away: "İskoçya 🏴󠁧󠁢󠁳󠁣󠁴󠁿", date: "03 Eki 21:45", p1: "%25.0", p0: "%32.0", p2: "%43.0", comment: "Alt bitti gözüyle bakılan kapalı kutu maç." },
-    { id: 9, home: "İspanya 🇪🇸", away: "Çekya 🇨🇿", date: "03 Eki 21:45", p1: "%70.0", p0: "%20.0", p2: "%10.0", comment: "İspanya pas oyunuyla fişi erken çeker." },
-    { id: 10, home: "İsviçre 🇨🇭", away: "Slovenya 🇸🇮", date: "03 Eki 21:45", p1: "%52.0", p0: "%30.0", p2: "%18.0", comment: "Slovenya savunması kilitlenebilir, 0 ihtimali yüksek." },
-    { id: 11, home: "Galler 🏴󠁧󠁢󠁷󠁬󠁳󠁿", away: "Danimarka 🇩🇰", date: "04 Eki 21:45", p1: "%28.0", p0: "%30.0", p2: "%42.0", comment: "Danimarka deplasmanda zorlanır ama kazanmasını bilir." },
-    { id: 12, home: "Hollanda 🇳🇱", away: "Sırbistan 🇷🇸", date: "04 Eki 21:45", p1: "%53.0", p0: "%27.0", p2: "%20.0", comment: "Sırbistan ters gelebilir, çifte şans denenmeli." },
-    { id: 13, home: "Portekiz 🇵🇹", away: "Norveç 🇳🇴", date: "04 Eki 21:45", p1: "%56.0", p0: "%26.0", p2: "%18.0", comment: "Portekiz hücum hattı maçı erken koparır." },
-    { id: 14, home: "Yunanistan 🇬🇷", away: "Almanya 🇩🇪", date: "04 Eki 21:45", p1: "%20.0", p0: "%28.0", p2: "%52.0", comment: "Almanya favori olsa da temkinli yaklaşılmalı." },
-    { id: 15, home: "Fransa 🇫🇷", away: "Belçika 🇧🇪", date: "04 Eki 21:45", p1: "%46.0", p0: "%29.0", p2: "%25.0", comment: "Dev eşleşmede sürpriz 2 ihtimali göz ardı edilemez." }
+    { id: 1, home: "Belçika", away: "Türkiye", date: "02 Eki 21:45", p1: "%64.2", p0: "%18.5", p2: "%17.3", comment: "Türkiye deplasmanda sürpriz yapmaya çok yakın, gizli 2 potansiyeli var." },
+    { id: 2, home: "İtalya", away: "Türkiye", date: "05 Eki 21:45", p1: "%56.2", p0: "%24.7", p2: "%19.1", comment: "Herkes İtalya derken maç 0-2 bitebilir, dikkat." },
+    { id: 3, home: "Bosna Hersek", away: "İsveç", date: "02 Eki 21:45", p1: "%17.6", p0: "%26.3", p2: "%56.1", comment: "İsveç ağır basıyor ama beraberlik matrisin kilit taşı." },
+    { id: 4, home: "Fransa", away: "İtalya", date: "02 Eki 21:45", p1: "%78.8", p0: "%14.0", p2: "%7.2", comment: "Fransa evinde hata yapmaz, net banko." },
+    { id: 5, home: "Macaristan", away: "Gürcistan", date: "02 Eki 21:45", p1: "%63.2", p0: "%24.1", p2: "%12.8", comment: "Macaristan iç sahasında rakibe şans tanımıyor." },
+    { id: 6, home: "Polonya", away: "Romanya", date: "02 Eki 21:45", p1: "%64.5", p0: "%24.0", p2: "%11.5", comment: "Komple kapatılabilecek ters bir derbi havasında maç." },
+    { id: 7, home: "Hırvatistan", away: "İngiltere", date: "03 Eki 21:45", p1: "%30.0", p0: "%30.0", p2: "%40.0", comment: "Sıkı bir mücadele, İngiltere bir adım önde." },
+    { id: 8, home: "K.Makedonya", away: "İskoçya", date: "03 Eki 21:45", p1: "%25.0", p0: "%32.0", p2: "%43.0", comment: "Alt bitti gözüyle bakılan kapalı kutu maç." },
+    { id: 9, home: "İspanya", away: "Çekya", date: "03 Eki 21:45", p1: "%70.0", p0: "%20.0", p2: "%10.0", comment: "İspanya pas oyunuyla fişi erken çeker." },
+    { id: 10, home: "İsviçre", away: "Slovenya", date: "03 Eki 21:45", p1: "%52.0", p0: "%30.0", p2: "%18.0", comment: "Slovenya savunması kilitlenebilir, 0 ihtimali yüksek." },
+    { id: 11, home: "Galler", away: "Danimarka", date: "04 Eki 21:45", p1: "%28.0", p0: "%30.0", p2: "%42.0", comment: "Danimarka deplasmanda zorlanır ama kazanmasını bilir." },
+    { id: 12, home: "Hollanda", away: "Sırbistan", date: "04 Eki 21:45", p1: "%53.0", p0: "%27.0", p2: "%20.0", comment: "Sırbistan ters gelebilir, çifte şans denenmeli." },
+    { id: 13, home: "Portekiz", away: "Norveç", date: "04 Eki 21:45", p1: "%56.0", p0: "%26.0", p2: "%18.0", comment: "Portekiz hücum hattı maçı erken koparır." },
+    { id: 14, home: "Yunanistan", away: "Almanya", date: "04 Eki 21:45", p1: "%20.0", p0: "%28.0", p2: "%52.0", comment: "Almanya favori olsa da temkinli yaklaşılmalı." },
+    { id: 15, home: "Fransa", away: "Belçika", date: "04 Eki 21:45", p1: "%46.0", p0: "%29.0", p2: "%25.0", comment: "Dev eşleşmede sürpriz 2 ihtimali göz ardı edilemez." }
 ];
 
 const userSelections = {};
 
-function initApp() {
+function initApp(){
     const list = document.getElementById('matchesList');
     list.innerHTML = '';
 
@@ -400,10 +354,10 @@ function initApp() {
     initAnalysis();
 }
 
-function toggleSelection(matchId, val, el) {
+function toggleSelection(matchId, val, el){
     let arr = userSelections[matchId];
-    if(arr.includes(val)) {
-        if(arr.length > 1) {
+    if(arr.includes(val)){
+        if(arr.length > 1){
             userSelections[matchId] = arr.filter(x => x !== val);
             el.classList.remove('selected');
         } else {
@@ -415,7 +369,7 @@ function toggleSelection(matchId, val, el) {
     }
 }
 
-function initAnalysis() {
+function initAnalysis(){
     const container = document.getElementById('analysisList');
     container.innerHTML = '';
     matchesData.forEach(m => {
@@ -429,7 +383,7 @@ function initAnalysis() {
     });
 }
 
-function switchTab(index, el) {
+function switchTab(index, el){
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
 
@@ -437,7 +391,7 @@ function switchTab(index, el) {
     document.getElementById(`page-${index}`).classList.add('active');
 }
 
-function generateCoupons() {
+function generateCoupons(){
     const budget = parseFloat(document.getElementById('budgetInput').value) || 200;
     const count = parseInt(document.getElementById('columnCountInput').value) || 1;
     const outputCard = document.getElementById('outputCard');
@@ -452,7 +406,7 @@ function generateCoupons() {
     summary.innerHTML = `Toplam Bütçe: <b>${budget} TL</b> | Kolon Adedi: <b>${count}</b> | Kolon Başı: <b>${unit} TL</b> (${misli} Misli)`;
 
     let html = '';
-    for(let i = 1; i <= count; i++) {
+    for(let i = 1; i <= count; i++){
         let matchStr = '';
         matchesData.forEach((m, idx) => {
             let picks = userSelections[m.id] || ['1'];
@@ -470,7 +424,7 @@ function generateCoupons() {
     container.innerHTML = html;
 }
 
-function runSimulation(id) {
+function runSimulation(id){
     const bar = document.getElementById(`bar-${id}`);
     const res = document.getElementById(`res-${id}`);
     bar.style.width = '0%';
@@ -480,9 +434,9 @@ function runSimulation(id) {
     let interval = setInterval(() => {
         progress += 20;
         bar.style.width = progress + '%';
-        if(progress >= 100) {
+        if(progress >= 100){
             clearInterval(interval);
-            if(id === 1) {
+            if(id === 1){
                 res.innerHTML = '<b class="green">Sonuç:</b> 10.000 iterasyon sonucunda matris başarı oranı <b class="orange">%79.4</b> olarak doğrulandı.';
             } else {
                 res.innerHTML = '<b class="green">Sonuç:</b> Varyans analizi tamamlandı. Risk seviyesi optimum düzeyde, çifte şanslar kuponu koruyor.';
