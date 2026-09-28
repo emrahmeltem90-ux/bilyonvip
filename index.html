@@ -3,113 +3,194 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hedef 15 - Akıllı Redüksiyon Sistemi</title>
+<title>Hedef 15 · Akıllı Redüksiyon</title>
 <style>
-:root{--green:#008751;--green2:#00a866;--bg:#0f172a;--card:#1e293b;--card2:#162032;--text:#f8fafc;--muted:#94a3b8;--orange:#f59e0b;--border:#334155}
-*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,Segoe UI,sans-serif}
-body{background:var(--bg);color:var(--text);padding-bottom:50px}
-header{background:var(--green);padding:17px 12px;text-align:center}
-header h2{font-size:1.15rem}header span{font-size:.75rem;opacity:.85}
-.tabs{display:flex;background:var(--card2);position:sticky;top:0;z-index:20}
-.tab{flex:1;text-align:center;padding:14px 4px;font-size:.75rem;font-weight:bold;color:var(--muted);border-bottom:3px solid transparent;cursor:pointer}
-.tab.active{color:var(--orange);border-bottom-color:var(--orange)}
-.container{max-width:650px;margin:auto;padding:12px}
-.page{display:none}.page.active{display:block}
-.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:15px;margin-bottom:12px;overflow-wrap:anywhere}
-label{display:block;color:var(--muted);font-size:.78rem;font-weight:bold;margin-bottom:5px}
-input{width:100%;padding:12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:#fff;font-size:1rem;font-weight:bold;margin-bottom:12px;outline:none}
-button{width:100%;padding:13px;border:0;border-radius:9px;background:var(--green);color:#fff;font-size:.95rem;font-weight:bold;cursor:pointer}
-button:active{transform:scale(.98)}button:disabled{opacity:.5}
-.match{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:9px}
-.match-head{display:flex;justify-content:space-between;color:var(--orange);font-size:.7rem;font-weight:bold;margin-bottom:7px}
-.teams{font-weight:bold;font-size:.92rem;margin-bottom:6px}
-.formline{color:var(--muted);font-size:.72rem;line-height:1.5;margin-bottom:8px}
-.probs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.pick{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:9px 4px;text-align:center;font-weight:bold;font-size:.85rem;user-select:none}
-.pick span{display:block;font-size:.68rem;color:#10b981;margin-top:2px}
-.pick.selected{background:var(--green);border-color:var(--green2)}
-.pick.selected span{color:#e2e8f0}
-.bar-info{display:flex;justify-content:space-between;background:var(--card2);border:1px solid var(--border);padding:12px;border-radius:8px;margin-bottom:12px;font-size:.9rem}
-.bar-info b{color:var(--orange)}
-.result-title{color:var(--orange);font-weight:bold;font-size:.95rem;margin-bottom:8px}
-.coupon{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 10px;margin-top:6px;font-size:.78rem;line-height:1.7}
-.coupon b{color:var(--orange)}
-.badge{display:inline-block;padding:3px 7px;border-radius:5px;background:rgba(245,158,11,.15);color:var(--orange);font-size:.68rem;font-weight:bold;margin-left:4px}
-.green{color:#10b981}.muted{color:var(--muted)}
-.progress{height:8px;background:var(--bg);border-radius:10px;overflow:hidden;margin-top:7px}
-.progress div{height:100%;background:var(--green);width:0}
-.hrow{display:grid;grid-template-columns:40px 1fr 52px;gap:8px;align-items:center;margin:5px 0;font-size:.8rem}
-.hbar{height:14px;background:var(--orange);border-radius:3px;min-width:2px}
-.note{font-size:.72rem;color:var(--muted);text-align:center;margin-top:8px}
-#chat{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
-.b{max-width:92%;padding:10px 12px;border-radius:12px;font-size:.82rem;line-height:1.6;overflow-wrap:anywhere}
-.b.bot{background:var(--card);border:1px solid var(--border);align-self:flex-start}
-.b.usr{background:var(--green);align-self:flex-end}
-.b button{margin-top:8px;padding:9px;font-size:.8rem}
-.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-.chip{background:var(--card2);border:1px solid var(--border);color:var(--orange);border-radius:16px;padding:7px 11px;font-size:.75rem;font-weight:bold;cursor:pointer}
+:root{
+  --bg:#070b14;
+  --bg2:#0d1420;
+  --card:#111a2b;
+  --card2:#0a121f;
+  --border:#1e2c47;
+  --border2:#2a3d5c;
+  --text:#f1f5fb;
+  --muted:#7d8ba5;
+  --green:#00e07a;
+  --green2:#00b863;
+  --green-dim:rgba(0,224,122,.12);
+  --orange:#ffb020;
+  --red:#ff4d5e;
+  --blue:#3d8bff;
+  --purple:#a855f7;
+  --radius:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);padding-bottom:60px;min-height:100vh;background-image:radial-gradient(circle at 50% 0%, rgba(0,224,122,.08) 0%, transparent 50%)}
+
+/* HEADER */
+header{padding:24px 20px 20px;text-align:center;position:relative}
+.logo-badge{display:inline-flex;align-items:center;gap:8px;background:var(--green-dim);border:1px solid rgba(0,224,122,.3);color:var(--green);padding:6px 14px;border-radius:20px;font-size:.7rem;font-weight:700;letter-spacing:.5px;margin-bottom:12px}
+.logo-badge::before{content:"";width:6px;height:6px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green)}
+header h1{font-size:1.6rem;font-weight:900;letter-spacing:-.5px;background:linear-gradient(135deg,#fff 0%,#a5b4c8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px}
+header p{font-size:.78rem;color:var(--muted);font-weight:500}
+
+/* TABS */
+.tabs{display:flex;background:var(--card2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}
+.tab{flex:1;text-align:center;padding:16px 6px;font-size:.72rem;font-weight:700;color:var(--muted);cursor:pointer;position:relative;transition:color .2s}
+.tab .tab-num{display:block;font-size:.9rem;font-weight:900;margin-bottom:2px}
+.tab.active{color:var(--green)}
+.tab.active::after{content:"";position:absolute;bottom:0;left:20%;right:20%;height:3px;background:var(--green);border-radius:3px 3px 0 0;box-shadow:0 0 12px var(--green)}
+
+.container{max-width:600px;margin:auto;padding:16px}
+.page{display:none;animation:fade .3s ease}
+.page.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.card{background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:14px;position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent)}
+
+label{display:block;color:var(--muted);font-size:.75rem;font-weight:700;margin-bottom:8px;letter-spacing:.3px;text-transform:uppercase}
+input{width:100%;padding:14px 16px;border-radius:12px;border:1px solid var(--border2);background:var(--bg2);color:#fff;font-size:1.05rem;font-weight:800;margin-bottom:14px;outline:none;transition:border .2s,box-shadow .2s}
+input:focus{border-color:var(--green);box-shadow:0 0 0 3px var(--green-dim)}
+button{width:100%;padding:15px;border:0;border-radius:12px;background:linear-gradient(135deg,var(--green),var(--green2));color:#04140c;font-size:.95rem;font-weight:800;cursor:pointer;letter-spacing:.3px;transition:transform .15s,box-shadow .2s;box-shadow:0 6px 20px rgba(0,224,122,.25)}
+button:active{transform:scale(.97)}
+button:disabled{opacity:.4;cursor:not-allowed}
+
+.bar-info{display:flex;justify-content:space-between;background:var(--bg2);border:1px solid var(--border);padding:14px 16px;border-radius:12px;margin-bottom:14px;font-size:.9rem;font-weight:600}
+.bar-info b{color:var(--green);font-weight:900;font-size:1rem}
+
+.result-title{color:var(--green);font-weight:800;font-size:.95rem;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+
+/* MATCH CARDS */
+.match{background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;position:relative;overflow:hidden}
+.match::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),transparent)}
+.match-head{display:flex;justify-content:space-between;align-items:center;font-size:.7rem;font-weight:700;color:var(--muted);margin-bottom:12px;letter-spacing:.3px}
+.match-head .mid{color:var(--orange);background:rgba(255,176,32,.1);padding:3px 8px;border-radius:6px;border:1px solid rgba(255,176,32,.2)}
+.teams{font-weight:900;font-size:1.05rem;margin-bottom:10px;letter-spacing:-.2px}
+.badge{display:inline-block;padding:4px 9px;border-radius:6px;background:var(--green-dim);color:var(--green);font-size:.65rem;font-weight:800;margin-left:6px;letter-spacing:.3px;border:1px solid rgba(0,224,122,.2)}
+.badge.orange{background:rgba(255,176,32,.1);color:var(--orange);border-color:rgba(255,176,32,.2)}
+.badge.red{background:rgba(255,77,94,.1);color:var(--red);border-color:rgba(255,77,94,.2)}
+
+.formline{color:var(--muted);font-size:.75rem;line-height:1.6;margin-bottom:12px}
+
+/* SERIES */
+.series{display:flex;gap:5px;margin:8px 0;align-items:center}
+.series-dot{width:12px;height:12px;border-radius:50%;display:inline-block}
+.series-dot.W{background:var(--green);box-shadow:0 0 6px rgba(0,224,122,.5)}
+.series-dot.D{background:var(--orange);box-shadow:0 0 6px rgba(255,176,32,.4)}
+.series-dot.L{background:var(--red);box-shadow:0 0 6px rgba(255,77,94,.4)}
+.series-label{font-size:.68rem;color:var(--muted);margin-left:6px;font-weight:600}
+
+/* PROBS */
+.probs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pick{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 6px;text-align:center;font-weight:900;font-size:1.05rem;user-select:none;transition:all .2s}
+.pick span{display:block;font-size:.7rem;color:var(--muted);margin-top:3px;font-weight:600}
+.pick.selected{background:linear-gradient(135deg,var(--green),var(--green2));border-color:var(--green);color:#04140c;box-shadow:0 4px 14px rgba(0,224,122,.3)}
+.pick.selected span{color:rgba(4,20,12,.7)}
+
+/* VALUE */
+.value-row{display:flex;gap:6px;align-items:center;margin-top:10px;font-size:.75rem}
+.value-row input{padding:9px 12px;font-size:.82rem;margin:0;flex:1;font-weight:600}
+.value-row button{width:auto;padding:9px 14px;font-size:.78rem;flex:0 0 auto;box-shadow:none}
+.value-badge{display:inline-block;padding:3px 8px;border-radius:6px;font-size:.65rem;font-weight:800;margin-left:4px}
+.value-badge.high{background:var(--green-dim);color:var(--green)}
+.value-badge.low{background:rgba(255,77,94,.12);color:var(--red)}
+.value-badge.mid{background:rgba(255,176,32,.12);color:var(--orange)}
+
+/* COUPON */
+.coupon{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-top:8px;font-size:.8rem;line-height:1.8;transition:border .2s}
+.coupon:hover{border-color:var(--border2)}
+.coupon b{color:var(--green);font-weight:900}
+.copy-btn{background:var(--bg2);border:1px solid var(--border2);color:var(--green);padding:12px;border-radius:10px;font-size:.8rem;font-weight:800;cursor:pointer;margin-top:10px;width:100%;transition:all .2s}
+.copy-btn.copied{background:var(--green);color:#04140c;border-color:var(--green)}
+
+/* PROGRESS */
+.progress{height:6px;background:var(--bg2);border-radius:10px;overflow:hidden;margin-top:10px;border:1px solid var(--border)}
+.progress div{height:100%;background:linear-gradient(90deg,var(--green),var(--green2));width:0;transition:width .1s;box-shadow:0 0 10px var(--green)}
+
+/* HISTOGRAM */
+.hrow{display:grid;grid-template-columns:50px 1fr 55px;gap:8px;align-items:center;margin:6px 0;font-size:.78rem;font-weight:600}
+.hbar{height:16px;background:linear-gradient(90deg,var(--orange),#ff8c00);border-radius:4px;min-width:2px;box-shadow:0 0 8px rgba(255,176,32,.3)}
+
+.note{font-size:.7rem;color:var(--muted);text-align:center;margin-top:14px;line-height:1.5;padding:0 20px}
+
+/* CHAT */
+#chat{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.b{max-width:94%;padding:14px 16px;border-radius:16px;font-size:.83rem;line-height:1.65;overflow-wrap:anywhere}
+.b.bot{background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--border);align-self:flex-start;border-bottom-left-radius:4px}
+.b.usr{background:linear-gradient(135deg,var(--green),var(--green2));color:#04140c;align-self:flex-end;border-bottom-right-radius:4px;font-weight:700}
+.b button{margin-top:10px;padding:10px;font-size:.8rem}
+
+/* CHIPS */
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+.chip{background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:20px;padding:9px 14px;font-size:.75rem;font-weight:700;cursor:pointer;transition:all .2s}
+.chip:active{background:var(--green);color:#04140c;border-color:var(--green)}
+
+/* INPUT ROW */
 .askrow{display:flex;gap:8px}
-.askrow input{margin:0}.askrow button{width:90px}
-.series{display:flex;gap:4px;margin:6px 0;align-items:center}
-.series-dot{width:14px;height:14px;border-radius:50%;display:inline-block;border:1px solid rgba(255,255,255,.15)}
-.series-dot.W{background:#10b981}
-.series-dot.D{background:#f59e0b}
-.series-dot.L{background:#ef4444}
-.series-label{font-size:.68rem;color:var(--muted);margin-left:6px;font-weight:bold}
-.copy-btn{background:var(--card2);border:1px solid var(--border);color:var(--orange);padding:8px 12px;border-radius:7px;font-size:.78rem;font-weight:bold;cursor:pointer;margin-top:8px;width:100%}
-.copy-btn:active{transform:scale(.98)}
-.copy-btn.copied{background:var(--green);color:#fff;border-color:var(--green2)}
-.value-badge{display:inline-block;padding:2px 7px;border-radius:5px;font-size:.65rem;font-weight:bold;margin-left:5px}
-.value-badge.high{background:rgba(16,185,129,.2);color:#10b981}
-.value-badge.low{background:rgba(239,68,68,.2);color:#ef4444}
-.value-badge.mid{background:rgba(245,158,11,.2);color:var(--orange)}
-.value-row{display:flex;gap:6px;align-items:center;margin-top:6px;font-size:.75rem}
-.value-row input{padding:7px;font-size:.8rem;margin:0;flex:1}
-.value-row button{width:auto;padding:7px 12px;font-size:.78rem;flex:0 0 auto}
-.heatmap{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin:10px 0}
-.heatmap .hm{aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:bold;color:#fff;cursor:pointer}
-.heatmap .hm.green{background:#10b981}
-.heatmap .hm.yellow{background:#f59e0b}
-.heatmap .hm.red{background:#ef4444}
-.heatmap .hm:active{transform:scale(.95)}
-.heatmap-legend{display:flex;gap:10px;font-size:.68rem;color:var(--muted);flex-wrap:wrap;margin-top:6px}
-.heatmap-legend .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:3px;vertical-align:middle}
-.heatmap-legend .dot.green{background:#10b981}
-.heatmap-legend .dot.yellow{background:#f59e0b}
-.heatmap-legend .dot.red{background:#ef4444}
-.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
-.mode{background:var(--card2);border:1px solid var(--border);border-radius:9px;padding:10px 6px;text-align:center;cursor:pointer;font-size:.75rem}
-.mode b{display:block;margin-bottom:2px}
-.mode span{font-size:.65rem;color:var(--muted)}
-.mode.active{background:var(--green);border-color:var(--green2)}
-.mode.active span{color:#e2e8f0}
-.mode-info{margin-top:10px;padding:10px;background:var(--card2);border-radius:8px;font-size:.78rem;line-height:1.6;border-left:3px solid var(--orange)}
-.mode-info b{color:var(--orange)}
-.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px}
-.stat-box{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center}
-.stat-box .num{font-size:1.3rem;font-weight:bold;color:var(--orange)}
-.stat-box .lbl{font-size:.68rem;color:var(--muted);margin-top:3px}
+.askrow input{margin:0;font-size:.9rem;font-weight:600}
+.askrow button{width:80px;padding:12px;font-size:.85rem}
+
+/* HEATMAP */
+.heatmap{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:12px 0}
+.heatmap .hm{aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:900;color:#04140c;cursor:pointer;transition:transform .15s;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.heatmap .hm.green{background:linear-gradient(135deg,var(--green),var(--green2))}
+.heatmap .hm.yellow{background:linear-gradient(135deg,var(--orange),#ff8c00)}
+.heatmap .hm.red{background:linear-gradient(135deg,var(--red),#d63447);color:#fff}
+.heatmap .hm:active{transform:scale(.92)}
+.heatmap-legend{display:flex;gap:12px;font-size:.7rem;color:var(--muted);flex-wrap:wrap;margin-top:10px;font-weight:600}
+.heatmap-legend .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:middle}
+.heatmap-legend .dot.green{background:var(--green)}
+.heatmap-legend .dot.yellow{background:var(--orange)}
+.heatmap-legend .dot.red{background:var(--red)}
+
+/* MODES */
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.mode{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:12px 8px;text-align:center;cursor:pointer;font-size:.78rem;transition:all .2s}
+.mode b{display:block;margin-bottom:4px;font-size:.95rem;font-weight:900}
+.mode span{font-size:.65rem;color:var(--muted);font-weight:600}
+.mode.active{background:linear-gradient(135deg,var(--green),var(--green2));border-color:var(--green);color:#04140c;box-shadow:0 4px 14px rgba(0,224,122,.3)}
+.mode.active span{color:rgba(4,20,12,.7)}
+.mode-info{margin-top:12px;padding:14px;background:var(--bg2);border-radius:12px;font-size:.78rem;line-height:1.65;border-left:3px solid var(--green)}
+.mode-info b{color:var(--green)}
+
+/* STATS */
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px}
+.stat-box{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center;position:relative;overflow:hidden}
+.stat-box::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),transparent)}
+.stat-box .num{font-size:1.6rem;font-weight:900;color:var(--green);letter-spacing:-1px}
+.stat-box .lbl{font-size:.68rem;color:var(--muted);margin-top:4px;font-weight:700;letter-spacing:.3px;text-transform:uppercase}
+
+/* YARDIMCI */
+.green{color:var(--green)}
+.muted{color:var(--muted)}
 </style>
 </head>
 <body>
-<header><h2>HEDEF 15 - AKILLI REDÜKSİYON</h2><span>Poisson &amp; Optimizasyon Matrisi</span></header>
+
+<header>
+  <div class="logo-badge">● CANLI ANALİZ</div>
+  <h1>HEDEF 15</h1>
+  <p>Akıllı Redüksiyon & Monte Carlo Sistemi</p>
+</header>
+
 <nav class="tabs">
-<div class="tab active" onclick="switchTab(0,this)">1. Bülten &amp; Kolon</div>
-<div class="tab" onclick="switchTab(1,this)">2. Bankobot Analiz</div>
-<div class="tab" onclick="switchTab(2,this)">3. Monte Carlo Lab</div>
+  <div class="tab active" onclick="switchTab(0,this)"><span class="tab-num">01</span>Bülten</div>
+  <div class="tab" onclick="switchTab(1,this)"><span class="tab-num">02</span>Bankobot</div>
+  <div class="tab" onclick="switchTab(2,this)"><span class="tab-num">03</span>Monte Carlo</div>
 </nav>
+
 <div class="container">
 
 <div class="page active" id="page-0">
 <div class="card">
-<label>Bütçen (TL) - kolon başı 10 TL</label>
+<label>💰 Bütçen (TL)</label>
 <input type="number" id="budget" value="250" min="10" step="10" inputmode="numeric" oninput="updateBar()">
-<div class="bar-info"><div>Tutar: <b id="lblCost">250 TL</b></div><div>Kolon: <b id="lblCount">25</b></div></div>
-<button onclick="generate()">Kupon Yap</button>
+<div class="bar-info"><div>Toplam: <b id="lblCost">250 TL</b></div><div>Kolon: <b id="lblCount">25</b></div></div>
+<button onclick="generate()">⚡ Kupon Oluştur</button>
 </div>
 <div class="card" id="outputCard" style="display:none">
-<div class="result-title">Kupon Raporu</div>
-<div id="outputSummary" class="muted" style="font-size:.82rem;line-height:1.6;margin-bottom:8px"></div>
+<div class="result-title">📋 KUPON RAPORU</div>
+<div id="outputSummary" class="muted" style="font-size:.82rem;line-height:1.7;margin-bottom:10px"></div>
 <div id="outputContainer"></div>
 </div>
 <div id="matchesList"></div>
@@ -117,20 +198,20 @@ button:active{transform:scale(.98)}button:disabled{opacity:.5}
 
 <div class="page" id="page-1">
 <div class="card">
-<div class="result-title">🔥 Bülten Isı Haritası</div>
+<div class="result-title">🔥 BÜLTEN ISIL HARİTASI</div>
 <div id="heatmap" class="heatmap"></div>
 <div class="heatmap-legend">
-<span><span class="dot green"></span> Güvenli (≥%65)</span>
-<span><span class="dot yellow"></span> Orta (%50-65)</span>
-<span><span class="dot red"></span> Riskli (<%50)</span>
+<span><span class="dot green"></span>Güvenli ≥%65</span>
+<span><span class="dot yellow"></span>Orta %50-65</span>
+<span><span class="dot red"></span>Riskli <%50</span>
 </div>
 </div>
 <div class="card">
-<div class="result-title">🎯 Strateji Modu</div>
+<div class="result-title">🎯 STRATEJİ MODU</div>
 <div class="modes">
-<div class="mode active" data-mode="guvenli" onclick="setMode('guvenli',this)"><b>🛡️ Güvenli</b><span>Banko odaklı</span></div>
-<div class="mode" data-mode="dengeli" onclick="setMode('dengeli',this)"><b>⚖️ Dengeli</b><span>Standart</span></div>
-<div class="mode" data-mode="agresif" onclick="setMode('agresif',this)"><b>🚀 Agresif</b><span>Yüksek risk</span></div>
+<div class="mode active" data-mode="guvenli" onclick="setMode('guvenli',this)"><b>🛡️</b><span>GÜVENLİ</span></div>
+<div class="mode" data-mode="dengeli" onclick="setMode('dengeli',this)"><b>⚖️</b><span>DENGELİ</span></div>
+<div class="mode" data-mode="agresif" onclick="setMode('agresif',this)"><b>🚀</b><span>AGRESİF</span></div>
 </div>
 <div id="modeInfo" class="mode-info"></div>
 </div>
@@ -141,18 +222,18 @@ button:active{transform:scale(.98)}button:disabled{opacity:.5}
 <span class="chip" onclick="ask('Bankolar')">Bankolar</span>
 <span class="chip" onclick="ask('Riskli maçlar')">Riskli maçlar</span>
 <span class="chip" onclick="ask('En güvenli 5 maç')">En güvenli 5</span>
-<span class="chip" onclick="ask('Sürpriz adayları')">Sürpriz adayları</span>
-<span class="chip" onclick="ask('Hafta zor mu')">Hafta zor mu?</span>
-<span class="chip" onclick="ask('Karşılaştır 1 ve 4')">Maç karşılaştır</span>
+<span class="chip" onclick="ask('Sürpriz adayları')">Sürpriz</span>
+<span class="chip" onclick="ask('Hafta zor mu')">Zorluk</span>
+<span class="chip" onclick="ask('Karşılaştır 1 ve 4')">Karşılaştır</span>
 </div>
-<div class="askrow"><input id="q" placeholder="Takım adı, maç 7, bankolar..." onkeydown="if(event.key==='Enter')send()"><button onclick="send()">Sor</button></div>
+<div class="askrow"><input id="q" placeholder="Bankobot'a sor..." onkeydown="if(event.key==='Enter')send()"><button onclick="send()">Sor</button></div>
 </div>
 
 <div class="page" id="page-2">
 <div class="card">
-<div class="result-title">Simülasyon Lab <span class="badge">10.000 deneme</span></div>
-<p class="muted" style="font-size:.8rem;margin-bottom:10px">Son ürettiğin kuponu bülten sonuçlarına karşı yeniden dener. Kupon yoksa bütçene göre otomatik üretir.</p>
-<button id="runBtn" onclick="runLab()">Çalıştır</button>
+<div class="result-title">🎲 MONTE CARLO LAB <span class="badge">10.000 deneme</span></div>
+<p class="muted" style="font-size:.8rem;margin-bottom:12px;line-height:1.6">Son ürettiğin kuponu bülten sonuçlarına karşı yeniden dener. Kupon yoksa bütçene göre otomatik üretir.</p>
+<button id="runBtn" onclick="runLab()">▶ Simülasyonu Başlat</button>
 <div class="progress"><div id="bar-full"></div></div>
 </div>
 <div id="res-full" class="card" style="display:none"></div>
@@ -176,22 +257,16 @@ async function loadMatches(){
     const res=await fetch('matches.json');
     const raw=await res.json();
     matchesData=raw.map(m=>({
-      id:m.id,
-      home:m.home_team,
-      away:m.away_team,
-      date:m.date+' '+m.time,
-      p:m.p,
-      form:m.form||'',
-      series:m.series||[],
-      league:m.league||'',
-      poisson:m.poisson||{}
+      id:m.id,home:m.home_team,away:m.away_team,
+      date:m.date+' '+m.time,p:m.p,form:m.form||'',
+      series:m.series||[],league:m.league||'',poisson:m.poisson||{}
     }));
     PR=matchesData.map(m=>{const t=m.p.reduce((a,b)=>a+b,0);return m.p.map(x=>x/t)});
     used=matchesData.map(()=>[]);
     initApp();updateBar();renderHeatmap();setMode('guvenli');
     say('🤖 <b>Merhaba, ben Bankobot Pro.</b><br><br>Bültenin olasılıklarına, form sonuçlarına ve risk profiline göre analiz yapıyorum.<br><br>'+summary(),'bot');
   }catch(e){
-    document.body.innerHTML='<div style="padding:20px;color:#ef4444;font-size:.9rem">⚠️ matches.json yüklenemedi.<br><br>Hata: '+e.message+'<br><br>Dosya adının doğru olduğundan ve GitHub Pages\'te olduğundan emin ol.</div>';
+    document.body.innerHTML='<div style="padding:20px;color:#ff4d5e;font-size:.9rem">⚠️ matches.json yüklenemedi.<br><br>Hata: '+e.message+'</div>';
   }
 }
 
@@ -199,19 +274,23 @@ function level(i){
   const o=ordr(i),mx=PR[i][o[0]],gap=mx-PR[i][o[1]];
   return mx>=.7?'Banko':mx>=.55?'Güçlü favori':gap<.12?'Çok dengeli':'Hafif favori';
 }
+function levelClass(i){
+  const mx=topP(i);
+  return mx>=.65?'':mx>=.5?'orange':'red';
+}
 function nCols(){const b=parseFloat($('budget').value)||0;return Math.max(0,Math.min(500,Math.floor(b/10)))}
 function updateBar(){const n=nCols();$('lblCount').innerText=n;$('lblCost').innerText=(n*10)+' TL'}
 
 function initApp(){
   $('matchesList').innerHTML=matchesData.map((m,i)=>`
   <div class="match">
-    <div class="match-head"><span>${m.date}</span><span>Maç #${m.id}</span></div>
-    <div class="teams">${m.home} - ${m.away}<span class="badge">${level(i)}</span></div>
-    <div class="series">${(m.series||[]).map(s=>`<span class="series-dot ${s}"></span>`).join('')}<span class="series-label">Son ${(m.series||[]).length} maç (ev)</span></div>
+    <div class="match-head"><span>${m.date}</span><span class="mid">MAÇ #${m.id}</span></div>
+    <div class="teams">${m.home} <span class="muted" style="font-weight:400">-</span> ${m.away}<span class="badge ${levelClass(i)}">${level(i)}</span></div>
+    <div class="series">${(m.series||[]).map(s=>`<span class="series-dot ${s}"></span>`).join('')}<span class="series-label">SON 5 (EV)</span></div>
     <div class="formline">${m.form}</div>
     <div class="probs">${[0,1,2].map(o=>`<div class="pick ${used[i].includes(o)?'selected':''}">${SYM[o]} <span>%${m.p[o]}</span></div>`).join('')}</div>
     <div class="value-row">
-      <input type="number" step="0.01" min="1" placeholder="Piyasa oranı (ör. 1.45)" id="odd-${i}" oninput="calcValue(${i})">
+      <input type="number" step="0.01" min="1" placeholder="Piyasa oranı" id="odd-${i}" oninput="calcValue(${i})">
       <button onclick="calcValue(${i})">Değer</button>
       <span id="valres-${i}"></span>
     </div>
@@ -221,6 +300,7 @@ function initApp(){
 function switchTab(i,el){
   document.querySelectorAll('.tab,.page').forEach(e=>e.classList.remove('active'));
   el.classList.add('active');$('page-'+i).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
 function topColumns(n){
@@ -251,14 +331,15 @@ function generate(){
   const cov=r.reduce((t,x)=>t+x.p,0),single=r[0].p;
   const c=closedList(cols);used=c.u;initApp();
   $('outputCard').style.display='block';
-  $('outputSummary').innerHTML=`<b style="color:var(--text)">${n*10} TL = ${n} kolon</b><br>
-   15/15 tutma olasılığı: <b class="green">%${(cov*100).toFixed(3)}</b> (yaklaşık ${Math.round(1/cov).toLocaleString('tr')} denemede 1)<br>
-   Tek kolonla şans: %${(single*100).toFixed(3)}. Redüksiyon şansı <b class="green">${(cov/single).toFixed(1)} kat</b> artırıyor.<br><br>
-   <b style="color:var(--text)">Kapanan maçlar:</b><br>${c.list.length?c.list.map(([u,i])=>`#${i+1} ${matchesData[i].home} - ${matchesData[i].away}: <b style="color:var(--orange)">${u.map(o=>SYM[o]).join('-')}</b>`).join('<br>'):'Yok, tek kolon.'}
+  $('outputSummary').innerHTML=`<b style="color:var(--text);font-weight:900">${n*10} TL · ${n} KOLON</b><br><br>
+   15/15 tutma: <b class="green">%${(cov*100).toFixed(3)}</b><br>
+   Tek kolonla: %${(single*100).toFixed(3)}<br>
+   Redüksiyon: <b class="green">${(cov/single).toFixed(1)}×</b> artış<br><br>
+   <b style="color:var(--text);font-weight:900">KAPANAN MAÇLAR:</b><br>${c.list.length?c.list.map(([u,i])=>`#${i+1} ${matchesData[i].home} - ${matchesData[i].away}: <b style="color:var(--orange)">${u.map(o=>SYM[o]).join('-')}</b>`).join('<br>'):'Yok, tek kolon.'}
    <br><br><div id="mcOut">Simülasyon çalışıyor...<div class="progress"><div id="bar-a"></div></div></div>`;
-  $('outputContainer').innerHTML=r.map((x,i)=>`<div class="coupon"><b>Kolon #${String(i+1).padStart(2,'0')}</b> &nbsp;<span class="muted">%${(x.p*100).toFixed(3)}</span> <button onclick="copySingle(${i})" style="width:auto;padding:4px 8px;font-size:.7rem;float:right">📋</button><br>
-  <span style="letter-spacing:1px">${x.pick.map((o,k)=>`<span class="muted">${k+1}:</span><b>${SYM[o]}</b>`).join(' ')}</span></div>`).join('');
-  $('outputContainer').innerHTML += `<button class="copy-btn" id="copyBtn" onclick="copyCoupon()">📋 Tüm Kuponu Kopyala</button>`;
+  $('outputContainer').innerHTML=r.map((x,i)=>`<div class="coupon"><b>KOLON #${String(i+1).padStart(2,'0')}</b> &nbsp;<span class="muted">%${(x.p*100).toFixed(3)}</span> <button onclick="copySingle(${i})" style="width:auto;padding:4px 8px;font-size:.7rem;float:right;box-shadow:none">📋</button><br>
+  <span style="letter-spacing:2px;font-size:.85rem">${x.pick.map((o,k)=>`<span class="muted">${k+1}:</span><b>${SYM[o]}</b>`).join(' ')}</span></div>`).join('');
+  $('outputContainer').innerHTML += `<button class="copy-btn" id="copyBtn" onclick="copyCoupon()">📋 TÜM KUPONU KOPYALA</button>`;
   $('outputCard').scrollIntoView({behavior:'smooth'});
   runMC('mcOut','bar-a',false);
 }
@@ -269,24 +350,24 @@ function calcValue(i){
   if(!odd||odd<=1){res.innerHTML='';return}
   const o=ordr(i)[0],modelProb=PR[i][o],fairOdd=1/modelProb,value=(modelProb*odd)-1;
   let badge='';
-  if(value>=0.05)badge=`<span class="value-badge high">✅ Değerli (+${(value*100).toFixed(1)}%)</span>`;
-  else if(value>=-0.05)badge=`<span class="value-badge mid">⚖️ Nötr (${(value*100).toFixed(1)}%)</span>`;
-  else badge=`<span class="value-badge low">❌ Değersiz (${(value*100).toFixed(1)}%)</span>`;
-  res.innerHTML=`${badge}<br><span class="muted" style="font-size:.68rem">Adil: ${fairOdd.toFixed(2)} | Model: %${(modelProb*100).toFixed(1)}</span>`;
+  if(value>=0.05)badge=`<span class="value-badge high">✅ Değerli +${(value*100).toFixed(1)}%</span>`;
+  else if(value>=-0.05)badge=`<span class="value-badge mid">⚖️ Nötr ${(value*100).toFixed(1)}%</span>`;
+  else badge=`<span class="value-badge low">❌ Değersiz ${(value*100).toFixed(1)}%</span>`;
+  res.innerHTML=`${badge}`;
 }
 
 function copyCoupon(){
   if(!cols.length){alert('Önce kupon oluştur.');return}
-  let text='🎯 HEDEF 15 - KUPONUM\n────────────────\n';
-  cols.forEach((c,idx)=>{text+=`\n📋 Kolon #${String(idx+1).padStart(2,'0')}\n`;c.forEach((o,i)=>{text+=`  ${i+1}. ${matchesData[i].home} - ${matchesData[i].away} : ${SYM[o]}\n`})});
-  text+='\n────────────────\n🤖 Hedef 15 Akıllı Redüksiyon Sistemi';
+  let text='🎯 HEDEF 15 · KUPONUM\n━━━━━━━━━━━━━━━\n';
+  cols.forEach((c,idx)=>{text+=`\n📋 KOLON #${String(idx+1).padStart(2,'0')}\n`;c.forEach((o,i)=>{text+=`  ${i+1}. ${matchesData[i].home} - ${matchesData[i].away} : ${SYM[o]}\n`})});
+  text+='\n━━━━━━━━━━━━━━━\n🤖 Hedef 15 Akıllı Redüksiyon';
   navigator.clipboard.writeText(text).then(()=>{
-    const btn=$('copyBtn'),old=btn.innerText;btn.innerText='✅ Kopyalandı!';btn.classList.add('copied');
+    const btn=$('copyBtn'),old=btn.innerText;btn.innerText='✅ KOPYALANDI';btn.classList.add('copied');
     setTimeout(()=>{btn.innerText=old;btn.classList.remove('copied')},2000);
   }).catch(()=>{alert('Kopyalanamadı.')});
 }
 function copySingle(idx){
-  const c=cols[idx];let text=`📋 Kolon #${String(idx+1).padStart(2,'0')}\n`;
+  const c=cols[idx];let text=`📋 KOLON #${String(idx+1).padStart(2,'0')}\n`;
   c.forEach((o,i)=>{text+=`${i+1}. ${matchesData[i].home} - ${matchesData[i].away} : ${SYM[o]}\n`});
   navigator.clipboard.writeText(text);
 }
@@ -306,9 +387,10 @@ function runMC(out,bar,clear){
     done+=STEP;$(bar).style.width=(done/N*100)+'%';
     if(done<N)return setTimeout(chunk,0);
     const mx=Math.max(...hist),tail=k=>(hist.slice(k).reduce((a,b)=>a+b,0)/N*100).toFixed(2);
-    $(out).innerHTML=`<b style="color:var(--text)">${N.toLocaleString('tr')} simülasyon sonucu</b><br>
-    Kuponundaki en iyi kolon ortalama <b class="green">${(sum/N).toFixed(2)} / ${L}</b> tutuyor.<br>
-    ${L}/${L}: <b class="green">%${tail(L)}</b> | ${L-1}+: <b class="green">%${tail(L-1)}</b><br>${L-2}+: <b class="green">%${tail(L-2)}</b> | ${L-3}+: <b class="green">%${tail(L-3)}</b><br>
+    $(out).innerHTML=`<b style="color:var(--text);font-weight:900">${N.toLocaleString('tr')} SİMÜLASYON SONUCU</b><br><br>
+    En iyi kolon ortalaması: <b class="green">${(sum/N).toFixed(2)} / ${L}</b><br><br>
+    <b class="green">15/15: %${tail(L)}</b> | 14+: %${tail(L-1)}<br>
+    13+: %${tail(L-2)} | 12+: %${tail(L-3)}<br><br>
     ${hist.map((_,k)=>k).reverse().filter(k=>hist[k]>0).map(k=>`<div class="hrow"><span>${k}/${L}</span><div><div class="hbar" style="width:${hist[k]/mx*100}%"></div></div><span>%${(hist[k]/N*100).toFixed(1)}</span></div>`).join('')}`;
     if($('runBtn'))$('runBtn').disabled=false;
   })();
@@ -337,9 +419,9 @@ function setMode(mode,el){
   document.querySelectorAll('.mode').forEach(e=>e.classList.remove('active'));
   if(el)el.classList.add('active');
   const info={
-    guvenli:'<b>🛡️ Güvenli Mod:</b> Sadece %70+ bankolar ve %55+ favoriler seçilir. Hedef: 12/15\'i garantiye almak. Kazanç düşük ama tutma ihtimali yüksek.',
-    dengeli:'<b>⚖️ Dengeli Mod:</b> Favoriler + hafif sürprizler. Standart redüksiyon stratejisi. Hedef: 12-13/15 bandı. Risk ve kazanç dengeli.',
-    agresif:'<b>🚀 Agresif Mod:</b> Bankolar azaltılır, sürprizlere ağırlık verilir. 14-15/15 hedefi. Risk yüksek, kazanç potansiyeli yüksek.'
+    guvenli:'<b>🛡️ GÜVENLİ MOD</b><br>Sadece %70+ bankolar ve %55+ favoriler seçilir. Hedef: 12/15. Kazanç düşük ama tutma ihtimali yüksek.',
+    dengeli:'<b>⚖️ DENGELİ MOD</b><br>Favoriler + hafif sürprizler. Standart redüksiyon stratejisi. Hedef: 12-13/15 bandı.',
+    agresif:'<b>🚀 AGRESİF MOD</b><br>Bankolar azaltılır, sürprizlere ağırlık verilir. Hedef: 14-15/15. Risk yüksek, kazanç potansiyeli yüksek.'
   };
   $('modeInfo').innerHTML=info[mode];
 }
@@ -354,34 +436,34 @@ function summary(){
   const depFav=matchesData.filter((_,i)=>ordr(i)[0]===2).length;
   const exp=PR.reduce((t,_,i)=>t+topP(i),0);
   const enDengeli=matchesData.map((m,i)=>[i,topP(i)]).sort((a,b)=>a[1]-b[1])[0];
-  return `<b>📊 BÜLTEN ÖZETİ (${L} maç)</b><br><br>
+  return `<b style="font-weight:900">📊 BÜLTEN ÖZETİ (${L} MAÇ)</b><br><br>
   <div class="stat-grid">
-    <div class="stat-box"><div class="num">${banko}</div><div class="lbl">Banko (≥%70)</div></div>
-    <div class="stat-box"><div class="num">${guclu}</div><div class="lbl">Güçlü favori</div></div>
-    <div class="stat-box"><div class="num">${hafif}</div><div class="lbl">Hafif favori</div></div>
-    <div class="stat-box"><div class="num">${dengeli}</div><div class="lbl">Çok dengeli</div></div>
+    <div class="stat-box"><div class="num">${banko}</div><div class="lbl">Banko</div></div>
+    <div class="stat-box"><div class="num">${guclu}</div><div class="lbl">Güçlü</div></div>
+    <div class="stat-box"><div class="num">${hafif}</div><div class="lbl">Hafif</div></div>
+    <div class="stat-box"><div class="num">${dengeli}</div><div class="lbl">Dengeli</div></div>
   </div><br>
-  🏠 Ev sahibi favorisi: <b>${evFav}</b> maç<br>
-  ✈️ Deplasman favorisi: <b>${depFav}</b> maç<br>
-  🎯 Favorileri oynarsan beklenen doğru: <b>${exp.toFixed(1)} / ${L}</b><br>
-  ⚠️ En dengeli maç: <b>#${matchesData[enDengeli[0]].id} ${matchesData[enDengeli[0]].home}-${matchesData[enDengeli[0]].away}</b> (%${pc(enDengeli[1])})<br><br>
-  <b>💡 Yorum:</b> ${dengeli>=6?'Bu hafta <b style="color:#ef4444">zor bir bülten</b>. 12/15 hedefi için çift şanslı kolonlar önerilir.':dengeli>=3?'<b style="color:#f59e0b">Orta zorlukta</b> bir bülten. Dengeli mod ideal.':'<b style="color:#10b981">Kolay bir bülten</b>. Bankolar güvenilir.'}`;
+  🏠 Ev sahibi favorisi: <b>${evFav}</b><br>
+  ✈️ Deplasman favorisi: <b>${depFav}</b><br>
+  🎯 Beklenen doğru: <b>${exp.toFixed(1)}/${L}</b><br>
+  ⚠️ En dengeli: <b>#${matchesData[enDengeli[0]].id} ${matchesData[enDengeli[0]].home}-${matchesData[enDengeli[0]].away}</b> (%${pc(enDengeli[1])})<br><br>
+  <b>💡 YORUM:</b> ${dengeli>=6?'<b style="color:#ff4d5e">Zor bülten.</b> Çift şanslı kolonlar önerilir.':dengeli>=3?'<b style="color:#ffb020">Orta zorluk.</b> Dengeli mod ideal.':'<b style="color:#00e07a">Kolay bülten.</b> Bankolar güvenilir.'}`;
 }
 
 function recoText(){
   const n=nCols();
-  if(n<1)return 'Önce 1. sekmeden bütçeni yaz (en az 10 TL).';
+  if(n<1)return 'Önce 1. sekmeden bütçeni yaz.';
   let r=topColumns(n);
   if(currentMode==='guvenli')r=r.filter(x=>x.pick.every((o,i)=>topP(i)>=.55||x.pick[i]===ordr(i)[0]));
   if(!r.length)r=topColumns(n);
   const cov=r.reduce((t,x)=>t+x.p,0);
   const c=closedList(r.map(x=>x.pick));
-  const modeLabel={guvenli:'🛡️ Güvenli',dengeli:'⚖️ Dengeli',agresif:'🚀 Agresif'}[currentMode];
-  return `<b>${modeLabel} Mod — ${n*10} TL (${n} kolon)</b><br><br>`+
+  const modeLabel={guvenli:'🛡️ GÜVENLİ',dengeli:'⚖️ DENGELİ',agresif:'🚀 AGRESİF'}[currentMode];
+  return `<b>${modeLabel} MOD · ${n*10} TL (${n} KOLON)</b><br><br>`+
    (c.list.length?'<b>Kapanacak maçlar:</b><br>'+c.list.map(([u,i])=>`#${i+1} ${matchesData[i].home} - ${matchesData[i].away}: <b style="color:var(--orange)">${u.map(o=>SYM[o]).join('-')}</b>`).join('<br>')+'<br><br>':'Kapama yok.<br><br>')+
-   `15/15 olasılığı: <b class="green">%${(cov*100).toFixed(3)}</b><br>
-   Tek kolonla: %${(r[0].p*100).toFixed(3)}<br>
-   Redüksiyon: <b class="green">${(cov/r[0].p).toFixed(1)} kat</b><br><br>
+   `15/15: <b class="green">%${(cov*100).toFixed(3)}</b><br>
+   Tek kolon: %${(r[0].p*100).toFixed(3)}<br>
+   Redüksiyon: <b class="green">${(cov/r[0].p).toFixed(1)}×</b><br><br>
    <button onclick="switchTab(0,document.querySelector('.tab'));generate()">Kuponu Oluştur</button>`;
 }
 
@@ -389,33 +471,30 @@ function listBanko(){
   const b=matchesData.map((m,i)=>[m,i]).filter(x=>topP(x[1])>=.7);
   const g=matchesData.map((m,i)=>[m,i]).filter(x=>topP(x[1])>=.55&&topP(x[1])<.7);
   let s='';
-  if(b.length)s+=`<b style="color:#10b981">🏦 Bankolar (≥%70):</b><br>`+b.map(([m,i])=>`#${m.id} ${m.home} - ${m.away}: <b>${outName(m,ordr(i)[0])}</b> %${pc(topP(i))}`).join('<br>');
+  if(b.length)s+=`<b style="color:#00e07a">🏦 BANKOLAR (≥%70):</b><br>`+b.map(([m,i])=>`#${m.id} ${m.home} - ${m.away}: <b>${outName(m,ordr(i)[0])}</b> %${pc(topP(i))}`).join('<br>');
   else s+='<b>Banko yok.</b><br>';
-  if(g.length)s+=`<br><br><b style="color:var(--orange)">⭐ Güçlü Favoriler (%55-70):</b><br>`+g.map(([m,i])=>`#${m.id} ${m.home} - ${m.away}: <b>${outName(m,ordr(i)[0])}</b> %${pc(topP(i))}`).join('<br>');
+  if(g.length)s+=`<br><br><b style="color:var(--orange)">⭐ GÜÇLÜ FAVORİLER (%55-70):</b><br>`+g.map(([m,i])=>`#${m.id} ${m.home} - ${m.away}: <b>${outName(m,ordr(i)[0])}</b> %${pc(topP(i))}`).join('<br>');
   return s;
 }
 
 function listRisk(){
   const r=matchesData.map((m,i)=>[m,i]).filter(x=>topP(x[1])<.5).sort((a,b)=>topP(a[1])-topP(b[1]));
-  if(!r.length)return 'Riskli maç yok, tüm maçların favorisi belli.';
-  return `<b>⚠️ Riskli / Dengeli Maçlar:</b><br>`+r.map(([m,i])=>`#${m.id} ${m.home} - ${m.away}<br>&nbsp;&nbsp;→ ${outName(m,ordr(i)[0])} %${pc(topP(i))}`).join('<br><br>');
+  if(!r.length)return 'Riskli maç yok.';
+  return `<b style="color:#ff4d5e">⚠️ RİSKLİ MAÇLAR:</b><br>`+r.map(([m,i])=>`#${m.id} ${m.home} - ${m.away}<br>&nbsp;&nbsp;→ ${outName(m,ordr(i)[0])} %${pc(topP(i))}`).join('<br><br>');
 }
 
 function top5Safe(){
   const t=matchesData.map((m,i)=>[m,i]).sort((a,b)=>topP(b[1])-topP(a[1])).slice(0,5);
-  return `<b>🛡️ En Güvenli 5 Maç (Banko Adayları):</b><br><br>`+
+  return `<b style="color:#00e07a">🛡️ EN GÜVENLİ 5 MAÇ</b><br><br>`+
     t.map(([m,i],k)=>`<b>${k+1}.</b> #${m.id} ${m.home} - ${m.away}<br>&nbsp;&nbsp;→ <b style="color:var(--orange)">${outName(m,ordr(i)[0])}</b> %${pc(topP(i))}`).join('<br><br>')+
-    `<br><br>💡 Bu 5 maçı banko yaparsan, kalan 10 maçta 7 doğru = 12/15 hedefi.`;
+    `<br><br>💡 Bu 5 maçı banko yaparsan, kalan 10'da 7 doğru = 12/15.`;
 }
 
 function surpriseCandidates(){
-  const s=matchesData.map((m,i)=>{
-    const fav=ordr(i)[0],pFav=PR[i][fav];
-    return {m,i,pFav};
-  }).filter(x=>x.pFav<.65&&x.pFav>.4).sort((a,b)=>a.pFav-b.pFav).slice(0,3);
-  if(!s.length)return 'Bu hafta belirgin sürpriz adayı yok.';
-  return `<b>🎲 Sürpriz Adayları (Favori kaybedebilir):</b><br><br>`+
-    s.map(x=>`#${x.m.id} <b>${x.m.home} - ${x.m.away}</b><br>&nbsp;&nbsp;Favori: ${outName(x.m,ordr(x.i)[0])} %${pc(x.pFav)}<br>&nbsp;&nbsp;Sürpriz ihtimali: <b style="color:#ef4444">%${(100-x.pFav*100).toFixed(1)}</b>`).join('<br><br>');
+  const s=matchesData.map((m,i)=>{const fav=ordr(i)[0];return {m,i,pFav:PR[i][fav]}}).filter(x=>x.pFav<.65&&x.pFav>.4).sort((a,b)=>a.pFav-b.pFav).slice(0,3);
+  if(!s.length)return 'Bu hafta sürpriz adayı yok.';
+  return `<b style="color:#ffb020">🎲 SÜRPRİZ ADAYLARI</b><br><br>`+
+    s.map(x=>`#${x.m.id} <b>${x.m.home} - ${x.m.away}</b><br>&nbsp;&nbsp;Favori: ${outName(x.m,ordr(x.i)[0])} %${pc(x.pFav)}<br>&nbsp;&nbsp;Sürpriz: <b style="color:#ff4d5e">%${(100-x.pFav*100).toFixed(1)}</b>`).join('<br><br>');
 }
 
 function difficulty(){
@@ -423,43 +502,38 @@ function difficulty(){
   const banko=matchesData.filter((_,i)=>topP(i)>=.7).length;
   const exp=PR.reduce((t,_,i)=>t+topP(i),0);
   let seviye,renk,yorum;
-  if(banko>=5){seviye='KOLAY';renk='#10b981';yorum='Banko bol, güvenli oyna.'}
-  else if(banko>=2&&dengeli<=5){seviye='ORTA';renk='#f59e0b';yorum='Dengeli strateji ideal.'}
-  else{seviye='ZOR';renk='#ef4444';yorum='Çift şans ve kapama şart.'}
-  return `<b>📅 Hafta Zorluk Analizi</b><br><br>
-  Seviye: <b style="color:${renk};font-size:1.1rem">${seviye}</b><br>
-  Banko sayısı: <b>${banko}</b><br>
-  Dengeli maç: <b>${dengeli}</b><br>
+  if(banko>=5){seviye='KOLAY';renk='#00e07a';yorum='Banko bol, güvenli oyna.'}
+  else if(banko>=2&&dengeli<=5){seviye='ORTA';renk='#ffb020';yorum='Dengeli strateji ideal.'}
+  else{seviye='ZOR';renk='#ff4d5e';yorum='Çift şans ve kapama şart.'}
+  return `<b>📅 HAFTA ZORLUK ANALİZİ</b><br><br>
+  Seviye: <b style="color:${renk};font-size:1.3rem">${seviye}</b><br>
+  Banko: <b>${banko}</b> · Dengeli: <b>${dengeli}</b><br>
   Beklenen doğru: <b>${exp.toFixed(1)}/15</b><br><br>
-  💡 <b>Öneri:</b> ${yorum}`;
+  💡 ${yorum}`;
 }
 
 function analyze(i){
   const m=matchesData[i],p=PR[i],o=ordr(i),mx=p[o[0]],dc=mx+p[o[1]];
-  let s=`<b>📊 Maç #${m.id}: ${m.home} - ${m.away}</b><br>`;
-  s+=`<span class="muted">${m.date} | ${m.league||''}</span><br>`;
+  let s=`<b>📊 MAÇ #${m.id}: ${m.home} - ${m.away}</b><br>`;
+  s+=`<span class="muted">${m.date} · ${m.league||''}</span><br>`;
   s+=`Seviye: <b style="color:var(--orange)">${level(i)}</b><br><br>`;
   s+=`${m.form}<br><br>`;
-  s+=`<b>Olasılıklar:</b><br>1: %${pc(p[0])} | 0: %${pc(p[1])} | 2: %${pc(p[2])}<br><br>`;
-  s+=`🎯 En olası: <b>${outName(m,o[0])}</b> (adil oran ${(1/mx).toFixed(2)})<br>`;
-  s+=`📊 Çifte şans ${SYM[o[0]]}-${SYM[o[1]]}: %${pc(dc)} (adil ${(1/dc).toFixed(2)})<br>`;
-  if(p[1]>=.28)s+=`⚠️ Beraberlik payı yüksek: %${pc(p[1])}<br>`;
-  s+=`<br><b>💡 Öneri:</b> `+(mx>=.7?`Tek <b>${SYM[o[0]]}</b> yeterli.`:
-    mx>=.55?`Ana seçim <b>${SYM[o[0]]}</b>, bütçe varsa <b>${SYM[o[1]]}</b> ekle.`:
-    `<b>${SYM[o[0]]}-${SYM[o[1]]}</b> çift şans ile kapat.`);
+  s+=`<b>Olasılıklar:</b><br>1: %${pc(p[0])} · 0: %${pc(p[1])} · 2: %${pc(p[2])}<br><br>`;
+  s+=`🎯 En olası: <b>${outName(m,o[0])}</b> (adil ${(1/mx).toFixed(2)})<br>`;
+  s+=`📊 Çift şans ${SYM[o[0]]}-${SYM[o[1]]}: %${pc(dc)}<br>`;
+  if(p[1]>=.28)s+=`⚠️ Beraberlik yüksek: %${pc(p[1])}<br>`;
+  s+=`<br><b>💡 Öneri:</b> `+(mx>=.7?`Tek <b>${SYM[o[0]]}</b>.`:mx>=.55?`<b>${SYM[o[0]]}</b>, bütçe varsa <b>${SYM[o[1]]}</b>.`:`<b>${SYM[o[0]]}-${SYM[o[1]]}</b> çift şans.`);
   return s;
 }
 
 function compare(i1,i2){
   if(!matchesData[i1]||!matchesData[i2])return 'Geçersiz maç numarası.';
-  const m1=matchesData[i1],m2=matchesData[i2];
-  const g1=topP(i1),g2=topP(i2);
+  const m1=matchesData[i1],m2=matchesData[i2],g1=topP(i1),g2=topP(i2);
   const safe=g1>g2?1:2;
-  return `<b>⚖️ Karşılaştırma</b><br><br>
-  <b>#${m1.id} ${m1.home}-${m1.away}</b><br>Güven: %${pc(g1)} | Seviye: ${level(i1)}<br><br>
-  <b>#${m2.id} ${m2.home}-${m2.away}</b><br>Güven: %${pc(g2)} | Seviye: ${level(i2)}<br><br>
-  🏆 Daha güvenli: <b style="color:#10b981">#${safe===1?m1.id:m2.id}</b> (fark: %${pc(Math.abs(g1-g2))})<br>
-  💡 Öneri: Daha güvenli olanı banko yap, diğerini çift şansla kapat.`;
+  return `<b>⚖️ KARŞILAŞTIRMA</b><br><br>
+  <b>#${m1.id} ${m1.home}-${m1.away}</b><br>Güven: %${pc(g1)} · ${level(i1)}<br><br>
+  <b>#${m2.id} ${m2.home}-${m2.away}</b><br>Güven: %${pc(g2)} · ${level(i2)}<br><br>
+  🏆 Daha güvenli: <b style="color:#00e07a">#${safe===1?m1.id:m2.id}</b>`;
 }
 
 function reply(t){
@@ -467,7 +541,7 @@ function reply(t){
   if(/karşılaştır|kıyasla/.test(q)){
     const nums=q.match(/\d+/g);
     if(nums&&nums.length>=2)return compare(parseInt(nums[0])-1,parseInt(nums[1])-1);
-    return 'Karşılaştırmak için "karşılaştır 1 ve 4" gibi yaz.';
+    return 'Örnek: "karşılaştır 1 ve 4"';
   }
   if(/kupon|kapama|öner|redüks|kolon|bütçe/.test(q))return recoText();
   if(/banko/.test(q))return listBanko();
@@ -480,7 +554,7 @@ function reply(t){
   if(nm){const i=parseInt(nm[1])-1;if(matchesData[i])return analyze(i)}
   const hits=matchesData.map((m,i)=>i).filter(i=>q.includes(matchesData[i].home.toLocaleLowerCase('tr'))||q.includes(matchesData[i].away.toLocaleLowerCase('tr')));
   if(hits.length)return hits.map(analyze).join('<br><br>');
-  return '🤖 Şunları sorabilirsin:<br>• <b>Kupon öner</b> (bütçe gir)<br>• <b>Bülten özeti</b><br>• <b>Bankolar</b> / <b>Riskli maçlar</b><br>• <b>En güvenli 5 maç</b><br>• <b>Sürpriz adayları</b><br>• <b>Hafta zor mu?</b><br>• <b>Karşılaştır 1 ve 4</b><br>• Takım adı: <b>Fransa</b> veya <b>maç 7</b>';
+  return '🤖 <b>Neler sorabilirsin:</b><br>• Kupon öner<br>• Bülten özeti<br>• Bankolar / Riskli maçlar<br>• En güvenli 5 maç<br>• Sürpriz adayları<br>• Hafta zor mu?<br>• Karşılaştır 1 ve 4<br>• Takım adı veya maç 7';
 }
 
 function ask(t){say(t,'usr');setTimeout(()=>say(reply(t),'bot'),250)}
