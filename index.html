@@ -64,4 +64,200 @@ button:active{transform:scale(.98)}button:disabled{opacity:.5}
 <label>Bütçen (TL) - kolon başı 10 TL</label>
 <input type="number" id="budget" value="250" min="10" step="10" inputmode="numeric" oninput="updateBar()">
 <div class="bar-info"><div>Tutar: <b id="lblCost">250 TL</b></div><div>Kolon: <b id="lblCount">25</b></div></div>
-<button
+<button onclick="generate()">Kupon Yap</button>
+</div>
+<div class="card" id="outputCard" style="display:none">
+<div class="result-title">Kupon Raporu</div>
+<div id="outputSummary" class="muted" style="font-size:.82rem;line-height:1.6;margin-bottom:8px"></div>
+<div id="outputContainer"></div>
+</div>
+<div id="matchesList"></div>
+</div>
+
+<div class="page" id="page-1">
+<div id="chat"></div>
+<div class="chips">
+<span class="chip" onclick="ask('Kupon öner')">Kupon öner</span>
+<span class="chip" onclick="ask('Bülten özeti')">Bülten özeti</span>
+<span class="chip" onclick="ask('Bankolar')">Bankolar</span>
+<span class="chip" onclick="ask('Riskli maçlar')">Riskli maçlar</span>
+</div>
+<div class="askrow"><input id="q" placeholder="Takım adı, maç 7, bankolar..." onkeydown="if(event.key==='Enter')send()"><button onclick="send()">Sor</button></div>
+</div>
+
+<div class="page" id="page-2">
+<div class="card">
+<div class="result-title">Simülasyon Lab <span class="badge">10.000 deneme</span></div>
+<p class="muted" style="font-size:.8rem;margin-bottom:10px">Son ürettiğin kuponu bülten sonuçlarına karşı yeniden dener. Kupon yoksa bütçene göre otomatik üretir.</p>
+<button id="runBtn" onclick="runLab()">Çalıştır</button>
+<div class="progress"><div id="bar-full"></div></div>
+</div>
+<div id="res-full" class="card" style="display:none"></div>
+</div>
+<p class="note">Olasılıklar bültendeki yüzdelerden hesaplanır, sonucu garanti etmez.</p>
+</div>
+
+<script>const matchesData=[
+{id:1,home:"Belçika",away:"Türkiye",date:"02 Eki 21:45",p:[64.2,18.5,17.3]},
+{id:2,home:"İtalya",away:"Türkiye",date:"05 Eki 21:45",p:[56.2,24.7,19.1]},
+{id:3,home:"Bosna Hersek",away:"İsveç",date:"02 Eki 21:45",p:[17.6,26.3,56.1]},
+{id:4,home:"Fransa",away:"İtalya",date:"02 Eki 21:45",p:[78.8,14.0,7.2]},
+{id:5,home:"Macaristan",away:"Gürcistan",date:"02 Eki 21:45",p:[63.2,24.1,12.8]},
+{id:6,home:"Polonya",away:"Romanya",date:"02 Eki 21:45",p:[64.5,24.0,11.5]},
+{id:7,home:"Hırvatistan",away:"İngiltere",date:"03 Eki 21:45",p:[30,30,40]},
+{id:8,home:"K.Makedonya",away:"İskoçya",date:"03 Eki 21:45",p:[25,32,43]},
+{id:9,home:"İspanya",away:"Çekya",date:"03 Eki 21:45",p:[70,20,10]},
+{id:10,home:"İsviçre",away:"Slovenya",date:"03 Eki 21:45",p:[52,30,18]},
+{id:11,home:"Galler",away:"Danimarka",date:"04 Eki 21:45",p:[28,30,42]},
+{id:12,home:"Hollanda",away:"Sırbistan",date:"04 Eki 21:45",p:[53,27,20]},
+{id:13,home:"Portekiz",away:"Norveç",date:"04 Eki 21:45",p:[56,26,18]},
+{id:14,home:"Yunanistan",away:"Almanya",date:"04 Eki 21:45",p:[20,28,52]},
+{id:15,home:"Fransa",away:"Belçika",date:"04 Eki 21:45",p:[46,29,25]}
+];
+const SYM=["1","0","2"];
+const PR=matchesData.map(m=>{const t=m.p.reduce((a,b)=>a+b,0);return m.p.map(x=>x/t)});
+let cols=[],used=matchesData.map(()=>[]);
+const $=id=>document.getElementById(id);
+const pc=x=>(x*100).toFixed(1);
+const ordr=i=>[0,1,2].sort((a,b)=>PR[i][b]-PR[i][a]);
+const topP=i=>Math.max(...PR[i]);
+function level(i){
+  const o=ordr(i),mx=PR[i][o[0]],gap=mx-PR[i][o[1]];
+  return mx>=.7?'Banko':mx>=.55?'Güçlü favori':gap<.12?'Çok dengeli':'Hafif favori';
+}
+function nCols(){const b=parseFloat($('budget').value)||0;return Math.max(0,Math.min(500,Math.floor(b/10)))}
+function updateBar(){const n=nCols();$('lblCount').innerText=n;$('lblCost').innerText=(n*10)+' TL'}
+function initApp(){
+  $('matchesList').innerHTML=matchesData.map((m,i)=>`
+  <div class="match"><div class="match-head"><span>${m.date}</span><span>Maç #${m.id}</span></div>
+  <div class="teams">${m.home} - ${m.away}<span class="badge">${level(i)}</span></div>
+  <div class="probs">${[0,1,2].map(o=>`<div class="pick ${used[i].includes(o)?'selected':''}">${SYM[o]} <span>%${m.p[o]}</span></div>`).join('')}</div></div>`).join('');
+}
+function switchTab(i,el){
+  document.querySelectorAll('.tab,.page').forEach(e=>e.classList.remove('active'));
+  el.classList.add('active');$('page-'+i).classList.add('active');
+}
+
+/* En yüksek ortak olasılıklı N kolon */
+function topColumns(n){
+  const ord=matchesData.map((_,i)=>ordr(i));
+  const lp=s=>s.reduce((t,r,i)=>t+Math.log(PR[i][ord[i][r]]),0);
+  const st=ord.map(()=>0),seen=new Set([st.join('')]);
+  const q=[[lp(st),st]],out=[];
+  while(out.length<n&&q.length){
+    let b=0;for(let i=1;i<q.length;i++)if(q[i][0]>q[b][0])b=i;
+    const [sc,s]=q.splice(b,1)[0];
+    out.push({pick:s.map((r,i)=>ord[i][r]),p:Math.exp(sc)});
+    for(let i=0;i<s.length;i++)if(s[i]<2){
+      const t=s.slice();t[i]++;const k=t.join('');
+      if(!seen.has(k)){seen.add(k);q.push([lp(t),t])}
+    }
+  }
+  return out;
+}
+function closedList(cl){
+  const u=matchesData.map((_,i)=>[...new Set(cl.map(c=>c[i]))].sort());
+  return {u,list:u.map((x,i)=>[x,i]).filter(x=>x[0].length>1)};
+}
+function generate(){
+  const n=nCols();
+  if(n<1){alert('En az 10 TL gir.');return}
+  const r=topColumns(n);cols=r.map(x=>x.pick);
+  const cov=r.reduce((t,x)=>t+x.p,0),single=r[0].p;
+  const c=closedList(cols);used=c.u;initApp();
+  $('outputCard').style.display='block';
+  $('outputSummary').innerHTML=`<b style="color:var(--text)">${n*10} TL = ${n} kolon</b><br>
+   15/15 tutma olasılığı: <b class="green">%${(cov*100).toFixed(3)}</b> (yaklaşık ${Math.round(1/cov).toLocaleString('tr')} denemede 1)<br>
+   Tek kolonla şans: %${(single*100).toFixed(3)}. Redüksiyon şansı <b class="green">${(cov/single).toFixed(1)} kat</b> artırıyor.<br><br>
+   <b style="color:var(--text)">Kapanan maçlar:</b><br>${c.list.length?c.list.map(([u,i])=>`#${i+1} ${matchesData[i].home} - ${matchesData[i].away}: <b style="color:var(--orange)">${u.map(o=>SYM[o]).join('-')}</b>`).join('<br>'):'Yok, tek kolon.'}
+   <br><br><div id="mcOut">Simülasyon çalışıyor...<div class="progress"><div id="bar-a"></div></div></div>`;
+  $('outputContainer').innerHTML=r.map((x,i)=>`<div class="coupon"><b>Kolon #${String(i+1).padStart(2,'0')}</b> &nbsp;<span class="muted">%${(x.p*100).toFixed(3)}</span><br>
+  <span style="letter-spacing:1px">${x.pick.map((o,k)=>`<span class="muted">${k+1}:</span><b>${SYM[o]}</b>`).join(' ')}</span></div>`).join('');
+  $('outputCard').scrollIntoView({behavior:'smooth'});
+  runMC('mcOut','bar-a',false);
+}
+
+/* Monte Carlo */
+function draw(p){let r=Math.random();for(let o=0;o<3;o++){r-=p[o];if(r<0)return o}return 2}
+function runMC(out,bar,clear){
+  const N=10000,STEP=1000,L=matchesData.length,hist=new Array(L+1).fill(0);
+  let done=0,sum=0;
+  if(clear){$(out).style.display='block';$(out).innerHTML=''}
+  $(bar).style.width='0';
+  (function chunk(){
+    for(let s=0;s<STEP;s++){
+      const res=PR.map(draw);let best=0;
+      for(const c of cols){let k=0;for(let i=0;i<L;i++)if(c[i]===res[i])k++;if(k>best)best=k}
+      hist[best]++;sum+=best;
+    }
+    done+=STEP;$(bar).style.width=(done/N*100)+'%';
+    if(done<N)return setTimeout(chunk,0);
+    const mx=Math.max(...hist),tail=k=>(hist.slice(k).reduce((a,b)=>a+b,0)/N*100).toFixed(2);
+    $(out).innerHTML=`<b style="color:var(--text)">${N.toLocaleString('tr')} simülasyon sonucu</b><br>
+    Kuponundaki en iyi kolon ortalama <b class="green">${(sum/N).toFixed(2)} / ${L}</b> tutuyor.<br>
+    ${L}/${L}: <b class="green">%${tail(L)}</b> | ${L-1}+: <b class="green">%${tail(L-1)}</b><br>${L-2}+: <b class="green">%${tail(L-2)}</b> | ${L-3}+: <b class="green">%${tail(L-3)}</b><br>
+    ${hist.map((_,k)=>k).reverse().filter(k=>hist[k]>0).map(k=>`<div class="hrow"><span>${k}/${L}</span><div><div class="hbar" style="width:${hist[k]/mx*100}%"></div></div><span>%${(hist[k]/N*100).toFixed(1)}</span></div>`).join('')}`;
+    if($('runBtn'))$('runBtn').disabled=false;
+  })();
+}
+function runLab(){
+  if(!cols.length){const n=Math.max(1,nCols());cols=topColumns(n).map(x=>x.pick)}
+  $('runBtn').disabled=true;runMC('res-full','bar-full',true);
+}
+
+/* Bankobot */
+function say(html,who){
+  const d=document.createElement('div');d.className='b '+who;d.innerHTML=html;
+  $('chat').appendChild(d);d.scrollIntoView({block:'end',behavior:'smooth'});
+}
+function outName(m,o){return o==0?m.home+' (1)':o==1?'Beraberlik (0)':m.away+' (2)'}
+function analyze(i){
+  const m=matchesData[i],p=PR[i],o=ordr(i),mx=p[o[0]],dc=mx+p[o[1]];
+  let s=`<b>Maç #${m.id}: ${m.home} - ${m.away}</b><br>Seviye: <b style="color:var(--orange)">${level(i)}</b><br>`;
+  s+=`1: %${pc(p[0])} | 0: %${pc(p[1])} | 2: %${pc(p[2])}<br>`;
+  s+=`En olası: ${outName(m,o[0])}, adil oran ${(1/mx).toFixed(2)}<br>`;
+  s+=`Çifte şans ${SYM[o[0]]}-${SYM[o[1]]}: %${pc(dc)} (adil oran ${(1/dc).toFixed(2)})<br>`;
+  if(p[1]>=.28)s+=`Beraberlik payı yüksek (%${pc(p[1])}).<br>`;
+  const lose=o[0]==0?p[2]:o[0]==2?p[0]:null;
+  if(lose!==null&&mx>=.5)s+=`Favorinin kaybetme ihtimali: %${pc(lose)}.<br>`;
+  s+=`<b>Öneri:</b> `+(mx>=.7?`Tek ${SYM[o[0]]} yeterli.`:mx>=.55?`Ana seçim ${SYM[o[0]]}, bütçe varsa ${SYM[o[1]]} ekle.`:`${SYM[o[0]]}-${SYM[o[1]]} ile kapat.`);
+  return s;
+}
+function summary(){
+  const exp=PR.reduce((t,_,i)=>t+topP(i),0),all=PR.reduce((t,_,i)=>t*topP(i),1);
+  const b=matchesData.filter((_,i)=>topP(i)>=.7).length;
+  const d=matchesData.filter((_,i)=>level(i)=='Çok dengeli').length;
+  return `<b>Bülten özeti (${matchesData.length} maç)</b><br>Banko: <b>${b}</b> | Çok dengeli: <b>${d}</b><br>Favorileri oynarsan beklenen doğru sayısı: <b>${exp.toFixed(1)} / ${matchesData.length}</b><br>Tek kolonla 15/15 olasılığı: <b>%${(all*100).toFixed(4)}</b><br>Bütçeni yazıp "Kupon öner" dersen kupon planı çıkarırım.`;
+}
+function listBy(f,title){
+  const r=matchesData.map((m,i)=>[m,i]).filter(x=>f(x[1]));
+  if(!r.length)return title+': bu bültende yok.';
+  return `<b>${title}</b><br>`+r.map(([m,i])=>`#${m.id} ${m.home} - ${m.away}: ${outName(m,ordr(i)[0])} %${pc(topP(i))}`).join('<br>');
+}
+function recoText(){
+  const n=nCols();
+  if(n<1)return 'Önce 1. sekmeden bütçeni yaz (en az 10 TL).';
+  const r=topColumns(n),cov=r.reduce((t,x)=>t+x.p,0),c=closedList(r.map(x=>x.pick));
+  return `<b>${n*10} TL için plan (${n} kolon)</b><br>`+
+   (c.list.length?'Kapanacak maçlar:<br>'+c.list.map(([u,i])=>`#${i+1} ${matchesData[i].home} - ${matchesData[i].away}: ${u.map(o=>SYM[o]).join('-')}`).join('<br>')+'<br>':'Kapama yok.<br>')+
+   `15/15 olasılığı: <b class="green">%${(cov*100).toFixed(3)}</b><br><button onclick="switchTab(0,document.querySelector('.tab'));generate()">Kuponu yap</button>`;
+}
+function reply(t){
+  const q=t.toLocaleLowerCase('tr');
+  if(/kupon|kapama|öner|redüks|kolon|bütçe/.test(q))return recoText();
+  if(/banko/.test(q))return listBy(i=>topP(i)>=.7,'Bankolar (%70+)')+'<br><br>'+listBy(i=>topP(i)>=.55&&topP(i)<.7,'Güçlü favoriler');
+  if(/risk|sürpriz|dengeli|zor/.test(q))return listBy(i=>topP(i)<.5,'Riskli / dengeli maçlar');
+  if(/özet|bülten|genel/.test(q))return summary();
+  const nm=q.match(/(?:maç\s*#?|#)\s*(\d+)/)||q.match(/^\s*(\d+)\s*$/);
+  if(nm){const i=parseInt(nm[1])-1;if(matchesData[i])return analyze(i)}
+  const hits=matchesData.map((m,i)=>i).filter(i=>q.includes(matchesData[i].home.toLocaleLowerCase('tr'))||q.includes(matchesData[i].away.toLocaleLowerCase('tr')));
+  if(hits.length)return hits.map(analyze).join('<br><br>');
+  return 'Bunları sorabilirsin: kupon öner, bülten özeti, bankolar, riskli maçlar, bir takım adı (ör. Fransa) veya maç 7.';
+}
+function ask(t){say(t,'usr');setTimeout(()=>say(reply(t),'bot'),250)}
+function send(){const v=$('q').value.trim();if(!v)return;$('q').value='';ask(v)}
+
+window.onload=()=>{initApp();updateBar();say('Merhaba, ben Bankobot. Bültenin olasılıklarına göre analiz yapıyorum.<br><br>'+summary(),'bot')};
+</script>
+</body>
+</html>
