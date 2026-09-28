@@ -7,7 +7,6 @@
     <style>
         :root {
             --spor-green: #008751;
-            --spor-green-dark: #00683e;
             --bg-color: #0f172a;
             --card-bg: #1e293b;
             --text-main: #f8fafc;
@@ -29,7 +28,6 @@
             padding-bottom: 70px;
         }
 
-        /* Üst Header */
         .app-header {
             background-color: var(--spor-green);
             color: white;
@@ -48,7 +46,6 @@
             opacity: 0.85;
         }
 
-        /* 3'lü Sekme Yapısı */
         .tabs-nav {
             display: flex;
             background: #162032;
@@ -67,6 +64,7 @@
             color: var(--text-muted);
             cursor: pointer;
             border-bottom: 3px solid transparent;
+            user-select: none;
         }
 
         .tab-item.active {
@@ -89,7 +87,6 @@
             display: block;
         }
 
-        /* Kasa Paneli */
         .panel-box {
             background: var(--card-bg);
             border-radius: 12px;
@@ -135,7 +132,6 @@
             text-align: center;
         }
 
-        /* Maç Kartları (Gönderdiğin orijinal ekran görüntüsüne birebir) */
         .match-row-card {
             background: var(--card-bg);
             border-radius: 8px;
@@ -177,6 +173,7 @@
             font-size: 0.85rem;
             font-weight: bold;
             color: var(--text-main);
+            user-select: none;
         }
 
         .odd-btn span {
@@ -198,7 +195,6 @@
             font-weight: bold;
         }
 
-        /* 2. Sayfa Analiz Stili */
         .analysis-card {
             background: var(--card-bg);
             border-radius: 10px;
@@ -219,7 +215,6 @@
             margin-top: 6px;
         }
 
-        /* 3. Sayfa Laboratuvar */
         .lab-card {
             background: var(--card-bg);
             border-radius: 10px;
@@ -235,7 +230,6 @@
             margin-bottom: 6px;
         }
 
-        /* Sonuç Alanı */
         #resultsArea {
             display: none;
             margin-top: 15px;
@@ -272,6 +266,7 @@
 
     <div class="container">
 
+        <!-- 1. SAYFA -->
         <div class="tab-content active" id="tab-0">
             <div class="panel-box">
                 <div class="form-group">
@@ -294,10 +289,12 @@
             </div>
         </div>
 
+        <!-- 2. SAYFA -->
         <div class="tab-content" id="tab-1">
             <div id="analysisContainer"></div>
         </div>
 
+        <!-- 3. SAYFA -->
         <div class="tab-content" id="tab-2">
             <div class="lab-card">
                 <div class="lab-title">🔬 10.000'li Simülasyon Motoru</div>
@@ -308,7 +305,7 @@
             <div class="lab-card">
                 <div class="lab-title">⚖️ Varyans & Risk Analiz Cihazı</div>
                 <p style="font-size:0.8rem; color:var(--text-muted); line-height: 1.4;">
-                    <b>Bankobot Tavsiyesi:</b> Yunanistan-Almanya ve Belçika-Türkiye gibi kritik eşiklerde simülasyon %42 oranında sürpriz patlaması öngörüyor. Tekli maç bırakmak yerine çifte şans (1-2) kullanmanız matrisin 15 bilme şansını artıracaktır.
+                    <b>Bankobot Tavsiyesi:</b> Yunanistan-Almanya ve Belçika-Türkiye gibi kritik eşiklerde simülasyon %42 oranında sürpriz patlaması öngörüyor. Tekli maç bırakmak yerine çifte şans kullanmanız matrisin 15 bilme şansını artıracaktır.
                 </p>
             </div>
 
@@ -322,7 +319,130 @@
 
     <script>
         const bultenData = [
-            { id: 1, flag: "🇧🇪🇹🇷", home: "Belçika", away: "Türkiye", date: "02 Eki 21:45", p1: "%64.2", p0: "%18.5", p2: "%17.3", comment: "Millet Belçika'ya banko 1 basacak. Biz diyoruz ki Türkiye burayı darma dağın eder; dikkat, gizli sürpriz 2 potansiyeli yüksek! Sütten ağzı yanan yoğurdu üfleyerek yermiş, temkinli olalım." },
+            { id: 1, flag: "🇧🇪🇹🇷", home: "Belçika", away: "Türkiye", date: "02 Eki 21:45", p1: "%64.2", p0: "%18.5", p2: "%17.3", comment: "Millet Belçika'ya banko 1 basacak. Biz diyoruz ki Türkiye burayı darma dağın eder; dikkat, gizli sürpriz 2 potansiyeli yüksek!" },
             { id: 2, flag: "🇮🇹🇹🇷", home: "İtalya", away: "Türkiye", date: "05 Eki 21:45", p1: "%56.2", p0: "%24.7", p2: "%19.1", comment: "Herkes İtalya evinde kilitler diyor ama bu maç 0-2 patlamaya çok müsait. Sürpriz arayan matriste 1'i tamamen silebilir." },
             { id: 3, flag: "🇧🇦🇸🇪", home: "Bosna Hersek", away: "İsveç", date: "02 Eki 21:45", p1: "%17.6", p0: "%26.3", p2: "%56.1", comment: "Orantısız güç değil, tam bir bitik maç. Kimse buraya bakmaz ama 0 (beraberlik) matrislerin kilit taşı olacak." },
-            { id: 4, flag: "🇫🇷🇮🇹", home: "Fransa", away
+            { id: 4, flag: "🇫🇷🇮🇹", home: "Fransa", away: "İtalya", date: "02 Eki 21:45", p1: "%78.8", p0: "%14.0", p2: "%7.2", comment: "Görünen köy kılavuz istemez ama Fransızlar havaya girerse patlar. Yine de burası tekli (1) geçmelik." },
+            { id: 5, flag: "🇭🇺🇬🇪", home: "Macaristan", away: "Gürcistan", date: "02 Eki 21:45", p1: "%63.2", p0: "%24.1", p2: "%12.8", comment: "Macaristan iç sahası tehlikelidir, millet Gürcistan sürprizi bekliyor ama ev sahibi maçı ezer." },
+            { id: 6, flag: "🇵🇱🇷🇴", home: "Polonya", away: "Romanya", date: "02 Eki 21:45", p1: "%64.5", p0: "%24.0", p2: "%11.5", comment: "Komple kapatılacak maç. Romanya ters takımdır, millet 1 beklerken son dakika golüyle 2 yazdırır." },
+            { id: 7, flag: "🇭🇷🏴󠁧󠁢󠁥󠁮󠁧󠁿", home: "Hırvatistan", away: "İngiltere", date: "03 Eki 21:45", p1: "%30.0", p0: "%30.0", p2: "%40.0", comment: "İngiltere favori gösteriliyor ama Hırvatlar turnuva takımıdır. Sürpriz arayanlar için net 1." },
+            { id: 8, flag: "🇲🇰🏴󠁧󠁢󠁳󠁣󠁴󠁿", home: "K.Makedonya", away: "İskoçya", date: "03 Eki 21:45", p1: "%25.0", p0: "%32.0", p2: "%43.0", comment: "Bültenin en büyük 'alt' adayı. Millet İskoçya'ya yükleniyor, Makedonya ters köşe yapabilir." },
+            { id: 9, flag: "🇪🇸🇨🇿", home: "İspanya", away: "Çekya", date: "03 Eki 21:45", p1: "%70.0", p0: "%20.0", p2: "%10.0", comment: "Tek banko arayanlara. Buradan sürpriz çıkmaz, İspanya acımaz." },
+            { id: 10, flag: "🇨🇭🇸🇮", home: "İsviçre", away: "Slovenya", date: "03 Eki 21:45", p1: "%52.0", p0: "%30.0", p2: "%18.0", comment: "Slovenya savunması sertdir, millet İsviçre'yi tek atarken maç 0 biter, kuponlar yatar." },
+            { id: 11, flag: "🏴󠁧󠁢󠁷󠁬󠁳󠁿🇩🇰", home: "Galler", away: "Danimarka", date: "04 Eki 21:45", p1: "%28.0", p0: "%30.0", p2: "%42.0", comment: "Danimarka deplasmanda favori ama Galler seyirciyle coşar. Sürpriz 1." },
+            { id: 12, flag: "🇳🇱🇷🇸", home: "Hollanda", away: "Sırbistan", date: "04 Eki 21:45", p1: "%53.0", p0: "%27.0", p2: "%20.0", comment: "Gollü geçer dedikleri maç kilitlenebilir. 0-2 çifte şans matrisin gizli silahıdır." },
+            { id: 13, flag: "🇵🇹🇳🇴", home: "Portekiz", away: "Norveç", date: "04 Eki 21:45", p1: "%56.0", p0: "%26.0", p2: "%18.0", comment: "Portekiz rahat kazanır gibi durur ama Haaland faktörüyle Norveç ters köşe yapabilir." },
+            { id: 14, flag: "🇬🇷🇩🇪", home: "Yunanistan", away: "Almanya", date: "04 Eki 21:45", p1: "%20.0", p0: "%28.0", p2: "%52.0", comment: "Almanya ilk maçta şaşırttı, hatalarından ders çıkaracak mı soru işareti. Temkinli olup çifte şans geçiyoruz." },
+            { id: 15, flag: "🇫🇷🇧🇪", home: "Fransa", away: "Belçika", date: "04 Eki 21:45", p1: "%46.0", p0: "%29.0", p2: "%25.0", comment: "Dev maçta herkes Fransa der, formda Belçika bu maçı alır götürür. Sürpriz arayanlar için 2." }
+        ];
+
+        const userPicks = {};
+
+        function renderMatches() {
+            const container = document.getElementById('matchesContainer');
+            container.innerHTML = '';
+
+            bultenData.forEach(m => {
+                if(!userPicks[m.id]) userPicks[m.id] = ['1'];
+
+                const card = document.createElement('div');
+                card.className = 'match-row-card';
+                card.innerHTML = `
+                    <div class="match-header-info">
+                        <span>${m.date}</span>
+                        <span>Maç #${m.id}</span>
+                    </div>
+                    <div class="teams-info">
+                        <span>${m.flag}</span> ${m.home} - ${m.away}
+                    </div>
+                    <div class="odds-container" id="odds-${m.id}">
+                        <div class="odd-btn ${userPicks[m.id].includes('1') ? 'selected' : ''}" onclick="togglePick(${m.id}, '1', this)">1 <span>${m.p1}</span></div>
+                        <div class="odd-btn ${userPicks[m.id].includes('0') ? 'selected' : ''}" onclick="togglePick(${m.id}, '0', this)">0 <span>${m.p0}</span></div>
+                        <div class="odd-btn ${userPicks[m.id].includes('2') ? 'selected' : ''}" onclick="togglePick(${m.id}, '2', this)">2 <span>${m.p2}</span></div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            renderAnalysis();
+        }
+
+        function togglePick(matchId, opt, el) {
+            let list = userPicks[matchId];
+            if(list.includes(opt)) {
+                if(list.length > 1) {
+                    userPicks[matchId] = list.filter(item => item !== opt);
+                    el.classList.remove('selected');
+                } else {
+                    alert("En az 1 tahmin seçili olmalıdır!");
+                }
+            } else {
+                list.push(opt);
+                el.classList.add('selected');
+            }
+        }
+
+        function renderAnalysis() {
+            const container = document.getElementById('analysisContainer');
+            container.innerHTML = '';
+
+            bultenData.forEach(m => {
+                const card = document.createElement('div');
+                card.className = 'analysis-card';
+                card.innerHTML = `
+                    <div style="font-size:0.9rem; font-weight:bold; margin-bottom:6px;">${m.flag} ${m.home} vs ${m.away} <span style="font-size:0.75rem; color:var(--text-muted);">(${m.date})</span></div>
+                    <div class="bankobot-comment">
+                        <b>🎯 Bankobot Bot Yorumu:</b> ${m.comment}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function switchTab(index, el) {
+            document.querySelectorAll('.tab-item').forEach(i => i.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+            el.classList.add('active');
+            document.getElementById(`tab-${index}`).classList.add('active');
+        }
+
+        function generateSmartCoupon() {
+            const budget = parseFloat(document.getElementById('userBudget').value) || 200;
+            const colCount = parseInt(document.getElementById('userColumnCount').value) || 1;
+            const resultsArea = document.getElementById('resultsArea');
+            const summaryText = document.getElementById('couponSummaryText');
+            const listContainer = document.getElementById('couponItemsList');
+
+            resultsArea.style.display = 'block';
+            
+            let unitBudget = (budget / colCount).toFixed(2);
+            let misliVal = (unitBudget / 10).toFixed(1);
+
+            summaryText.innerHTML = `Toplam Bütçe: <b>${budget} ₺</b> | Üretilen Kolon: <b>${colCount} Adet</b> | Kolon Başı Tutar: <b>${unitBudget} ₺</b> (${misliVal} Misli)`;
+
+            let html = "";
+            for(let i = 1; i <= colCount; i++) {
+                let matchSummary = "";
+                bultenData.forEach((m, idx) => {
+                    let opts = userPicks[m.id] || ['1'];
+                    let chosen = opts[Math.floor(Math.random() * opts.length)];
+                    matchSummary += `M${idx+1}:[<b>${chosen}</b>] `;
+                });
+
+                html += `
+                    <div class="coupon-box-output">
+                        <b>Kolon #${i < 10 ? '0'+i : i}</b> (${unitBudget} ₺ - ${misliVal} Misli)<br>
+                        <span style="font-size:0.72rem; color:var(--text-muted);">${matchSummary}</span>
+                    </div>
+                `;
+            }
+            listContainer.innerHTML = html;
+        }
+
+        window.onload = function() {
+            renderMatches();
+        };
+    </script>
+</body>
+</html>
