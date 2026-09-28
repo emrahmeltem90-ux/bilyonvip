@@ -1,3 +1,57 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hedef 15 - Akıllı Redüksiyon Sistemi</title>
+<style>
+:root{--green:#008751;--green2:#00a863}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:sans-serif}
+header{background:var(--green);padding:15px;color:#fff}
+header h2{font-size:1.15rem}
+.tabs{display:flex;background:var(--card);border-bottom:1px solid var(--border)}
+.tab{flex:1;text-align:center;padding:12px;font-size:.85rem;cursor:pointer;color:var(--muted)}
+.tab.active{color:var(--orange);border-bottom:2px solid var(--orange)}
+
+/* ===== BANKOBOT PRO ===== */
+.heatmap{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin:10px 0}
+.heatmap .hm{aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:bold;color:#fff;cursor:pointer;position:relative}
+.heatmap .hm.green{background:#10b981}
+.heatmap .hm.yellow{background:#f59e0b}
+.heatmap .hm.red{background:#ef4444}
+.heatmap .hm:hover{transform:scale(1.08);z-index:2;box-shadow:0 0 10px rgba(255,255,255,.2)}
+.heatmap-legend{display:flex;gap:10px;font-size:.68rem;color:var(--muted);flex-wrap:wrap;margin-top:6px}
+.heatmap-legend .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:3px;vertical-align:middle}
+.heatmap-legend .dot.green{background:#10b981}
+.heatmap-legend .dot.yellow{background:#f59e0b}
+.heatmap-legend .dot.red{background:#ef4444}
+
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.mode{background:var(--card2);border:1px solid var(--border);border-radius:9px;padding:10px 6px;text-align:center;cursor:pointer;font-size:.75rem;transition:.15s}
+.mode b{display:block;margin-bottom:2px}
+.mode span{font-size:.65rem;color:var(--muted)}
+.mode.active{background:var(--green);border-color:var(--green2)}
+.mode.active span{color:#e2e8f0}
+.mode-info{margin-top:10px;padding:10px;background:var(--card2);border-radius:8px;font-size:.78rem;line-height:1.6;border-left:3px solid var(--orange)}
+.mode-info b{color:var(--orange)}
+
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px}
+.stat-box{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center}
+.stat-box .num{font-size:1.3rem;font-weight:bold;color:var(--orange)}
+.stat-box .lbl{font-size:.68rem;color:var(--muted);margin-top:3px}
+
+.risk-list{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.risk-item{background:var(--card2);border-left:3px solid #ef4444;border-radius:6px;padding:8px 10px;font-size:.78rem}
+.risk-item b{color:var(--orange)}
+</style>
+</head>
+<body>
+
+<header>
+  <h2>Hedef 15 - Akıllı Redüksiyon Sistemi</h2>
+</header>
+
 <div class="page" id="page-1">
 
   <!-- Isı Haritası -->
@@ -47,4 +101,7 @@
     <input id="q" placeholder="Takım adı, maç 7, bankolar..." onkeydown="if(event.key==='Enter')send()">
     <button onclick="send()">Sor</button>
   </div>
-      </div>
+</div>
+
+</body>
+</html>
