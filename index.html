@@ -258,12 +258,6 @@
             border-radius: 6px;
             font-size: 0.8rem;
             color: var(--text-main);
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-4px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         #resultsArea {
@@ -295,7 +289,7 @@
     </header>
 
     <nav class="tabs-nav">
-        <div class="tab-item active" onclick="switchTab(0, this)">1. Bulten & Kasa</div>
+        <div class="tab-item active" onclick="switchTab(0, this)">1. Bülten & Kasa</div>
         <div class="tab-item" onclick="switchTab(1, this)">2. Bankobot Analiz</div>
         <div class="tab-item" onclick="switchTab(2, this)">3. Monte Carlo Lab</div>
     </nav>
@@ -306,14 +300,14 @@
         <div class="tab-content active" id="tab-0">
             <div class="panel-box">
                 <div class="form-group">
-                    <label>Toplam Butcen (TL):</label>
+                    <label>Toplam Bütçe (TL):</label>
                     <input type="number" id="userBudget" value="200">
                 </div>
                 <div class="form-group">
-                    <label>Istenen Kolon Adedi:</label>
+                    <label>İstenen Kolon Adedi:</label>
                     <input type="number" id="userColumnCount" value="1">
                 </div>
-                <button class="btn-primary-custom" onclick="generateSmartCoupon()">Butceye Gore Kuponu Hesapla & Uret</button>
+                <button class="btn-primary-custom" onclick="generateSmartCoupon()">Bütçeye Göre Kuponu Hesapla & Üret</button>
             </div>
 
             <div id="matchesContainer"></div>
@@ -334,31 +328,31 @@
         <div class="tab-content" id="tab-2">
             <div class="lab-card" onclick="runSimTest(1, this)">
                 <div class="lab-title">
-                    10.000'li Simulasyon Motoru
+                    10.000'li Simülasyon Motoru
                     <span class="click-hint">Test Etmek İçin Tıkla</span>
                 </div>
-                <p style="font-size:0.8rem; color:var(--text-muted);">Sistem bultenindeki tum maclarin xG, sakatlik ve form verilerini saniyede 10.000 kez simule ederek en ideal surpriz matrisini test eder.</p>
-                <div style="margin-top:10px; font-size:0.8rem; font-weight:bold; color:var(--accent-orange);">Genel Simulasyon Basari Olasiligi: %78.4</div>
+                <p style="font-size:0.8rem; color:var(--text-muted);">Sistem bültenindeki tüm maçların xG, sakatlık ve form verilerini saniyede 10.000 kez simüle ederek en ideal sürpriz matrisini test eder.</p>
+                <div style="margin-top:10px; font-size:0.8rem; font-weight:bold; color:var(--accent-orange);">Genel Simülasyon Başarı Olasılığı: %78.4</div>
                 <div class="lab-result-box" id="lab-res-1"></div>
             </div>
 
             <div class="lab-card" onclick="runSimTest(2, this)">
                 <div class="lab-title">
-                    Varyans & Risk Analiz Cihazi
+                    Varyans & Risk Analiz Cihazı
                     <span class="click-hint">Test Etmek İçin Tıkla</span>
                 </div>
                 <p style="font-size:0.8rem; color:var(--text-muted); line-height: 1.4;">
-                    <b>Bankobot Tavsiyesi:</b> Yunanistan-Almanya ve Belcika-Turkiye gibi kritik esiklerde simulasyon %42 oraninda surpriz patlamasi ongoruuyor. Tekli mac birakmak yerine cifte sans kullanmaniz matrisin 15 bilme sansini artiracaktir.
+                    <b>Bankobot Tavsiyesi:</b> Yunanistan-Almanya ve Belçika-Türkiye gibi kritik eşiklerde simülasyon %42 oranında sürpriz patlaması öngörüyor. Tekli maç bırakmak yerine çifte şans kullanmanız matrisin 15 bilme şansını artıracaktır.
                 </p>
                 <div class="lab-result-box" id="lab-res-2"></div>
             </div>
 
             <div class="lab-card" onclick="runSimTest(3, this)">
                 <div class="lab-title">
-                    Poisson & Oran Matrisi Dagilimi
+                    Poisson & Oran Matrisi Dağılımı
                     <span class="click-hint">Test Etmek İçin Tıkla</span>
                 </div>
-                <p style="font-size:0.8rem; color:var(--text-muted);">Gecmis 5 yillik Toto verilerine gore en cok kazandiran oran araligi: <b>%60 Ev sahibi - %30 Surpriz / Beraberlik</b></p>
+                <p style="font-size:0.8rem; color:var(--text-muted);">Geçmiş 5 yıllık Toto verilerine göre en çok kazandıran oran aralığı: <b>%60 Ev sahibi - %30 Sürpriz / Beraberlik</b></p>
                 <div class="lab-result-box" id="lab-res-3"></div>
             </div>
         </div>
@@ -367,21 +361,21 @@
 
     <script>
         const bultenData = [
-            { id: 1, home: "Belcika", away: "Turkiye", date: "02 Eki 21:45", p1: "%64.2", p0: "%18.5", p2: "%17.3", comment: "Millet Belcika'ya banko 1 basacak. Biz diyoruz ki Turkiye burayi darma dagan eder; dikkat, gizli surpriz 2 potansiyeli yuksek!" },
-            { id: 2, home: "Italya", away: "Turkiye", date: "05 Eki 21:45", p1: "%56.2", p0: "%24.7", p2: "%19.1", comment: "Herkes Italya evinde kilitler diyor ama bu mac 0-2 patlamaya cok musait. Surpriz arayan matriste 1'i tamamen silebilir." },
-            { id: 3, home: "Bosna Hersek", away: "Isvec", date: "02 Eki 21:45", p1: "%17.6", p0: "%26.3", p2: "%56.1", comment: "Orantisiz guc degil, tam bir bitik mac. Kimse buraya bakmaz ama 0 (beraberlik) matrislerin kilit tasi olacak." },
-            { id: 4, home: "Fransa", away: "Italya", date: "02 Eki 21:45", p1: "%78.8", p0: "%14.0", p2: "%7.2", comment: "Gorunen koy kilavuz istemez ama Fransizlar havaya girerse patlar. Yine de burasi tekli (1) gecmelik." },
-            { id: 5, home: "Macaristan", away: "Gurcistan", date: "02 Eki 21:45", p1: "%63.2", p0: "%24.1", p2: "%12.8", comment: "Macaristan ic sahasi tehlikelidir, millet Gurcistan surprizi bekliyor ama ev sahibi maci ezer." },
-            { id: 6, home: "Polonya", away: "Romanya", date: "02 Eki 21:45", p1: "%64.5", p0: "%24.0", p2: "%11.5", comment: "Komple kapatilacak mac. Romanya ters takimdir, millet 1 beklerken son dakika goluyle 2 yazdirir." },
-            { id: 7, home: "Hirvatistan", away: "Ingiltere", date: "03 Eki 21:45", p1: "%30.0", p0: "%30.0", p2: "%40.0", comment: "Ingiltere favori gosteriliyor ama Hirvatlar turnuva takimidir. Surpriz arayanlar icin net 1." },
-            { id: 8, home: "K.Makedonya", away: "Iskocya", date: "03 Eki 21:45", p1: "%25.0", p0: "%32.0", p2: "%43.0", comment: "Bultenin en buyuk alt adayi. Millet Iskocya'ya yukleniyor, Makedonya ters kose yapabilir." },
-            { id: 9, home: "Ispanya", away: "Cekya", date: "03 Eki 21:45", p1: "%70.0", p0: "%20.0", p2: "%10.0", comment: "Tek banko arayanlara. Buradan surpriz cikmaz, Ispanya acirmaz." },
-            { id: 10, home: "Isvicre", away: "Slovenya", date: "03 Eki 21:45", p1: "%52.0", p0: "%30.0", p2: "%18.0", comment: "Slovenya savunmasi sertdir, millet Isvicre'yi tek atarken mac 0 biter, kuponlar yatar." },
-            { id: 11, home: "Galler", away: "Danimarka", date: "04 Eki 21:45", p1: "%28.0", p0: "%30.0", p2: "%42.0", comment: "Danimarka deplasmanda favori ama Galler seyirciyle cosar. Surpriz 1." },
-            { id: 12, home: "Hollanda", away: "Sirbistan", date: "04 Eki 21:45", p1: "%53.0", p0: "%27.0", p2: "%20.0", comment: "Gollu gecer dedikleri mac kilitlenebilir. 0-2 cifte sans matrisin gizli silahidir." },
-            { id: 13, home: "Portekiz", away: "Norvec", date: "04 Eki 21:45", p1: "%56.0", p0: "%26.0", p2: "%18.0", comment: "Portekiz rahat kazanir gibi durur ama Haaland faktoruhyle Norvec ters kose yapabilir." },
-            { id: 14, home: "Yunanistan", away: "Almanya", date: "04 Eki 21:45", p1: "%20.0", p0: "%28.0", p2: "%52.0", comment: "Almanya ilk macta sasirtti, hatalarindan ders cikaracak mi soru isareti. Temkinli olup cifte sans geciyoruz." },
-            { id: 15, home: "Fransa", away: "Belcika", date: "04 Eki 21:45", p1: "%46.0", p0: "%29.0", p2: "%25.0", comment: "Dev macta herkes Fransa der, formda Belcika this maci alir goturur. Surpriz arayanlar icin 2." }
+            { id: 1, home: "Belçika 🇧🇪", away: "Türkiye 🇹🇷", date: "02 Eki 21:45", p1: "%64.2", p0: "%18.5", p2: "%17.3", comment: "Millet Belçika'ya banko 1 basacak. Biz diyoruz ki Türkiye burayı darma dağın eder; dikkat, gizli sürpriz 2 potansiyeli yüksek!" },
+            { id: 2, home: "İtalya 🇮🇹", away: "Türkiye 🇹🇷", date: "05 Eki 21:45", p1: "%56.2", p0: "%24.7", p2: "%19.1", comment: "Herkes İtalya evinde kilitler diyor ama bu maç 0-2 patlamaya çok müsait. Sürpriz arayan matriste 1'i tamamen silebilir." },
+            { id: 3, home: "Bosna Hersek 🇧🇦", away: "İsveç 🇸🇪", date: "02 Eki 21:45", p1: "%17.6", p0: "%26.3", p2: "%56.1", comment: "Orantısız güç değil, tam bir bitik maç. Kimse buraya bakmaz ama 0 (beraberlik) matrislerin kilit taşı olacak." },
+            { id: 4, home: "Fransa 🇫🇷", away: "İtalya 🇮🇹", date: "02 Eki 21:45", p1: "%78.8", p0: "%14.0", p2: "%7.2", comment: "Görünen köy kılavuz istemez ama Fransızlar havaya girerse patlar. Yine de burası tekli (1) geçmelik." },
+            { id: 5, home: "Macaristan 🇭🇺", away: "Gürcistan 🇬🇪", date: "02 Eki 21:45", p1: "%63.2", p0: "%24.1", p2: "%12.8", comment: "Macaristan iç sahası tehlikelidir, millet Gürcistan sürprizi bekliyor ama ev sahibi maçı ezer." },
+            { id: 6, home: "Polonya 🇵🇱", away: "Romanya 🇷🇴", date: "02 Eki 21:45", p1: "%64.5", p0: "%24.0", p2: "%11.5", comment: "Komple kapatılacak maç. Romanya ters takımdır, millet 1 beklerken son dakika golüyle 2 yazdırır." },
+            { id: 7, home: "Hırvatistan 🇭🇷", away: "İngiltere 🏴󠁧󠁢󠁥󠁮󠁧󠁿", date: "03 Eki 21:45", p1: "%30.0", p0: "%30.0", p2: "%40.0", comment: "İngiltere favori gösteriliyor ama Hırvatlar turnuva takımıdır. Sürpriz arayanlar için net 1." },
+            { id: 8, home: "K.Makedonya 🇲🇰", away: "İskoçya 🏴󠁧󠁢󠁳󠁣󠁴󠁿", date: "03 Eki 21:45", p1: "%25.0", p0: "%32.0", p2: "%43.0", comment: "Bültenin en büyük alt adayı. Millet İskoçya'ya yükleniyor, Makedonya ters köşe yapabilir." },
+            { id: 9, home: "İspanya 🇪🇸", away: "Çekya 🇨🇿", date: "03 Eki 21:45", p1: "%70.0", p0: "%20.0", p2: "%10.0", comment: "Tek banko arayanlara. Buradan sürpriz çıkmaz, İspanya acımaz." },
+            { id: 10, home: "İsviçre 🇨🇭", away: "Slovenya 🇸🇮", date: "03 Eki 21:45", p1: "%52.0", p0: "%30.0", p2: "%18.0", comment: "Slovenya savunması sertdir, millet İsviçre'yi tek atarken maç 0 biter, kuponlar yatar." },
+            { id: 11, home: "Galler 🏴󠁧󠁢󠁷󠁬󠁳󠁿", away: "Danimarka 🇩🇰", date: "04 Eki 21:45", p1: "%28.0", p0: "%30.0", p2: "%42.0", comment: "Danimarka deplasmanda favori ama Galler seyirciyle coşar. Sürpriz 1." },
+            { id: 12, home: "Hollanda 🇳🇱", away: "Sırbistan 🇷🇸", date: "04 Eki 21:45", p1: "%53.0", p0: "%27.0", p2: "%20.0", comment: "Gollü geçer dedikleri maç kilitlenebilir. 0-2 çifte şans matrisin gizli silahıdır." },
+            { id: 13, home: "Portekiz 🇵🇹", away: "Norveç 🇳🇴", date: "04 Eki 21:45", p1: "%56.0", p0: "%26.0", p2: "%18.0", comment: "Portekiz rahat kazanır gibi durur ama Haaland faktörleriyle Norveç ters köşe yapabilir." },
+            { id: 14, home: "Yunanistan 🇬🇷", away: "Almanya 🇩🇪", date: "04 Eki 21:45", p1: "%20.0", p0: "%28.0", p2: "%52.0", comment: "Almanya ilk maçta şaşırttı, hatalarından ders çıkaracak mı soru işareti. Temkinli olup çifte şans geçiyoruz." },
+            { id: 15, home: "Fransa 🇫🇷", away: "Belçika 🇧🇪", date: "04 Eki 21:45", p1: "%46.0", p0: "%29.0", p2: "%25.0", comment: "Dev maçta herkes Fransa der, formda Belçika bu maçı alır götürür. Sürpriz arayanlar için 2." }
         ];
 
         const userPicks = {};
@@ -398,7 +392,7 @@
                 card.innerHTML = `
                     <div class="match-header-info">
                         <span>${m.date}</span>
-                        <span>Mac #${m.id}</span>
+                        <span>Maç #${m.id}</span>
                     </div>
                     <div class="teams-info">
                         ${m.home} - ${m.away}
@@ -485,14 +479,15 @@
             let unitBudget = (budget / colCount).toFixed(2);
             let misliVal = (unitBudget / 10).toFixed(1);
 
-            summaryText.innerHTML = `Toplam Butce: <b>${budget} TL</b> | Uretilen Kolon: <b>${colCount} Adet</b> | Kolon Basi Tutar: <b>${unitBudget} TL</b> (${misliVal} Misli)`;
+            summaryText.innerHTML = `Toplam Bütçe: <b>${budget} TL</b> | Üretilen Kolon: <b>${colCount} Adet</b> | Kolon Başı Tutar: <b>${unitBudget} TL</b> (${misliVal} Misli)`;
 
             let html = "";
             for(let i = 1; i <= colCount; i++) {
                 let matchSummary = "";
                 bultenData.forEach((m, idx) => {
-                    let opts = userPicks[m.id] || ['1'];
-                    let chosen = opts[Math.floor(Math.random() * opts.length)];
+                    // Kullanıcının bülten üzerinde seçtiği tercihler arasından rastgele seçim yapar (Çifte şansları destekler)
+                    let allowedPicks = userPicks[m.id] || ['1'];
+                    let chosen = allowedPicks[Math.floor(Math.random() * allowedPicks.length)];
                     matchSummary += `M${idx+1}:[<b>${chosen}</b>] `;
                 });
 
