@@ -1,3 +1,308 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hedef 15 - Akıllı Sistem</title>
+<style>
+:root{
+    --green:#008751;
+    --green2:#00a866;
+    --bg:#0f172a;
+    --card:#1e293b;
+    --card2:#162032;
+    --text:#f8fafc;
+    --muted:#94a3b8;
+    --orange:#f59e0b;
+    --border:#334155;
+    --red:#ef4444;
+}
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,Segoe UI,sans-serif;
+}
+body{
+    background:var(--bg);
+    color:var(--text);
+    padding-bottom:50px;
+}
+header{
+    background:var(--green);
+    padding:17px 12px;
+    text-align:center;
+}
+header h2{
+    font-size:1.15rem;
+}
+header span{
+    font-size:.75rem;
+    opacity:.85;
+}
+.tabs{
+    display:flex;
+    background:var(--card2);
+    position:sticky;
+    top:0;
+    z-index:20;
+}
+.tab{
+    flex:1;
+    text-align:center;
+    padding:14px 4px;
+    font-size:.75rem;
+    font-weight:bold;
+    color:var(--muted);
+    border-bottom:3px solid transparent;
+    cursor:pointer;
+}
+.tab.active{
+    color:var(--orange);
+    border-bottom-color:var(--orange);
+}
+.container{
+    max-width:650px;
+    margin:auto;
+    padding:12px;
+}
+.page{
+    display:none;
+}
+.page.active{
+    display:block;
+}
+.card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:15px;
+    margin-bottom:12px;
+}
+label{
+    display:block;
+    color:var(--muted);
+    font-size:.78rem;
+    font-weight:bold;
+    margin-bottom:5px;
+}
+input,select{
+    width:100%;
+    padding:12px;
+    border-radius:8px;
+    border:1px solid var(--border);
+    background:var(--bg);
+    color:white;
+    font-size:1rem;
+    font-weight:bold;
+    margin-bottom:12px;
+    outline:none;
+}
+button{
+    width:100%;
+    padding:13px;
+    border:0;
+    border-radius:9px;
+    background:var(--green);
+    color:white;
+    font-size:.95rem;
+    font-weight:bold;
+    cursor:pointer;
+}
+button:active{
+    transform:scale(.98);
+}
+.match{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px;
+    margin-bottom:9px;
+}
+.match-head{
+    display:flex;
+    justify-content:space-between;
+    color:var(--orange);
+    font-size:.7rem;
+    font-weight:bold;
+    margin-bottom:7px;
+}
+.teams{
+    font-weight:bold;
+    font-size:.92rem;
+    margin-bottom:8px;
+}
+.probs{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:6px;
+}
+.pick{
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:7px;
+    padding:9px 4px;
+    text-align:center;
+    font-weight:bold;
+    font-size:0.85rem;
+    color:var(--text);
+    cursor:pointer;
+    user-select:none;
+}
+.pick span{
+    display:block;
+    font-size:.68rem;
+    color:#10b981;
+    margin-top:2px;
+}
+.pick.selected{
+    background:var(--orange);
+    color:#0f172a;
+    border-color:var(--orange);
+}
+.pick.selected span{
+    color:#0f172a;
+    font-weight:bold;
+}
+.result{
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:9px;
+    padding:12px;
+    margin-top:10px;
+}
+.result-title{
+    color:var(--orange);
+    font-weight:bold;
+    font-size:.95rem;
+    margin-bottom:8px;
+}
+.stat-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:7px;
+}
+.stat{
+    background:var(--card2);
+    border-radius:7px;
+    padding:9px;
+}
+.stat small{
+    color:var(--muted);
+    display:block;
+}
+.stat b{
+    font-size:1rem;
+}
+.system-line{
+    background:var(--card2);
+    border:1px solid var(--border);
+    padding:10px;
+    border-radius:7px;
+    margin-top:7px;
+    font-size:.78rem;
+    line-height:1.6;
+}
+.coupon{
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:10px;
+    margin-top:7px;
+    font-size:.78rem;
+    line-height:1.8;
+}
+.coupon b{
+    color:var(--orange);
+}
+.badge{
+    display:inline-block;
+    padding:3px 7px;
+    border-radius:5px;
+    background:rgba(245,158,11,.15);
+    color:var(--orange);
+    font-size:.68rem;
+    font-weight:bold;
+}
+.green{
+    color:#10b981;
+}
+.muted{
+    color:var(--muted);
+}
+.warning{
+    color:#fbbf24;
+}
+.danger{
+    color:#f87171;
+}
+.progress{
+    height:8px;
+    background:var(--bg);
+    border-radius:10px;
+    overflow:hidden;
+    margin-top:7px;
+}
+.progress div{
+    height:100%;
+    background:var(--green);
+    width:0%;
+    transition:width 0.4s ease;
+}
+</style>
+</head>
+<body>
+
+<header>
+    <h2>HEDEF 15 - AKILLI SİSTEM</h2>
+    <span>Poisson & Monte Carlo Matrisi</span>
+</header>
+
+<nav class="tabs">
+    <div class="tab active" onclick="switchTab(0, this)">1. Bülten & Kolon</div>
+    <div class="tab-item tab" onclick="switchTab(1, this)">2. Bankobot Analiz</div>
+    <div class="tab-item tab" onclick="switchTab(2, this)">3. Monte Carlo Lab</div>
+</nav>
+
+<div class="container">
+    <div class="page active" id="page-0">
+        <div class="card">
+            <label>Kolon Adedi</label>
+            <input type="number" id="columnCountInput" value="2">
+            
+            <button onclick="generateCoupons()">Kuponu Hesapla & Üret</button>
+        </div>
+
+        <div id="matchesList"></div>
+
+        <div class="card" id="outputCard" style="display:none;">
+            <div class="result-title">Üretilen Kolon Raporu</div>
+            <div id="outputSummary" class="muted" style="font-size:0.8rem; margin-bottom:8px;"></div>
+            <div id="outputContainer"></div>
+        </div>
+    </div>
+
+    <div class="page" id="page-1">
+        <div id="analysisList"></div>
+    </div>
+
+    <div class="page" id="page-2">
+        <div class="card" style="cursor:pointer;" onclick="runSimulation(1)">
+            <div class="result-title">10.000'li Simülasyon Motoru <span class="badge">Çalıştır</span></div>
+            <p class="muted" style="font-size:0.8rem;">Sistem bültenindeki tüm maçları Poisson dağılımına göre 10.000 kez simüle eder.</p>
+            <div class="progress"><div id="bar-1"></div></div>
+            <div id="res-1" style="font-size:0.8rem; margin-top:8px;"></div>
+        </div>
+
+        <div class="card" style="cursor:pointer;" onclick="runSimulation(2)">
+            <div class="result-title">Varyans & Risk Analiz Cihazı <span class="badge">Çalıştır</span></div>
+            <p class="muted" style="font-size:0.8rem;">Kritik eşiklerdeki sürpriz olasılıklarını ve patlama risklerini hesaplar.</p>
+            <div class="progress"><div id="bar-2"></div></div>
+            <div id="res-2" style="font-size:0.8rem; margin-top:8px;"></div>
+        </div>
+    </div>
+</div>
+
 <script>
 const matchesData = [
     { id: 1, home: "Belçika", away: "Türkiye", date: "02 Eki 21:45", p1: "%64.2", p0: "%18.5", p2: "%17.3", comment: "Türkiye deplasmanda sürpriz yapmaya çok yakın, gizli 2 potansiyeli var." },
@@ -84,7 +389,7 @@ function switchTab(index, el){
 }
 
 function generateCoupons(){
-    const unitPrice = 10; // Kolon başı sabit fiyat (10 TL)
+    const unitPrice = 10;
     const count = parseInt(document.getElementById('columnCountInput').value) || 1;
     const outputCard = document.getElementById('outputCard');
     const summary = document.getElementById('outputSummary');
@@ -100,7 +405,6 @@ function generateCoupons(){
         let matchStr = '';
         matchesData.forEach((m, idx) => {
             let picks = userSelections[m.id] || ['1'];
-            // Her kolon için seçilen tahminler arasından farklı kombinasyon üretilmesi sağlanır
             let chosen = picks[(idx + i) % picks.length];
             matchStr += `M${idx+1}:[<b>${chosen}</b>] `;
         });
@@ -138,3 +442,5 @@ function runSimulation(id){
 
 window.onload = initApp;
 </script>
+</body>
+</html>
