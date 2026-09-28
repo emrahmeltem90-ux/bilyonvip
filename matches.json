@@ -8,8 +8,10 @@
     "minute": "MS",
     "date": "02 Eki",
     "time": "21:45",
+    "series": ["W", "D", "W", "L", "W"],
     "p": [69.4, 17.0, 13.6],
-    "poisson": { "prediction": "MS 1", "rate": "%69", "confidence": "%85" }
+    "poisson": { "prediction": "MS 1", "rate": "%69", "confidence": "%85" },
+    "form": "Belçika: İtalya'yı 2-0 yendi, Fransa'ya 0-1 kaybetti. Türkiye: Fransa'ya 0-1 kaybetti, İtalya'yı 4-1 yendi."
   },
   {
     "id": 2,
@@ -20,8 +22,10 @@
     "minute": "MS",
     "date": "05 Eki",
     "time": "21:45",
+    "series": ["W", "L", "W", "D", "W"],
     "p": [61.7, 23.1, 15.2],
-    "poisson": { "prediction": "MS 1", "rate": "%62", "confidence": "%80" }
+    "poisson": { "prediction": "MS 1", "rate": "%62", "confidence": "%80" },
+    "form": "İtalya: Belçika'yı 2-0 yendi, Türkiye'yi 4-1 yendi. Türkiye: İtalya'yı 0-2 yenildi, Türkiye'yi 4-1 yendi."
   },
   {
     "id": 3,
@@ -32,8 +36,10 @@
     "minute": "MS",
     "date": "02 Eki",
     "time": "21:45",
+    "series": ["L", "D", "W", "L", "W"],
     "p": [15.6, 25.4, 59.0],
-    "poisson": { "prediction": "MS 2", "rate": "%59", "confidence": "%78" }
+    "poisson": { "prediction": "MS 2", "rate": "%59", "confidence": "%78" },
+    "form": "Bosna Hersek: Polonya 0-0, Romanya'yı 4-2 yendi. İsveç: Romanya'ya 4-2 yendi, İsviçre 1-3 yenildi."
   },
   {
     "id": 4,
@@ -44,8 +50,10 @@
     "minute": "MS",
     "date": "02 Eki",
     "time": "21:45",
+    "series": ["W", "W", "D", "W", "D"],
     "p": [81.4, 12.8, 5.8],
-    "poisson": { "prediction": "MS 1", "rate": "%81", "confidence": "%90" }
+    "poisson": { "prediction": "MS 1", "rate": "%81", "confidence": "%90" },
+    "form": "Fransa: Türkiye'yi 1-0 Belçika'yı 1-0 yendi (6 puan). İtalya: Gürcistan'ı 1-0 yendi."
   },
   {
     "id": 5,
@@ -56,8 +64,10 @@
     "minute": "MS",
     "date": "02 Eki",
     "time": "21:45",
+    "series": ["W", "W", "D", "L", "W"],
     "p": [63.2, 24.1, 12.8],
-    "poisson": { "prediction": "MS 1", "rate": "%63", "confidence": "%81" }
+    "poisson": { "prediction": "MS 1", "rate": "%63", "confidence": "%81" },
+    "form": "Macaristan: Ukrayna'yı 0-1, Kırlanda 0-0. Gürcistan: Ukrayna 0-1 yendi."
   },
   {
     "id": 6,
@@ -68,8 +78,10 @@
     "minute": "MS",
     "date": "02 Eki",
     "time": "21:45",
+    "series": ["W", "W", "D", "L", "W"],
     "p": [65.9, 23.4, 10.7],
-    "poisson": { "prediction": "MS 1", "rate": "%66", "confidence": "%83" }
+    "poisson": { "prediction": "MS 1", "rate": "%66", "confidence": "%83" },
+    "form": "Polonya: Bosna 0-0, İsveç'e 1-3 yenildi. Romanya: İsveç'e 1-3 yenildi."
   },
   {
     "id": 7,
@@ -80,8 +92,10 @@
     "minute": "MS",
     "date": "03 Eki",
     "time": "19:00",
+    "series": ["W", "D", "W", "L", "W"],
     "p": [34.4, 30.2, 35.4],
-    "poisson": { "prediction": "MS 2", "rate": "%35", "confidence": "%65" }
+    "poisson": { "prediction": "MS 2", "rate": "%35", "confidence": "%65" },
+    "form": "Hırvatistan: Çekya'yı 2-1 yendi. İngiltere: İspanya'ya 1-2 yenildi."
   },
   {
     "id": 8,
@@ -92,8 +106,10 @@
     "minute": "MS",
     "date": "03 Eki",
     "time": "21:45",
+    "series": ["L", "D", "W", "L", "W"],
     "p": [23.1, 31.6, 45.3],
-    "poisson": { "prediction": "MS 2", "rate": "%45", "confidence": "%72" }
+    "poisson": { "prediction": "MS 2", "rate": "%45", "confidence": "%72" },
+    "form": "K.Makedonya: İsviçre'ye 0-3 yenildi. İskoçya: Slovenya'ya 1-0 yendi."
   },
   {
     "id": 9,
@@ -104,8 +120,10 @@
     "minute": "MS",
     "date": "03 Eki",
     "time": "21:45",
+    "series": ["W", "W", "D", "W", "D"],
     "p": [73.5, 18.4, 8.1],
-    "poisson": { "prediction": "MS 1", "rate": "%74", "confidence": "%86" }
+    "poisson": { "prediction": "MS 1", "rate": "%74", "confidence": "%86" },
+    "form": "İspanya: İngiltere'yi 3-2 yendi. Çekya: Hırvatistan'a 1-2 yenildi."
   },
   {
     "id": 10,
@@ -116,8 +134,10 @@
     "minute": "MS",
     "date": "03 Eki",
     "time": "21:45",
+    "series": ["W", "W", "D", "W", "W"],
     "p": [55.5, 28.9, 15.6],
-    "poisson": { "prediction": "MS 1", "rate": "%56", "confidence": "%76" }
+    "poisson": { "prediction": "MS 1", "rate": "%56", "confidence": "%76" },
+    "form": "İsviçre: K.Makedonya'yı 3-0 yendi. İskoçya ile berabere kaldı."
   },
   {
     "id": 11,
@@ -128,8 +148,10 @@
     "minute": "MS",
     "date": "04 Eki",
     "time": "21:45",
+    "series": ["L", "D", "W", "L", "W"],
     "p": [23.4, 29.2, 47.4],
-    "poisson": { "prediction": "MS 2", "rate": "%47", "confidence": "%74" }
+    "poisson": { "prediction": "MS 2", "rate": "%47", "confidence": "%74" },
+    "form": "Galler: Portekiz'e 0-1, Danimarka'ya 0-2 yenildi. Danimarka: Galler'i 2-0 yendi."
   },
   {
     "id": 12,
@@ -140,8 +162,10 @@
     "minute": "MS",
     "date": "04 Eki",
     "time": "21:45",
+    "series": ["W", "W", "D", "W", "L"],
     "p": [59.2, 25.2, 15.6],
-    "poisson": { "prediction": "MS 1", "rate": "%59", "confidence": "%79" }
+    "poisson": { "prediction": "MS 1", "rate": "%59", "confidence": "%79" },
+    "form": "Hollanda: Almanya 1-1, Sırbistan'ı 2-1 yendi. Sırbistan: Hollanda'ya yenildi."
   },
   {
     "id": 13,
@@ -152,8 +176,10 @@
     "minute": "MS",
     "date": "04 Eki",
     "time": "21:45",
+    "series": ["W", "W", "D", "W", "W"],
     "p": [60.4, 24.6, 15.0],
-    "poisson": { "prediction": "MS 1", "rate": "%60", "confidence": "%80" }
+    "poisson": { "prediction": "MS 1", "rate": "%60", "confidence": "%80" },
+    "form": "Portekiz: Galler'i 1-0, Norveç'i 1-2 yendi. Norveç: Danimarka ile berabere kaldı."
   },
   {
     "id": 14,
@@ -164,8 +190,10 @@
     "minute": "MS",
     "date": "04 Eki",
     "time": "21:45",
+    "series": ["L", "D", "W", "L", "W"],
     "p": [26.2, 29.6, 44.2],
-    "poisson": { "prediction": "MS 2", "rate": "%44", "confidence": "%71" }
+    "poisson": { "prediction": "MS 2", "rate": "%44", "confidence": "%71" },
+    "form": "Yunanistan: Sırbistan'ı 2-1, Almanya'yı 1-0 yendi. Almanya: Hollanda ile berabere kaldı."
   },
   {
     "id": 15,
@@ -176,7 +204,9 @@
     "minute": "MS",
     "date": "05 Eki",
     "time": "21:45",
+    "series": ["W", "W", "D", "W", "W"],
     "p": [50.4, 28.2, 21.4],
-    "poisson": { "prediction": "MS 1", "rate": "%50", "confidence": "%70" }
+    "poisson": { "prediction": "MS 1", "rate": "%50", "confidence": "%70" },
+    "form": "Fransa: 2 maçta 2 galibiyet. Belçika: İtalya'yı 2-0 yendi."
   }
 ]
