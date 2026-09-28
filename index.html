@@ -5,439 +5,198 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hedef 15 - Akıllı Redüksiyon Sistemi</title>
 <style>
-:root{
-    --green:#008751;
-    --green2:#00a866;
-    --bg:#0f172a;
-    --card:#1e293b;
-    --card2:#162032;
-    --text:#f8fafc;
-    --muted:#94a3b8;
-    --orange:#f59e0b;
-    --border:#334155;
-}
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-    font-family:Arial,Segoe UI,sans-serif;
-}
-body{
-    background:var(--bg);
-    color:var(--text);
-    padding-bottom:50px;
-}
-header{
-    background:var(--green);
-    padding:17px 12px;
-    text-align:center;
-}
-header h2{
-    font-size:1.15rem;
-}
-header span{
-    font-size:.75rem;
-    opacity:.85;
-}
-.tabs{
-    display:flex;
-    background:var(--card2);
-    position:sticky;
-    top:0;
-    z-index:20;
-}
-.tab{
-    flex:1;
-    text-align:center;
-    padding:14px 4px;
-    font-size:.75rem;
-    font-weight:bold;
-    color:var(--muted);
-    border-bottom:3px solid transparent;
-    cursor:pointer;
-}
-.tab.active{
-    color:var(--orange);
-    border-bottom-color:var(--orange);
-}
-.container{
-    max-width:650px;
-    margin:auto;
-    padding:12px;
-}
-.page{
-    display:none;
-}
-.page.active{
-    display:block;
-}
-.card{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:15px;
-    margin-bottom:12px;
-}
-label{
-    display:block;
-    color:var(--muted);
-    font-size:.78rem;
-    font-weight:bold;
-    margin-bottom:5px;
-}
-input{
-    width:100%;
-    padding:12px;
-    border-radius:8px;
-    border:1px solid var(--border);
-    background:var(--bg);
-    color:white;
-    font-size:1rem;
-    font-weight:bold;
-    margin-bottom:12px;
-    outline:none;
-}
-button{
-    width:100%;
-    padding:13px;
-    border:0;
-    border-radius:9px;
-    background:var(--green);
-    color:white;
-    font-size:.95rem;
-    font-weight:bold;
-    cursor:pointer;
-}
-button:active{
-    transform:scale(.98);
-}
-.match{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:12px;
-    margin-bottom:9px;
-}
-.match-head{
-    display:flex;
-    justify-content:space-between;
-    color:var(--orange);
-    font-size:.7rem;
-    font-weight:bold;
-    margin-bottom:7px;
-}
-.teams{
-    font-weight:bold;
-    font-size:.92rem;
-    margin-bottom:8px;
-}
-.probs{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:6px;
-}
-.pick{
-    background:var(--bg);
-    border:1px solid var(--border);
-    border-radius:7px;
-    padding:9px 4px;
-    text-align:center;
-    font-weight:bold;
-    font-size:0.85rem;
-    color:var(--text);
-    cursor:pointer;
-    user-select:none;
-}
-.pick span{
-    display:block;
-    font-size:.68rem;
-    color:#10b981;
-    margin-top:2px;
-}
-.pick.selected{
-    background:var(--green);
-    color:#ffffff;
-    border-color:var(--green2);
-}
-.pick.selected span{
-    color:#e2e8f0;
-}
-.bilyoner-bar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    background:var(--card2);
-    border:1px solid var(--border);
-    padding:12px;
-    border-radius:8px;
-    margin-bottom:12px;
-    font-size:0.9rem;
-}
-.bilyoner-bar b{
-    color:var(--orange);
-}
-.result-title{
-    color:var(--orange);
-    font-weight:bold;
-    font-size:.95rem;
-    margin-bottom:8px;
-}
-.coupon{
-    background:var(--bg);
-    border:1px solid var(--border);
-    border-radius:8px;
-    padding:10px;
-    margin-top:7px;
-    font-size:.78rem;
-    line-height:1.8;
-}
-.coupon b{
-    color:var(--orange);
-}
-.badge{
-    display:inline-block;
-    padding:3px 7px;
-    border-radius:5px;
-    background:rgba(245,158,11,.15);
-    color:var(--orange);
-    font-size:.68rem;
-    font-weight:bold;
-}
-.green{
-    color:#10b981;
-}
-.muted{
-    color:var(--muted);
-}
-.progress{
-    height:8px;
-    background:var(--bg);
-    border-radius:10px;
-    overflow:hidden;
-    margin-top:7px;
-}
-.progress div{
-    height:100%;
-    background:var(--green);
-    width:0%;
-    transition:width 0.4s ease;
-}
+:root{--green:#008751;--green2:#00a866;--bg:#0f172a;--card:#1e293b;--card2:#162032;--text:#f8fafc;--muted:#94a3b8;--orange:#f59e0b;--border:#334155}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,Segoe UI,sans-serif}
+body{background:var(--bg);color:var(--text);padding-bottom:50px}
+header{background:var(--green);padding:17px 12px;text-align:center}
+header h2{font-size:1.15rem}header span{font-size:.75rem;opacity:.85}
+.tabs{display:flex;background:var(--card2);position:sticky;top:0;z-index:20}
+.tab{flex:1;text-align:center;padding:14px 4px;font-size:.75rem;font-weight:bold;color:var(--muted);border-bottom:3px solid transparent;cursor:pointer}
+.tab.active{color:var(--orange);border-bottom-color:var(--orange)}
+.container{max-width:650px;margin:auto;padding:12px}
+.page{display:none}.page.active{display:block}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:15px;margin-bottom:12px;overflow-wrap:anywhere}
+label{display:block;color:var(--muted);font-size:.78rem;font-weight:bold;margin-bottom:5px}
+input{width:100%;padding:12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:#fff;font-size:1rem;font-weight:bold;margin-bottom:12px;outline:none}
+button{width:100%;padding:13px;border:0;border-radius:9px;background:var(--green);color:#fff;font-size:.95rem;font-weight:bold;cursor:pointer}
+button:active{transform:scale(.98)}button:disabled{opacity:.5}
+.match{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:9px}
+.match-head{display:flex;justify-content:space-between;color:var(--orange);font-size:.7rem;font-weight:bold;margin-bottom:7px}
+.teams{font-weight:bold;font-size:.92rem;margin-bottom:8px}
+.probs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.pick{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:9px 4px;text-align:center;font-weight:bold;font-size:.85rem;cursor:pointer;user-select:none}
+.pick span{display:block;font-size:.68rem;color:#10b981;margin-top:2px}
+.pick.selected{background:var(--green);border-color:var(--green2)}
+.pick.selected span{color:#e2e8f0}
+.bar-info{display:flex;justify-content:space-between;background:var(--card2);border:1px solid var(--border);padding:12px;border-radius:8px;margin-bottom:12px;font-size:.9rem}
+.bar-info b{color:var(--orange)}
+.result-title{color:var(--orange);font-weight:bold;font-size:.95rem;margin-bottom:8px}
+.coupon{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 10px;margin-top:6px;font-size:.78rem;line-height:1.7}
+.coupon b{color:var(--orange)}
+.badge{display:inline-block;padding:3px 7px;border-radius:5px;background:rgba(245,158,11,.15);color:var(--orange);font-size:.68rem;font-weight:bold}
+.green{color:#10b981}.muted{color:var(--muted)}
+.progress{height:8px;background:var(--bg);border-radius:10px;overflow:hidden;margin-top:7px}
+.progress div{height:100%;background:var(--green);width:0}
+.hrow{display:grid;grid-template-columns:40px 1fr 52px;gap:8px;align-items:center;margin:5px 0;font-size:.8rem}
+.hbar{height:14px;background:var(--orange);border-radius:3px;min-width:2px}
+.note{font-size:.72rem;color:var(--muted);text-align:center;margin-top:8px}
 </style>
 </head>
 <body>
-
-<header>
-    <h2>HEDEF 15 - AKILLI REDÜKSİYON</h2>
-    <span>Poisson & Optimizasyon Matrisi</span>
-</header>
-
+<header><h2>HEDEF 15 - AKILLI REDÜKSİYON</h2><span>Poisson &amp; Optimizasyon Matrisi</span></header>
 <nav class="tabs">
-    <div class="tab active" onclick="switchTab(0, this)">1. Bülten & Kolon</div>
-    <div class="tab" onclick="switchTab(1, this)">2. Bankobot Analiz</div>
-    <div class="tab" onclick="switchTab(2, this)">3. Monte Carlo Lab</div>
+<div class="tab active" onclick="switchTab(0,this)">1. Bülten &amp; Kolon</div>
+<div class="tab" onclick="switchTab(1,this)">2. Bankobot Analiz</div>
+<div class="tab" onclick="switchTab(2,this)">3. Monte Carlo Lab</div>
 </nav>
-
 <div class="container">
-    <div class="page active" id="page-0">
-        <div id="matchesList"></div>
-
-        <div class="card">
-            <label>Üretilmesini İstediğiniz Kolon Adedi</label>
-            <input type="number" id="columnCountInput" value="20" min="1" max="200" oninput="updateBilyonerBar()">
-            
-            <div class="bilyoner-bar">
-                <div>Tutar: <b id="lblTotalCost">200 TL</b></div>
-                <div>Kolon Sayısı: <b id="lblColumnCount">20</b></div>
-            </div>
-
-            <button onclick="generateReducedCoupons()">Hemen Oluştur</button>
-        </div>
-
-        <div class="card" id="outputCard" style="display:none;">
-            <div class="result-title">Süzülmüş Optimizasyon Raporu</div>
-            <div id="outputSummary" class="muted" style="font-size:0.8rem; margin-bottom:8px;"></div>
-            <div id="outputContainer"></div>
-        </div>
-    </div>
-
-    <div class="page" id="page-1">
-        <div id="analysisList"></div>
-    </div>
-
-    <div class="page" id="page-2">
-        <div class="card" style="cursor:pointer;" onclick="runFullSystemAnalysis()">
-            <div class="result-title">Tüm Maçları ve Sistemleri Analiz Et <span class="badge">Çalıştır</span></div>
-            <p class="muted" style="font-size:0.8rem;">10.000 iterasyonluk Poisson simülasyonunu ve risk varyans matrisini bülten genelinde çalıştırır.</p>
-            <div class="progress"><div id="bar-full"></div></div>
-            <div id="res-full" style="font-size:0.8rem; margin-top:8px;"></div>
-        </div>
-    </div>
+<div class="page active" id="page-0">
+<div id="matchesList"></div>
+<div class="card">
+<label>Üretilmesini İstediğiniz Kolon Adedi</label>
+<input type="number" id="columnCountInput" value="20" min="1" max="200" oninput="updateBar()">
+<div class="bar-info"><div>Tutar: <b id="lblCost">200 TL</b></div><div>Kolon: <b id="lblCount">20</b></div><div>Kapama alanı: <b id="lblSpace">-</b></div></div>
+<button onclick="generate()">Hemen Oluştur</button>
+</div>
+<div class="card" id="outputCard" style="display:none">
+<div class="result-title">Süzülmüş Optimizasyon Raporu</div>
+<div id="outputSummary" class="muted" style="font-size:.8rem;margin-bottom:8px"></div>
+<div id="outputContainer"></div>
+</div>
+</div>
+<div class="page" id="page-1"><div id="analysisList"></div></div>
+<div class="page" id="page-2">
+<div class="card">
+<div class="result-title">Tüm Maçları ve Sistemleri Analiz Et <span class="badge">Simülasyon</span></div>
+<p class="muted" style="font-size:.8rem;margin-bottom:10px">Bülteni 10.000 kez oynatır (her maç yüzdelerine göre çekilir) ve ürettiğin kolonların kaç maç tutturduğunu sayar.</p>
+<button id="runBtn" onclick="runMC()">Çalıştır</button>
+<div class="progress"><div id="bar-full"></div></div>
+</div>
+<div id="res-full"></div>
+</div>
+<p class="note">Model olasılık verir, sonucu garanti etmez.</p>
 </div>
 
 <script>
-const matchesData = [
-    { id: 1, home: "Belçika", away: "Türkiye", date: "02 Eki 21:45", p1: 64.2, p0: 18.5, p2: 17.3, comment: "Türkiye deplasmanda sürpriz potansiyeli barındırıyor, dikkatli yaklaşılmalı." },
-    { id: 2, home: "İtalya", away: "Türkiye", date: "05 Eki 21:45", p1: 56.2, p0: 24.7, p2: 19.1, comment: "İtalya favori görünse de savunma zaafları nedeniyle maç 0-2 riskine açık." },
-    { id: 3, home: "Bosna Hersek", away: "İsveç", date: "02 Eki 21:45", p1: 17.6, p0: 26.3, p2: 56.1, comment: "İsveç deplasman formülasyonunda üstün, beraberlik alternatif." },
-    { id: 4, home: "Fransa", away: "İtalya", date: "02 Eki 21:45", p1: 78.8, p0: 14.0, p2: 7.2, comment: "Fransa iç saha verimliliği ile bültenin en sağlam bankosu." },
-    { id: 5, home: "Macaristan", away: "Gürcistan", date: "02 Eki 21:45", p1: 63.2, p0: 24.1, p2: 12.8, comment: "Macaristan iç sahada oyun kontrolünü elinde tutuyor." },
-    { id: 6, home: "Polonya", away: "Romanya", date: "02 Eki 21:45", p1: 64.5, p0: 24.0, p2: 11.5, comment: "Taraf bahsi açısından riskli, kapamaya uygun bir derbi." },
-    { id: 7, home: "Hırvatistan", away: "İngiltere", date: "03 Eki 21:45", p1: 30.0, p0: 30.0, p2: 40.0, comment: "Dengeli eşleşme, İngiltere kadro derinliğiyle bir adım önde." },
-    { id: 8, home: "K.Makedonya", away: "İskoçya", date: "03 Eki 21:45", p1: 25.0, p0: 32.0, p2: 43.0, comment: "Düşük skor beklentili kapalı kutu karşılaşma." },
-    { id: 9, home: "İspanya", away: "Çekya", date: "03 Eki 21:45", p1: 70.0, p0: 20.0, p2: 10.0, comment: "İspanya saha üstünlüğü ile maçı erken koparabilecek yapıda." },
-    { id: 10, home: "İsviçre", away: "Slovenya", date: "03 Eki 21:45", p1: 52.0, p0: 30.0, p2: 18.0, comment: "Slovenya savunma bloku maçı kilitleyebilir, beraberlik yüksek." },
-    { id: 11, home: "Galler", away: "Danimarka", date: "04 Eki 21:45", p1: 28.0, p0: 30.0, p2: 42.0, comment: "Danimarka dış saha disipliniyle sonuca gidebilir." },
-    { id: 12, home: "Hollanda", away: "Sırbistan", date: "04 Eki 21:45", p1: 53.0, p0: 27.0, p2: 20.0, comment: "Sırbistan ters sonuç çıkarabilir, çifte şans gerektirir." },
-    { id: 13, home: "Portekiz", away: "Norveç", date: "04 Eki 21:45", p1: 56.0, p0: 26.0, p2: 18.0, comment: "Portekiz hücum hattı istatistiksel olarak baskın." },
-    { id: 14, home: "Yunanistan", away: "Almanya", date: "04 Eki 21:45", p1: 20.0, p0: 28.0, p2: 52.0, comment: "Almanya oyun kontrolünü elinde tutar ancak temkin şart." },
-    { id: 15, home: "Fransa", away: "Belçika", date: "04 Eki 21:45", p1: 46.0, p0: 29.0, p2: 25.0, comment: "Üst düzey eşleşme, sürpriz ihtimalleri göz önüne alınmalı." }
+const matchesData=[
+{id:1,home:"Belçika",away:"Türkiye",date:"02 Eki 21:45",p:[64.2,18.5,17.3]},
+{id:2,home:"İtalya",away:"Türkiye",date:"05 Eki 21:45",p:[56.2,24.7,19.1]},
+{id:3,home:"Bosna Hersek",away:"İsveç",date:"02 Eki 21:45",p:[17.6,26.3,56.1]},
+{id:4,home:"Fransa",away:"İtalya",date:"02 Eki 21:45",p:[78.8,14.0,7.2]},
+{id:5,home:"Macaristan",away:"Gürcistan",date:"02 Eki 21:45",p:[63.2,24.1,12.8]},
+{id:6,home:"Polonya",away:"Romanya",date:"02 Eki 21:45",p:[64.5,24.0,11.5]},
+{id:7,home:"Hırvatistan",away:"İngiltere",date:"03 Eki 21:45",p:[30,30,40]},
+{id:8,home:"K.Makedonya",away:"İskoçya",date:"03 Eki 21:45",p:[25,32,43]},
+{id:9,home:"İspanya",away:"Çekya",date:"03 Eki 21:45",p:[70,20,10]},
+{id:10,home:"İsviçre",away:"Slovenya",date:"03 Eki 21:45",p:[52,30,18]},
+{id:11,home:"Galler",away:"Danimarka",date:"04 Eki 21:45",p:[28,30,42]},
+{id:12,home:"Hollanda",away:"Sırbistan",date:"04 Eki 21:45",p:[53,27,20]},
+{id:13,home:"Portekiz",away:"Norveç",date:"04 Eki 21:45",p:[56,26,18]},
+{id:14,home:"Yunanistan",away:"Almanya",date:"04 Eki 21:45",p:[20,28,52]},
+{id:15,home:"Fransa",away:"Belçika",date:"04 Eki 21:45",p:[46,29,25]}
 ];
-
-const userSelections = {};
+const SYM=["1","0","2"];
+// normalize edilmiş olasılıklar (0-1)
+const PR=matchesData.map(m=>{const t=m.p.reduce((a,b)=>a+b,0);return m.p.map(x=>x/t)});
+// seçimler: varsayılan olarak her maçta en yüksek ihtimalli sonuç
+const sel=matchesData.map((m,i)=>[PR[i].indexOf(Math.max(...PR[i]))]);
+let cols=[];
+const $=id=>document.getElementById(id);
 
 function initApp(){
-    const list = document.getElementById('matchesList');
-    list.innerHTML = '';
-
-    matchesData.forEach(m => {
-        if(!userSelections[m.id]) userSelections[m.id] = ['1'];
-
-        const div = document.createElement('div');
-        div.className = 'match';
-        div.innerHTML = `
-            <div class="match-head">
-                <span>${m.date}</span>
-                <span>Maç #${m.id}</span>
-            </div>
-            <div class="teams">${m.home} - ${m.away}</div>
-            <div class="probs">
-                <div class="pick ${userSelections[m.id].includes('1')?'selected':''}" onclick="toggleSelection(${m.id}, '1', this)">1 <span>%${m.p1}</span></div>
-                <div class="pick ${userSelections[m.id].includes('0')?'selected':''}" onclick="toggleSelection(${m.id}, '0', this)">0 <span>%${m.p0}</span></div>
-                <div class="pick ${userSelections[m.id].includes('2')?'selected':''}" onclick="toggleSelection(${m.id}, '2', this)">2 <span>%${m.p2}</span></div>
-            </div>
-        `;
-        list.appendChild(div);
-    });
-
-    initAnalysis();
-    updateBilyonerBar();
+  $('matchesList').innerHTML=matchesData.map((m,i)=>`
+  <div class="match"><div class="match-head"><span>${m.date}</span><span>Maç #${m.id}</span></div>
+  <div class="teams">${m.home} - ${m.away}</div>
+  <div class="probs">${[0,1,2].map(o=>`<div class="pick ${sel[i].includes(o)?'selected':''}" data-i="${i}" data-o="${o}" onclick="toggle(${i},${o},this)">${SYM[o]} <span>%${m.p[o]}</span></div>`).join('')}</div></div>`).join('');
+  $('analysisList').innerHTML=matchesData.map((m,i)=>`<div class="card"><div class="teams" style="margin-bottom:6px">${m.home} vs ${m.away}</div>
+  <div style="background:var(--card2);border:1px solid var(--border);padding:10px;border-radius:7px;font-size:.78rem;line-height:1.6"><b>Bankobot:</b> ${comment(i)}</div></div>`).join('');
+  updateBar();
+}
+function comment(i){
+  const m=matchesData[i],p=PR[i],mx=Math.max(...p),o=p.indexOf(mx),fav=o==0?m.home:o==2?m.away:null;
+  let t;
+  if(mx>=.7)t=`${fav} net banko (%${(mx*100).toFixed(0)}).`;
+  else if(mx>=.55)t=`${fav} favori (%${(mx*100).toFixed(0)}), ama tek başına banko sayılmaz.`;
+  else if(p[1]>=.3)t=`Beraberlik ihtimali yüksek (%${(p[1]*100).toFixed(0)}), çifte şans düşün.`;
+  else t=`Açık maç, en yüksek ihtimal %${(mx*100).toFixed(0)}. Bu maçı kapamak mantıklı.`;
+  const up=Math.min(p[0],p[2]);
+  if(mx>=.55&&up>=.15)t+=` Sürpriz payı %${(up*100).toFixed(0)}.`;
+  return t;
+}
+function toggle(i,o,el){
+  const a=sel[i];
+  if(a.includes(o)){
+    if(a.length==1){alert("Her maçta en az 1 tahmin seçili olmalıdır!");return}
+    sel[i]=a.filter(x=>x!==o);el.classList.remove('selected');
+  }else{a.push(o);el.classList.add('selected')}
+  cols=[];$('outputCard').style.display='none';$('res-full').innerHTML='';updateBar();
+}
+function space(){return sel.reduce((t,a)=>t*a.length,1)}
+function updateBar(){
+  const n=Math.max(1,parseInt($('columnCountInput').value)||1);
+  $('lblCount').innerText=n;$('lblCost').innerText=(n*10)+' TL';
+  $('lblSpace').innerText=space().toLocaleString('tr');
+}
+function switchTab(i,el){
+  document.querySelectorAll('.tab,.page').forEach(e=>e.classList.remove('active'));
+  el.classList.add('active');$('page-'+i).classList.add('active');
 }
 
-function toggleSelection(matchId, val, el){
-    let arr = userSelections[matchId];
-    if(arr.includes(val)){
-        if(arr.length > 1){
-            userSelections[matchId] = arr.filter(x => x !== val);
-            el.classList.remove('selected');
-        } else {
-            alert("Her maçta en az 1 tahmin seçili olmalıdır!");
-        }
-    } else {
-        arr.push(val);
-        el.classList.add('selected');
+// Seçilen kapama alanı içinden ortak olasılığı en yüksek N kolonu bulur
+function topColumns(n){
+  const ord=sel.map((a,i)=>a.slice().sort((x,y)=>PR[i][y]-PR[i][x]));
+  const lp=s=>s.reduce((t,r,i)=>t+Math.log(PR[i][ord[i][r]]),0);
+  const st=sel.map(()=>0),seen=new Set([st.join('.')]);
+  const q=[[lp(st),st]],out=[];
+  while(out.length<n&&q.length){
+    let b=0;for(let i=1;i<q.length;i++)if(q[i][0]>q[b][0])b=i;
+    const [sc,s]=q.splice(b,1)[0];
+    out.push({pick:s.map((r,i)=>ord[i][r]),p:Math.exp(sc)});
+    for(let i=0;i<s.length;i++)if(s[i]<ord[i].length-1){
+      const t=s.slice();t[i]++;const k=t.join('.');
+      if(!seen.has(k)){seen.add(k);q.push([lp(t),t])}
     }
+  }
+  return out;
+}
+function generate(){
+  let n=Math.max(1,Math.min(200,parseInt($('columnCountInput').value)||1));
+  const cap=Math.min(n,space());
+  const r=topColumns(cap);cols=r.map(x=>x.pick);
+  const cov=r.reduce((t,x)=>t+x.p,0);
+  const closed=sel.filter(a=>a.length>1).length;
+  $('outputCard').style.display='block';
+  $('outputSummary').innerHTML=`Üretilen kolon: <b>${r.length}</b> (${r.length*10} TL) | Kapanan maç: <b>${closed}</b>`+
+   (cap<n?`<br><span style="color:var(--orange)">Seçimlerinle en fazla ${cap} farklı kolon çıkıyor. Daha çok kolon için maçlarda daha fazla seçenek işaretle.</span>`:'')+
+   `<br>15/15 tutma olasılığı (kolonlardan en az biri): <b class="green">%${(cov*100).toFixed(3)}</b>`;
+  $('outputContainer').innerHTML=r.map((x,i)=>`<div class="coupon"><b>Kolon #${String(i+1).padStart(2,'0')}</b> &nbsp;<span class="muted">%${(x.p*100).toFixed(3)}</span><br>
+  <span style="letter-spacing:1px">${x.pick.map((o,k)=>`<span class="muted">${k+1}:</span><b>${SYM[o]}</b>`).join(' ')}</span></div>`).join('');
 }
 
-function updateBilyonerBar(){
-    const count = parseInt(document.getElementById('columnCountInput').value) || 1;
-    document.getElementById('lblColumnCount').innerText = count;
-    document.getElementById('lblTotalCost').innerText = (count * 10) + " TL";
-}
-
-function initAnalysis(){
-    const container = document.getElementById('analysisList');
-    container.innerHTML = '';
-    matchesData.forEach(m => {
-        const div = document.createElement('div');
-        div.className = 'card';
-        div.innerHTML = `
-            <div class="teams" style="margin-bottom:6px;">${m.home} vs ${m.away}</div>
-            <div class="system-line" style="background:var(--card2); border:1px solid var(--border); padding:10px; border-radius:7px; font-size:.78rem; line-height:1.6;"><b>Analiz Notu:</b> ${m.comment}</div>
-        `;
-        container.appendChild(div);
-    });
-}
-
-function switchTab(index, el){
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-
-    el.classList.add('active');
-    document.getElementById(`page-${index}`).classList.add('active');
-}
-
-function generateReducedCoupons(){
-    const targetCount = parseInt(document.getElementById('columnCountInput').value) || 10;
-    const outputCard = document.getElementById('outputCard');
-    const summary = document.getElementById('outputSummary');
-    const container = document.getElementById('outputContainer');
-
-    outputCard.style.display = 'block';
-
-    let closureCount = 0;
-    matchesData.forEach(m => {
-        let len = (userSelections[m.id] || ['1']).length;
-        if(len > 1) closureCount++;
-    });
-
-    let successRate = Math.max(14, Math.min(68, Math.round(55 - (closureCount * 1.8) + (targetCount * 0.3))));
-    summary.innerHTML = `Üretilen Kolon: <b>${targetCount}</b> | Aktif Kapama: <b>${closureCount} Maç</b><br>Gerçekçi Kupon Tutma İhtimali (15/15): <b class="green">%${successRate}</b>`;
-
-    let html = '';
-    for(let i = 1; i <= targetCount; i++){
-        let matchStr = '';
-        matchesData.forEach((m, idx) => {
-            let picks = userSelections[m.id] || ['1'];
-            let chosen;
-            if(picks.length === 1){
-                chosen = picks[0];
-            } else {
-                let weights = picks.map(p => p === '1' ? m.p1 : (p === '0' ? m.p0 : m.p2));
-                let totalW = weights.reduce((a,b)=>a+b, 0);
-                let r = ((i * 37 + idx * 13) % 100) / 100 * totalW;
-                let acc = 0;
-                let selectedPick = picks[0];
-                for(let w = 0; w < weights.length; w++){
-                    acc += weights[w];
-                    if(r <= acc){
-                        selectedPick = picks[w];
-                        break;
-                    }
-                }
-                chosen = selectedPick;
-            }
-            matchStr += `M${idx+1}:[<b>${chosen}</b>] `;
-        });
-
-        html += `
-            <div class="coupon">
-                <b>Kolon #${i < 10 ? '0'+i : i}</b> (Optimum Süzülmüş Kombinasyon)<br>
-                <span class="muted" style="font-size:0.72rem;">${matchStr}</span>
-            </div>
-        `;
+// Monte Carlo: her maç kendi yüzdelerine göre çekilir
+function draw(p){let r=Math.random();for(let o=0;o<3;o++){r-=p[o];if(r<0)return o}return 2}
+function runMC(){
+  if(!cols.length)generate();
+  const N=10000,STEP=1000,L=matchesData.length,hist=new Array(L+1).fill(0);
+  let done=0,sum=0;
+  $('res-full').innerHTML='';$('bar-full').style.width='0';$('runBtn').disabled=true;
+  (function chunk(){
+    for(let s=0;s<STEP;s++){
+      const res=PR.map(draw);let best=0;
+      for(const c of cols){let k=0;for(let i=0;i<L;i++)if(c[i]===res[i])k++;if(k>best)best=k}
+      hist[best]++;sum+=best;
     }
-
-    container.innerHTML = html;
+    done+=STEP;$('bar-full').style.width=(done/N*100)+'%';
+    if(done<N)return setTimeout(chunk,0);
+    $('runBtn').disabled=false;
+    const mx=Math.max(...hist),tail=k=>(hist.slice(k).reduce((a,b)=>a+b,0)/N*100).toFixed(2);
+    $('res-full').innerHTML=`<div class="card"><div class="result-title">${cols.length} kolon, ${N.toLocaleString('tr')} deneme</div>
+    <p class="muted" style="font-size:.82rem;margin-bottom:8px">En iyi kolonun ortalaması: <b style="color:var(--text)">${(sum/N).toFixed(2)} / ${L}</b><br>
+    ${L}/${L}: <b class="green">%${tail(L)}</b> | ${L-1}+: <b class="green">%${tail(L-1)}</b> | ${L-2}+: <b class="green">%${tail(L-2)}</b></p>
+    ${hist.map((_,k)=>k).reverse().filter(k=>hist[k]>0).map(k=>`<div class="hrow"><span>${k}/${L}</span><div><div class="hbar" style="width:${hist[k]/mx*100}%"></div></div><span>%${(hist[k]/N*100).toFixed(1)}</span></div>`).join('')}</div>`;
+  })();
 }
-
-function runFullSystemAnalysis(){
-    const bar = document.getElementById('bar-full');
-    const res = document.getElementById('res-full');
-    bar.style.width = '0%';
-    res.innerHTML = '10.000 iterasyonluk Poisson matrisi ve risk analizi yürütülüyor...';
-
-    let progress = 0;
-    let interval = setInterval(() => {
-        progress += 25;
-        bar.style.width = progress + '%';
-        if(progress >= 100){
-            clearInterval(interval);
-            res.innerHTML = '<b class="green">Analiz Tamamlandı:</b> Tüm bülten maçları ve çifte şans matrisleri Poisson dağılımı üzerinden taranmıştır. Varyans düzeyi kararlı, sistem optimizasyonu aktif.';
-        }
-    }, 120);
-}
-
-window.onload = initApp;
+window.onload=initApp;
 </script>
 </body>
 </html>
