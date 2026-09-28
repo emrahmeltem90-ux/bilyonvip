@@ -24,7 +24,7 @@ button:active{transform:scale(.98)}button:disabled{opacity:.5}
 .match-head{display:flex;justify-content:space-between;color:var(--orange);font-size:.7rem;font-weight:bold;margin-bottom:7px}
 .teams{font-weight:bold;font-size:.92rem;margin-bottom:8px}
 .probs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.pick{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:9px 4px;text-align:center;font-weight:bold;font-size:.85rem;cursor:pointer;user-select:none}
+.pick{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:9px 4px;text-align:center;font-weight:bold;font-size:.85rem;user-select:none}
 .pick span{display:block;font-size:.68rem;color:#10b981;margin-top:2px}
 .pick.selected{background:var(--green);border-color:var(--green2)}
 .pick.selected span{color:#e2e8f0}
@@ -33,14 +33,13 @@ button:active{transform:scale(.98)}button:disabled{opacity:.5}
 .result-title{color:var(--orange);font-weight:bold;font-size:.95rem;margin-bottom:8px}
 .coupon{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 10px;margin-top:6px;font-size:.78rem;line-height:1.7}
 .coupon b{color:var(--orange)}
-.badge{display:inline-block;padding:3px 7px;border-radius:5px;background:rgba(245,158,11,.15);color:var(--orange);font-size:.68rem;font-weight:bold}
+.badge{display:inline-block;padding:3px 7px;border-radius:5px;background:rgba(245,158,11,.15);color:var(--orange);font-size:.68rem;font-weight:bold;margin-left:4px}
 .green{color:#10b981}.muted{color:var(--muted)}
 .progress{height:8px;background:var(--bg);border-radius:10px;overflow:hidden;margin-top:7px}
 .progress div{height:100%;background:var(--green);width:0}
 .hrow{display:grid;grid-template-columns:40px 1fr 52px;gap:8px;align-items:center;margin:5px 0;font-size:.8rem}
 .hbar{height:14px;background:var(--orange);border-radius:3px;min-width:2px}
 .note{font-size:.72rem;color:var(--muted);text-align:center;margin-top:8px}
-/* Bankobot sohbet */
 #chat{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
 .b{max-width:92%;padding:10px 12px;border-radius:12px;font-size:.82rem;line-height:1.6;overflow-wrap:anywhere}
 .b.bot{background:var(--card);border:1px solid var(--border);align-self:flex-start}
@@ -61,14 +60,8 @@ button:active{transform:scale(.98)}button:disabled{opacity:.5}
 </nav>
 <div class="container">
 <div class="page active" id="page-0">
-<div id="matchesList"></div>
 <div class="card">
-<label>Üretilmesini İstediğiniz Kolon Adedi</label>
-<input type="number" id="columnCountInput" value="20" min="1" max="200" oninput="updateBar()">
-<div class="bar-info"><div>Tutar: <b id="lblCost">200 TL</b></div><div>Kolon: <b id="lblCount">20</b></div><div>Kapama alanı: <b id="lblSpace">-</b></div></div>
-<button onclick="generate()">Hemen Oluştur</button>
-</div>
-<div class="card" id="outputCard" style="display:none">
-<div class="result-title">Süzülmüş Optimizasyon Raporu</div>
-<div id="outputSummary" class="muted" style="font-size:.8rem;margin-bottom:8px"></div>
-<div id
+<label>Bütçen (TL) - kolon başı 10 TL</label>
+<input type="number" id="budget" value="250" min="10" step="10" inputmode="numeric" oninput="updateBar()">
+<div class="bar-info"><div>Tutar: <b id="lblCost">250 TL</b></div><div>Kolon: <b id="lblCount">25</b></div></div>
+<button
