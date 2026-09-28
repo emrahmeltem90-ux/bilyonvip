@@ -415,7 +415,7 @@ function surpriseCandidates(){
   }).filter(x=>x.pFav<.65&&x.pFav>.4).sort((a,b)=>a.pFav-b.pFav).slice(0,3);
   if(!s.length)return 'Bu hafta belirgin sürpriz adayı yok.';
   return `<b>🎲 Sürpriz Adayları (Favori kaybedebilir):</b><br><br>`+
-    s.map(x=>`#${x.m.id} <b>${x.m.home} - ${x.m.away}</b><br>&nbsp;&nbsp;Favori: ${outName(x.m,ordr(x.i)[0])} %${pc(x.pFav)}<br>&nbsp;&nbsp;Sürpriz ihtimali: <b style="color:#ef4444">%${pc(100-x.pFav*100)}</b>`).join('<br><br>');
+    s.map(x=>`#${x.m.id} <b>${x.m.home} - ${x.m.away}</b><br>&nbsp;&nbsp;Favori: ${outName(x.m,ordr(x.i)[0])} %${pc(x.pFav)}<br>&nbsp;&nbsp;Sürpriz ihtimali: <b style="color:#ef4444">%${(100-x.pFav*100).toFixed(1)}</b>`).join('<br><br>');
 }
 
 function difficulty(){
