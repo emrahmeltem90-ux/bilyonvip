@@ -1,1 +1,2413 @@
+{
+  "sorular": [
+    {
+      "id": 1,
+      "kategori": "Dünya Kupası",
+      "zorluk": "orta",
+      "soru": "2022 FIFA Dünya Kupası'nı hangi ülke kazanmıştır?",
+      "secenekler": ["Brezilya", "Arjantin", "Fransa", "Almanya"],
+      "dogru": 1
+    },
+    {
+      "id": 2,
+      "kategori": "Şampiyonlar Ligi",
+      "zorluk": "kolay",
+      "soru": "UEFA Şampiyonlar Ligi tarihinin en çok gol atan futbolcusu kimdir?",
+      "secenekler": ["Lionel Messi", "Robert Lewandowski", "Cristiano Ronaldo", "Karim Benzema"],
+      "dogru": 2
+    },
+    {
+      "id": 3,
+      "kategori": "Süper Lig",
+      "zorluk": "orta",
+      "soru": "Türkiye Süper Ligi'nde bir sezonda en çok gol atan (39 gol) futbolcu kimdir?",
+      "secenekler": ["Hakan Şükür", "Tanju Çolak", "Alex de Souza", "Mario Gomez"],
+      "dogru": 1
+    },
+    {
+      "id": 4,
+      "kategori": "Tarihi Maçlar",
+      "zorluk": "zor",
+      "soru": "2005 UEFA Şampiyonlar Ligi Finali'nde Milan karşısında 3-0'dan maçı çeviren takım hangisidir?",
+      "secenekler": ["AC Milan", "Liverpool", "Manchester United", "Barcelona"],
+      "dogru": 1
+    },
+    {
+      "id": 5,
+      "kategori": "Efsaneler",
+      "zorluk": "kolay",
+      "soru": "Futbol dünyasında 'O Fenômeno' lakabıyla tanınan efsane Brezilyalı futbolcu kimdir?",
+      "secenekler": ["Ronaldinho", "Rivaldo", "Ronaldo Nazário", "Kaká"],
+      "dogru": 2
+    },
+    {
+      "id": 6,
+      "kategori": "Uluslararası",
+      "zorluk": "kolay",
+      "soru": "Brezilya millî takımı tarihindeki en çok gol atan oyunculardan biri olan Pelé'nin asıl adı nedir?",
+      "secenekler": ["Edson Arantes do Nascimento", "Garrincha", "Zico", "Rivaldo Vitor"],
+      "dogru": 0
+    },
+    {
+      "id": 7,
+      "kategori": "Kurallar",
+      "zorluk": "zor",
+      "soru": "Futbolda bir maçta sahadaki takımın en az kaç oyuncuya düşmesi durumunda maç tatil edilir?",
+      "secenekler": ["5", "6", "7", "8"],
+      "dogru": 2
+    },
+    {
+      "id": 8,
+      "kategori": "Avrupa Kupaları",
+      "zorluk": "orta",
+      "soru": "Galatasaray hangi yıl UEFA Kupası'nı kazanmıştır?",
+      "secenekler": ["1998", "2000", "2001", "2003"],
+      "dogru": 1
+    },
+    {
+      "id": 9,
+      "kategori": "İstatistik",
+      "zorluk": "zor",
+      "soru": "Bir Dünya Kupası maçında tek bir maçta en çok gol atan (5 gol) oyuncu kimdir?",
+      "secenekler": ["Oleg Salenko", "Pele", "Just Fontaine", "Sandor Kocsis"],
+      "dogru": 0
+    },
+    {
+      "id": 10,
+      "kategori": "La Liga",
+      "zorluk": "kolay",
+      "soru": "Real Madrid'in iç saha maçlarını oynadığı stadyumun adı nedir?",
+      "secenekler": ["Camp Nou", "Wanda Metropolitano", "Santiago Bernabéu", "Mestalla"],
+      "dogru": 2
+    },
+    {
+      "id": 11,
+      "kategori": "Premier Lig",
+      "zorluk": "orta",
+      "soru": "İngiltere Premier Lig'de bir sezonda en çok gol atan oyuncu rekoru kime aittir (38 maçlık format)?",
+      "secenekler": ["Thierry Henry", "Alan Shearer", "Erling Haaland", "Mohamed Salah"],
+      "dogru": 2
+    },
+    {
+      "id": 12,
+      "kategori": "Serie A",
+      "zorluk": "kolay",
+      "soru": "İtalya'nın Juventus takımı hangi renk formayla mücadele eder?",
+      "secenekler": ["Kırmızı-Siyah", "Siyah-Beyaz", "Mavi-Beyaz", "Bordo-Mavi"],
+      "dogru": 1
+    },
+    {
+      "id": 13,
+      "kategori": "Dünya Kupası",
+      "zorluk": "zor",
+      "soru": "1950 Dünya Kupası final grubunda Brezilya'yı yenerek şampiyon olan ve 'Maracanazo' trajedisine sebep olan ülke hangisidir?",
+      "secenekler": ["Uruguay", "Arjantin", "İsveç", "İtalya"],
+      "dogru": 0
+    },
+    {
+      "id": 14,
+      "kategori": "Teknik Direktör",
+      "zorluk": "orta",
+      "soru": "Futbol taktiğinde 'Tiki-Taka' sistemiyle tanınan ünlü İspanyol teknik direktör kimdir?",
+      "secenekler": ["Jose Mourinho", "Carlo Ancelotti", "Pep Guardiola", "Jurgen Klopp"],
+      "dogru": 2
+    },
+    {
+      "id": 15,
+      "kategori": "Süper Lig",
+      "zorluk": "kolay",
+      "soru": "Beşiktaş'ın simgesi olan ve maçlarını oynadığı stadyumun adı nedir?",
+      "secenekler": ["Türk Telekom Arena", "Şükrü Saracoğlu", "Vodafone Park (Beşiktaş Park)", "Atatürk Olimpiyat"],
+      "dogru": 2
+    },
+    {
+      "id": 16,
+      "kategori": "Milli Takım",
+      "zorluk": "orta",
+      "soru": "Türkiye A Milli Futbol Takımı, 2002 FIFA Dünya Kupası'nda hangi dereceyi elde etmiştir?",
+      "secenekler": ["Şampiyon", "İkinci", "Üçüncü", "Çeyrek Finalist"],
+      "dogru": 2
+    },
+    {
+      "id": 17,
+      "kategori": "Ödüller",
+      "zorluk": "kolay",
+      "soru": "Yılın en iyi futbolcusuna verilen ve Fransız futbol dergisi France Football tarafından düzenlenen ödülün adı nedir?",
+      "secenekler": ["The Best", "Golden Boy", "Ballon d'Or", "Puskas Ödülü"],
+      "dogru": 2
+    },
+    {
+      "id": 18,
+      "kategori": "Bundesliga",
+      "zorluk": "kolay",
+      "soru": "Almanya Bundesliga'da en çok şampiyonluk kazanan kulüp hangisidir?",
+      "secenekler": ["Borussia Dortmund", "Bayern Münih", "RB Leipzig", "Bayer Leverkusen"],
+      "dogru": 1
+    },
+    {
+      "id": 19,
+      "kategori": "Kurallar",
+      "zorluk": "zor",
+      "soru": "Ofsayt kuralına göre, bir oyuncunun ofsayt pozisyonunda sayılması için rakip kaleye geçişte kaç rakip oyuncu (kaleci dahil) olmalıdır?",
+      "secenekler": ["1", "2", "3", "0"],
+      "dogru": 1
+    },
+    {
+      "id": 20,
+      "kategori": "Efsaneler",
+      "zorluk": "orta",
+      "soru": "Arjantinli efsane Diego Maradona'nın 1986 Dünya Kupası'nda İngiltere'ye attığı elle golün tarihe geçen adı nedir?",
+      "secenekler": ["Tanrının Eli", "Yüzyılın Golü", "Maradona Tokadı", "Arjantin Darbesi"],
+      "dogru": 0
+    },
+    {
+      "id": 21,
+      "kategori": "Süper Lig",
+      "zorluk": "zor",
+      "soru": "Türkiye Süper Lig tarihinde şampiyonluk yaşaran ilk Anadolu kulübü (İstanbul dışı) hangisidir?",
+      "secenekler": ["Bursaspor", "Trabzonspor", "Göztepe", "Kocaelispor"],
+      "dogru": 1
+    },
+    {
+      "id": 22,
+      "kategori": "Şampiyonlar Ligi",
+      "zorluk": "orta",
+      "soru": "Şampiyonlar Ligi kupasını en çok kazanan kulüp hangisidir?",
+      "secenekler": ["AC Milan", "Bayern Münih", "Real Madrid", "Barcelona"],
+      "dogru": 2
+    },
+    {
+      "id": 23,
+      "kategori": "Stadyumlar",
+      "zorluk": "zor",
+      "soru": "Brezilya'nın ünlü Maracanã Stadyumu hangi şehirde yer almaktadır?",
+      "secenekler": ["Sao Paulo", "Rio de Janeiro", "Brasilia", "Salvador"],
+      "dogru": 1
+    },
+    {
+      "id": 24,
+      "kategori": "Kariyer",
+      "zorluk": "orta",
+      "soru": "Lionel Messi, profesyonel kulüp kariyerinin büyük kısmını hangi İspanyol kulübünde geçirmiştir?",
+      "secenekler": ["Real Madrid", "Atletico Madrid", "Barcelona", "Valencia"],
+      "dogru": 2
+    },
+    {
+      "id": 25,
+      "kategori": "Gol",
+      "zorluk": "zor",
+      "soru": "Bir yıl içinde (takvim yılı) resmi maçlarda en çok gol atma rekorunu elinde bulunduran futbolcu kimdir?",
+      "secenekler": ["Pele", "Cristiano Ronaldo", "Lionel Messi", "Gerd Muller"],
+      "dogru": 2
+    },
+    {
+      "id": 26,
+      "kategori": "Fransa Lig 1",
+      "zorluk": "kolay",
+      "soru": "Paris Saint-Germain (PSG) hangi ülkenin takımıdır?",
+      "secenekler": ["İtalya", "Fransa", "İspanya", "Almanya"],
+      "dogru": 1
+    },
+    {
+      "id": 27,
+      "kategori": "Uluslararası",
+      "zorluk": "orta",
+      "soru": "Copa America turnuvasını en çok kazanan iki ülke hangileridir?",
+      "secenekler": ["Brezilya ve Arjantin", "Uruguay ve Arjantin", "Brezilya ve Uruguay", "Arjantin ve Şili"],
+      "dogru": 1
+    },
+    {
+      "id": 28,
+      "kategori": "Transfer",
+      "zorluk": "zor",
+      "soru": "Futbol tarihinin en yüksek bonservis bedeliyle transfer olan oyuncusu kimdir? (Neymar)",
+      "secenekler": ["Kylian Mbappe", "Neymar", "Ousmane Dembele", "Paul Pogba"],
+      "dogru": 1
+    },
+    {
+      "id": 29,
+      "kategori": "Süper Lig",
+      "zorluk": "kolay",
+      "soru": "Fenerbahçe'nin kadıköydeki stadının resmi adı nedir?",
+      "secenekler": ["Ali Sami Yen", "Ülker Stadyumu Şükrü Saracoğlu Spor Kompleksi", "Vodafone Park", "Fenerbahçe Arena"],
+      "dogru": 1
+    },
+    {
+      "id": 30,
+      "kategori": "Teknik Direktör",
+      "zorluk": "zor",
+      "soru": "Manchester United'ı 26 yılı aşkın süre çalıştıran ve 'Sir' unvanlı efsane teknik direktör kimdir?",
+      "secenekler": ["Sir Bobby Charlton", "Sir Alex Ferguson", "Arsene Wenger", "Pep Guardiola"],
+      "dogru": 1
+    },
+    {
+      "id": 31,
+      "kategori": "Dünya Kupası",
+      "zorluk": "orta",
+      "soru": "1998 FIFA Dünya Kupası'nı ev sahibi olarak kazanan ülke hangisidir?",
+      "secenekler": ["Brezilya", "Fransa", "İtalya", "Almanya"],
+      "dogru": 1
+    },
+    {
+      "id": 32,
+      "kategori": "Kural",
+      "zorluk": "kolay",
+      "soru": "Futbol maçlarında bir takım sahada aynı anda en fazla kaç yabancı veya Türk oyuncu bulundurabilir kuralı haricinde, sahada toplam kaç futbolcu ile yer alır?",
+      "secenekler": ["9", "10", "11", "12"],
+      "dogru": 2
+    },
+    {
+      "id": 33,
+      "kategori": "Avrupa Şampiyonası",
+      "zorluk": "orta",
+      "soru": "Euro 2016 Avrupa Futbol Şampiyonası'nı finalde ev sahibi Fransa'yı yenerek kazanan ülke hangisidir?",
+      "secenekler": ["Portekiz", "İspanya", "Almanya", "İtalya"],
+      "dogru": 0
+    },
+    {
+      "id": 34,
+      "kategori": "Efsaneler",
+      "zorluk": "zor",
+      "soru": "Fransız futbol efsanesi Zinedine Zidane'ın 2006 Dünya Kupası finalinde kırmızı kart görmesine sebep olan oyuncu kimdir?",
+      "secenekler": ["Gianluigi Buffon", "Marco Materazzi", "Fabio Cannavaro", "Andrea Pirlo"],
+      "dogru": 1
+    },
+    {
+      "id": 35,
+      "kategori": "Süper Lig",
+      "zorluk": "orta",
+      "soru": "Süper Lig tarihinde 'Gol Kralı' unvanını en çok kazanan yerli futbolcu kimdir?",
+      "secenekler": ["Hakan Şükür", "Tanju Çolak", "Metin Oktay", "Burak Yılmaz"],
+      "dogru": 0
+    },
+    {
+      "id": 36,
+      "kategori": "İngiltere",
+      "zorluk": "kolay",
+      "soru": "Arsenal kulübünün merkezi hangi İngiltere şehrindedir?",
+      "secenekler": ["Manchester", "Liverpool", "Londra", "Birmingham"],
+      "dogru": 2
+    },
+    {
+      "id": 37,
+      "kategori": "İtalya",
+      "zorluk": "orta",
+      "soru": "İtalya Serie A'da 'Derby d'Italia' (İtalya Derbisi) hangi iki takım arasında oynanır?",
+      "secenekler": ["AC Milan - Inter", "Juventus - Inter", "Roma - Lazio", "Napoli - Juventus"],
+      "dogru": 1
+    },
+    {
+      "id": 38,
+      "kategori": "Kaleci",
+      "zorluk": "zor",
+      "soru": "Kariyeri boyunca resmi maçlarda 100'den fazla gol atan (genellikle penaltı ve frikiklerden) ünlü kaleci kimdir?",
+      "secenekler": ["Lev Yashin", "Manuel Neuer", "Rogerio Ceni", "Jose Luis Chilavert"],
+      "dogru": 2
+    },
+    {
+      "id": 39,
+      "kategori": "Güney Amerika",
+      "zorluk": "orta",
+      "soru": "Arjantin'in köklü kulüpleri Boca Juniors ve River Plate arasındaki ezeli rekabetin adı nedir?",
+      "secenekler": ["Superclasico", "El Clasico", "Derby della Madonnina", "North West Derby"],
+      "dogru": 0
+    },
+    {
+      "id": 40,
+      "kategori": "Dünya Kupası",
+      "zorluk": "kolay",
+      "soru": "Tarihte ilk FIFA Dünya Kupası hangi yıld düzenlenmiştir?",
+      "secenekler": ["1920", "1930", "1942", "1950"],
+      "dogru": 1
+    },
+    {
+      "id": 41,
+      "kategori": "Süper Lig",
+      "zorluk": "orta",
+      "soru": "2010 yılında Süper Lig şampiyonu olan ve tarihe geçen Ertuğrul Sağlam yönetimindeki kulüp hangisidir?",
+      "secenekler": ["Trabzonspor", "Bursaspor", "Başakşehir", "Sivasspor"],
+      "dogru": 1
+    },
+    {
+      "id": 42,
+      "kategori": "Uluslararası",
+      "zorluk": "zor",
+      "soru": "Afrika Uluslar Kupası'nı (AFCON) en çok kazanan ülke hangisidir?",
+      "secenekler": ["Gana", "Kamerun", "Mısır", "Nijerya"],
+      "dogru": 2
+    },
+    {
+      "id": 43,
+      "kategori": "La Liga",
+      "zorluk": "kolay",
+      "soru": "Barcelona ile Real Madrid arasındaki ezeli rekabet maçlarının genel adı nedir?",
+      "secenekler": ["Derbi", "El Clasico", "Supercopa", "Galacticos"],
+      "dogru": 1
+    },
+    {
+      "id": 44,
+      "kategori": "Kulüpler",
+      "zorluk": "orta",
+      "soru": "Hollanda futbolunun köklü kulübü Ajax hangi şehrin takımıdır?",
+      "secenekler": ["Rotterdam", "Eindhoven", "Amsterdam", "Utrecht"],
+      "dogru": 2
+    },
+    {
+      "id": 45,
+      "kategori": "Ödüller",
+      "zorluk": "zor",
+      "soru": "Yılın en estetik ve güzel golüne verilen FIFA ödülünün adı nedir?",
+      "secenekler": ["Ballon d'Or", "Puskas Ödülü", "Golden Boy", "Gerd Muller Ödülü"],
+      "dogru": 1
+    },
+    {
+      "id": 46,
+      "kategori": "Şampiyonlar Ligi",
+      "zorluk": "orta",
+      "soru": "1999 Şampiyonlar Ligi finalinde Bayern Münih'i uzatmalarda bulduğu gollerle 2-1 yenerek kupayı kazanan İngiliz kulübü hangisidir?",
+      "secenekler": ["Manchester City", "Manchester United", "Arsenal", "Chelsea"],
+      "dogru": 1
+    },
+    {
+      "id": 47,
+      "kategori": "Milli Takım",
+      "zorluk": "kolay",
+      "soru": "Almanya milli futbol takımının takma adı veya genel unvanı nedir?",
+      "secenekler": ["Gök Mavililer", "Panzerler", "Gecenin Kralları", "Boğalar"],
+      "dogru": 1
+    },
+    {
+      "id": 48,
+      "kategori": "Almanya",
+      "zorluk": "zor",
+      "soru": "Bundesliga tarihinde bir sezonda (2020-2021) 41 gol atarak Gerd Muller'in rekorunu kıran Polonyalı golcü kimdir?",
+      "secenekler": ["Erling Haaland", "Robert Lewandowski", "Timo Werner", "Harry Kane"],
+      "dogru": 1
+    },
+    {
+      "id": 49,
+      "kategori": "Süper Lig",
+      "zorluk": "orta",
+      "soru": "Türkiye Kupası'nı (Türkiye Kupası tarihinde) en çok kazanan kulüp hangisidir?",
+      "secenekler": ["Fenerbahçe", "Beşiktaş", "Galatasaray", "Trabzonspor"],
+      "dogru": 2
+    },
+    {
+      "id": 50,
+      "kategori": "Kurallar",
+      "zorluk": "orta",
+      "soru": "Bir futbol maçında kalecinin topu ellerinde tutabilmesi için azami süre (saniye cinsinden kural) ne kadardır?",
+      "secenekler": ["4 saniye", "6 saniye", "10 saniye", "Sınır yoktur"],
+      "dogru": 1
+    },
+    {
+      "id": 51,
+      "kategori": "Dünya Kupası",
+      "zorluk": "zor",
+      "soru": "1986 Dünya Kupası'nda turnuvanın gol kralı olan ve İngiltere'ye attığı golle ünlenen İngiliz futbolcu kimdir?",
+      "secenekler": ["Bobby Charlton", "Gary Lineker", "Alan Shearer", "Michael Owen"],
+      "dogru": 1
+    },
+    {
+      "id": 52,
+      "kategori": "Portekiz",
+      "zorluk": "kolay",
+      "soru": "Portekiz'in köklü kulüplerinden FC Porto hangi şehrin takımıdır?",
+      "secenekler": ["Lizbon", "Porto", "Braga", "Coimbra"],
+      "dogru": 1
+    },
+    {
+      "id": 53,
+      "kategori": "İtalya",
+      "zorluk": "orta",
+      "soru": "İtalya Serie A'da 'Scudetto' ne anlama gelmektedir?",
+      "secenekler": ["Gol Kralı", "Şampiyonluk Kalkanı/Arması", "Küme Düşme Hattı", "Fair-Play Ödülü"],
+      "dogru": 1
+    },
+    {
+      "id": 54,
+      "kategori": "İspanya",
+      "zorluk": "zor",
+      "soru": "La Liga'da 2003-2004 sezonunda hiç yenilgi almadan şampiyon olan 'Yenilmezler' lakaplı kulüp hangisidir? (Not: Bu rekor Premier Lig'dedir, La Liga'da 1930'larda Athletic Bilbao ve Real Madrid benzer seriler yapmıştır ancak yenilgisiz sezon Premier Lig'dedir. Soru güncellendi: Premier Lig'de yenilgisiz şampiyon olan Arsenal'in bu unvanı hangi sezondur?)",
+      "secenekler": ["2001-2002", "2003-2004", "2005-2006", "2007-2008"],
+      "dogru": 1
+    },
+    {
+      "id": 55,
+      "kategori": "Efsaneler",
+      "zorluk": "kolay",
+      "soru": "Hollandalı efsana futbolcu ve teknik direktör Johan Cruyff hangi meşhur oyun felsefesiyle özdeşleşmiştir?",
+      "secenekler": ["Katı Defans", "Total Futbol", "Kontra Atak", "Otobüs Çekme"],
+      "dogru": 1
+    },
+    {
+      "id": 56,
+      "kategori": "Süper Lig",
+      "zorluk": "orta",
+      "soru": "Fenerbahçe formasıyla Süper Lig'de asist rekorları kıran ve 'Maestro' olarak anılan Brezilyalı futbolcu kimdir?",
+      "secenekler": ["Roberto Carlos", "Alex de Souza", "Appiah", "Anelka"],
+      "dogru": 1
+    },
+    {
+      "id": 57,
+      "kategori": "Dünya Kupası",
+      "zorluk": "kolay",
+      "soru": "2014 FIFA Dünya Kupası hangi ülkede düzenlenmiştir?",
+      "secenekler": ["Güney Afrika", "Brezilya", "Rusya", "Katar"],
+      "dogru": 1
+    },
+    {
+      "id": 58,
+      "kategori": "Şampiyonlar Ligi",
+      "zorluk": "zor",
+      "soru": "Şampiyonlar Ligi tarihinde üst üste 3 kez bu kupayı kazanan ilk ve tek teknik direktör kimdir?",
+      "secenekler": ["Pep Guardiola", "Zinedine Zidane", "Carlo Ancelotti", "Sir Alex Ferguson"],
+      "dogru": 1
+    },
+    {
+      "id": 59,
+      "kategori": "Yunanistan",
+      "zorluk": "orta",
+      "soru": "Yunanistan Milli Futbol Takımı, büyük bir sürpriz yaparak hangi yıl Avrupa Şampiyonu olmuştur?",
+      "secenekler": ["2000", "2004", "2008", "2012"],
+      "dogru": 1
+    },
+    {
+      "id": 60,
+      "kategori": "Asya Futbolu",
+      "zorluk": "zor",
+      "soru": "Asya Kupası'nı (AFC Asian Cup) en çok kazanan ülke hangisidir?",
+      "secenekler": ["Güney Kore", "Japonya", "Suudi Arabistan", "İran"],
+      "dogru": 1
+    },
+    {
+      "id": 61,
+      "kategori": "Süper Lig",
+      "zorluk": "kolay",
+      "soru": "Trabzonspor'un renkleri hangi seçenekte doğru verilmiştir?",
+      "secenekler": ["Sarı-Lacivert", "Sarı-Kırmızı", "Bordo-Mavi", "Siyah-Beyaz"],
+      "dogru": 2
+    },
+    {
+      "id": 62,
+      "kategori": "İngiltere",
+      "zorluk": "orta",
+      "soru": "Liverpool FC'nin efsanevi stadyumunun adı nedir?",
+      "secenekler": ["Old Trafford", "Stamford Bridge", "Anfield", "Emirates Stadyumu"],
+      "dogru": 2
+    },
+    {
+      "id": 63,
+      "kategori": "Kural",
+      "zorluk": "zor",
+      "soru": "Futbol oyun kurallarına göre (IFAB), normal süresi berabere biten eleme usulü maçlarda uzatma devreleri toplamda kaç dakikadır?",
+      "secenekler": ["15 dakika", "30 dakika", "45 dakika", "60 dakika"],
+      "dogru": 1
+    },
+    {
+      "id": 64,
+      "kategori": "Dünya Kupası",
+      "zorluk": "orta",
+      "soru": "Tarihte ilk Dünya Kupası'nı kazanan ev sahibi ülke hangisidir?",
+      "secenekler": ["Brezilya", "İtalya", "Uruguay", "Arjantin"],
+      "dogru": 2
+    },
+    {
+      "id": 65,
+      "kategori": "Fransa",
+      "zorluk": "kolay",
+      "soru": "Fransa Milli Futbol Takımı'nın formalarında ve amblemlerinde yer alan milli sembol hayvan hangisidir?",
+      "secenekler": ["Aslan", "Kartal", "Horoz", "Kurt"],
+      "dogru": 2
+    },
+    {
+      "id": 66,
+      "kategori": "Uluslararası",
+      "zorluk": "zor",
+      "soru": "Futbol tarihindeki ilk resmi uluslararası milli maç hangi iki ülke arasında oynanmıştır?",
+      "secenekler": ["İngiltere - İskoçya", "Brezilya - Arjantin", "Fransa - Almanya", "Uruguay - Brezilya"],
+      "dogru": 0
+    },
+    {
+      "id": 67,
+      "kategori": "Süper Lig",
+      "zorluk": "orta",
+      "soru": "Süper Lig'de 'Üç Büyükler' olarak anılan kulüpler dışında şampiyonluk yaşamış kulüp sayısı kaçtır?",
+      "secenekler": ["2", "3", "4", "5"],
+      "dogru": 1
+    },
+    {
+      "id": 68,
+      "kategori": "İspanya",
+      "zorluk": "kolay",
+      "soru": "Atletico Madrid hangi İspanyol şehrinin takımıdır?",
+      "secenekler": ["Barselona", "Madrid", "Valensiya", "Sevilla"],
+      "dogru": 1
+    },
+    {
+      "id": 69,
+      "kategori": "Avrupa Kupaları",
+      "zorluk": "zor",
+      "soru": "UEFA Kupa Göküsü (Kupa 2) turnuvasını en çok kazanan kulüp hangisidir?",
+      "secenekler": ["Liverpool", "Juventus", "Sevilla", "Inter"],
+      "dogru": 2
+    },
+    {
+      "id": 70,
+      "kategori": "Efsaneler",
+      "zorluk": "orta",
+      "soru": "İtalya futbolunun efsane kalecisi Gianluigi Buffon, kariyerinin büyük bölümünü hangi kulüpte geçirmiştir?",
+      "secenekler": ["AC Milan", "Inter", "Juventus", "Roma"],
+      "dogru": 2
+    },
+    {
+      "id": 71,
+      "kategori": "Dünya Kupası",
+      "zorluk": "kolay",
+      "soru": "Hangi ülke 5 kez ile en çok FIFA Dünya Kupası kazanan takımdır?",
+      "secenekler": ["Almanya", "İtalya", "Arjantin", "Brezilya"],
+      "dogru": 3
+    },
+    {
+      "id": 72,
+      "kategori": "Süper Lig",
+      "zorluk": "orta",
+      "soru": "Galatasaray'ın efsanevi başkanı ve kulübe adını veren lisenin kurucusu/öğrencisi olan tarihi figür kimdir? (Metin Oktay kulübün sembolüdür, kurucusu Ali Sami Yen'dir)",
+      "secenekler": ["Ali Sami Yen", "Metin Oktay", "Gündüz Kılıç", "Fatih Terim"],
+      "dogru": 0
+    },
+    {
+      "id": 73,
+      "kategori": "İngiltere",
+      "zorluk": "zor",
+      "soru": "Premier Lig tarihinde 'Invincibles' (Yenilmezler) unvanıyla hiç maç kaybetmeden şampiyon olan kulüp hangisidir?",
+      "secenekler": ["Manchester United", "Chelsea", "Arsenal", "Manchester City"],
+      "dogru": 2
+    },
+    {
+      "id": 74,
+      "kategori": "Teknik Direktör",
+      "zorluk": "orta",
+      "soru": "Portekizli teknik direktör Jose Mourinho'nun kendisi için kullandığı meşhur lakap nedir?",
+      "secenekler": ["The Best", "The Special One", "The Chosen One", "El Maestro"],
+      "dogru": 1
+    },
+    {
+      "id": 75,
+      "kategori": "Kural",
+      "zorluk": "kolay",
+      "soru": "Futbol maçında hakemin oyuncuya ihraç (oyundan atılma) amacıyla gösterdiği kartın rengi nedir?",
+      "secenekler": ["Sarı", "Kırmızı", "Mavi", "Yeşil"],
+      "dogru": 1
+    },
+    {
+      "id": 76,
+      "kategori": "Güney Amerika",
+      "zorluk": "zor",
+      "soru": "Güney Amerika'nın kulüpler bazındaki en büyük kupası olan Copa Libertadores'i en çok kazanan kulüp hangisidir?",
+      "secenekler": ["Boca Juniors", "River Plate", "Independiente", "Flamengo"],
+      "dogru": 2
+    },
+    {
+      "id": 77,
+      "kategori": "Süper Lig",
+      "zorluk": "kolay",
+      "soru": "Süper Lig'de 'Taçsız Kral' lakabıyla bilinen efsane golcü kimdir?",
+      "secenekler": ["Hakan Şükür", "Metin Oktay", "Tanju Çolak", "Fevzi Zemzem"],
+      "dogru": 1
+    },
+    {
+      "id": 78,
+      "kategori": "Milli Takım",
+      "zorluk": "orta",
+      "soru": "İspanya Milli Takımı'na verilen ve kırmızı renklerine atıfta bulunan yaygın lakap nedir?",
+      "secenekler": ["La Roja", "Azzurri", "Selecao", "Die Mannschaft"],
+      "dogru": 0
+    },
+    {
+      "id": 79,
+      "kategori": "Almanya",
+      "zorluk": "zor",
+      "soru": "Borussia Dortmund'un maçlarını oynadığı ve ünlü 'Sarı Duvar' tribününe ev sahipliği yapan stadyumun adı nedir?",
+      "secenekler": ["Allianz Arena", "Signal Iduna Park", "BayArena", "Veltins-Arena"],
+      "dogru": 1
+    },
+    {
+      "id": 80,
+      "kategori": "Dünya Kupası",
+      "zorluk": "orta",
+      "soru": "2018 FIFA Dünya Kupası finalinde Hırvatistan'ı yenerek kupaya uzanan ülke hangisidir?",
+      "secenekler": ["Brezilya", "Fransa", "Almanya", "Arjantin"],
+      "dogru": 1
+    },
+    {
+      "id": 81,
+      "kategori": "İtalya",
+      "zorluk": "kolay",
+      "soru": "AC Milan ve Inter takımlarının ortaklaşa kullandığı ünlü stadyumun adı nedir?",
+      "secenekler": ["Stadio Olimpico", "San Siro (Giuseppe Meazza)", "Juventus Stadium", "Stadio Artemio Franchi"],
+      "dogru": 1
+    },
+    {
+      "id": 82,
+      "kategori": "Avrupa Şampiyonası",
+      "zorluk": "zor",
+      "soru": "Avrupa Futbol Şampiyonası (EURO) tarihinde turnuva tarihindeki ilk golü atan ve turnuvanın kurucusu sayılan ülke hangisidir?",
+      "secenekler": ["Fransa", "Sovyetler Birliği", "Almanya", "İspanya"],
+      "dogru": 0
+    },
+    {
+      "id": 83,
+      "kategori": "Süper Lig",
+      "zorluk": "orta",
+      "soru": "Türkiye Süper Lig'inde en çok şampiyonluk kazanan takım hangisidir?",
+      "secenekler": ["Fenerbahçe", "Beşiktaş", "Galatasaray", "Trabzonspor"],
+      "dogru": 2
+    },
+    {
+      "id": 84,
+      "kategori": "Kariyer",
+      "zorluk": "zor",
+      "soru": "Cristiano Ronaldo profesyonel kariyerine hangi kulübün altyapısında başlamıştır?",
+      "secenekler": ["Real Madrid", "Sporting Lizbon", "Manchester United", "Porto"],
+      "dogru": 1
+    },
+    {
+      "id": 85,
+      "kategori": "Kurallar",
+      "zorluk": "kolay",
+      "soru": "Futbol sahasında orta yuvarlağın yarı çapı kaç metredir?",
+      "secenekler": ["7.32 metre", "9.15 metre", "11 metre", "16.5 metre"],
+      "dogru": 1
+    },
+    {
+      "id": 86,
+      "kategori": "Dünya Kupası",
+      "zorluk": "orta",
+      "soru": "1970 Dünya Kupası'nı kazanan ve turnuva tarihinin en iyi takımlarından biri olarak gösterilen Pele'li kadroya sahip ülke hangisidir?",
+      "secenekler": ["İtalya", "Brezilya", "Almanya", "Arjantin"],
+      "dogru": 1
+    },
+    {
+      "id": 87,
+      "kategori": "İngiltere",
+      "zorluk": "kolay",
+      "soru": "Manchester United'ın iç saha maçlarını oynadığı stadyumun ad nedir?",
+      "secenekler": ["Anfield", "Etihad Stadyumu", "Old Trafford", "Stamford Bridge"],
+      "dogru": 2
+    },
+    {
+      "id": 88,
+      "kategori": "Uluslararası",
+      "zorluk": "zor",
+      "soru": "FIFA sıralamasında 1. sırada en uzun süre kalan veya ilk kez sistem kurulduğundan beri zirveyi en çok domine eden ülke hangisidir? (Brezilya)",
+      "secenekler": ["Almanya", "Brezilya", "İspanya", "Arjantin"],
+      "dogru": 1
+    },
+    {
+      "id": 89,
+      "kategori": "Süper Lig",
+      "zorluk": "orta",
+      "soru": "Süper Lig'de bir maçta en çok gol atan futbolcu rekoru kime aittir (Bir maçta 6 gol)?",
+      "secenekler": ["Tanju Çolak", "Hakan Şükür", "Cenk Tosun", "Alex de Souza"],
+      "dogru": 0
+    },
+    {
+      "id": 90,
+      "kategori": "Teknik Direktör",
+      "zorluk": "zor",
+      "soru": "Milan ile hem futbolcu hem de teknik direktör olarak Şampiyonlar Ligi kazanan efsane isim kimdir?",
+      "secenekler": ["Johan Cruyff", "Carlo Ancelotti", "Zinedine Zidane", "Pep Guardiola"],
+      "dogru": 1
+    },
+    {
+      "id": 91,
+      "kategori": "Kariyer",
+      "zorluk": "kolay",
+      "soru": "Zlatan Ibrahimović kariyeri boyunca hangi ülkenin milli takımında forma giymiştir?",
+      "secenekler": ["Danimarka", "Norveç", "İsveç", "Finlandiya"],
+      "dogru": 2
+    },
+    {
+      "id": 92,
+      "kategori": "Avrupa Kupaları",
+      "zorluk": "orta",
+      "soru": "UEFA Konferans Ligi ilk kez hangi sezonda düzenlenmeye başlamıştır?",
+      "secenekler": ["2019-2020", "2020-2021", "2021-2022", "2022-2023"],
+      "dogru": 2
+    },
+    {
+      "id": 93,
+      "kategori": "Dünya Kupası",
+      "zorluk": "zor",
+      "soru": "Dünya Kupası tarihinde turnuva boyunca hiç gol yemeden turnuvayı tamamlayan tek kaleci kimdir? (1986'da İsviçre veya benzeri degil; turnuvayı gol atarak kazananlar haricinde kalede devleşen Walter Zenga 1990'da yarı finalde yemişti. 1998'de Fransa yedi. 2006'da İtalya penaltıdan yedi. Peki turnuvada hiç beraberlik ve gol yememe rekoru kime aittir? Soru: Süreç bazlı ele alırsak, Dünya Kupası'nda kalesini en uzun süre gole kapatan kaleci rekoru kime aittir? Walter Zenga - 517 dakika)",
+      "secenekler": ["Gianluigi Buffon", "Walter Zenga", "Iker Casillas", "Manuel Neuer"],
+      "dogru": 1
+    },
+    {
+      "id": 94,
+      "kategori": "Süper Lig",
+      "zorluk": "kolay",
+      "soru": "Beşiktaş'ın efsanevi başkanı Süleyman Seba'nın kulübe kazandırdığı en önemli özelliklerden biri olarak anılan değer nezdindeki prensibi nedir?",
+      "secenekler": ["Önce Şeref, Sonra Başarı", "Parasal Güç", "Sadece Transfer", "Yabancı Sınırı"],
+      "dogru": 0
+    },
+    {
+      "id": 95,
+      "kategori": "Güney Amerika",
+      "zorluk": "orta",
+      "soru": "Brezilya'nın Pelé'den sonra yetişen en büyük futbol ikonlarından biri olan ve 'Solak' büyücü olarak bilinen oyuncu kimdir?",
+      "secenekler": ["Ronaldinho", "Rivaldo", "Maradona", "Zico"],
+      "dogru": 1
+    },
+    {
+      "id": 96,
+      "kategori": "Kurallar",
+      "zorluk": "zor",
+      "soru": "Futbol oyun kurallarına göre kaleci kale vuruşunu kullandığında topun ceza sahası dışına çıkma zorunluluğu kuralı hangi yıl değiştirilerek ceza sahası içindeyken de takım arkadaşının topa dokunabilmesi sağlanmıştır?",
+      "secenekler": ["2016", "2019", "2021", "2023"],
+      "dogru": 1
+    },
+    {
+      "id": 97,
+      "kategori": "Asya",
+      "zorluk": "kolay",
+      "soru": "Güney Koreli futbolcu Son Heung-min hangi Premier Lig kulübünde uzun yıllar başarılı bir şekilde forma giymiştir?",
+      "secenekler": ["Arsenal", "Chelsea", "Tottenham Hotspur", "Liverpool"],
+      "dogru": 2
+    },
+    {
+      "id": 98,
+      "kategori": "Avrupa",
+      "zorluk": "orta",
+      "soru": "Ukrayna'nın en köklü ve başarılı futbol kulübü hangisidir?",
+      "secenekler": ["Dinamo Kiev", "Shakhtar Donetsk", "Dnipro", "Zorya"],
+      "dogru": 0
+    },
+    {
+      "id": 99,
+      "kategori": "Tarih",
+      "zorluk": "zor",
+      "soru": "FIFA hangi şehirde kurulmuştur?",
+      "secenekler": ["Londra", "Paris", "Zürih", "Cenevre"],
+      "dogru": 1
+    },
+    {
+      "id": 100,
+      "kategori": "Genel",
+      "zorluk": "kolay",
+      "soru": "Bir futbol maçını yöneten orta hakeme yardımcı olan kaç ana yan hakem (yardımcı hakem) bulunmaktadır?",
+      "secenekler": ["1", "2", "3", "4"],
+      "dogru": 1
+    },
+    {
+      "id": 100,
+      "kategori": "Genel",
+      "zorluk": "kolay",
+      "soru": "Bir futbol maçını yöneten kaç orta hakem vardır?",
+      "secenekler": ["1", "2", "3", "4"],
+      "dogru": 0
+    },
+    {
+      "id": 101,
+      "kategori": "Süper Lig",
+      "zorluk": "kolay",
+      "soru": "Galatasaray'ın iç saha maçlarını oynadığı Ali Sami Yen Spor Kompleksi Rams Park hangi semtte yer alır?",
+      "secenekler": ["Kadıköy", "Beşiktaş", "Sarıyer/Seyrantepe", "Bakırköy"],
+      "dogru": 2
+    },
+    {
+      "id": 102,
+      "kategori": "Şampiyonlar Ligi",
+      "zorluk": "orta",
+      "soru": "Şampiyonlar Ligi'nde 'Grup aşamasında en çok gol atan oyuncu' rekoru hangi futbolcuya aittir?",
+      "secenekler": ["Lionel Messi", "Cristiano Ronaldo", "Robert Lewandowski", "Karim Benzema"],
+      "dogru": 1
+    },
+    {
+      "id": 103,
+      "kategori": "Dünya Kupası",
+      "zorluk": "zor",
+      "soru": "1994 FIFA Dünya Kupası finalinde Brezilya ile İtalya arasındaki maç normal ve uzatma süreleri 0-0 bitince, tarihte ilk kez ne ile sonuçlanmıştır?",
+      "secenekler": ["Altın Gol", "Penaltı Atışları", "Kur’a Çekimi", "Maçın Tekrarı"],
+      "dogru": 1
+    },
+    {
+      "id": 104,
+      "kategori": "İngiltere",
+      "zorluk": "kolay",
+      "soru": "Chelsea kulübünün rengi ve Stamford Bridge'deki takma adları hangi seçenekte doğru verilmiştir?",
+      "secenekler": ["Kırmızı Şeytanlar", "Mavililer (The Blues)", "Topçular", "Beyazlar"],
+      "dogru": 1
+    },
+    {
+      "id": 105,
+      "kategori": "Teknik Direktör",
+      "zorluk": "orta",
+      "soru": "Atletico Madrid'i uzun yıllardır çalıştıran ve takımın başında kazanma hırsıyla tanınan Arjantinli teknik direktör kimdir?",
+      "secenekler": ["Mauricio Pochettino", "Diego Simeone", "Marcelo Bielsa", "Ernesto Valverde"],
+      "dogru": 1
+    },
+    {
+      "id": 106,
+      "kategori": "İspanya",
+      "zorluk": "zor",
+      "soru": "La Liga tarihinde Real Madrid ve Barcelona dışında lig şampiyonluğu yaşamış son kulüp hangisidir?",
+      "secenekler": ["Valencia", "Atletico Madrid", "Deportivo La Coruna", "Real Sociedad"],
+      "dogru": 1
+    },
+    {
+      "id": 107,
+      "kategori": "Efsaneler",
+      "zorluk": "kolay",
+      "soru": "İngiliz futbol efsanesi David Beckham, kariyerinde hangi meşhur forma numarasını uzun süre giymiştir?",
+      "secenekler": ["7", "9", "10", "11"],
+      "dogru": 0
+    },
+    {
+      "id": 108,
+      "kategori": "Kurallar",
+      "zorluk": "orta",
+      "soru": "Futbol maçında penaltı atışı yapılırken kaleci kale çizgisi hakkında hangi kurala uymak zorundadır?",
+      "secenekler": ["Çizginin tamamen gerisinde durmalıdır", "En az bir ayağının bir kısmı çizgiye temas etmeli veya hizasında olmalıdır", "Ön çizgiyi geçerek öne atlayabilir", "İstediği yerde durabilir"],
+      "dogru": 1
+    },
+    {
+      "id": 109,
+      "kategori": "Süper Lig",
+      "zorluk": "zor",
+      "soru": "Süper Lig tarihinde 100 gol barajını geçen en genç futbolcu unvanı kime aittir?",
+      "secenekler": ["Hakan Şükür", "Metin Oktay", "Aykut Kocaman", "Sergen Yalçın"],
+      "dogru": 0
+    },
+    {
+      "id": 110,
+      "kategori": "Uluslararası",
+      "zorluk": "kolay",
+      "soru": "Copa America hangi kıtanın milli futbol takımları arasında düzenlenen turnuvadır?",
+      "secenekler": ["Avrupa", "Güney Amerika", "Kuzey Amerika", "Asya"],
+      "dogru": 1
+    },
+    {
+      "id": 111,
+      "kategori": "İtalya",
+      "zorluk": "orta",
+      "soru": "İtalya Serie A'da 'I Bianconeri' (Siyah-Beyazlılar) lakabı hangi kulübe aittir?",
+      "secenekler": ["AC Milan", "Inter", "Juventus", "Udinese"],
+      "dogru": 2
+    },
+    {
+      "id": 112,
+      "kategori": "Şampiyonlar Ligi",
+      "zorluk": "zor",
+      "soru": "Şampiyonlar Ligi finalinde kendi ülkesinin takımıyla kupa kazanan ilk Türk asıllı Alman teknik direktör kimdir?",
+      "secenekler": ["Mesut Özil", "Thomas Tuchel", "Jürgen Klopp", "Hans-Dieter Flick"],
+      "dogru": 1
+    },
+    {
+      "id": 113,
+      "kategori": "Almanya",
+      "zorluk": "kolay",
+      "soru": "Almanya'nın Borussia Dortmund takımının en büyük ezeli rakibi kimdir?",
+      "secenekler": ["Bayern Münih", "Schalke 04", "Bayer Leverkusen", "RB Leipzig"],
+      "dogru": 1
+    },
+    {
+      "id": 114,
+      "kategori": "Dünya Kupası",
+      "zorluk": "orta",
+      "soru": "2026 FIFA Dünya Kupası hangi ülkeler tarafından ortaklaşa düzenlenecektir?",
+      "secenekler": ["İspanya - Portekiz - Fas", "ABD - Kanada - Meksika", "Arjantin - Uruguay - Şili", "Çin - Japonya - Güney Kore"],
+      "dogru": 1
+    },
+    {
+      "id": 115,
+      "kategori": "Süper Lig",
+      "zorluk": "kolay",
+      "soru": "Fenerbahçe'nin ve Türk futbolunun efsane kalecisi, 'Uçan Kaleci' unvanlı isim kimdir?",
+      "secenekler": ["Rüştü Reçber", "Volkan Demirel", "Cihat Arman", "Engin İpekoğlu"],
+      "dogru": 2
+    },
+    {
+      "id": 116,
+      "kategori": "Fransa",
+      "zorluk": "zor",
+      "soru": "Fransa Ligue 1'de PSG dışında en çok şampiyonluk kazanan kulüplerden biri olan, Saint-Etienne'in şampiyonluk sayısı kaçtır?",
+      "secenekler": ["7", "10", "12", "5"],
+      "dogru": 1
+    },
+    {
+      "id": 117,
+      "kategori": "Ödüller",
+      "zorluk": "orta",
+      "soru": "FIFA tarafından verilen ve yılın en iyi futbolcusuna sunulan ödülün resmi adı nedir?",
+      "secenekler": ["Ballon d'Or", "The Best FIFA Men's Player", "Golden Foot", "World Soccer Ödülü"],
+      "dogru": 1
+    },
+    {
+      "id": 118,
+      "kategori": "Kural",
+      "zorluk": "zor",
+      "soru": "Futbol oyun kurallarına göre, taç atışı kullanılırken oyuncunun ayaklarının durumu nasıl olmalıdır?",
+      "secenekler": ["Her iki ayağının da tamamı taç çizgisinin içinde olmalıdır", "Ayaklardan biri havada olabilir ama diğeri tamamen çizgi dışına basmalıdır", "Taç çizgisine veya dışına basmalı, havada olmamalıdır", "Çizgiye basma zorunluluğu yoktur"],
+      "dogru": 2
+    },
+    {
+      "id": 119,
+      "kategori": "Efsaneler",
+      "zorluk": "kolay",
+      "soru": "Brezilyalı eski futbolcu Ronaldinho en çok hangi kulüpte gösterdiği performansla Ballon d'Or kazanmıştır?",
+      "secenekler": ["AC Milan", "PSG", "Barcelona", "Gremio"],
+      "dogru": 2
+    },
+    {
+      "id": 120,
+      "kategori": "Süper Lig",
+      "zorluk": "orta",
+      "soru": "Beşiktaş'ın efsane stadyumu İnönü Stadyumu'nun deniz kıyısına en yakın tribününün adı neydi?",
+      "secenekler": ["Numaralı", "Kapalı", "Eski Açık", "Yeni Açık"],
+      "dogru": 2
+    },
+    {
+      "id": 121,
+      "kategori": "İngiltere",
+      "zorluk": "zor",
+      "soru": "Premier Lig tarihinde bir sezonda en çok gol atma rekorunu kıran Norveçli golcü kimdir?",
+      "secenekler": ["Ole Gunnar Solskjaer", "Erling Haaland", "Tore Andre Flo", "John Carew"],
+      "dogru": 1
+    },
+    {
+      "id": 122,
+      "kategori": "Uluslararası",
+      "zorluk": "kolay",
+      "soru": "Japonya milli futbol takımının formalarında genel olarak baskın olan ana renk hangisidir?",
+      "secenekler": ["Kırmızı", "Mavi", "Beyaz", "Sarı"],
+      "dogru": 1
+    },
+    {
+      "id": 123,
+      "kategori": "Avrupa Kupaları",
+      "zorluk": "orta",
+      "soru": "UEFA Şampiyonlar Ligi kupasını kazanan ilk Hollanda kulübü hangisidir?",
+      "secenekler": ["Ajax", "Feyenoord", "PSV Eindhoven", "AZ Alkmaar"],
+      "dogru": 1
+    },
+    {
+      "id": 124,
+      "kategori": "Dünya Kupası",
+      "zorluk": "zor",
+      "soru": "1962 Dünya Kupası'nda turnuvanın gol kralı olan ve adını duyuran Şilili futbolcu kimdir?",
+      "secenekler": ["Leonel Sanchez", "Garrincha", "Vavá", "Elías Figueroa"],
+      "dogru": 0
+    },
+    {
+      "id": 125,
+      "kategori": "Süper Lig",
+      "zorluk": "kolay",
+      "soru": "Trabzonspor'un simgesi olan sembolik unvan/lakap hangisidir?",
+      "secenekler": ["Aslan", "Kartal", "Kanarya", "Fırtına (Hamsi)"],
+      "dogru": 3
+    },
+    {
+      "id": 126,
+      "kategori": "İspanya",
+      "zorluk": "orta",
+      "soru": "Real Madrid kulübünün takma adı veya taraftarlarına verilen yaygın isim nedir?",
+      "secenekler": ["Los Blancos (Beyaz Şimşekler)", "Los Colchoneros", "Los Cules", "Blaugrana"],
+      "dogru": 0
+    },
+    {
+      "id": 127,
+      "kategori": "İtalya",
+      "zorluk": "zor",
+      "soru": "İtalya Serie A'da 'Derby della Madonnina' olarak bilinen derbi hangi iki takım arasında oynanır?",
+      "secenekler": ["Juventus - Torino", "Roma - Lazio", "AC Milan - Inter", "Napoli - Salernitana"],
+      "dogru": 2
+    },
+    {
+      "id": 128,
+      "kategori": "Kariyer",
+      "zorluk": "kolay",
+      "soru": "Gallerli ünlü futbolcu Gareth Bale kariyerinde hangi dev kulüpte uzun yıllar başarıyla oynamıştır?",
+      "secenekler": ["Barcelona", "Real Madrid", "Bayern Münih", "Juventus"],
+      "dogru": 1
+    },
+    {
+      "id": 129,
+      "kategori": "Kurallar",
+      "zorluk": "orta",
+      "soru": "Futbol oyun kurallarına göre kaleci, takım arkadaşının ayağıyla bilerek kaleciye gönderdiği topa elleriyle müdahale edebilir mi?",
+      "secenekler": ["Edebilir", "Edemez", "Sadece ceza sahası dışındaysa edebilir", "Hakem onay verirse edebilir"],
+      "dogru": 1
+    },
+    {
+      "id": 130,
+      "kategori": "Dünya Kupası",
+      "zorluk": "zor",
+      "soru": "1938 FIFA Dünya Kupası hangi ülkede düzenlenmiştir?",
+      "secenekler": ["İtalya", "Fransa", "Brezilya", "Arjantin"],
+      "dogru": 1
+    },
+    {
+      "id": 131,
+      "kategori": "Süper Lig",
+      "zorluk": "kolay",
+      "soru": "Fenerbahçe'nin ve Türk futbolunun unutulmaz isimlerinden, 'Ordinaryüs' lakaplı efsane oyuncu ve teknik direktör kimdir?",
+      "secenekler": ["Lefter Küçükandonyadis", "Can Bartu", "Gündüz Kılıç", "Fikret Arıcan"],
+      "dogru": 0
+    },
+    {
+      "id": 132,
+      "kategori": "Avrupa Şampiyonası",
+      "zorluk": "orta",
+      "soru": "EURO 2020 finalinde İngiltere'yi penaltılarla yenerek Avrupa Şampiyonu olan ülke hangisidir?",
+      "secenekler": ["İtalya", "İspanya", "Danimarka", "Belçika"],
+      "dogru": 0
+    },
+    {
+      "id": 133,
+      "kategori": "Güney Amerika",
+      "zorluk": "zor",
+      "soru": "Uruguay'ın en köklü ve başarılı iki kulübü olan Nacional ile Penarol arasındaki rekabetin adı nedir?",
+      "secenekler": ["Superclasico", "Clasico del Futbol Uruguayo", "Derby Uruguay", "Bilarista"],
+      "dogru": 1
+    },
+    {
+      "id": 134,
+      "kategori": "Almanya",
+      "zorluk": "kolay",
+      "soru": "Bayern Münih takımının iç saha maçlarını oynadığı ünlü modern stadyumun adı nedir?",
+      "secenekler": ["Signal Iduna Park", "Allianz Arena", "Veltins-Arena", "Olimpiyat Stadyumu Berlin"],
+      "dogru": 1
+    },
+    {
+      "id": 135,
+      "kategori": "Süper Lig",
+      "zorluk": "orta",
+      "soru": "Galatasaray formasıyla UEFA Kupası'nı kaldıran ve Türk futbol tarihinin en önemli kalecilerinden olan isim kimdir?",
+      "secenekler": ["Faryd Mondragon", "Taffarel", "Muslera", "Hayrettin Demirbaş"],
+      "dogru": 1
+    },
+    {
+      "id": 136,
+      "kategori": "Teknik Direktör",
+      "zorluk": "zor",
+      "soru": "Hollandalı teknik direktör Louis van Gaal kariyerinde hangi kulüple Şampiyonlar Ligi'ni kazanmıştır?",
+      "secenekler": ["Barcelona", "Ajax", "Bayern Münih", "Manchester United"],
+      "dogru": 1
+    },
+    {
+      "id": 137,
+      "kategori": "İngiltere",
+      "zorluk": "kolay",
+      "soru": "Liverpool FC'nin en büyük ezeli yerel rakibi hangi kulüptür?",
+      "secenekler": ["Everton", "Manchester United", "Manchester City", "Tranmere Rovers"],
+      "dogru": 0
+    },
+    {
+      "id": 138,
+      "kategori": "Uluslararası",
+      "zorluk": "orta",
+      "soru": "Meksika millî futbol takımının resmi takma adı veya unvanı nedir?",
+      "secenekler": ["Los Cafeteros", "El Tri (Tricolor)", "La Celeste", "Los Incas"],
+      "dogru": 1
+    },
+    {
+      "id": 139,
+      "kategori": "Kurallar",
+      "zorluk": "zor",
+      "soru": "Bir futbol maçında kaleci serbest vuruş veya aut kullanırken topa ikinci kez dokunabilir mi?",
+      "secenekler": ["Doğrudan dokunabilir", "Başka bir oyuncu dokunmadan ikinci kez dokunamaz", "Sadece ceza sahası dışındayken dokunabilir", "Hakem izniyle dokunabilir"],
+      "dogru": 1
+    },
+    {
+      "id": 140,
+      "kategori": "Dünya Kupası",
+      "zorluk": "kolay",
+      "soru": "2022 FIFA Dünya Kupası hangi ülkede düzenlenmiştir?",
+      "secenekler": ["Rusya", "Brezilya", "Katar", "Güney Afrika"],
+      "dogru": 2
+    },
+    {
+      "id": 141,
+      "kategori": "Süper Lig",
+      "zorluk": "orta",
+      "soru": "Süper Lig tarihinde 2021-2022 sezonunda şampiyonluğa ulaşan Karadeniz temsilcisi Trabzonspor'un teknik direktörü kimdi?",
+      "secenekler": ["Ünal Karaman", "Şenol Güneş", "Abdullah Avcı", "Ersun Yanal"],
+      "dogru": 2
+    },
+    {
+      "id": 142,
+      "kategori": "İspanya",
+      "zorluk": "zor",
+      "soru": "Barcelona'nın efsanevi altyapı tesislerinin adı nedir?",
+      "secenekler": ["Castilla", "La Masia", "Lezama", "Valdebebas"],
+      "dogru": 1
+    },
+    {
+      "id": 143,
+      "kategori": "Efsaneler",
+      "zorluk": "kolay",
+      "soru": "Arjantinli yıldız futbolcu Lionel Messi'nin milli takımda giydiği klasik sırt numarası hangisidir?",
+      "secenekler": ["7", "9", "10", "11"],
+      "dogru": 2
+    },
+    {
+      "id": 144,
+      "kategori": "Avrupa Kupaları",
+      "zorluk": "orta",
+      "soru": "UEFA Şampiyonlar Ligi'nde mutlu sona ulaşan ilk Portekiz kulübü hangisidir?",
+      "secenekler": ["Porto", "Benfica", "Sporting Lizbon", "Boavista"],
+      "dogru": 1
+    },
+    {
+      "id": 145,
+      "kategori": "İtalya",
+      "zorluk": "zor",
+      "soru": "İtalya Serie A'da 'Roma Derbisi' (Derby della Capitale) hangi iki takım arasında oynanır?",
+      "secenekler": ["Juventus - Torino", "Inter - AC Milan", "AS Roma - SS Lazio", "Napoli - Salernitana"],
+      "dogru": 2
+    },
+    {
+      "id": 146,
+      "kategori": "Süper Lig",
+      "zorluk": "kolay",
+      "soru": "Fenerbahçe'nin efsanevi golcülerinden, 'Boğa' lakaplı milli futbolcu kimdir?",
+      "secenekler": ["Ayhan Akman", "Semih Şentürk", "Aykut Kocaman", "Tuncay Şanlı"],
+      "dogru": 1
+    },
+    {
+      "id": 147,
+      "kategori": "Fransa",
+      "zorluk": "orta",
+      "soru": "Marseille kulübünün tarihi boyunca kazandığı en büyük uluslararası başarı nedir?",
+      "secenekler": ["UEFA Kupası", "UEFA Şampiyonlar Ligi", "UEFA Kupa Galipleri Kupası", "UEFA Süper Kupa"],
+      "dogru": 1
+    },
+    {
+      "id": 148,
+      "kategori": "Dünya Kupası",
+      "zorluk": "zor",
+      "soru": "1954 FIFA Dünya Kupası finalinde, turnuvanın açık ara favorisi olan Macaristan'ı yenerek şampiyon olan ve 'Bern Mucizesi'ne imza atan ülke hangisidir?",
+      "secenekler": ["Brezilya", "Batı Almanya", "Uruguay", "İsveç"],
+      "dogru": 1
+    },
+    {
+      "id": 149,
+      "kategori": "Kural",
+      "zorluk": "kolay",
+      "soru": "Bir futbol maçının normal süresi toplamda kaç dakikadır?",
+      "secenekler": ["80 dakika", "90 dakika", "100 dakika", "120 dakika"],
+      "dogru": 1
+    },
+    {
+      "id": 150,
+      "kategori": "İngiltere",
+      "zorluk": "orta",
+      "soru": "Manchester City'nin iç saha maçlarını oynadığı stadyumun adı nedir?",
+      "secenekler": ["Old Trafford", "Etihad Stadyumu", "Anfield", "Emirates"],
+      "dogru": 1
+    },
+    {
+      "id": 151,
+      "kategori": "Süper Lig",
+      "zorluk": "zor",
+      "soru": "Süper Lig tarihinde yenilgisiz şampiyonluk yaşayan veya en az gol yiyerek defansif rekor kıran kulüplerden Beşiktaş'ın bu unvanı hangi sezona aittir?",
+      "secenekler": ["1991-1992", "2002-2003", "2015-2016", "2020-2021"],
+      "dogru": 0
+    },
+    {
+      "id": 152,
+      "kategori": "Uluslararası",
+      "zorluk": "kolay",
+      "soru": "Brezilya milli futbol takımının formalarında taşıdığı geleneksel ana renk kombinasyonu nedir?",
+      "secenekler": ["Mavi-Beyaz", "Sarı-Yeşil", "Kırmızı-Siyah", "Bordo-Mavi"],
+      "dogru": 1
+    },
+    {
+      "id": 153,
+      "kategori": "Teknik Direktör",
+      "zorluk": "orta",
+      "soru": "A Milli Futbol Takımı'nı 2002 Dünya Kupası'nda üçüncülüğe taşıyan efsane teknik direktör kimdir?",
+      "secenekler": ["Fatih Terim", "Şenol Güneş", "Mustafa Denizli", "Ersun Yanal"],
+      "dogru": 1
+    },
+    {
+      "id": 154,
+      "kategori": "Avrupa Kupaları",
+      "zorluk": "zor",
+      "soru": "Şampiyonlar Ligi'nde penaltı atışları sonucunda kupa kazanan ilk İngiliz kulübü hangisidir?",
+      "secenekler": ["Manchester United", "Liverpool", "Chelsea", "Aston Villa"],
+      "dogru": 1
+    },
+    {
+      "id": 155,
+      "kategori": "Efsaneler",
+      "zorluk": "kolay",
+      "soru": "Futbol dünyasında 'Kral' (The King) lakaplı ünlü Brezilyalı futbolcu kimdir?",
+      "secenekler": ["Maradona", "Pele", "Zico", "Ronaldinho"],
+      "dogru": 1
+    },
+    {
+      "id": 156,
+      "kategori": "İspanya",
+      "zorluk": "orta",
+      "soru": "Athletic Bilbao kulübünün en büyük kadro yapılanması özelliği ve politikası nedir?",
+      "secenekler": ["Yalnızca yabancı oyuncu oynatmak", "Yalnızca Bask bölgesi kökenli futbolcuları kadroda bulundurmak", "Hiç altyapı oyuncusu kullanmamak", "Sadece İspanyol milli oyuncuları almak"],
+      "dogru": 1
+    },
+    {
+      "id": 157,
+      "kategori": "Dünya Kupası",
+      "zorluk": "zor",
+      "soru": "1974 Dünya Kupası'nda 'Total Futbol' felsefesiyle göz kamaştıran ancak finalde Batı Almanya'ya kaybeden efsane ülke hangisidir?",
+      "secenekler": ["Brezilya", "Hollanda", "Arjantin", "İtalya"],
+      "dogru": 1
+    },
+    {
+      "id": 158,
+      "kategori": "Süper Lig",
+      "zorluk": "kolay",
+      "soru": "Galatasaray'ın renkleri hangi seçenekte doğru verilmiştir?",
+      "secenekler": ["Sarı-Lacivert", "Sarı-Kırmızı", "Siyah-Beyaz", "Bordo-Mavi"],
+      "dogru": 1
+    },
+    {
+      "id": 159,
+      "kategori": "Kurallar",
+      "zorluk": "orta",
+      "soru": "Futbol sahasında köşe vuruşu (korner) kullanılırken top nereye konulmalıdır?",
+      "secenekler": ["Taç çizgisinin dışına", "Köşe yayının içerisine", "Ceza sahası köşesindeki çizgi üzerine", "Doğrudan kaleye 5 metre mesafeye"],
+      "dogru": 1
+    },
+    {
+      "id": 160,
+      "kategori": "Almanya",
+      "zorluk": "zor",
+      "soru": "Bundesliga tarihinde Bayern Münih dışında üst üste 2 kez şampiyon olan son kulüp hangisidir?",
+      "secenekler": ["Bayer Leverkusen", "Borussia Dortmund", "Werder Bremen", "Hamburger SV"],
+      "dogru": 1
+    },
+    {
+      "id": 161,
+      "kategori": "İngiltere",
+      "zorluk": "kolay",
+      "soru": "Arsenal kulübünün logosunda ve ambleminde yer alan ana figür nedir?",
+      "secenekler": ["Aslan", "Top (Kanon)", "Kartal", "At"],
+      "dogru": 1
+    },
+    {
+      "id": 162,
+      "kategori": "Uluslararası",
+      "zorluk": "orta",
+      "soru": "Afrika Uluslar Kupası'nı en çok kazanan ülke hangisidir?",
+      "secenekler": ["Nijerya", "Gana", "Mısır", "Kamerun"],
+      "dogru": 2
+    },
+    {
+      "id": 163,
+      "kategori": "Süper Lig",
+      "zorluk": "zor",
+      "soru": "Süper Lig tarihinde bir sezonda en çok gol atma rekorunu kıran Hatayspor formasıyla da gol kralı olan futbolcu kimdir?",
+      "secenekler": ["Alex de Souza", "Aaron Boupendza", "Mario Gomez", "Mbaye Diagne"],
+      "dogru": 1
+    },
+    {
+      "id": 164,
+      "kategori": "Efsaneler",
+      "zorluk": "kolay",
+      "soru": "Portekizli yıldız Cristiano Ronaldo'nun özdeşleştiği ikonik sırt numarası hangisidir?",
+      "secenekler": ["7", "9", "10", "20"],
+      "dogru": 0
+    },
+    {
+      "id": 165,
+      "kategori": "İtalya",
+      "zorluk": "orta",
+      "soru": "İtalya Serie A'da 'Gök Mavililer' (Gli Azzurri) lakabı milli takım dışında hangi köklü kulüple de anılır?",
+      "secenekler": ["Napoli", "Lazio", "Atalanta", "Fiorentina"],
+      "dogru": 0
+    },
+    {
+      "id": 166,
+      "kategori": "Dünya Kupası",
+      "zorluk": "zor",
+      "soru": "1982 FIFA Dünya Kupası'nı finalde Batı Almanya'yı yenerek kazanan ülke hangisidir?",
+      "secenekler": ["Brezilya", "İtalya", "Arjantin", "Fransa"],
+      "dogru": 1
+    },
+    {
+      "id": 167,
+      "kategori": "Süper Lig",
+      "zorluk": "kolay",
+      "soru": "Beşiktaş'ın renkleri hangi seçenekte doğru verilmiştir?",
+      "secenekler": ["Sarı-Kırmızı", "Sarı-Lacivert", "Siyah-Beyaz", "Bordo-Mavi"],
+      "dogru": 2
+    },
+    {
+      "id": 168,
+      "kategori": "Avrupa Kupaları",
+      "zorluk": "orta",
+      "soru": "Şampiyonlar Ligi'ni kazanan ilk Fransız kulübü hangisidir?",
+      "secenekler": ["PSG", "Monaco", "Marseille", "Lyon"],
+      "dogru": 2
+    },
+    {
+      "id": 169,
+      "kategori": "Kurallar",
+      "zorluk": "zor",
+      "soru": "Futbol oyun kurallarına göre hakem atışı (drop ball) yapılırken top kime bırakılır?",
+      "secenekler": ["Her iki takımın kaptanlarına", "Son dokunan takımın oyuncusuna", "Topun son kontrol edildiği alandaki ilgili takımın oyuncusuna", "Maçın baş hakemine"],
+      "dogru": 2
+    },
+    {
+      "id": 170,
+      "kategori": "Kariyer",
+      "zorluk": "kolay",
+      "soru": "Fransız golcü Karim Benzema uzun yıllar hangi dev kulüpte forma giymiş ve kaptanlık yapmıştır?",
+      "secenekler": ["Barcelona", "Real Madrid", "Bayern Münih", "Juventus"],
+      "dogru": 1
+    },
+    {
+      "id": 171,
+      "kategori": "İspanya",
+      "zorluk": "orta",
+      "soru": "Valencia kulübünün ambleminde ve armasında yer alan hayvan figürü nedir?",
+      "secenekler": ["Aslan", "Yarasa", "Kartal", "Boğa"],
+      "dogru": 1
+    },
+    {
+      "id": 172,
+      "kategori": "Dünya Kupası",
+      "zorluk": "zor",
+      "soru": "Tarihte ilk kez düzenlenen 1930 Dünya Kupası'nın final maçı hangi iki ülke arasında oynanmıştır?",
+      "secenekler": ["Brezilya - Arjantin", "Uruguay - Arjantin", "İtalya - Çekoslovakya", "Fransa - Brezilya"],
+      "dogru": 1
+    },
+    {
+      "id": 173,
+      "kategori": "Süper Lig",
+      "zorluk": "kolay",
+      "soru": "Fenerbahçe'nin renkleri hangi seçenekte doğru verilmiştir?",
+      "secenekler": ["Sarı-Kırmızı", "Sarı-Lacivert", "Siyah-Beyaz", "Yeşil-Beyaz"],
+      "dogru": 1
+    },
+    {
+      "id": 174,
+      "kategori": "İngiltere",
+      "zorluk": "orta",
+      "soru": "Tottenham Hotspur kulübünün ambleminde yer alan ana figür nedir?",
+      "secenekler": ["Kanon", "Horoz (Top üstünde horoz)", "Aslan", "Kılıç"],
+      "dogru": 1
+    },
+    {
+      "id": 175,
+      "kategori": "Teknik Direktör",
+      "zorluk": "zor",
+      "soru": "Milan ve Real Madrid ile çok sayıda Şampiyonlar Ligi kazanan efsane İtalyan teknik direktör kimdir?",
+      "secenekler": ["Pep Guardiola", "Carlo Ancelotti", "Zinedine Zidane", "Jose Mourinho"],
+      "dogru": 1
+    },
+    {
+      "id": 176,
+      "kategori": "Uluslararası",
+      "zorluk": "kolay",
+      "soru": "Arjantin millî futbol takımının formalarında yer alan geleneksel çizgili renkler hangileridir?",
+      "secenekler": ["Sarı-Yeşil", "Mavi-Beyaz", "Kırmızı-Beyaz", "Bordo-Mavi"],
+      "dogru": 1
+    },
+    {
+      "id": 177,
+      "kategori": "Almanya",
+      "zorluk": "orta",
+      "soru": "Bayer Leverkusen kulübü hangi Alman ilaç ve kimya şirketinin çalışanları tarafından kurulmuştur?",
+      "secenekler": ["BASF", "Bayer", "Siemens", "Volkswagen"],
+      "dogru": 1
+    },
+    {
+      "id": 178,
+      "kategori": "Avrupa Şampiyonası",
+      "zorluk": "zor",
+      "soru": "Avrupa Futbol Şampiyonası tarihinde tek bir turnuvada en çok gol atma rekorunu elinde bulunduran Fransız futbolcu kimdir?",
+      "secenekler": ["Thierry Henry", "Michel Platini", "Zinedine Zidane", "Antoine Griezmann"],
+      "dogru": 1
+    },
+    {
+      "id": 179,
+      "kategori": "Süper Lig",
+      "zorluk": "kolay",
+      "soru": "Türkiye Süper Lig'inde şampiyonluk kupasını en çok kaldıran ilk üç kulüp genel olarak hangi isimle anılır?",
+      "secenekler": ["Anadolu Kulüpleri", "Üç Büyükler", "İstanbul Efendileri", "Karadeniz Fırtınası"],
+      "dogru": 1
+    },
+    {
+      "id": 180,
+      "kategori": "Kurallar",
+      "zorluk": "orta",
+      "soru": "Futbol oyun kurallarına göre yardımcı hakemin ana görevlerinden biri olmayan seçenek hangisidir?",
+      "secenekler": ["Ofsayt bayrağını kaldırmak", "Taç ve korner atışlarının yönünü göstermek", "Maçın orta hakemine faul çalındığında sarı kart gösterme yetkisini doğrudan kullanmak", "Oyuncu değişikliklerini denetlemek"],
+      "dogru": 2
+    },
+    {
+      "id": 181,
+      "kategori": "Dünya Kupası",
+      "zorluk": "zor",
+      "soru": "2010 FIFA Dünya Kupası finalinde İspanya'ya uzatmalarda attığı golle ülkesine ilk kupayı getiren İspanyol futbolcu kimdir?",
+      "secenekler": ["Fernando Torres", "Andres Iniesta", "David Villa", "Xavi Hernandez"],
+      "dogru": 1
+    },
+    {
+      "id": 182,
+      "kategori": "İtalya",
+      "zorluk": "kolay",
+      "soru": "Inter kulübünün resmi adındaki 'Internazionale' kelimesi hangi dilden gelmektedir?",
+      "secenekler": ["İspanyolca", "İtalyanca", "Fransızca", "Portekizce"],
+      "dogru": 1
+    },
+    {
+      "id": 183,
+      "kategori": "Kariyer",
+      "zorluk": "orta",
+      "soru": "Belçikalı yıldız futbolcu Kevin De Bruyne, Premier Lig'de hangi kulüpte uzun yıllar üst düzey başarılara imza atmıştır?",
+      "secenekler": ["Chelsea", "Manchester United", "Manchester City", "Arsenal"],
+      "dogru": 2
+    },
+    {
+      "id": 184,
+      "kategori": "Efsaneler",
+      "zorluk": "zor",
+      "soru": "Macar futbolunun efsane ismi, 1950'lerin 'Sihirli Magyarlar' takımının kaptanı ve Real Madrid efsanesi golcü kimdir?",
+      "secenekler": ["Sandor Kocsis", "Ferenc Puskas", "Gusztav Sebes", "Florian Albert"],
+      "dogru": 1
+    },
+    {
+      "id": 185,
+      "kategori": "Süper Lig",
+      "zorluk": "kolay",
+      "soru": "Süper Lig'de maçlar genellikle kaç devreli oynanır?",
+      "secenekler": ["Tek devre", "İki devre", "Üç devre", "Dört devre"],
+      "dogru": 1
+    },
+    {
+      "id": 186,
+      "kategori": "Fransa",
+      "zorluk": "orta",
+      "soru": "Paris Saint-Germain (PSG) kulübü hangi yıl kurulmuştur?",
+      "secenekler": ["1900", "1950", "1970", "1992"],
+      "dogru": 2
+    },
+    {
+      "id": 187,
+      "kategori": "Uluslararası",
+      "zorluk": "zor",
+      "soru": "CONCACAF Gold Kupası'nı en çok kazanan ülke hangisidir?",
+      "secenekler": ["ABD", "Meksika", "Kosta Rika", "Kanada"],
+      "dogru": 1
+    },
+    {
+      "id": 188,
+      "kategori": "İspanya",
+      "zorluk": "kolay",
+      "soru": "Sevilla FC hangi İspanyol özerk bölgesinin ve şehrinin takımıdır?",
+      "secenekler": ["Katalonya", "Endülüs (Andalucia)", "Bask Bölgesi", "Madrid"],
+      "dogru": 1
+    },
+    {
+      "id": 189,
+      "kategori": "Avrupa Kupaları",
+      "zorluk": "orta",
+      "soru": "UEFA Şampiyonlar Ligi'nde en çok final kaybeden kulüplerden biri olan ve kupayı uzun süre kazanamayan İtalyan kulübü hangisidir?",
+      "secenekler": ["Juventus", "AC Milan", "Inter", "Roma"],
+      "dogru": 0
+    },
+    {
+      "id": 190,
+      "kategori": "Dünya Kupası",
+      "zorluk": "zor",
+      "soru": "1990 FIFA Dünya Kupası'nda turnuvanın en büyük sürprizine imza atarak çeyrek finale kadar yükselen ve Kamerun'un yıldızı olan unutulmaz forvet kimdir?",
+      "secenekler": ["Samuel Eto'o", "Roger Milla", "Francois Omam-Biyik", "Thomas N'Kono"],
+      "dogru": 1
+    },
+    {
+      "id": 191,
+      "kategori": "Süper Lig",
+      "zorluk": "kolay",
+      "soru": "Süper Lig'de takımların formalarında şampiyonluk kazandıkları her 5 şampiyonluk için göğüslerine taktıkları yıldızın rengi nedir?",
+      "secenekler": ["Gümüş", "Altın / Sarı", "Kırmızı", "Beyaz"],
+      "dogru": 1
+    },
+    {
+      "id": 192,
+      "kategori": "İngiltere",
+      "zorluk": "orta",
+      "soru": "İngiltere Premier Lig'in resmi ambleminde yer alan hayvan figürü hangisidir?",
+      "secenekler": ["Kartal", "Aslan", "Kutup Ayısı", "Boğa"],
+      "dogru": 1
+    },
+    {
+      "id": 193,
+      "kategori": "Kurallar",
+      "zorluk": "zor",
+      "soru": "Futbol oyun kurallarına göre, takımın oyuncu değişikliği duruş hakkı standart olarak kaç kerede yapılır?",
+      "secenekler": ["3 duruş hakkı (+ devre arası)", "5 duruş hakkı", "Sınırsız duruş", "2 duruş hakkı"],
+      "dogru": 0
+    },
+    {
+      "id": 194,
+      "kategori": "Efsaneler",
+      "zorluk": "kolay",
+      "soru": "İtalya ve Juventus'un efsanevi orta saha oyuncusu, 'Maestro' lakaplı serbest vuruş ustası kimdir?",
+      "secenekler": ["Gennaro Gattuso", "Andrea Pirlo", "Francesco Totti", "Alessandro Del Piero"],
+      "dogru": 1
+    },
+    {
+      "id": 195,
+      "kategori": "Güney Amerika",
+      "zorluk": "orta",
+      "soru": "Brezilya'nın en popüler kulüplerinden olan ve Rio de Janeiro'da bulunan Flamengo hangi renk formalarla mücadele eder?",
+      "secenekler": ["Sarı-Yeşil", "Kırmızı-Siyah (Rubro-Negro)", "Mavi-Beyaz", "Bordo-Beyaz"],
+      "dogru": 1
+    },
+    {
+      "id": 196,
+      "kategori": "Süper Lig",
+      "zorluk": "zor",
+      "soru": "Süper Lig tarihinde Fenerbahçe formasıyla serbest vuruşları ve asistleriyle tanınan, Süper Lig'in en çok tanınan yabancı efsanelerinden olan isim kimdir?",
+      "secenekler": ["Mario Jardel", "Alex de Souza", "Bafetimbi Gomis", "Shota Arveladze"],
+      "dogru": 1
+    },
+    {
+      "id": 197,
+      "kategori": "Dünya Kupası",
+      "zorluk": "kolay",
+      "soru": "Günümüzdeki FIFA Dünya Kupası kupasını tasarlayan ve heykeltıraşı olan sanatçı hangi millettendir?",
+      "secenekler": ["İtalyan", "Fransız", "Brezilyalı", "Alman"],
+      "dogru": 0
+    },
+    {
+      "id": 198,
+      "kategori": "Avrupa Kupaları",
+      "zorluk": "orta",
+      "soru": "UEFA Şampiyonlar Ligi'nde bir maçta 5 gol atan ilk futbolculardan biri olan, Barcelona formasıyla Bayer Leverkusen'e 5 gol atan oyuncu kimdir?",
+      "secenekler": ["Cristiano Ronaldo", "Lionel Messi", "Erling Haaland", "Robert Lewandowski"],
+      "dogru": 1
+    },
+    {
+      "id": 199,
+      "kategori": "Almanya",
+      "zorluk": "zor",
+      "soru": "Almanya Bundesliga'da tarihinde hiç küme düşmeyen ve ligde aralıksız yer alan tek kurucu kulüp unvanına sahip olan takım hangisidir?",
+      "secenekler": ["Borussia Dortmund", "Bayern Münih", "Bayer Leverkusen", "Eintracht Frankfurt"],
+      "dogru": 1
+    },
+    {
+      "id": 200,
+      "kategori": "Genel",
+      "zorluk": "kolay",
+      "soru": "Bir futbol maçında saha içi hakem ekibine yardım eden ve saha dışındaki ekrandan pozisyonları inceleyen hakem sisteminin kısaltılmış adı nedir?",
+      "secenekler": ["GPS", "VAR", "LED", "FİFA"],
+      "dogru": 1
+    },
+    {
+      "id": 301,
+      "kategori": "Süper Lig",
+      "zorluk": "kolay",
+      "soru": "Galatasaray'ın iç saha maçlarını oynadığı Rams Park stadyumu hangi semtte yer almaktadır?",
+      "secenekler": ["Kadıköy", "Seyrantepe / Sarıyer", "Beşiktaş", "Bakırköy"],
+      "dogru": 1
+    },
+    {
+      "id": 302,
+      "kategori": "İngiltere",
+      "zorluk": "orta",
+      "soru": "Manchester City'nin iç saha maçlarını oynadığı stadyumun adı nedir?",
+      "secenekler": ["Old Trafford", "Etihad Stadyumu", "Anfield", "Stamford Bridge"],
+      "dogru": 1
+    },
+    {
+      "id": 303,
+      "kategori": "Dünya Kupası",
+      "zorluk": "zor",
+      "soru": "1994 FIFA Dünya Kupası finalinde penaltı atışları sonucunda İtalya'yı mağlup ederek kupayı kazanan ülke hangisidir?",
+      "secenekler": ["Brezilya", "Arjantin", "Almanya", "İtalya"],
+      "dogru": 0
+    },
+    {
+      "id": 304,
+      "kategori": "İspanya",
+      "zorluk": "kolay",
+      "soru": " Atletico Madrid takımının modern iç saha stadyumunun adı nedir?",
+      "secenekler": ["Camp Nou", "Civitas Metropolitano", "Mestalla", "Santiag Bernabeu"],
+      "dogru": 1
+    },
+    {
+      "id": 305,
+      "kategori": "Teknik Direktör",
+      "zorluk": "orta",
+      "soru": "A Milli Futbol Takımı'nı EURO 2008'de yarı finale taşıyan deneyimli Türk teknik direktör kimdir?",
+      "secenekler": ["Fatih Terim", "Şenol Güneş", "Mustafa Denizli", "Abdullah Avcı"],
+      "dogru": 0
+    },
+    {
+      "id": 306,
+      "kategori": "İtalya",
+      "zorluk": "zor",
+      "soru": "Napoli takımının efsanevi Arjantinli futbolcunun adını verdiği güncel stadyumunun adı nedir?",
+      "secenekler": ["Stadio Diego Armando Maradona", "San Siro", "Stadio Olimpico", "Artemio Franchi"],
+      "dogru": 0
+    },
+    {
+      "id": 307,
+      "kategori": "Efsaneler",
+      "zorluk": "kolay",
+      "soru": "Brezilyalı sol bek mevkisinde oynamış, frikikleriyle tanınan efsanevi futbolcu kimdir?",
+      "secenekler": ["Cafu", "Roberto Carlos", "Ronaldinho", "Kaká"],
+      "dogru": 1
+    },
+    {
+      "id": 308,
+      "kategori": "Kurallar",
+      "zorluk": "orta",
+      "soru": "Futbolda bir maçta takımların yapabileceği oyuncu değişikliği hakkı normal sürede güncel kurallara göre genellikle kaç oyuncu ile sınırlıdır?",
+      "secenekler": ["3 oyuncu", "5 oyuncu", "6 oyuncu", "Sınırsız"],
+      "dogru": 1
+    },
+    {
+      "id": 309,
+      "kategori": "Süper Lig",
+      "zorluk": "zor",
+      "soru": "Süper Lig tarihinde aralıksız en uzun süre küme düşmeden oynayan ve 'üç büyükler' dışındaki köklü kulüp hangisidir?",
+      "secenekler": ["Trabzonspor", "Beşiktaş", "Fenerbahçe", "Galatasaray"],
+      "dogru": 0
+    },
+    {
+      "id": 310,
+      "kategori": "Uluslararası",
+      "zorluk": "kolay",
+      "soru": "Kuzey ve Orta Amerika ile Karayipler Futbol Konfederasyonu'nun uluslararası kısaltması nedir?",
+      "secenekler": ["CONMEBOL", "CONCACAF", "UEFA", "AFC"],
+      "dogru": 1
+    },
+    {
+      "id": 311,
+      "kategori": "Almanya",
+      "zorluk": "orta",
+      "soru": "Bayer Leverkusen kulübünün sponsorluğunu ve kuruculuğunu üstlendiği dünya çapındaki kimya-ilaç şirketi hangisidir?",
+      "secenekler": ["Volkswagen", "Bayer", "Adidas", "Audi"],
+      "dogru": 1
+    },
+    {
+      "id": 312,
+      "kategori": "Şampiyonlar Ligi",
+      "zorluk": "zor",
+      "soru": "Şampiyonlar Ligi tarihinde bir sezonda en çok gol atan oyuncu rekorunu elinde bulunduran kimdir?",
+      "secenekler": ["Lionel Messi", "Cristiano Ronaldo", "Robert Lewandowski", "Karim Benzema"],
+      "dogru": 1
+    },
+    {
+      "id": 313,
+      "kategori": "Fransa",
+      "zorluk": "kolay",
+      "soru": "Fransa'nın Marsilya şehrinin en popüler ve köklü kulübü hangisidir?",
+      "secenekler": ["Lyon", "Olympique de Marseille", "Monaco", "Lille"],
+      "dogru": 1
+    },
+    {
+      "id": 314,
+      "kategori": "Dünya Kupası",
+      "zorluk": "orta",
+      "soru": "2018 Dünya Kupası finalinde Hırvatistan'ı yenerek kupaya uzanan ülke hangisidir?",
+      "secenekler": ["Brezilya", "Fransa", "Almanya", "Arjantin"],
+      "dogru": 1
+    },
+    {
+      "id": 315,
+      "kategori": "Süper Lig",
+      "zorluk": "kolay",
+      "soru": "Beşiktaş'ın maçlarını oynadığı güncel ve modern stadyumun adı nedir?",
+      "secenekler": ["BJK İnönü Stadyumu", "Tüpraş Stadyumu", "Atatürk Olimpiyat", "Ali Sami Yen"],
+      "dogru": 1
+    },
+    {
+      "id": 316,
+      "kategori": "İngiltere",
+      "zorluk": "zor",
+      "soru": "Tottenham Hotspur takımının modern ve devasa stadyumunun adı nedir?",
+      "secenekler": ["Wembley Stadyumu", "Tottenham Hotspur Stadium", "Highbury", "White Hart Lane"],
+      "dogru": 1
+    },
+    {
+      "id": 317,
+      "kategori": "Ödüller",
+      "zorluk": "orta",
+      "soru": "Yılın en güzel golüne verilen prestijli FIFA ödülünün adı nedir?",
+      "secenekler": ["Ballon d'Or", "Puskas Ödülü", "Golden Boy", "The Best"],
+      "dogru": 1
+    },
+    {
+      "id": 318,
+      "kategori": "Kurallar",
+      "zorluk": "zor",
+      "soru": "Bir oyuncunun kendi yarı sahasındayken ofsayt kuralına takılıp takılmayacağı durumu nedir?",
+      "secenekler": ["Kendi yarı sahasındayken asla ofsayt olmaz", "Olur", "Sadece kaleciyle karşı karşıyayken olur", "Hakeme bağlıdır"],
+      "dogru": 0
+    },
+    {
+      "id": 319,
+      "kategori": "Efsaneler",
+      "zorluk": "kolay",
+      "soru": "Brezilyalı efsanevi hücum oyuncusu Ronaldo Nazário'nun lakabı futbol dünyasında ne olarak bilinir?",
+      "secenekler": ["Fenomen (El Fenómeno)", "Kral", "İmparator", "Hayalet"],
+      "dogru": 0
+    },
+    {
+      "id": 320,
+      "kategori": "Süper Lig",
+      "zorluk": "orta",
+      "soru": "Süper Lig tarihinde şampiyonluk sevinci yaşamış olan Karadeniz temsilcisi Trabzonspor'un yanı sıra diğer kulüp hangisidir? (Süper Lig genelinde başka Karadeniz takımı şampiyon olmamıştır, soru şaşırtmacalı veya geneldir)",
+      "secenekler": ["Samsunspor", "Çaykur Rizespor", "Başka yoktur", "Orduspor"],
+      "dogru": 2
+    },
+    {
+      "id": 321,
+      "kategori": "İspanya",
+      "zorluk": "zor",
+      "soru": "La Liga'da Real Madrid ve Barcelona dışında tüm tarihlerde hiç küme düşmemiş olan diğer kulüp hangisidir?",
+      "secenekler": ["Atletico Madrid", "Athletic Bilbao", "Valencia", "Sevilla"],
+      "dogru": 1
+    },
+    {
+      "id": 322,
+      "kategori": "Uluslararası",
+      "zorluk": "kolay",
+      "soru": "Milli takımlar düzeyinde düzenlenen Avrupa Futbol Şampiyonası'nın kısa adının okunuşu nasıldır?",
+      "secenekler": ["EURO", "Copa", "Mundial", "Afcon"],
+      "dogru": 0
+    },
+    {
+      "id": 323,
+      "kategori": "Avrupa Kupaları",
+      "zorluk": "orta",
+      "soru": "UEFA Konferans Ligi hangi yıldan itibaren düzenlenmeye başlanmıştır?",
+      "secenekler": ["2015", "2019", "2021", "2023"],
+      "dogru": 2
+    },
+    {
+      "id": 324,
+      "kategori": "Dünya Kupası",
+      "zorluk": "zor",
+      "soru": "2022 FIFA Dünya Kupası hangi ülkede düzenlenmiştir?",
+      "secenekler": ["Rusya", "Katar", "Brezilya", "Güney Afrika"],
+      "dogru": 1
+    },
+    {
+      "id": 325,
+      "kategori": "Süper Lig",
+      "zorluk": "kolay",
+      "soru": "Fenerbahçe'nin ve Türk futbolunun unutulmaz orta saha oyuncularından, asistleriyle tanınan Brezilyalı yıldız kimdir?",
+      "secenekler": ["Alex de Souza", "Appiah", "Anelka", "Nani"],
+      "dogru": 0
+    },
+    {
+      "id": 326,
+      "kategori": "İtalya",
+      "zorluk": "orta",
+      "soru": "İtalya'nın kuzeyindeki Torino şehrinin köklü ve en büyük iki kulübünden biri Juventus, diğeri hangisidir?",
+      "secenekler": ["Torino FC", "Atalanta", "Bologna", "Udinese"],
+      "dogru": 0
+    },
+    {
+      "id": 327,
+      "kategori": "İngiltere",
+      "zorluk": "zor",
+      "soru": "İngiltere Premier Lig'de en çok şampiyonluk kazanan kulüp hangisidir?",
+      "secenekler": ["Liverpool", "Manchester United", "Manchester City", "Arsenal"],
+      "dogru": 1
+    },
+    {
+      "id": 328,
+      "kategori": "Kariyer",
+      "zorluk": "kolay",
+      "soru": "Arjantinli yıldız Lionel Messi'nin kariyerine başladığı ve alt yapısından yetiştiği kulüp hangisidir?",
+      "secenekler": ["Boca Juniors", "Newell's Old Boys", "River Plate", "Barcelona"],
+      "dogru": 1
+    },
+    {
+      "id": 329,
+      "kategori": "Kurallar",
+      "zorluk": "orta",
+      "soru": "Maç esnasında doğrudan taç atışından top, kaleye başka hiçbir oyuncuya değmeden girerse gol geçerli olur mu?",
+      "secenekler": ["Geçerli olur", "Geçersizdir, kaleci vuruşu verilir", "Korner olur", "Atış tekrarlanır"],
+      "dogru": 1
+    },
+    {
+      "id": 330,
+      "kategori": "Dünya Kupası",
+      "zorluk": "zor",
+      "soru": "2022 FIFA Dünya Kupası finalinde Arjantin'in Fransa'yı penaltılarla yendiği maçta Arjantin'in kaptanı ve yıldızı kimdi?",
+      "secenekler": ["Angel Di Maria", "Lionel Messi", "Paulo Dybala", "Emiliano Martinez"],
+      "dogru": 1
+    },
+    {
+      "id": 331,
+      "kategori": "Süper Lig",
+      "zorluk": "kolay",
+      "soru": "Süper Lig'de 'Kara Kartal' lakabıyla bilinen kulüp hangisidir?",
+      "secenekler": ["Galatasaray", "Fenerbahçe", "Beşiktaş", "Trabzonspor"],
+      "dogru": 2
+    },
+    {
+      "id": 332,
+      "kategori": "Avrupa Şampiyonası",
+      "zorluk": "orta",
+      "soru": "EURO 2024 turnuvasına ev sahipliği yapan ülke hangisidir?",
+      "secenekler": ["Fransa", "Almanya", "İngiltere", "İtalya"],
+      "dogru": 1
+    },
+    {
+      "id": 333,
+      "kategori": "Güney Amerika",
+      "zorluk": "zor",
+      "soru": "Brezilya futbol liginin en üst seviyesinin genel adı nedir?",
+      "secenekler": ["Primera Division", "Brasileirao", "Série A", "Torneo"],
+      "dogru": 1
+    },
+    {
+      "id": 334,
+      "kategori": "Almanya",
+      "zorluk": "kolay",
+      "soru": "Almanya'nın Leipzig şehrini temsil eden ve son yıllarda çıkış yapan kulüp hangisidir?",
+      "secenekler": ["RB Leipzig", "Hertha Berlin", "Stuttgart", "Frankfurt"],
+      "dogru": 0
+    },
+    {
+      "id": 335,
+      "kategori": "Süper Lig",
+      "zorluk": "orta",
+      "soru": "Galatasaray'ın 2000 yılındaki UEFA Kupası zaferinde takımın başında bulunan efsane teknik direktör kimdir?",
+      "secenekler": ["Mustafa Denizli", "Fatih Terim", "Şenol Güneş", "Gündüz Kılıç"],
+      "dogru": 1
+    },
+    {
+      "id": 336,
+      "kategori": "Teknik Direktör",
+      "zorluk": "zor",
+      "soru": "Atletico Madrid'i uzun yıllardır çalıştıran, sert savunma ve mücadeleci yapısıyla tanınan Arjantinli teknik direktör kimdir?",
+      "secenekler": ["Diego Simeone", "Marcelo Bielsa", "Mauricio Pochettino", "Jorge Sampaoli"],
+      "dogru": 0
+    },
+    {
+      "id": 337,
+      "kategori": "İngiltere",
+      "zorluk": "kolay",
+      "soru": "İngiltere'nin başkenti Londra'da kurulan ve 'The Hammers' lakaplı kulüp hangisidir?",
+      "secenekler": ["Chelsea", "West Ham United", "Crystal Palace", "Fulham"],
+      "dogru": 1
+    },
+    {
+      "id": 338,
+      "kategori": "Uluslararası",
+      "zorluk": "orta",
+      "soru": "Uluslararası Futbol Federasyonları Birliği (FIFA) hangi şehirde kurulmuştur?",
+      "secenekler": ["Zürih", "Paris", "Cenevre", "Londra"],
+      "dogru": 1
+    },
+    {
+      "id": 339,
+      "kategori": "Kurallar",
+      "zorluk": "zor",
+      "soru": "Futbolda kale vuruşu (aut atışı) yapılırken topun oyuna girmiş sayılması için ceza sahası dışına çıkma zorunluluğu güncel kurallara göre nasıldır?",
+      "secenekler": ["Topa vurulduğu anda oyuna girer, ceza sahası dışına çıkma şartı kaldırılmıştır", "Mutlaka ceza sahası dışına çıkmalıdır", "Takım arkadaşına değmelidir", "Hakem onayı gerekir"],
+      "dogru": 0
+    },
+    {
+      "id": 340,
+      "kategori": "Dünya Kupası",
+      "zorluk": "kolay",
+      "soru": "Tarihte ilk FIFA Dünya Kupası'nı ev sahibi olarak kazanan ülke hangisidir?",
+      "secenekler": ["Brezilya", "Uruguay", "İtalya", "Arjantin"],
+      "dogru": 1
+    },
+    {
+      "id": 341,
+      "kategori": "Süper Lig",
+      "zorluk": "orta",
+      "soru": "Süper Lig tarihinde 100 gol barajını aşarak şampiyon olan ilk ve tek takım unvanına sahip Fenerbahçe'nin bu rekoru kırdığı sezon hangisidir?",
+      "secenekler": ["1988-1989", "1996-1997", "2004-2005", "2010-2011"],
+      "dogru": 0
+    },
+    {
+      "id": 342,
+      "kategori": "İspanya",
+      "zorluk": "zor",
+      "soru": "Real Madrid'in efsanevi başkanı Santiago Bernabéu'nun adını taşıyan stadyum ilk olarak hangi adla anılıyordu?",
+      "secenekler": ["Estadio Chamartín", "Metropolitano", "San Mames", "Atocha"],
+      "dogru": 0
+    },
+    {
+      "id": 343,
+      "kategori": "Efsaneler",
+      "zorluk": "kolay",
+      "soru": "Alman futbolunun 'Der Kaiser' (İmparator) lakaplı efsanevi ismi kimdir?",
+      "secenekler": ["Gerd Müller", "Franz Beckenbauer", "Lothar Matthäus", "Karl-Heinz Rummenigge"],
+      "dogru": 1
+    },
+    {
+      "id": 344,
+      "kategori": "Avrupa Kupaları",
+      "zorluk": "orta",
+      "soru": "Şampiyonlar Ligi'nde en çok kupa kazanan kulüp olan Real Madrid'in toplam kupa sayısı 2024 itibarıyla kaç civarındadır?",
+      "secenekler": ["10", "15", "7", "5"],
+      "dogru": 1
+    },
+    {
+      "id": 345,
+      "kategori": "İtalya",
+      "zorluk": "zor",
+      "soru": "İtalya Serie A'da takımların formalarında şampiyonlukları simgeleyen her 10 şampiyonluk için takılan yıldız uygulamasında Juventus'un kaç yıldızı vardır?",
+      "secenekler": ["1", "2", "3", "4"],
+      "dogru": 2
+    },
+    {
+      "id": 346,
+      "kategori": "Süper Lig",
+      "zorluk": "kolay",
+      "soru": "Trabzonspor'un simgesi ve maskot figürü olarak kullanılan hayvan hangisidir?",
+      "secenekler": ["Aslan", "Kanarya", "Kartal", "Hamsi / Kaplan"],
+      "dogru": 3
+    },
+    {
+      "id": 347,
+      "kategori": "Fransa",
+      "zorluk": "orta",
+      "soru": "Fransa'nın Lyon şehrini temsil eden, 2000'li yıllarda lige damga vuran kulüp hangisidir?",
+      "secenekler": ["Marseille", "Olympique Lyonnais (Lyon)", "Monaco", "Bordeaux"],
+      "dogru": 1
+    },
+    {
+      "id": 348,
+      "kategori": "Dünya Kupası",
+      "zorluk": "zor",
+      "soru": "1974 Dünya Kupası finalinde Hollanda'nın 'Total Football' ekolünü yenerek kupaya uzanan ev sahibi ülke hangisidir?",
+      "secenekler": ["Brezilya", "Batı Almanya", "Arjantin", "İtalya"],
+      "dogru": 1
+    },
+    {
+      "id": 349,
+      "kategori": "Kurallar",
+      "zorluk": "kolay",
+      "soru": "Futbol maçlarında hakemlerin saha içinde kararları gözden geçirmek için kullandığı kenardaki monitör sisteminin kısaltılmış adı nedir?",
+      "secenekler": ["GPS", "VAR (Video Yardımcı Hakem)", "LED", "GLT"],
+      "dogru": 1
+    },
+    {
+      "id": 350,
+      "kategori": "İngiltere",
+      "zorluk": "orta",
+      "soru": "Liverpool'un efsanevi stadyumu Anfield'ın girişindeki ünlü tünel yazısının üzerinde hangi ibare yer alır?",
+      "secenekler": ["This is Anfield", "Welcome to Glory", "Theatre of Dreams", "Come On You Reds"],
+      "dogru": 0
+    },
+    {
+      "id": 351,
+      "kategori": "Süper Lig",
+      "zorluk": "zor",
+      "soru": "Süper Lig tarihinde 'Gol kralı' olan yabancı futbolcular arasında ilk kez bu unvanı kazanan oyuncu kimdir?",
+      "secenekler": ["Mario Jardel", "Alex de Souza", "Shota Arveladze", "Bafetimbi Gomis"],
+      "dogru": 2
+    },
+    {
+      "id": 352,
+      "kategori": "Uluslararası",
+      "zorluk": "kolay",
+      "soru": "Dünya futbolunun kulüpler bazındaki en büyük organizasyonu olan ve her yıl veya periyodik düzenlenen turnuvanın adı nedir?",
+      "secenekler": ["FIFA Kulüpler Dünya Kupası", "UEFA Şampiyonlar Ligi", "Copa Libertadores", "Süper Kupa"],
+      "dogru": 0
+    },
+    {
+      "id": 353,
+      "kategori": "Teknik Direktör",
+      "zorluk": "orta",
+      "soru": "İtalya milli takımına ve Milan'a oynattığı taktiksel disiplinle tanınan, 'Sacchi' ekolünün öncüsü İtalyan teknik direktör kimdir?",
+      "secenekler": ["Arrigo Sacchi", "Carlo Ancelotti", "Marcello Lippi", "Antonio Conte"],
+      "dogru": 0
+    },
+    {
+      "id": 354,
+      "kategori": "Avrupa Kupaları",
+      "zorluk": "zor",
+      "soru": "Kupa Galipleri Kupası (European Cup Winners' Cup) hangi organizasyonla birleştirilerek tarihe karışmıştır?",
+      "secenekler": ["UEFA Kupası (Avrupa Ligi)", "Şampiyonlar Ligi", "Konferans Ligi", "İntertoto"],
+      "dogru": 0
+    },
+    {
+      "id": 355,
+      "kategori": "Efsaneler",
+      "zorluk": "kolay",
+      "soru": "İngiliz futbol efsanesi ve Manchester United ile Real Madrid formaları giymiş, ortalarıyla ün salmış oyuncu kimdir?",
+      "secenekler": ["David Beckham", "Michael Owen", "Frank Lampard", "Steven Gerrard"],
+      "dogru": 0
+    },
+    {
+      "id": 356,
+      "kategori": "İspanya",
+      "zorluk": "orta",
+      "soru": "Barcelona'nın geçici olarak maçlarını oynadığı, Camp Nou'nun yenileme sürecinde kullandığı stadyumun adı nedir?",
+      "secenekler": ["Montjuic Olimpiyat Stadyumu", "Cornellà-El Prat", "Mestalla", "San Mames"],
+      "dogru": 0
+    },
+    {
+      "id": 357,
+      "kategori": "Dünya Kupası",
+      "zorluk": "zor",
+      "soru": "Tarihte futbolcu olarak hem de teknik direktör olarak Dünya Kupası'nı kazanan futbol efsaneleri arasında yer alan Brezilyalı isim kimdir?",
+      "secenekler": ["Mario Zagallo", "Pelé", "Zico", "Cafu"],
+      "dogru": 0
+    },
+    {
+      "id": 358,
+      "kategori": "Süper Lig",
+      "zorluk": "kolay",
+      "soru": "Fenerbahçe'nin kulüp renkleri hangi seçenekte doğru olarak verilmiştir?",
+      "secenekler": ["Sarı-Kırmızı", "Sarı-Lacivert", "Siyah-Beyaz", "Bordo-Mavi"],
+      "dogru": 1
+    },
+    {
+      "id": 359,
+      "kategori": "Kurallar",
+      "zorluk": "orta",
+      "soru": "Hakemin maç içinde oyuncuya gösterdiği sarı kart neyi ifade eder?",
+      "secenekler": ["Oyuncunun ihraç edildiğini", "Uyarı / İhtar", "Maçın bittiğini", "Ofsayt olduğunu"],
+      "dogru": 1
+    },
+    {
+      "id": 360,
+      "kategori": "Almanya",
+      "zorluk": "zor",
+      "soru": "Almanya Bundesliga'da Bayern Munich dışında son yıllarda şampiyonluk ipini göğüsleyen ilk kulüp hangisidir? (2023-2024 sezonu dahil)",
+      "secenekler": ["Bayer Leverkusen", "Borussia Dortmund", "RB Leipzig", "Wolfsburg"],
+      "dogru": 0
+    },
+    {
+      "id": 361,
+      "kategori": "İngiltere",
+      "zorluk": "kolay",
+      "soru": "Liverpool FC kulübünün resmi kulüp marşı ve dünyaca ünlü sloganı olan şarkı hangisidir?",
+      "secenekler": ["You'll Never Walk Alone", "Blue Moon", "Glory Glory Man United", "The Gunners"],
+      "dogru": 0
+    },
+    {
+      "id": 362,
+      "kategori": "Uluslararası",
+      "zorluk": "orta",
+      "soru": "Güney Amerika Futbol Şampiyonası'nın (Copa America) en çok kazanan ülkeleri arasında hangisi yer almaz?",
+      "secenekler": ["Arjantin", "Uruguay", "Brezilya", "Fransa"],
+      "dogru": 3
+    },
+    {
+      "id": 363,
+      "kategori": "Süper Lig",
+      "zorluk": "zor",
+      "soru": "Süper Lig tarihinde 'En fazla resmi maçta forma giyen oyuncu' rekorunu elinde bulunduran efsane kaleci kimdir?",
+      "secenekler": ["Rüştü Reçber", "Oğuz Çetin", "Rıza Çalımbay", "Volkan Demirel"],
+      "dogru": 2
+    },
+    {
+      "id": 364,
+      "kategori": "Efsaneler",
+      "zorluk": "kolay",
+      "soru": "İtalyan futbol efsanesi Alessandro Del Piero kariyerinin büyük kısmını hangi kulüpte geçirmiştir?",
+      "secenekler": ["Juventus", "AC Milan", "Inter", "Roma"],
+      "dogru": 0
+    },
+    {
+      "id": 365,
+      "kategori": "İtalya",
+      "zorluk": "orta",
+      "soru": "İtalya'nın kuzeyinde yer alan ve renkleri siyah-mavi olan Milano temsilcisi kulüp hangisidir?",
+      "secenekler": ["AC Milan", "Inter", "Atalanta", "Torino"],
+      "dogru": 1
+    },
+    {
+      "id": 366,
+      "kategori": "Dünya Kupası",
+      "zorluk": "zor",
+      "soru": "1982 Dünya Kupası'nda turnuvanın gol kralı olan ve İtalya'yı sırtlayan unutulmaz İtalyan golcü kimdir?",
+      "secenekler": ["Paolo Rossi", "Roberto Baggio", "Christian Vieri", "Alessandro Del Piero"],
+      "dogru": 0
+    },
+    {
+      "id": 367,
+      "kategori": "Süper Lig",
+      "zorluk": "kolay",
+      "soru": "Galatasaray kulübünün kuruluş yılı hangi seçenekte doğru verilmiştir?",
+      "secenekler": ["1903", "1905", "1907", "1910"],
+      "dogru": 1
+    },
+    {
+      "id": 368,
+      "kategori": "Avrupa Kupaları",
+      "zorluk": "orta",
+      "soru": "UEFA Şampiyonlar Ligi finalinde normal süre ve uzatmalar berabere biterse kazananı ne belirler?",
+      "secenekler": ["Seri penaltı atışları", "Yazı tura", "Tekrar maçı", "Grup puanı"],
+      "dogru": 0
+    },
+    {
+      "id": 369,
+      "kategori": "Kurallar",
+      "zorluk": "zor",
+      "soru": "Futbol oyun kurallarına göre kaleci, topu ellerinde kontrol ettikten sonra rakip oyuncu müdahale etmeden tekrar elleriyle oynayabilir mi?",
+      "secenekler": ["Oynayamaz", "Oynayabilir", "Sadece ceza sahası dışındaysa oynayabilir", "Hakem iznine bağlıdır"],
+      "dogru": 0
+    },
+    {
+      "id": 370,
+      "kategori": "Kariyer",
+      "zorluk": "kolay",
+      "soru": "Gallerli futbolcu Gareth Bale kariyerinde hangi dev İspanya kulübünde uzun yıllar forma giymiştir?",
+      "secenekler": ["Barcelona", "Real Madrid", "Atletico Madrid", "Valencia"],
+      "dogru": 1
+    },
+    {
+      "id": 371,
+      "kategori": "İspanya",
+      "zorluk": "orta",
+      "soru": "İspanya La Liga'nın kurulduğu ilk yıl olan 1929'dan bu yana ligde mücadele eden ve hiç küme düşmeyen üç kulüp Real Madrid, Barcelona ve hangisidir?",
+      "secenekler": ["Athletic Bilbao", "Valencia", "Sevilla", "Villarreal"],
+      "dogru": 0
+    },
+    {
+      "id": 372,
+      "kategori": "Dünya Kupası",
+      "zorluk": "zor",
+      "soru": "Tarihte en çok Dünya Kupası maçında forma giyen Alman efsane futbolcu kimdir?",
+      "secenekler": ["Lothar Matthäus", "Miroslav Klose", "Philipp Lahm", "Bastian Schweinsteiger"],
+      "dogru": 0
+    },
+    {
+      "id": 373,
+      "kategori": "Süper Lig",
+      "zorluk": "kolay",
+      "soru": "Beşiktaş JK kulübünün resmi kuruluş yılı hangi seçenekte doğru verilmiştir?",
+      "secenekler": ["1903", "1905", "1907", "1912"],
+      "dogru": 0
+    },
+    {
+      "id": 374,
+      "kategori": "İngiltere",
+      "zorluk": "orta",
+      "soru": "İngiltere Premier Lig'in logosunda ve simgesinde yer alan hayvan hangisidir?",
+      "secenekler": ["Aslan", "Kurt", "Kartal", "At"],
+      "dogru": 0
+    },
+    {
+      "id": 375,
+      "kategori": "Teknik Direktör",
+      "zorluk": "zor",
+      "soru": "Şampiyonlar Ligi'ni hem futbolcu hem de teknik direktör olarak kazanan ilk isim olan Hollandalı efsane kimdir?",
+      "secenekler": ["Johan Cruyff", "Frank Rijkaard", "Ronald Koeman", "Carlo Ancelotti"],
+      "dogru": 0
+    },
+    {
+      "id": 376,
+      "kategori": "Uluslararası",
+      "zorluk": "kolay",
+      "soru": "Güney Amerika Futbol Konfederasyonu'nun kısaltması olan CONMEBOL merkezi hangi ülkededir?",
+      "secenekler": ["Paraguay", "Brezilya", "Arjantin", "Kolombiya"],
+      "dogru": 0
+    },
+    {
+      "id": 377,
+      "kategori": "Almanya",
+      "zorluk": "orta",
+      "soru": "Almanya'nın batısındaki Ruhr bölgesinin köklü takımı Borussia Dortmund'un en büyük ezeli rakibi kimdir?",
+      "secenekler": ["Schalke 04", "Bayern Munich", "Werder Bremen", "Bayer Leverkusen"],
+      "dogru": 0
+    },
+    {
+      "id": 378,
+      "kategori": "Avrupa Şampiyonası",
+      "zorluk": "zor",
+      "soru": "Avrupa Futbol Şampiyonası (EURO) tarihinde ilk düzenlenen turnuva hangi yılda ve hangi ülkede gerçekleşmiştir?",
+      "secenekler": ["1960 - Fransa", "1964 - İspanya", "1968 - İtalya", "1972 - Belçika"],
+      "dogru": 0
+    },
+    {
+      "id": 379,
+      "kategori": "Süper Lig",
+      "zorluk": "kolay",
+      "soru": "Fenerbahçe kulübünün resmi kuruluş yılı hangi seçenekte doğru verilmiştir?",
+      "secenekler": ["1903", "1905", "1907", "1911"],
+      "dogru": 2
+    },
+    {
+      "id": 380,
+      "kategori": "Kurallar",
+      "zorluk": "orta",
+      "soru": "Futbol oyun kurallarına göre, taç atışı kullanılırken atışı yapan oyuncunun ayaklarının durumu nasıl olmalıdır?",
+      "secenekler": ["Her iki ayağının bir kısmı taç çizgisinde veya çizgi dışındaki toprakta olmalıdır", "Havada olmalıdır", "Saha içinde olmalıdır", "Fark etmez"],
+      "dogru": 0
+    },
+    {
+      "id": 381,
+      "kategori": "Dünya Kupası",
+      "zorluk": "zor",
+      "soru": "Dünya Kupası tarihinde turnuvalar boyunca en çok gol atan oyuncu (toplam 16 gol) kimdir?",
+      "secenekler": ["Ronaldo (Brezilya)", "Miroslav Klose", "Gerd Müller", "Lionel Messi"],
+      "dogru": 1
+    },
+    {
+      "id": 382,
+      "kategori": "İtalya",
+      "zorluk": "kolay",
+      "soru": "İtalya'nın güneyindeki en büyük şehir olan Napoli'nin köklü kulübünün ana renkleri hangisidir?",
+      "secenekler": ["Mavi-Beyaz", "Kırmızı-Siyah", "Sarı-Lacivert", "Bordo-Mavi"],
+      "dogru": 0
+    },
+    {
+      "id": 383,
+      "kategori": "Kariyer",
+      "zorluk": "orta",
+      "soru": "İspanyol kaleci Iker Casillas kariyerinin en parlak dönemini hangi dev kulüpte geçirmiştir?",
+      "secenekler": ["Barcelona", "Real Madrid", "Valencia", "Sevilla"],
+      "dogru": 1
+    },
+    {
+      "id": 384,
+      "kategori": "Efsaneler",
+      "zorluk": "zor",
+      "soru": "Portekiz futbolunun efsanevi ismi, 'Kara Panter' lakaplı Benfica efsanesi kimdir?",
+      "secenekler": ["Eusébio", "Luis Figo", "Cristiano Ronaldo", "Rui Costa"],
+      "dogru": 0
+    },
+    {
+      "id": 385,
+      "kategori": "Süper Lig",
+      "zorluk": "kolay",
+      "soru": "Süper Lig'de her 5 şampiyonluk için formaya 1 yıldız takma kuralına göre Fenerbahçe'nin kaç yıldızı bulunmaktadır?",
+      "secenekler": ["2", "3", "4", "5"],
+      "dogru": 1
+    },
+    {
+      "id": 386,
+      "kategori": "Fransa",
+      "zorluk": "orta",
+      "soru": "Paris Saint-Germain (PSG) kulübünün iç saha maçlarını oynadığı ünlü stadyumun adı nedir?",
+      "secenekler": ["Stade de France", "Parc des Princes (Prenisler Parkı)", "Stade Velodrome", "Groupama Stadium"],
+      "dogru": 1
+    },
+    {
+      "id": 387,
+      "kategori": "Uluslararası",
+      "zorluk": "zor",
+      "soru": "FIFA bünyesinde yer alan konfederasyon sayısı toplamda kaç tanedir?",
+      "secenekler": ["4", "5", "6", "7"],
+      "dogru": 2
+    },
+    {
+      "id": 388,
+      "kategori": "İspanya",
+      "zorluk": "kolay",
+      "soru": "İspanya'nın Katalonya özerk bölgesinin başkenti ve Barcelona kulübünün ev sahibi olduğu şehir hangisidir?",
+      "secenekler": ["Madrid", "Barcelona", "Sevilla", "Valencia"],
+      "dogru": 1
+    },
+    {
+      "id": 389,
+      "kategori": "Avrupa Kupaları",
+      "zorluk": "orta",
+      "soru": "Şampiyonlar Ligi kupasını en çok kazanan ülke sıralamasında ilk sırada hangi ülke yer alır?",
+      "secenekler": ["İngiltere", "İtalya", "İspanya", "Almanya"],
+      "dogru": 2
+    },
+    {
+      "id": 390,
+      "kategori": "Dünya Kupası",
+      "zorluk": "zor",
+      "soru": "1994 Dünya Kupası finalinde kaç dakikalık normal süre ve uzatmalar sonucunda gol atılamayınca penaltılara geçilmiştir?",
+      "secenekler": ["90 dakika", "120 dakika", "100 dakika", "110 dakika"],
+      "dogru": 1
+    },
+    {
+      "id": 391,
+      "kategori": "Süper Lig",
+      "zorluk": "kolay",
+      "soru": "Beşiktaş'ın renkleri olan siyah ve beyazın armadaki anlamı veya kökeni hangi renklerle anılır?",
+      "secenekler": ["Siyah-Beyaz", "Kırmızı-Beyaz", "Sarı-Lacivert", "Yeşil-Beyaz"],
+      "dogru": 0
+    },
+    {
+      "id": 392,
+      "kategori": "İngiltere",
+      "zorluk": "orta",
+      "soru": "İngiltere'de 'Kırmızı Şeytanlar' olarak bilinen köklü kulüp hangisidir?",
+      "secenekler": ["Liverpool", "Manchester United", "Arsenal", "Chelsea"],
+      "dogru": 1
+    },
+    {
+      "id": 393,
+      "kategori": "Kurallar",
+      "zorluk": "zor",
+      "soru": "Futbolda bir oyuncunun bariz gol şansını engellemesi nedeniyle doğrudan kırmızı kart görmesi durumunda oyun kurallarına göre hangi ceza verilir?",
+      "secenekler": ["Doğrudan ihraç ve sonraki maçlarda cezalı duruma gelme", "Sadece sarı kart", "Maçın tekrarı", "Ceza verilmez"],
+      "dogru": 0
+    },
+    {
+      "id": 394,
+      "kategori": "Efsaneler",
+      "zorluk": "kolay",
+      "soru": "Fildişi Sahilli efsanevi golcü ve Chelsea ile Şampiyonlar Ligi kazanan unutulmaz forvet kimdir?",
+      "secenekler": ["Didier Drogba", "Samuel Eto'o", "Yaya Toure", "Michael Essien"],
+      "dogru": 0
+    },
+    {
+      "id": 395,
+      "kategori": "Güney Amerika",
+      "zorluk": "orta",
+      "soru": "Arjantin futbolunun en üst seviye lig organizasyonunun günümüzdeki resmi adı nedir?",
+      "secenekler": ["Liga Profesional de Fútbol", "Brasileirao", "Primera A", "Torneo Clausura"],
+      "dogru": 0
+    },
+    {
+      "id": 396,
+      "kategori": "Süper Lig",
+      "zorluk": "zor",
+      "soru": "Süper Lig tarihinde bir sezonda en az gol yiyerek şampiyon olan veya rekor kıran savunma başarısıyla tanınan kulüp ve sezon genellikle hangisiyle anılır?",
+      "secenekler": ["Beşiktaş (1991-1992 Unvanlı Sezon)", "Galatasaray", "Fenerbahçe", "Trabzonspor"],
+      "dogru": 0
+    },
+    {
+      "id": 397,
+      "kategori": "Dünya Kupası",
+      "zorluk": "kolay",
+      "soru": "2026 FIFA Dünya Kupası'nın ortaklaşa düzenleneceği ülkeler arasında aşağıdakilerden hangisi yer almaz?",
+      "secenekler": ["ABD", "Kanada", "Meksika", "Fransa"],
+      "dogru": 3
+    },
+    {
+      "id": 398,
+      "kategori": "Avrupa Kupaları",
+      "zorluk": "orta",
+      "soru": "UEFA Avrupa Ligi'ni (eski UEFA Kupası) en çok kazanan kulüp hangisidir?",
+      "secenekler": ["Sevilla", "Inter", "Liverpool", "Juventus"],
+      "dogru": 0
+    },
+    {
+      "id": 399,
+      "kategori": "Almanya",
+      "zorluk": "zor",
+      "soru": "Almanya'nın en kuzeyindeki büyük şehirlerden Hamburg'un köklü kulübü Hamburger SV hangi ligde uzun süre oynadıktan sonra tarihinde ilk kez düşmüştür?",
+      "secenekler": ["Bundesliga", "Regionalliga", "3. Liga", "Oberliga"],
+      "dogru": 0
+    },
+    {
+      "id": 400,
+      "kategori": "Genel",
+      "zorluk": "kolay",
+      "soru": "Futbol oyununda topun kaleyi bulmasını engellemekle görevli, ellerini ceza sahası içinde kullanabilen oyuncu pozisyonu nedir?",
+      "secenekler": ["Kaleci", "Stoper", "Forvet", "Orta saha"],
+      "dogru": 0
+    }
+  ]
+}
 
