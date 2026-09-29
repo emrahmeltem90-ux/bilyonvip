@@ -159,8 +159,6 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .result-match .ok{color:var(--green);font-weight:800;font-size:1.1rem}
 .result-match .no{color:var(--red);font-weight:800;font-size:1.1rem}
 .result-match .pred{color:var(--muted);font-size:.7rem}
-
-/* ===== ARŞİV ===== */
 .archive-week{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;cursor:pointer;transition:all .2s}
 .archive-week:active{transform:scale(.98)}
 .archive-week .week-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
@@ -177,6 +175,15 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .ikramiye-row:last-child{border:none}
 .ikramiye-row .place{font-weight:800;color:var(--text)}
 .ikramiye-row .amount{color:var(--green);font-weight:800}
+
+/* ===== PAYLAŞIM ===== */
+.share-app-btn{background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;margin-top:10px;box-shadow:0 6px 20px rgba(37,211,102,.25)}
+.share-coupon-btn{background:var(--bg2);color:#25d366;border:1px solid #25d366;font-size:.75rem;padding:10px;margin-top:8px;width:100%;border-radius:10px;font-weight:800;cursor:pointer}
+.share-coupon-btn:active{transform:scale(.98)}
+.share-modal-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.share-modal-buttons button{padding:13px}
+.share-modal-buttons .cancel{background:var(--bg2);color:var(--muted);border:1px solid var(--border)}
+.share-modal-buttons .share-now{background:linear-gradient(135deg,#25d366,#128c7e);color:#fff}
 </style>
 </head>
 <body>
@@ -204,6 +211,7 @@ button:disabled{opacity:.4;cursor:not-allowed}
 <div class="bar-info"><div>Toplam: <b id="lblCost">250 TL</b></div><div>Kolon: <b id="lblCount">25</b></div></div>
 <button onclick="generate()">⚡ Kupon Oluştur</button>
 <button class="suggest-btn" onclick="openSuggestModal()">🎲 Bana Kupon Öner</button>
+<button class="share-app-btn" onclick="shareApp()">📤 Arkadaşına Öner</button>
 </div>
 <div class="card" id="outputCard" style="display:none">
 <div class="result-title">📋 KUPON RAPORU</div>
@@ -287,14 +295,12 @@ button:disabled{opacity:.4;cursor:not-allowed}
 </div>
 </div>
 
-<!-- Sabit Kaydetme Çubuğu -->
 <div class="save-bar" id="saveBar" style="display:none">
   <div class="info">Seçilen: <b id="pickCount">0</b>/15 | Kolon: <b id="colCount">1</b><br>Tutar: <b id="colPrice">10 TL</b></div>
   <button onclick="saveCoupon()">💾 Kaydet</button>
   <button onclick="clearPicks()" style="background:var(--bg2);color:var(--red);border:1px solid var(--border);width:44px;padding:12px 0">🗑️</button>
 </div>
 
-<!-- BÜTÇE OPTİMİZASYON MODALI -->
 <div class="modal-overlay" id="budgetModal">
   <div class="modal-box">
     <div class="modal-title">⚡ Bütçe Optimizasyonu</div>
@@ -311,7 +317,6 @@ button:disabled{opacity:.4;cursor:not-allowed}
   </div>
 </div>
 
-<!-- KUPON ÖNERİ MODALI -->
 <div class="modal-overlay" id="suggestModal">
   <div class="modal-box">
     <div class="modal-title">🎲 Bana Kupon Öner</div>
@@ -344,7 +349,6 @@ button:disabled{opacity:.4;cursor:not-allowed}
   </div>
 </div>
 
-<!-- TOAST BİLDİRİM MODALI -->
 <div class="toast-overlay" id="toastModal">
   <div class="toast-box">
     <span class="toast-icon" id="toastIcon">✅</span>
@@ -354,7 +358,6 @@ button:disabled{opacity:.4;cursor:not-allowed}
   </div>
 </div>
 
-<!-- SİLME ONAY MODALI -->
 <div class="toast-overlay" id="confirmModal">
   <div class="toast-box">
     <span class="toast-icon error">⚠️</span>
@@ -367,7 +370,6 @@ button:disabled{opacity:.4;cursor:not-allowed}
   </div>
 </div>
 
-<!-- YASAL UYARI MODALI -->
 <div class="toast-overlay" id="legalModal" onclick="if(event.target===this)closeLegal()">
   <div class="toast-box" style="max-width:420px;text-align:left;max-height:85vh;overflow-y:auto">
     <div class="modal-title" style="color:var(--orange);margin-bottom:14px;font-size:1rem">⚠️ Yasal Uyarı</div>
@@ -391,12 +393,25 @@ button:disabled{opacity:.4;cursor:not-allowed}
   </div>
 </div>
 
-<!-- SONUÇ DETAY MODALI -->
 <div class="toast-overlay" id="resultModal" onclick="if(event.target===this)closeResultModal()">
   <div class="toast-box" style="max-width:420px;text-align:left;max-height:85vh;overflow-y:auto">
     <div class="modal-title" id="resultModalTitle" style="margin-bottom:14px">📊 Kupon Sonucu</div>
     <div id="resultModalBody" style="font-size:.78rem;line-height:1.7;color:var(--text)"></div>
     <button onclick="closeResultModal()" style="margin-top:16px">Tamam</button>
+  </div>
+</div>
+
+<div class="toast-overlay" id="shareModal" onclick="if(event.target===this)closeShareModal()">
+  <div class="toast-box" style="max-width:400px;text-align:left">
+    <div class="modal-title" style="color:var(--green);margin-bottom:10px;font-size:1rem">📤 Kuponunu Paylaş</div>
+    <div style="font-size:.8rem;color:var(--muted);line-height:1.7;margin-bottom:14px">
+      Kuponunu arkadaşlarınla <b>WhatsApp</b>, <b>Telegram</b> veya diğer uygulamalarla paylaşabilirsin.
+    </div>
+    <div id="sharePreview" style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px;font-size:.72rem;line-height:1.7;color:var(--muted);max-height:200px;overflow-y:auto;white-space:pre-line;font-family:monospace"></div>
+    <div class="share-modal-buttons">
+      <button class="cancel" onclick="closeShareModal()">İptal</button>
+      <button class="share-now" onclick="shareCouponNow()">📤 Paylaş</button>
+    </div>
   </div>
 </div>
 
@@ -412,6 +427,7 @@ let deleteTargetIdx = null;
 let suggestMode = 'guvenli';
 let resultsData = { weeks: [] };
 let archiveData = { weeks: [] };
+let shareCouponIdx = null;
 
 const SYM=["1","0","2"];
 const $=id=>document.getElementById(id);
@@ -574,6 +590,87 @@ function codeToProb(matchIdx, code){
   if(code === 12) return m.p[0] + m.p[2];
   if(code === 20) return m.p[1] + m.p[2];
   return 0;
+}
+
+function shareApp(){
+  const text = `🎯 SkorLab - Akıllı Spor Toto Analiz Sistemi
+
+📊 Monte Carlo simülasyonu (10.000 deneme)
+🎲 Akıllı kupon önerisi (Güvenli/Dengeli/Agresif)
+💰 Bütçe optimizasyonu
+📅 Geçmiş haftalar arşivi
+⚽ 15 maç için detaylı analiz
+
+👉 https://emrahmeltem90-ux.github.io/bilyonvip
+
+Ücretsiz, hemen dene!`;
+
+  if(navigator.share){
+    navigator.share({
+      title: 'SkorLab - Akıllı Spor Toto Analiz',
+      text: text,
+      url: 'https://emrahmeltem90-ux.github.io/bilyonvip'
+    }).catch(() => {
+      fallbackShare(text);
+    });
+  } else {
+    fallbackShare(text);
+  }
+}
+
+function buildShareText(coupon){
+  let text = '🎯 SKORLAB · KUPONUM\n━━━━━━━━━━━━━━━\n\n';
+  text += '📅 ' + coupon.date + '\n\n';
+  text += '⚽ MAÇLAR:\n';
+  for(let mIdx in coupon.picks){
+    const m = matchesData[parseInt(mIdx)];
+    if(!m) continue;
+    const syms = coupon.picks[mIdx].map(c => codeToSym(c)).join(', ');
+    text += '#' + (parseInt(mIdx)+1) + ' ' + m.home + ' - ' + m.away + ': ' + syms + '\n';
+  }
+  const analysis = analyzeCoupon(coupon);
+  text += '\n📊 Tahmini Kazanma: %' + analysis.prob.toFixed(2);
+  text += '\n━━━━━━━━━━━━━━━\n🤖 SkorLab ile oluşturuldu\n👉 https://emrahmeltem90-ux.github.io/bilyonvip';
+  return text;
+}
+
+function shareCoupon(idx){
+  shareCouponIdx = idx;
+  const coupon = savedCoupons[idx];
+  const text = buildShareText(coupon);
+  $('sharePreview').innerText = text;
+  $('shareModal').classList.add('active');
+}
+
+function shareCouponNow(){
+  if(shareCouponIdx === null) return;
+  const coupon = savedCoupons[shareCouponIdx];
+  const text = buildShareText(coupon);
+  if(navigator.share){
+    navigator.share({title: 'SkorLab Kuponum', text: text}).then(()=>{closeShareModal();}).catch(()=>{fallbackShare(text);closeShareModal();});
+  } else {
+    fallbackShare(text);
+    closeShareModal();
+  }
+}
+
+function fallbackShare(text){
+  navigator.clipboard.writeText(text).then(()=>{
+    showToast('success', 'Kopyalandı!', '<div style="text-align:center">Kupon metni kopyalandı.<br>WhatsApp/Telegram\'a yapıştırabilirsin.</div>');
+  }).catch(()=>{
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('success', 'Kopyalandı!', '<div style="text-align:center">Kupon metni kopyalandı.</div>');
+  });
+}
+
+function closeShareModal(){
+  $('shareModal').classList.remove('active');
+  shareCouponIdx = null;
 }
 
 function openSuggestModal(){
@@ -781,7 +878,8 @@ function renderCoupons(){
         <div style="margin-top:10px;font-size:.75rem;color:var(--green);font-weight:700">
           Tahmini Kazanma İhtimali: %${analysis.prob.toFixed(2)} (${analysis.count} Maç)
         </div>
-        <button onclick="optimizeCoupon(${idx})" style="margin-top:10px;background:var(--bg2);color:var(--green);border:1px solid var(--green);font-size:.75rem;padding:10px">💰 Bütçeye Göre Optimize Et</button>
+        <button onclick="optimizeCoupon(${idx})" style="margin-top:10px;background:var(--bg2);color:var(--green);border:1px solid var(--green);font-size:.75rem;padding:10px;width:100%;border-radius:10px;font-weight:800;cursor:pointer">💰 Bütçeye Göre Optimize Et</button>
+        <button class="share-coupon-btn" onclick="shareCoupon(${idx})">📤 Paylaş</button>
         ${resultHTML}
       </div>`;
   }).join('') + `</div>`;
