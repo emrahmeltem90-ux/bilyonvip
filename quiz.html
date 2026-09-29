@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SkorLab Quiz</title>
+<script src="sorular.js"></script>
 <style>
 :root{--bg:#070b14;--bg2:#0d1420;--card:#111a2b;--card2:#0a121f;--border:#1e2c47;--border2:#2a3d5c;--text:#f1f5fb;--muted:#7d8ba5;--green:#00e07a;--green2:#00b863;--green-dim:rgba(0,224,122,.12);--orange:#ffb020;--red:#ff4d5e;--blue:#3d8bff;--radius:16px}
 *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
@@ -111,7 +112,7 @@ button:active{transform:scale(.97)}
       <div class="info-row"><span>📊 Soru Sayısı</span><span>10</span></div>
       <div class="info-row"><span>⏱️ Soru Başına Süre</span><span>30 saniye</span></div>
       <div class="info-row"><span>🎯 Maksimum Puan</span><span>150</span></div>
-      <div class="info-row"><span>🎲 Soru Havuzu</span><span id="havuzBoyut">20</span></div>
+      <div class="info-row"><span>🎲 Soru Havuzu</span><span id="havuzBoyut">...</span></div>
     </div>
     
     <button onclick="startGame()">🎯 OYUNA BAŞLA</button>
@@ -245,19 +246,19 @@ const SKORLAB_URL = 'https://emrahmeltem90-ux.github.io/bilyonvip';
 const $ = id => document.getElementById(id);
 
 /* ============================================================
-   SORULARI YÜKLE
+   SORULARI YÜKLE (YENİ: sorular.js dosyasından okuyor)
    ============================================================ */
-async function sorulariYukle(){
-  try{
-    const res = await fetch('sorular.json');
-    const data = await res.json();
-    tumSorular = data.sorular || [];
+function sorulariYukle(){
+  // Artık fetch yok. Direkt window.sorularVerisi'ni okuyoruz.
+  if (typeof window.sorularVerisi !== 'undefined' && window.sorularVerisi.length > 0) {
+    tumSorular = window.sorularVerisi;
     $('havuzBoyut').innerText = tumSorular.length;
-    console.log('✅ ' + tumSorular.length + ' soru yüklendi');
-  }catch(e){
-    console.warn('❌ sorular.json yüklenemedi:', e.message);
+    console.log('✅ ' + tumSorular.length + ' soru başarıyla yüklendi.');
+  } else {
+    console.warn('❌ sorular.js dosyası yüklenemedi veya içi boş!');
     tumSorular = [];
     $('havuzBoyut').innerText = '0';
+    alert("Hata: Sorular yüklenemedi. Lütfen 'sorular.js' dosyasının doğru olduğundan emin olun.");
   }
 }
 
@@ -305,14 +306,17 @@ function soruGoster(){
   
   $('qNum').innerText = `SORU ${mevcutSoruIdx + 1}/${SORU_SAYISI}`;
   $('qScore').innerText = `🎯 ${puan}`;
-  $('qCategory').innerText = soru.kategori.toUpperCase();
-  $('qText').innerText = soru.soru;
+  $('qCategory').innerText = (soru.kategori || soru.category || 'GENEL').toUpperCase();
+  $('qText').innerText = soru.soru || soru.q || 'Soru yüklenemedi';
   
   const container = $('answersContainer');
   container.innerHTML = '';
   const letters = ['A', 'B', 'C', 'D'];
   
-  soru.secenekler.forEach((sec, i) => {
+  // Hem 'secenekler' hem 'options' hem de 'şıklar'ı destekle
+  const secenekler = soru.secenekler || soru.options || soru.secenek || soru.şıklar || [];
+  
+  secenekler.forEach((sec, i) => {
     const btn = document.createElement('div');
     btn.className = 'answer';
     btn.innerHTML = `<span class="letter">${letters[i]}</span><span>${sec}</span>`;
@@ -368,9 +372,12 @@ function sureBitti(){
   yanlisSayisi++;
   const soru = oyunSorulari[mevcutSoruIdx];
   
+  // Doğru cevabı bul (dogru veya correct veya doğru)
+  const dogruIndex = soru.dogru !== undefined ? soru.dogru : (soru.correct !== undefined ? soru.correct : soru.doğru);
+  
   document.querySelectorAll('.answer').forEach((el, i) => {
     el.classList.add('disabled');
-    if(i === soru.dogru) el.classList.add('correct');
+    if(i === dogruIndex) el.classList.add('correct');
   });
   
   const gecenSure = SURE;
@@ -392,19 +399,23 @@ function cevapla(secim, btn){
   const gecenSure = Math.min(SURE, Math.round((Date.now() - soruBaslangicZamani) / 1000));
   toplamSure += gecenSure;
   
+  // Doğru cevabı bul
+  const dogruIndex = soru.dogru !== undefined ? soru.dogru : (soru.correct !== undefined ? soru.correct : soru.doğru);
+  
   document.querySelectorAll('.answer').forEach((el, i) => {
     el.classList.add('disabled');
-    if(i === soru.dogru) el.classList.add('correct');
+    if(i === dogruIndex) el.classList.add('correct');
   });
   
-  if(secim === soru.dogru){
+  if(secim === dogruIndex){
     btn.classList.add('correct');
     dogruSayisi++;
     
-    // Zorluk puanı
+    // Zorluk puanı (zorluk veya level veya zorluk seviyesi)
+    const zorluk = soru.zorluk || soru.level || soru.difficulty || 'orta';
     let puanKazanci = 10;
-    if(soru.zorluk === 'kolay') puanKazanci = 5;
-    else if(soru.zorluk === 'zor') puanKazanci = 15;
+    if(zorluk === 'kolay') puanKazanci = 5;
+    else if(zorluk === 'zor') puanKazanci = 15;
     
     // Hız bonusu (10 saniyeden kısa sürede cevap)
     if(gecenSure <= 10) puanKazanci += 5;
@@ -416,7 +427,7 @@ function cevapla(secim, btn){
   } else {
     btn.classList.add('wrong');
     yanlisSayisi++;
-    showToast(`❌ Yanlış! Doğru cevap: ${['A','B','C','D'][soru.dogru]}`, 'error');
+    showToast(`❌ Yanlış! Doğru cevap: ${['A','B','C','D'][dogruIndex]}`, 'error');
   }
   
   setTimeout(() => {
@@ -436,7 +447,8 @@ function useFiftyFifty(){
   $('jokerFifty').classList.add('used');
   
   const soru = oyunSorulari[mevcutSoruIdx];
-  const yanlislar = [0,1,2,3].filter(i => i !== soru.dogru);
+  const dogruIndex = soru.dogru !== undefined ? soru.dogru : (soru.correct !== undefined ? soru.correct : soru.doğru);
+  const yanlislar = [0,1,2,3].filter(i => i !== dogruIndex);
   const silinecekler = [...yanlislar].sort(() => Math.random() - 0.5).slice(0, 2);
   
   document.querySelectorAll('.answer').forEach((el, i) => {
@@ -525,7 +537,6 @@ function skorKaydet(puan, dogru){
     tarih: new Date().toLocaleDateString('tr-TR') + ' ' + new Date().toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'})
   });
   
-  // En yüksek 10 skoru sakla
   skorlar.sort((a,b) => b.puan - a.puan);
   skorlar = skorlar.slice(0, 10);
   
