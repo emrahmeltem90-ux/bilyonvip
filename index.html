@@ -128,6 +128,25 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .modal-buttons{display:grid;grid-template-columns:1fr 2fr;gap:10px}
 .modal-buttons button{padding:13px}
 .modal-buttons .cancel{background:var(--bg2);color:var(--muted);border:1px solid var(--border)}
+
+/* ===== TOAST BİLDİRİM ===== */
+.toast-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);backdrop-filter:blur(5px);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px}
+.toast-overlay.active{display:flex}
+.toast-box{background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--border2);border-radius:var(--radius);padding:24px;max-width:360px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.6);animation:modalIn .25s ease;text-align:center}
+.toast-icon{font-size:3rem;margin-bottom:12px;display:block;line-height:1}
+.toast-icon.success{filter:drop-shadow(0 0 20px rgba(0,224,122,.5))}
+.toast-icon.error{filter:drop-shadow(0 0 20px rgba(255,77,94,.5))}
+.toast-title{color:var(--green);font-weight:900;font-size:1.15rem;margin-bottom:14px}
+.toast-title.error{color:var(--red)}
+.toast-msg{color:var(--muted);font-size:.82rem;line-height:1.7;margin-bottom:18px;text-align:left}
+.toast-msg b{color:var(--text);font-weight:800}
+.toast-msg .row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)}
+.toast-msg .row:last-child{border:none}
+.toast-msg .row span:first-child{color:var(--muted)}
+.toast-msg .row span:last-child{color:var(--text);font-weight:800}
+.toast-msg .row .green{color:var(--green)}
+.toast-msg .row .orange{color:var(--orange)}
+.toast-msg .row .red{color:var(--red)}
 </style>
 </head>
 <body>
@@ -245,6 +264,16 @@ button:disabled{opacity:.4;cursor:not-allowed}
   </div>
 </div>
 
+<!-- TOAST BİLDİRİM MODALI -->
+<div class="toast-overlay" id="toastModal">
+  <div class="toast-box">
+    <span class="toast-icon" id="toastIcon">✅</span>
+    <div class="toast-title" id="toastTitle">Başarılı</div>
+    <div class="toast-msg" id="toastMsg"></div>
+    <button onclick="closeToast()">Tamam</button>
+  </div>
+</div>
+
 <script>
 let matchesData=[];
 let PR=[];
@@ -328,7 +357,6 @@ function initApp(){
 
 function togglePick(matchIdx, pickVal){
   if(!userPicks[matchIdx]) userPicks[matchIdx] = [];
-  
   const idx = userPicks[matchIdx].indexOf(pickVal);
   if(idx > -1){
     userPicks[matchIdx].splice(idx, 1);
@@ -340,11 +368,9 @@ function togglePick(matchIdx, pickVal){
       userPicks[matchIdx].push(pickVal);
     }
   }
-  
   if(userPicks[matchIdx].length === 0){
     delete userPicks[matchIdx];
   }
-  
   initApp();
 }
 
@@ -356,7 +382,6 @@ function clearPicks(){
 function updateSaveBar(){
   const count = Object.keys(userPicks).length;
   $('pickCount').innerText = count;
-  
   let kolon = 1;
   Object.keys(userPicks).forEach(idx => {
     const picks = userPicks[idx];
@@ -367,11 +392,9 @@ function updateSaveBar(){
     });
     kolon *= choices;
   });
-  
   const tutar = kolon * 10;
-  
-  $('colCount').innerText = kolon.toLocaleString('tr');$('colPrice').innerText = tutar.toLocaleString('tr') + ' TL';
-  
+  $('colCount').innerText = kolon.toLocaleString('tr');
+  $('colPrice').innerText = tutar.toLocaleString('tr') + ' TL';
   const bar = $('saveBar');
   bar.style.display = count > 0 ? 'flex' : 'none';
 }
@@ -400,7 +423,7 @@ function codeToProb(matchIdx, code){
 function saveCoupon(){
   const keys = Object.keys(userPicks);
   if(keys.length === 0){
-    alert('Lütfen en az bir maç seçin.');
+    showToast('error', 'Maç Seçilmedi', '<div class="row"><span>Lütfen en az bir maça tahmin yapın.</span></div>');
     return;
   }
   const couponData = {
@@ -473,6 +496,7 @@ function deleteCoupon(idx){
   renderCoupons();
 }
 
+/* ===== BÜTÇE OPTİMİZASYON MODAL ===== */
 function optimizeCoupon(couponIdx){
   activeOptimizeIndex = couponIdx;
   const coupon = savedCoupons[couponIdx];
@@ -485,7 +509,6 @@ function optimizeCoupon(couponIdx){
     });
     mevcutKolon *= choices;
   }
-  
   $('modalBudgetInput').value = mevcutKolon * 10;
   $('modalAnalysisInfo').innerHTML = `Mevcut Kolon: <b>${mevcutKolon} (${mevcutKolon * 10} TL)</b><br>Hedef Kolon: <b>${mevcutKolon} (${mevcutKolon * 10} TL)</b>`;
   $('budgetModal').classList.add('active');
@@ -503,7 +526,7 @@ function confirmOptimize(){
   const butce = parseInt(butceStr);
   
   if(!butce || butce < 10){
-    alert('Bütçe en az 10 TL olmalı.');
+    showToast('error', 'Geçersiz Bütçe', '<div class="row"><span>Lütfen en az <b>10 TL</b> girin.</span></div>');
     return;
   }
   
@@ -520,8 +543,13 @@ function confirmOptimize(){
   }
   
   if(mevcutKolon * 10 <= butce){
-    alert(`✅ Mevcut kuponun (${mevcutKolon} kolon · ${mevcutKolon * 10} TL) bütçene uyuyor!\n\nKalan: ${butce - mevcutKolon * 10} TL`);
     closeBudgetModal();
+    showToast('success', 'Kupon Zaten Uygun', `
+      <div class="row"><span>Kolon:</span><span>${mevcutKolon} kolon</span></div>
+      <div class="row"><span>Tutar:</span><span class="green">${mevcutKolon * 10} TL</span></div>
+      <div class="row"><span>Bütçe:</span><span>${butce} TL</span></div>
+      <div class="row"><span>Kalan:</span><span class="orange">${butce - mevcutKolon * 10} TL</span></div>
+    `);
     return;
   }
   
@@ -538,7 +566,6 @@ function confirmOptimize(){
       if(picks[0] === 10) tekPick = PR[mIdx][0] > PR[mIdx][1] ? 0 : 1;
       else if(picks[0] === 12) tekPick = PR[mIdx][0] > PR[mIdx][2] ? 0 : 2;
       else if(picks[0] === 20) tekPick = PR[mIdx][1] > PR[mIdx][2] ? 1 : 2;
-      
       optimizedPicks[mIdx] = [tekPick];
       currentKolon = Math.floor(currentKolon / 2);
     }
@@ -569,9 +596,29 @@ function confirmOptimize(){
   closeBudgetModal();
   renderCoupons();
   
-  alert(`✅ Kupon optimize edildi!\n\n📊 Eski: ${mevcutKolon} kolon (${mevcutKolon*10} TL)\n📊 Yeni: ${finalKolon} kolon (${finalTutar} TL)\n💰 Bütçe: ${butce} TL\n🎯 Kalan: ${butce - finalTutar} TL`);
+  showToast('success', 'Kupon Optimize Edildi!', `
+    <div class="row"><span>Eski:</span><span>${mevcutKolon} kolon (${mevcutKolon * 10} TL)</span></div>
+    <div class="row"><span>Yeni:</span><span class="green">${finalKolon} kolon (${finalTutar} TL)</span></div>
+    <div class="row"><span>Bütçe:</span><span>${butce} TL</span></div>
+    <div class="row"><span>Kalan:</span><span class="orange">${butce - finalTutar} TL</span></div>
+  `);
 }
 
+/* ===== TOAST BİLDİRİM ===== */
+function showToast(type, title, msgHTML){
+  $('toastIcon').innerText = type === 'success' ? '✅' : '❌';
+  $('toastIcon').className = 'toast-icon ' + type;
+  $('toastTitle').innerText = title;
+  $('toastTitle').className = 'toast-title' + (type === 'error' ? ' error' : '');
+  $('toastMsg').innerHTML = msgHTML;
+  $('toastModal').classList.add('active');
+}
+
+function closeToast(){
+  $('toastModal').classList.remove('active');
+}
+
+/* ===== GENEL FONKSİYONLAR ===== */
 function switchTab(i,el){
   document.querySelectorAll('.tab,.page').forEach(e=>e.classList.remove('active'));
   el.classList.add('active');$('page-'+i).classList.add('active');
