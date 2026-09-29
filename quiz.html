@@ -36,7 +36,8 @@ button:active{transform:scale(.97)}
 .timer-fill.danger{background:linear-gradient(90deg,var(--red),#d63447)}
 .timer-text{text-align:center;font-size:.9rem;font-weight:800;color:var(--muted);margin-bottom:16px}
 .timer-text b{color:var(--green);font-size:1.2rem}
-.question-text{font-size:1.15rem;font-weight:800;line-height:1.5;margin-bottom:22px;color:var(--text);min-height:60px}
+.question-image{width:100%;max-height:220px;object-fit:contain;border-radius:12px;margin-bottom:16px;background:var(--bg2);border:1px solid var(--border)}
+.question-text{font-size:1.15rem;font-weight:800;line-height:1.5;margin-bottom:22px;color:var(--text);min-height:40px}
 .question-category{display:inline-block;font-size:.65rem;font-weight:700;color:var(--blue);background:rgba(61,139,255,.1);padding:4px 10px;border-radius:6px;border:1px solid rgba(61,139,255,.2);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
 .answers{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
 .answer{background:var(--bg2);border:2px solid var(--border);border-radius:12px;padding:16px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .2s;text-align:left;color:var(--text);display:flex;align-items:center;gap:12px}
@@ -87,16 +88,16 @@ button:active{transform:scale(.97)}
 
 <div class="screen active" id="screen-start">
   <div class="logo">
-    <div class="logo-badge">● SKORLAB</div>
+    <div class="logo-badge">● SKORLAB ULTRA</div>
     <h1>FUTBOL QUIZ</h1>
-    <p>Futbol bilgine ne kadar güveniyorsun?</p>
+    <p>Kolaydan zora 15 soru. Kaçını bileceksin?</p>
   </div>
   
   <div class="card">
     <div class="info-box">
-      <div class="info-row"><span>📊 Soru Sayısı</span><span>10</span></div>
-      <div class="info-row"><span>⏱️ Soru Başına Süre</span><span>30 saniye</span></div>
-      <div class="info-row"><span>🎯 Maksimum Puan</span><span>150</span></div>
+      <div class="info-row"><span>📊 Soru Sayısı</span><span>15</span></div>
+      <div class="info-row"><span>⏱️ Soru Başına Süre</span><span>20 saniye</span></div>
+      <div class="info-row"><span>🎯 Maksimum Puan</span><span>300</span></div>
       <div class="info-row"><span>🎲 Soru Havuzu</span><span id="havuzBoyut">...</span></div>
     </div>
     
@@ -108,7 +109,7 @@ button:active{transform:scale(.97)}
 
 <div class="screen" id="screen-question">
   <div class="question-header">
-    <div class="q-num" id="qNum">SORU 1/10</div>
+    <div class="q-num" id="qNum">SORU 1/15</div>
     <div class="q-score" id="qScore">🎯 0</div>
   </div>
   
@@ -116,10 +117,11 @@ button:active{transform:scale(.97)}
     <div class="timer-fill" id="timerFill"></div>
   </div>
   
-  <div class="timer-text" id="timerText">⏱️ <b>30</b> saniye</div>
+  <div class="timer-text" id="timerText">⏱️ <b>20</b> saniye</div>
   
   <div class="card">
     <div class="question-category" id="qCategory">DÜNYA KUPASI</div>
+    <img id="qImage" class="question-image" style="display:none;" alt="Soru Görseli">
     <div class="question-text" id="qText">Soru yükleniyor...</div>
     
     <div class="answers" id="answersContainer"></div>
@@ -149,7 +151,7 @@ button:active{transform:scale(.97)}
     </div>
     
     <div class="info-box">
-      <div class="info-row"><span>✅ Doğru Cevap</span><span id="finalCorrect">0/10</span></div>
+      <div class="info-row"><span>✅ Doğru Cevap</span><span id="finalCorrect">0/15</span></div>
       <div class="info-row"><span>❌ Yanlış Cevap</span><span class="red" id="finalWrong">0</span></div>
       <div class="info-row"><span>⏱️ Ortalama Süre</span><span class="orange" id="finalAvgTime">0 sn</span></div>
       <div class="info-row"><span>🏅 Seviye</span><span id="finalLevel">Amatör</span></div>
@@ -162,7 +164,7 @@ button:active{transform:scale(.97)}
 
 <div class="screen" id="screen-leaderboard">
   <div class="logo">
-    <div class="logo-badge">● SKORLAB QUIZ</div>
+    <div class="logo-badge">● SKORLAB ULTRA</div>
     <h1>🏆 LİDERLİK</h1>
     <p>En iyi skorların</p>
   </div>
@@ -189,7 +191,9 @@ button:active{transform:scale(.97)}
 </div>
 
 <script>
-/* SORULARIN YAPILACAĞI YER */
+/* ============================================================
+   SORULARIN YAPILACAĞI YER
+   ============================================================ */
 window.sorularVerisi = [
   {
     "id": 1,
@@ -1392,8 +1396,11 @@ window.sorularVerisi = [
     "dogru": 1
   }
 ];
-  
-/* OYUN MOTORU */
+
+/* ============================================================
+   OYUN MOTORU
+   ============================================================ */
+
 let tumSorular = [];
 let oyunSorulari = [];
 let mevcutSoruIdx = 0;
@@ -1403,13 +1410,13 @@ let yanlisSayisi = 0;
 let soruBaslangicZamani = 0;
 let toplamSure = 0;
 let timerInterval = null;
-let kalanSure = 30;
+let kalanSure = 20;
 let jokerFiftyUsed = false;
 let jokerTimeUsed = false;
 let sureDuruyor = false;
 
-const SORU_SAYISI = 10;
-const SURE = 30;
+const SORU_SAYISI = 15;
+const SURE = 20;
 
 const $ = id => document.getElementById(id);
 
@@ -1430,167 +1437,283 @@ function startGame(){
     ]);
     return;
   }
-  const karisik = [...tumSorular].sort(() => Math.random() - 0.5);
-  oyunSorulari = karisik.slice(0, SORU_SAYISI);
-  mevcutSoruIdx = 0; puan = 0; dogruSayisi = 0; yanlisSayisi = 0; toplamSure = 0;
-  jokerFiftyUsed = false; jokerTimeUsed = false; sureDuruyor = false;
+  
+  // Zorluk seviyesine göre ayır
+  const kolaylar = tumSorular.filter(s => s.zorluk === 'kolay');
+  const ortaS = tumSorular.filter(s => s.zorluk === 'orta');
+  const zorlar = tumSorular.filter(s => s.zorluk === 'zor');
+  
+  // Her seviyeden 5'er soru seç (yoksa mevcut olanı al)
+  const secilenKolay = kolaylar.sort(() => Math.random() - 0.5).slice(0, 5);
+  const secilenOrta = ortaS.sort(() => Math.random() - 0.5).slice(0, 5);
+  const secilenZor = zorlar.sort(() => Math.random() - 0.5).slice(0, 5);
+  
+  oyunSorulari = [...secilenKolay, ...secilenOrta, ...secilenZor];
+  
+  mevcutSoruIdx = 0;
+  puan = 0;
+  dogruSayisi = 0;
+  yanlisSayisi = 0;
+  toplamSure = 0;
+  jokerFiftyUsed = false;
+  jokerTimeUsed = false;
+  sureDuruyor = false;
+  
   $('jokerFifty').classList.remove('used');
   $('jokerTime').classList.remove('used');
+  
   showScreen('screen-question');
   soruGoster();
 }
 
 function soruGoster(){
-  if(mevcutSoruIdx >= oyunSorulari.length){ oyunBitir(); return; }
+  if(mevcutSoruIdx >= oyunSorulari.length){
+    oyunBitir();
+    return;
+  }
+  
   const soru = oyunSorulari[mevcutSoruIdx];
+  
   $('qNum').innerText = `SORU ${mevcutSoruIdx + 1}/${SORU_SAYISI}`;
   $('qScore').innerText = `🎯 ${puan}`;
   $('qCategory').innerText = (soru.kategori || 'GENEL').toUpperCase();
   $('qText').innerText = soru.soru || 'Soru yüklenemedi';
+  
+  // Fotoğraf varsa göster, yoksa gizle
+  const img = $('qImage');
+  if(soru.resim){
+    img.src = soru.resim;
+    img.style.display = 'block';
+  } else {
+    img.style.display = 'none';
+  }
+  
   const container = $('answersContainer');
   container.innerHTML = '';
   const letters = ['A', 'B', 'C', 'D'];
+  
   const secenekler = soru.secenekler || [];
+  
   secenekler.forEach((sec, i) => {
     const btn = document.createElement('div');
     btn.className = 'answer';
     btn.innerHTML = `<span class="letter">${letters[i]}</span><span>${sec}</span>`;
-    btn.addEventListener('click', function() { cevapla(i, btn); });
+    btn.addEventListener('click', function() {
+      cevapla(i, btn);
+    });
     container.appendChild(btn);
   });
+  
   soruBaslangicZamani = Date.now();
-  kalanSure = SURE; sureDuruyor = false;
+  kalanSure = SURE;
+  sureDuruyor = false;
   timerBaslat();
 }
 
 function timerBaslat(){
   if(timerInterval) clearInterval(timerInterval);
   timerGuncelle();
+  
   timerInterval = setInterval(() => {
     if(sureDuruyor) return;
-    kalanSure--; timerGuncelle();
-    if(kalanSure <= 0){ clearInterval(timerInterval); sureBitti(); }
+    kalanSure--;
+    timerGuncelle();
+    if(kalanSure <= 0){
+      clearInterval(timerInterval);
+      sureBitti();
+    }
   }, 1000);
 }
 
 function timerGuncelle(){
-  const fill = $('timerFill'); const text = $('timerText');
+  const fill = $('timerFill');
+  const text = $('timerText');
   const yuzde = (kalanSure / SURE) * 100;
+  
   fill.style.width = yuzde + '%';
   text.innerHTML = `⏱️ <b>${kalanSure}</b> saniye`;
+  
   fill.classList.remove('warning', 'danger');
   text.classList.remove('warning', 'danger');
-  if(kalanSure <= 5){ fill.classList.add('danger'); text.classList.add('danger'); }
-  else if(kalanSure <= 10){ fill.classList.add('warning'); text.classList.add('warning'); }
+  
+  if(kalanSure <= 5){
+    fill.classList.add('danger');
+    text.classList.add('danger');
+  } else if(kalanSure <= 10){
+    fill.classList.add('warning');
+    text.classList.add('warning');
+  }
 }
 
 function sureBitti(){
   yanlisSayisi++;
   const soru = oyunSorulari[mevcutSoruIdx];
   const dogruIndex = soru.dogru;
+  
   document.querySelectorAll('.answer').forEach((el, i) => {
     el.classList.add('disabled');
     if(i === dogruIndex) el.classList.add('correct');
   });
+  
   toplamSure += SURE;
-  setTimeout(() => { mevcutSoruIdx++; soruGoster(); }, 1500);
+  
+  setTimeout(() => {
+    mevcutSoruIdx++;
+    soruGoster();
+  }, 1500);
 }
 
 function cevapla(secim, btn){
   if(timerInterval) clearInterval(timerInterval);
+  
   const soru = oyunSorulari[mevcutSoruIdx];
   const gecenSure = Math.min(SURE, Math.round((Date.now() - soruBaslangicZamani) / 1000));
   toplamSure += gecenSure;
+  
   const dogruIndex = soru.dogru;
+  
   document.querySelectorAll('.answer').forEach((el, i) => {
     el.classList.add('disabled');
     if(i === dogruIndex) el.classList.add('correct');
   });
+  
   if(secim === dogruIndex){
     btn.classList.add('correct');
     dogruSayisi++;
+    
     const zorluk = soru.zorluk || 'orta';
-    let puanKazanci = 10;
-    if(zorluk === 'kolay') puanKazanci = 5;
-    else if(zorluk === 'zor') puanKazanci = 15;
+    let puanKazanci = 20;
+    if(zorluk === 'kolay') puanKazanci = 10;
+    else if(zorluk === 'zor') puanKazanci = 30;
+    
     if(gecenSure <= 10) puanKazanci += 5;
+    
     puan += puanKazanci;
     $('qScore').innerText = `🎯 ${puan}`;
+    
     showToast(`✅ Doğru! +${puanKazanci} puan`, 'success');
   } else {
     btn.classList.add('wrong');
     yanlisSayisi++;
     showToast(`❌ Yanlış! Doğru cevap: ${['A','B','C','D'][dogruIndex]}`, 'error');
   }
-  setTimeout(() => { mevcutSoruIdx++; soruGoster(); }, 1800);
+  
+  setTimeout(() => {
+    mevcutSoruIdx++;
+    soruGoster();
+  }, 1800);
 }
 
 function useFiftyFifty(){
   if(jokerFiftyUsed) return;
   if(mevcutSoruIdx >= oyunSorulari.length) return;
+  
   jokerFiftyUsed = true;
   $('jokerFifty').classList.add('used');
+  
   const soru = oyunSorulari[mevcutSoruIdx];
   const dogruIndex = soru.dogru;
   const yanlislar = [0,1,2,3].filter(i => i !== dogruIndex);
   const silinecekler = [...yanlislar].sort(() => Math.random() - 0.5).slice(0, 2);
+  
   document.querySelectorAll('.answer').forEach((el, i) => {
     if(silinecekler.includes(i)) el.classList.add('removed');
   });
+  
   showToast('✂️ 2 yanlış şık silindi!', 'warning');
 }
 
 function useTimeJoker(){
   if(jokerTimeUsed) return;
   if(mevcutSoruIdx >= oyunSorulari.length) return;
+  
   jokerTimeUsed = true;
   $('jokerTime').classList.add('used');
   sureDuruyor = true;
+  
   showToast('⏸️ Süre 10 saniye duruyor!', 'warning');
-  setTimeout(() => { sureDuruyor = false; }, 10000);
+  
+  setTimeout(() => {
+    sureDuruyor = false;
+  }, 10000);
 }
 
 function oyunBitir(){
   if(timerInterval) clearInterval(timerInterval);
-  let seviye = 'Amatör', icon = '😔', baslik = 'TEKRAR DENE!', altBaslik = 'Biraz daha çalışmalısın!';
-  if(dogruSayisi >= 9){ seviye='Efsane'; icon='👑'; baslik='EFSANE!'; altBaslik='Futbol bilgin mükemmel!'; }
-  else if(dogruSayisi >= 7){ seviye='Profesyonel'; icon='🏆'; baslik='TEBRİKLER!'; altBaslik='Harika bir performans!'; }
-  else if(dogruSayisi >= 5){ seviye='Orta Seviye'; icon='👍'; baslik='İYİ!'; altBaslik='Daha iyisini yapabilirsin!'; }
-  else if(dogruSayisi >= 3){ seviye='Amatör'; icon='😐'; baslik='FENA DEĞİL'; altBaslik='Biraz daha pratik lazım!'; }
-  $('resultIcon').innerText = icon; $('resultTitle').innerText = baslik; $('resultSubtitle').innerText = altBaslik;
-  $('finalScore').innerText = puan; $('finalCorrect').innerText = dogruSayisi + '/10';
-  $('finalWrong').innerText = yanlisSayisi; $('finalAvgTime').innerText = Math.round(toplamSure / SORU_SAYISI) + ' sn';
+  
+  let seviye = 'Amatör';
+  let icon = '😔';
+  let baslik = 'TEKRAR DENE!';
+  let altBaslik = 'Biraz daha çalışmalısın!';
+  
+  if(dogruSayisi >= 14){
+    seviye = 'Efsane'; icon = '👑'; baslik = 'EFSANE!'; altBaslik = 'Futbol bilgin mükemmel!';
+  } else if(dogruSayisi >= 11){
+    seviye = 'Profesyonel'; icon = '🏆'; baslik = 'TEBRİKLER!'; altBaslik = 'Harika bir performans!';
+  } else if(dogruSayisi >= 8){
+    seviye = 'Orta Seviye'; icon = '👍'; baslik = 'İYİ!'; altBaslik = 'Daha iyisini yapabilirsin!';
+  } else if(dogruSayisi >= 5){
+    seviye = 'Amatör'; icon = '😐'; baslik = 'FENA DEĞİL'; altBaslik = 'Biraz daha pratik lazım!';
+  }
+  
+  $('resultIcon').innerText = icon;
+  $('resultTitle').innerText = baslik;
+  $('resultSubtitle').innerText = altBaslik;
+  $('finalScore').innerText = puan;
+  $('finalCorrect').innerText = dogruSayisi + '/15';
+  $('finalWrong').innerText = yanlisSayisi;
+  $('finalAvgTime').innerText = Math.round(toplamSure / SORU_SAYISI) + ' sn';
   $('finalLevel').innerText = seviye;
+  
   skorKaydet(puan, dogruSayisi);
+  
   showScreen('screen-result');
 }
 
 function skorKaydet(puan, dogru){
   let skorlar = JSON.parse(localStorage.getItem('skorlab_quiz_scores') || '[]');
-  skorlar.push({ puan: puan, dogru: dogru, tarih: new Date().toLocaleDateString('tr-TR') + ' ' + new Date().toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'}) });
+  
+  skorlar.push({
+    puan: puan,
+    dogru: dogru,
+    tarih: new Date().toLocaleDateString('tr-TR') + ' ' + new Date().toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'})
+  });
+  
   skorlar.sort((a,b) => b.puan - a.puan);
   skorlar = skorlar.slice(0, 10);
+  
   localStorage.setItem('skorlab_quiz_scores', JSON.stringify(skorlar));
 }
 
 function showLeaderboard(){
   const skorlar = JSON.parse(localStorage.getItem('skorlab_quiz_scores') || '[]');
   const list = $('leaderList');
-  if(skorlar.length === 0){ list.innerHTML = '<div class="empty-msg">Henüz skor yok.<br>Oyna ve ilk skoru sen yap! 🎯</div>'; }
-  else {
+  
+  if(skorlar.length === 0){
+    list.innerHTML = '<div class="empty-msg">Henüz skor yok.<br>Oyna ve ilk skoru sen yap! 🎯</div>';
+  } else {
     list.innerHTML = skorlar.map((s, i) => `
       <div class="leader-item ${i === 0 ? 'first' : ''}">
         <span class="rank">${i === 0 ? '👑' : '#' + (i+1)}</span>
-        <div><div class="pts">${s.puan} puan</div><div class="date">${s.dogru}/10 doğru · ${s.tarih}</div></div>
+        <div>
+          <div class="pts">${s.puan} puan</div>
+          <div class="date">${s.dogru}/15 doğru · ${s.tarih}</div>
+        </div>
       </div>
     `).join('');
   }
+  
   showScreen('screen-leaderboard');
 }
 
 function showRules(){
   showModal('📖 Nasıl Oynanır?', 
-    '🎯 10 soru rastgele seçilir.<br><br>⏱️ Her soru için 30 saniyen var.<br><br>✂️ %50 Joker: 2 yanlış şıkkı siler (1 hak).<br><br>⏸️ Süre Durdur: 10 saniye durdurur (1 hak).<br><br>🎯 Kolay soru: 5 puan<br>🎯 Orta soru: 10 puan<br>🎯 Zor soru: 15 puan<br>⚡ Hız bonusu: +5 puan (10 sn altı)', 
+    '🎯 15 soru kolaydan zora sıralanır.<br><br>' +
+    '⏱️ Her soru için 20 saniyen var.<br><br>' +
+    '✂️ %50 Joker: 2 yanlış şıkkı siler (1 hak).<br><br>' +
+    '⏸️ Süre Durdur: 10 saniye durdurur (1 hak).<br><br>' +
+    '🎯 Kolay: 10 puan<br>🎯 Orta: 20 puan<br>🎯 Zor: 30 puan<br>⚡ Hız bonusu: +5 puan (10 sn altı)<br><br>' +
+    '❌ Yanlış cevapta oyun bitmez, devam eder!', 
     [{text:'Anladım', action: closeModal}]
   );
 }
@@ -1612,31 +1735,45 @@ function showToast(msg, type = 'success'){
   toast.className = 'toast ' + type;
   toast.innerText = msg;
   toast.classList.add('show');
+  
   if(toastTimer) clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => { toast.classList.remove('show'); }, 2000);
+  toastTimer = setTimeout(() => {
+    toast.classList.remove('show');
+  }, 2000);
 }
 
 function showModal(title, text, buttons){
   $('modalTitle').innerText = title;
   $('modalText').innerHTML = text;
+  
   const btnContainer = $('modalButtons');
   btnContainer.innerHTML = '';
+  
   buttons.forEach(b => {
     const btn = document.createElement('button');
     btn.innerText = b.text;
     if(b.className) btn.className = b.className;
-    btn.onclick = () => { b.action(); closeModal(); };
+    btn.onclick = () => {
+      b.action();
+      closeModal();
+    };
     btnContainer.appendChild(btn);
   });
+  
   if(buttons.length === 1) btnContainer.style.gridTemplateColumns = '1fr';
   else btnContainer.style.gridTemplateColumns = '1fr 1fr';
+  
   $('modal').classList.add('active');
 }
 
-function closeModal(){ $('modal').classList.remove('active'); }
+function closeModal(){
+  $('modal').classList.remove('active');
+}
 
 window.addEventListener('load', () => {
-  setTimeout(() => { sorulariYukle(); }, 200);
+  setTimeout(() => {
+    sorulariYukle();
+  }, 200);
 });
 </script>
 </body>
