@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkorLab Quiz</title>
+<style>
+:root{--bg:#070b14;--bg2:#0d1420;--card:#111a2b;--card2:#0a121f;--border:#1e2c47;--border2:#2a3d5c;--text:#f1f5fb;--muted:#7d8ba5;--green:#00e07a;--green2:#00b863;--green-dim:rgba(0,224,122,.12);--orange:#ffb020;--red:#ff4d5e;--blue:#3d8bff;--radius:16px}
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);min-height:100vh;padding:16px;background-image:radial-gradient(circle at 50% 0%, rgba(0,224,122,.08) 0%, transparent 50%);overflow-x:hidden}
+.container{max-width:600px;margin:auto;min-height:calc(100vh - 32px);display:flex;flex-direction:column}
+.screen{display:none;animation:fade .3s ease;flex:1}
+.screen.active{display:flex;flex-direction:column}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.logo{text-align:center;padding:20px 0;margin-bottom:16px}
+.logo-badge{display:inline-flex;align-items:center;gap:8px;background:var(--green-dim);border:1px solid rgba(0,224,122,.3);color:var(--green);padding:6px 14px;border-radius:20px;font-size:.7rem;font-weight:700;letter-spacing:.5px;margin-bottom:12px}
+.logo-badge::before{content:"";width:6px;height:6px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green)}
+.logo h1{font-size:2rem;font-weight:900;letter-spacing:-1px;background:linear-gradient(135deg,#fff 0%,#a5b4c8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
+.logo p{font-size:.85rem;color:var(--muted);font-weight:500}
+.card{background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:14px;position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent)}
+button{width:100%;padding:16px;border:0;border-radius:12px;background:linear-gradient(135deg,var(--green),var(--green2));color:#04140c;font-size:1rem;font-weight:800;cursor:pointer;letter-spacing:.3px;transition:transform .15s,box-shadow .2s;box-shadow:0 6px 20px rgba(0,224,122,.25);margin-bottom:10px}
+button:active{transform:scale(.97)}
+.btn-secondary{background:var(--bg2);color:var(--text);border:1px solid var(--border);box-shadow:none}
+.info-box{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px}
+.info-row{display:flex;justify-content:space-between;padding:8px 0;font-size:.85rem;font-weight:600;border-bottom:1px solid var(--border)}
+.info-row:last-child{border:none}
+.info-row span:first-child{color:var(--muted)}
+.info-row span:last-child{color:var(--green);font-weight:900}
+.info-row .orange{color:var(--orange)}
+.info-row .red{color:var(--red)}
+.question-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;font-size:.8rem;font-weight:800}
+.question-header .q-num{color:var(--orange);background:rgba(255,176,32,.1);padding:5px 12px;border-radius:8px;border:1px solid rgba(255,176,32,.2)}
+.question-header .q-score{color:var(--green);background:var(--green-dim);padding:5px 12px;border-radius:8px;border:1px solid rgba(0,224,122,.2)}
+.timer-bar{height:8px;background:var(--bg2);border-radius:10px;overflow:hidden;margin-bottom:16px;border:1px solid var(--border)}
+.timer-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--green2));width:100%;transition:width 1s linear}
+.timer-fill.warning{background:linear-gradient(90deg,var(--orange),#ff8c00)}
+.timer-fill.danger{background:linear-gradient(90deg,var(--red),#d63447)}
+.timer-text{text-align:center;font-size:.9rem;font-weight:800;color:var(--muted);margin-bottom:16px}
+.timer-text b{color:var(--green);font-size:1.2rem}
+.timer-text.warning b{color:var(--orange)}
+.timer-text.danger b{color:var(--red)}
+.question-text{font-size:1.15rem;font-weight:800;line-height:1.5;margin-bottom:22px;color:var(--text);min-height:60px}
+.question-category{display:inline-block;font-size:.65rem;font-weight:700;color:var(--blue);background:rgba(61,139,255,.1);padding:4px 10px;border-radius:6px;border:1px solid rgba(61,139,255,.2);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
+.answers{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.answer{background:var(--bg2);border:2px solid var(--border);border-radius:12px;padding:16px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .2s;text-align:left;color:var(--text);display:flex;align-items:center;gap:12px}
+.answer:active{transform:scale(.98)}
+.answer .letter{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:var(--card);color:var(--muted);font-weight:900;font-size:.8rem;flex-shrink:0}
+.answer.correct{background:linear-gradient(135deg,var(--green),var(--green2));border-color:var(--green);color:#04140c}
+.answer.correct .letter{background:rgba(4,20,12,.15);color:#04140c}
+.answer.wrong{background:linear-gradient(135deg,var(--red),#d63447);border-color:var(--red);color:#fff}
+.answer.wrong .letter{background:rgba(255,255,255,.2);color:#fff}
+.answer.disabled{opacity:.5;pointer-events:none}
+.answer.removed{opacity:.2;pointer-events:none;text-decoration:line-through}
+.jokers{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.joker{background:var(--bg2);border:1px dashed var(--border2);border-radius:12px;padding:12px 8px;text-align:center;cursor:pointer;font-size:.75rem;font-weight:800;color:var(--muted);transition:all .2s}
+.joker:active{transform:scale(.95)}
+.joker .j-icon{display:block;font-size:1.4rem;margin-bottom:4px}
+.joker:not(.used){color:var(--orange);border-color:rgba(255,176,32,.4);background:rgba(255,176,32,.05)}
+.joker.used{opacity:.3;pointer-events:none}
+.result-icon{font-size:5rem;text-align:center;margin:20px 0}
+.result-title{text-align:center;font-size:1.6rem;font-weight:900;color:var(--green);margin-bottom:8px}
+.result-subtitle{text-align:center;font-size:.85rem;color:var(--muted);margin-bottom:24px}
+.score-big{text-align:center;padding:24px;background:var(--bg2);border:1px solid var(--border);border-radius:16px;margin-bottom:20px}
+.score-big .score-num{font-size:3.5rem;font-weight:900;color:var(--green);line-height:1}
+.score-big .score-lbl{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-top:6px}
+.level-badge{display:inline-block;padding:8px 18px;border-radius:20px;font-size:.85rem;font-weight:900;background:linear-gradient(135deg,var(--orange),#ff8c00);color:#04140c;box-shadow:0 4px 14px rgba(255,176,32,.3)}
+.skorlab-ad{margin-top:20px;background:linear-gradient(135deg,rgba(0,224,122,.15),rgba(0,224,122,.05));border:1px solid rgba(0,224,122,.3);border-radius:14px;padding:16px;text-align:center;cursor:pointer;transition:all .2s}
+.skorlab-ad:active{transform:scale(.98)}
+.skorlab-ad .ad-title{font-size:.95rem;font-weight:900;color:var(--green);margin-bottom:6px}
+.skorlab-ad .ad-sub{font-size:.75rem;color:var(--muted);line-height:1.5;margin-bottom:10px}
+.skorlab-ad .ad-cta{display:inline-block;background:var(--green);color:#04140c;font-size:.8rem;font-weight:800;padding:10px 20px;border-radius:10px}
+.leader-list{display:flex;flex-direction:column;gap:8px}
+.leader-item{display:flex;justify-content:space-between;align-items:center;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:.85rem;font-weight:700}
+.leader-item .rank{color:var(--orange);font-weight:900;min-width:30px}
+.leader-item .date{color:var(--muted);font-size:.72rem;font-weight:600}
+.leader-item .pts{color:var(--green);font-weight:900}
+.leader-item.first{border-color:rgba(255,176,32,.4);background:rgba(255,176,32,.05)}
+.empty-msg{text-align:center;padding:30px 20px;color:var(--muted);font-size:.85rem;line-height:1.6}
+.footer{text-align:center;padding:20px 10px 10px;font-size:.7rem;color:var(--muted)}
+.footer a{color:var(--orange);text-decoration:none;font-weight:700}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--card);border:1px solid var(--border2);border-radius:12px;padding:12px 20px;font-size:.82rem;font-weight:700;color:var(--text);box-shadow:0 10px 30px rgba(0,0,0,.5);transition:transform .3s ease;z-index:100;max-width:90%}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.success{border-color:rgba(0,224,122,.4);color:var(--green)}
+.toast.warning{border-color:rgba(255,176,32,.4);color:var(--orange)}
+.toast.error{border-color:rgba(255,77,94,.4);color:var(--red)}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.8);backdrop-filter:blur(6px);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.active{display:flex}
+.modal-box{background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--border2);border-radius:var(--radius);padding:24px;max-width:360px;width:100%;text-align:center;animation:modalIn .25s ease}
+@keyframes modalIn{from{opacity:0;transform:scale(.9) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal-box h3{color:var(--green);font-size:1.1rem;font-weight:900;margin-bottom:12px}
+.modal-box p{color:var(--muted);font-size:.85rem;line-height:1.6;margin-bottom:18px;text-align:left}
+.modal-box .modal-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.modal-box .modal-buttons button{margin:0;padding:13px;font-size:.85rem}
+.modal-box .cancel{background:var(--bg2);color:var(--muted);border:1px solid var(--border);box-shadow:none}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="screen active" id="screen-start">
+  <div class="logo">
+    <div class="logo-badge">● SKORLAB</div>
+    <h1>FUTBOL QUIZ</h1>
+    <p>Futbol bilgine ne kadar güveniyorsun?</p>
+  </div>
+  
+  <div class="card">
+    <div class="info-box">
+      <div class="info-row"><span>📊 Soru Sayısı</span><span>10</span></div>
+      <div class="info-row"><span>⏱️ Soru Başına Süre</span><span>30 saniye</span></div>
+      <div class="info-row"><span>🎯 Maksimum Puan</span><span>150</span></div>
+      <div class="info-row"><span>🎲 Soru Havuzu</span><span id="havuzBoyut">20</span></div>
+    </div>
+    
+    <button onclick="startGame()">🎯 OYUNA BAŞLA</button>
+    <button class="btn-secondary" onclick="showLeaderboard()">🏆 LİDERLİK TABLOSU</button>
+    <button class="btn-secondary" onclick="showRules()">📖 NASIL OYNANIR?</button>
+  </div>
+  
+  <div class="skorlab-ad" onclick="openSkorLab()">
+    <div class="ad-title">📱 SkorLab'ı Dene!</div>
+    <div class="ad-sub">Akıllı Spor Toto Analiz Sistemi<br>Monte Carlo Simülasyonu • AI Analiz • Bütçe Optimizasyonu</div>
+    <div class="ad-cta">UYGULAMAYI AÇ →</div>
+  </div>
+  
+  <div class="footer">
+    <p>© SkorLab Quiz 2026</p>
+  </div>
+</div>
+
+<div class="screen" id="screen-question">
+  <div class="question-header">
+    <div class="q-num" id="qNum">SORU 1/10</div>
+    <div class="q-score" id="qScore">🎯 0</div>
+  </div>
+  
+  <div class="timer-bar">
+    <div class="timer-fill" id="timerFill"></div>
+  </div>
+  
+  <div class="timer-text" id="timerText">⏱️ <b>30</b> saniye</div>
+  
+  <div class="card">
+    <div class="question-category" id="qCategory">DÜNYA KUPASI</div>
+    <div class="question-text" id="qText">Soru yükleniyor...</div>
+    
+    <div class="answers" id="answersContainer"></div>
+    
+    <div class="jokers">
+      <div class="joker" id="jokerFifty" onclick="useFiftyFifty()">
+        <span class="j-icon">✂️</span>
+        %50 JOKER
+      </div>
+      <div class="joker" id="jokerTime" onclick="useTimeJoker()">
+        <span class="j-icon">⏸️</span>
+        SÜRE DURDUR
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="screen-result">
+  <div class="result-icon" id="resultIcon">🏆</div>
+  <div class="result-title" id="resultTitle">TEBRİKLER!</div>
+  <div class="result-subtitle" id="resultSubtitle">Harika bir performans!</div>
+  
+  <div class="card">
+    <div class="score-big">
+      <div class="score-num" id="finalScore">0</div>
+      <div class="score-lbl">TOPLAM PUAN</div>
+    </div>
+    
+    <div class="info-box">
+      <div class="info-row"><span>✅ Doğru Cevap</span><span id="finalCorrect">0/10</span></div>
+      <div class="info-row"><span>❌ Yanlış Cevap</span><span class="red" id="finalWrong">0</span></div>
+      <div class="info-row"><span>⏱️ Ortalama Süre</span><span class="orange" id="finalAvgTime">0 sn</span></div>
+      <div class="info-row"><span>🏅 Seviye</span><span id="finalLevel">Amatör</span></div>
+    </div>
+    
+    <button onclick="startGame()">🎯 YENİDEN OYNA</button>
+    <button class="btn-secondary" onclick="goHome()">🏠 ANA MENÜ</button>
+    <button class="btn-secondary" onclick="shareScore()">📤 SKORUNU PAYLAŞ</button>
+  </div>
+  
+  <div class="skorlab-ad" onclick="openSkorLab()">
+    <div class="ad-title">📱 SkorLab'ı Dene!</div>
+    <div class="ad-sub">Futbol bilgini analize dönüştür<br>Akıllı Spor Toto Analiz Sistemi</div>
+    <div class="ad-cta">UYGULAMAYI AÇ →</div>
+  </div>
+</div>
+
+<div class="screen" id="screen-leaderboard">
+  <div class="logo">
+    <div class="logo-badge">● SKORLAB QUIZ</div>
+    <h1>🏆 LİDERLİK</h1>
+    <p>En iyi skorların</p>
+  </div>
+  
+  <div class="card">
+    <div class="leader-list" id="leaderList">
+      <div class="empty-msg">Henüz skor yok.<br>Oyna ve ilk skoru sen yap! 🎯</div>
+    </div>
+  </div>
+  
+  <button onclick="goHome()">🏠 ANA MENÜ</button>
+</div>
+
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <h3 id="modalTitle">Başlık</h3>
+    <p id="modalText">Metin</p>
+    <div class="modal-buttons" id="modalButtons"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Mesaj</div>
+
+</div>
+
+<script>
+/* ============================================================
+   SKORLAB QUIZ - OYUN MANTIĞI
+   ============================================================ */
+
+let tumSorular = [];
+let oyunSorulari = [];
+let mevcutSoruIdx = 0;
+let puan = 0;
+let dogruSayisi = 0;
+let yanlisSayisi = 0;
+let soruBaslangicZamani = 0;
+let toplamSure = 0;
+let timerInterval = null;
+let kalanSure = 30;
+let jokerFiftyUsed = false;
+let jokerTimeUsed = false;
+let sureDuruyor = false;
+
+const SORU_SAYISI = 10;
+const SURE = 30;
+const SKORLAB_URL = 'https://emrahmeltem90-ux.github.io/bilyonvip';
+
+const $ = id => document.getElementById(id);
+
+/* ============================================================
+   SORULARI YÜKLE
+   ============================================================ */
+async function sorulariYukle(){
+  try{
+    const res = await fetch('sorular.json');
+    const data = await res.json();
+    tumSorular = data.sorular || [];
+    $('havuzBoyut').innerText = tumSorular.length;
+    console.log('✅ ' + tumSorular.length + ' soru yüklendi');
+  }catch(e){
+    console.warn('❌ sorular.json yüklenemedi:', e.message);
+    tumSorular = [];
+    $('havuzBoyut').innerText = '0';
+  }
+}
+
+/* ============================================================
+   OYUN BAŞLAT
+   ============================================================ */
+function startGame(){
+  if(tumSorular.length < SORU_SAYISI){
+    showModal('Yetersiz Soru', 'Soru havuzunda yeterli soru yok. Lütfen sonra tekrar deneyin.', [
+      {text:'Tamam', action: goHome}
+    ]);
+    return;
+  }
+  
+  // Rastgele 10 soru seç
+  const karisik = [...tumSorular].sort(() => Math.random() - 0.5);
+  oyunSorulari = karisik.slice(0, SORU_SAYISI);
+  
+  mevcutSoruIdx = 0;
+  puan = 0;
+  dogruSayisi = 0;
+  yanlisSayisi = 0;
+  toplamSure = 0;
+  jokerFiftyUsed = false;
+  jokerTimeUsed = false;
+  sureDuruyor = false;
+  
+  $('jokerFifty').classList.remove('used');
+  $('jokerTime').classList.remove('used');
+  
+  showScreen('screen-question');
+  soruGoster();
+}
+
+/* ============================================================
+   SORU GÖSTER
+   ============================================================ */
+function soruGoster(){
+  if(mevcutSoruIdx >= oyunSorulari.length){
+    oyunBitir();
+    return;
+  }
+  
+  const soru = oyunSorulari[mevcutSoruIdx];
+  
+  $('qNum').innerText = `SORU ${mevcutSoruIdx + 1}/${SORU_SAYISI}`;
+  $('qScore').innerText = `🎯 ${puan}`;
+  $('qCategory').innerText = soru.kategori.toUpperCase();
+  $('qText').innerText = soru.soru;
+  
+  const container = $('answersContainer');
+  container.innerHTML = '';
+  const letters = ['A', 'B', 'C', 'D'];
+  
+  soru.secenekler.forEach((sec, i) => {
+    const btn = document.createElement('div');
+    btn.className = 'answer';
+    btn.innerHTML = `<span class="letter">${letters[i]}</span><span>${sec}</span>`;
+    btn.onclick = () => cevapla(i, btn);
+    container.appendChild(btn);
+  });
+  
+  soruBaslangicZamani = Date.now();
+  kalanSure = SURE;
+  sureDuruyor = false;
+  timerBaslat();
+}
+
+/* ============================================================
+   TIMER
+   ============================================================ */
+function timerBaslat(){
+  if(timerInterval) clearInterval(timerInterval);
+  timerGuncelle();
+  
+  timerInterval = setInterval(() => {
+    if(sureDuruyor) return;
+    kalanSure--;
+    timerGuncelle();
+    if(kalanSure <= 0){
+      clearInterval(timerInterval);
+      sureBitti();
+    }
+  }, 1000);
+}
+
+function timerGuncelle(){
+  const fill = $('timerFill');
+  const text = $('timerText');
+  const yuzde = (kalanSure / SURE) * 100;
+  
+  fill.style.width = yuzde + '%';
+  text.innerHTML = `⏱️ <b>${kalanSure}</b> saniye`;
+  
+  fill.classList.remove('warning', 'danger');
+  text.classList.remove('warning', 'danger');
+  
+  if(kalanSure <= 5){
+    fill.classList.add('danger');
+    text.classList.add('danger');
+  } else if(kalanSure <= 10){
+    fill.classList.add('warning');
+    text.classList.add('warning');
+  }
+}
+
+function sureBitti(){
+  yanlisSayisi++;
+  const soru = oyunSorulari[mevcutSoruIdx];
+  
+  document.querySelectorAll('.answer').forEach((el, i) => {
+    el.classList.add('disabled');
+    if(i === soru.dogru) el.classList.add('correct');
+  });
+  
+  const gecenSure = SURE;
+  toplamSure += gecenSure;
+  
+  setTimeout(() => {
+    mevcutSoruIdx++;
+    soruGoster();
+  }, 1500);
+}
+
+/* ============================================================
+   CEVAPLA
+   ============================================================ */
+function cevapla(secim, btn){
+  if(timerInterval) clearInterval(timerInterval);
+  
+  const soru = oyunSorulari[mevcutSoruIdx];
+  const gecenSure = Math.min(SURE, Math.round((Date.now() - soruBaslangicZamani) / 1000));
+  toplamSure += gecenSure;
+  
+  document.querySelectorAll('.answer').forEach((el, i) => {
+    el.classList.add('disabled');
+    if(i === soru.dogru) el.classList.add('correct');
+  });
+  
+  if(secim === soru.dogru){
+    btn.classList.add('correct');
+    dogruSayisi++;
+    
+    // Zorluk puanı
+    let puanKazanci = 10;
+    if(soru.zorluk === 'kolay') puanKazanci = 5;
+    else if(soru.zorluk === 'zor') puanKazanci = 15;
+    
+    // Hız bonusu (10 saniyeden kısa sürede cevap)
+    if(gecenSure <= 10) puanKazanci += 5;
+    
+    puan += puanKazanci;
+    $('qScore').innerText = `🎯 ${puan}`;
+    
+    showToast(`✅ Doğru! +${puanKazanci} puan`, 'success');
+  } else {
+    btn.classList.add('wrong');
+    yanlisSayisi++;
+    showToast(`❌ Yanlış! Doğru cevap: ${['A','B','C','D'][soru.dogru]}`, 'error');
+  }
+  
+  setTimeout(() => {
+    mevcutSoruIdx++;
+    soruGoster();
+  }, 1800);
+}
+
+/* ============================================================
+   JOKER: %50
+   ============================================================ */
+function useFiftyFifty(){
+  if(jokerFiftyUsed) return;
+  if(mevcutSoruIdx >= oyunSorulari.length) return;
+  
+  jokerFiftyUsed = true;
+  $('jokerFifty').classList.add('used');
+  
+  const soru = oyunSorulari[mevcutSoruIdx];
+  const yanlislar = [0,1,2,3].filter(i => i !== soru.dogru);
+  const silinecekler = [...yanlislar].sort(() => Math.random() - 0.5).slice(0, 2);
+  
+  document.querySelectorAll('.answer').forEach((el, i) => {
+    if(silinecekler.includes(i)) el.classList.add('removed');
+  });
+  
+  showToast('✂️ 2 yanlış şık silindi!', 'warning');
+}
+
+/* ============================================================
+   JOKER: SÜRE DURDUR
+   ============================================================ */
+function useTimeJoker(){
+  if(jokerTimeUsed) return;
+  if(mevcutSoruIdx >= oyunSorulari.length) return;
+  
+  jokerTimeUsed = true;
+  $('jokerTime').classList.add('used');
+  sureDuruyor = true;
+  
+  showToast('⏸️ Süre 10 saniye duruyor!', 'warning');
+  
+  setTimeout(() => {
+    sureDuruyor = false;
+  }, 10000);
+}
+
+/* ============================================================
+   OYUN BİTİR
+   ============================================================ */
+function oyunBitir(){
+  if(timerInterval) clearInterval(timerInterval);
+  
+  // Seviye belirle
+  let seviye = 'Amatör';
+  let icon = '😔';
+  let baslik = 'TEKRAR DENE!';
+  let altBaslik = 'Biraz daha çalışmalısın!';
+  
+  if(dogruSayisi >= 9){
+    seviye = 'Efsane';
+    icon = '👑';
+    baslik = 'EFSANE!';
+    altBaslik = 'Futbol bilgin mükemmel!';
+  } else if(dogruSayisi >= 7){
+    seviye = 'Profesyonel';
+    icon = '🏆';
+    baslik = 'TEBRİKLER!';
+    altBaslik = 'Harika bir performans!';
+  } else if(dogruSayisi >= 5){
+    seviye = 'Orta Seviye';
+    icon = '👍';
+    baslik = 'İYİ!';
+    altBaslik = 'Daha iyisini yapabilirsin!';
+  } else if(dogruSayisi >= 3){
+    seviye = 'Amatör';
+    icon = '😐';
+    baslik = 'FENA DEĞİL';
+    altBaslik = 'Biraz daha pratik lazım!';
+  }
+  
+  $('resultIcon').innerText = icon;
+  $('resultTitle').innerText = baslik;
+  $('resultSubtitle').innerText = altBaslik;
+  $('finalScore').innerText = puan;
+  $('finalCorrect').innerText = dogruSayisi + '/10';
+  $('finalWrong').innerText = yanlisSayisi;
+  $('finalAvgTime').innerText = Math.round(toplamSure / SORU_SAYISI) + ' sn';
+  $('finalLevel').innerText = seviye;
+  
+  // Liderlik tablosuna ekle
+  skorKaydet(puan, dogruSayisi);
+  
+  showScreen('screen-result');
+}
+
+/* ============================================================
+   LİDERLİK TABLOSU
+   ============================================================ */
+function skorKaydet(puan, dogru){
+  let skorlar = JSON.parse(localStorage.getItem('skorlab_quiz_scores') || '[]');
+  
+  skorlar.push({
+    puan: puan,
+    dogru: dogru,
+    tarih: new Date().toLocaleDateString('tr-TR') + ' ' + new Date().toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'})
+  });
+  
+  // En yüksek 10 skoru sakla
+  skorlar.sort((a,b) => b.puan - a.puan);
+  skorlar = skorlar.slice(0, 10);
+  
+  localStorage.setItem('skorlab_quiz_scores', JSON.stringify(skorlar));
+}
+
+function showLeaderboard(){
+  const skorlar = JSON.parse(localStorage.getItem('skorlab_quiz_scores') || '[]');
+  const list = $('leaderList');
+  
+  if(skorlar.length === 0){
+    list.innerHTML = '<div class="empty-msg">Henüz skor yok.<br>Oyna ve ilk skoru sen yap! 🎯</div>';
+  } else {
+    list.innerHTML = skorlar.map((s, i) => `
+      <div class="leader-item ${i === 0 ? 'first' : ''}">
+        <span class="rank">${i === 0 ? '👑' : '#' + (i+1)}</span>
+        <div>
+          <div class="pts">${s.puan} puan</div>
+          <div class="date">${s.dogru}/10 doğru · ${s.tarih}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+  
+  showScreen('screen-leaderboard');
+}
+
+/* ============================================================
+   KURALLAR
+   ============================================================ */
+function showRules(){
+  showModal('📖 Nasıl Oynanır?', 
+    '🎯 10 soru rastgele seçilir.<br><br>' +
+    '⏱️ Her soru için 30 saniyen var.<br><br>' +
+    '✂️ %50 Joker: 2 yanlış şıkkı siler (1 hak).<br><br>' +
+    '⏸️ Süre Durdur: 10 saniye durdurur (1 hak).<br><br>' +
+    '🎯 Kolay soru: 5 puan<br>🎯 Orta soru: 10 puan<br>🎯 Zor soru: 15 puan<br>⚡ Hız bonusu: +5 puan (10 sn altı)', 
+    [{text:'Anladım', action: closeModal}]
+  );
+}
+
+/* ============================================================
+   SKOR PAYLAŞ
+   ============================================================ */
+function shareScore(){
+  const metin = `🎯 SkorLab Quiz\n\n✅ Doğru: ${dogruSayisi}/10\n🎯 Puan: ${puan}\n🏅 Seviye: ${$('finalLevel').innerText}\n\nSen de dene! 👉 ${SKORLAB_URL}`;
+  
+  if(navigator.share){
+    navigator.share({
+      title: 'SkorLab Quiz Skorum',
+      text: metin
+    }).catch(() => {
+      kopyala(metin);
+    });
+  } else {
+    kopyala(metin);
+  }
+}
+
+function kopyala(text){
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('📋 Skor kopyalandı!', 'success');
+  }).catch(() => {
+    showToast('❌ Kopyalanamadı', 'error');
+  });
+}
+
+/* ============================================================
+   SKORLAB'A GİT
+   ============================================================ */
+function openSkorLab(){
+  window.open(SKORLAB_URL, '_blank');
+}
+
+/* ============================================================
+   EKRAN YÖNETİMİ
+   ============================================================ */
+function showScreen(screenId){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  $(screenId).classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function goHome(){
+  if(timerInterval) clearInterval(timerInterval);
+  showScreen('screen-start');
+}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+let toastTimer = null;
+function showToast(msg, type = 'success'){
+  const toast = $('toast');
+  toast.className = 'toast ' + type;
+  toast.innerText = msg;
+  toast.classList.add('show');
+  
+  if(toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    toast.classList.remove('show');
+  }, 2000);
+}
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+function showModal(title, text, buttons){
+  $('modalTitle').innerText = title;
+  $('modalText').innerHTML = text;
+  
+  const btnContainer = $('modalButtons');
+  btnContainer.innerHTML = '';
+  
+  buttons.forEach(b => {
+    const btn = document.createElement('button');
+    btn.innerText = b.text;
+    if(b.className) btn.className = b.className;
+    btn.onclick = () => {
+      b.action();
+      closeModal();
+    };
+    btnContainer.appendChild(btn);
+  });
+  
+  if(buttons.length === 1) btnContainer.style.gridTemplateColumns = '1fr';
+  else btnContainer.style.gridTemplateColumns = '1fr 1fr';
+  
+  $('modal').classList.add('active');
+}
+
+function closeModal(){
+  $('modal').classList.remove('active');
+}
+
+/* ============================================================
+   BAŞLANGIÇ
+   ============================================================ */
+window.onload = () => {
+  sorulariYukle();
+};
+</script>
+</body>
+</html>
