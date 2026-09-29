@@ -48,27 +48,6 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .series-dot.D{background:var(--orange);box-shadow:0 0 6px rgba(255,176,32,.4)}
 .series-dot.L{background:var(--red);box-shadow:0 0 6px rgba(255,77,94,.4)}
 .series-label{font-size:.68rem;color:var(--muted);margin-left:6px;font-weight:600}
-.probs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.pick{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 6px;text-align:center;font-weight:900;font-size:1.05rem;user-select:none;transition:all .2s}
-.pick span{display:block;font-size:.7rem;color:var(--muted);margin-top:3px;font-weight:600}
-.pick.selected{background:linear-gradient(135deg,var(--green),var(--green2));border-color:var(--green);color:#04140c;box-shadow:0 4px 14px rgba(0,224,122,.3)}
-.pick.selected span{color:rgba(4,20,12,.7)}
-.value-row{display:flex;gap:6px;align-items:center;margin-top:10px;font-size:.75rem}
-.value-row input{padding:9px 12px;font-size:.82rem;margin:0;flex:1;font-weight:600}
-.value-row button{width:auto;padding:9px 14px;font-size:.78rem;flex:0 0 auto;box-shadow:none}
-.value-badge{display:inline-block;padding:3px 8px;border-radius:6px;font-size:.65rem;font-weight:800;margin-left:4px}
-.value-badge.high{background:var(--green-dim);color:var(--green)}
-.value-badge.low{background:rgba(255,77,94,.12);color:var(--red)}
-.value-badge.mid{background:rgba(255,176,32,.12);color:var(--orange)}
-.kelly-box{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-top:8px;font-size:.75rem;line-height:1.6}
-.kelly-box .kelly-title{color:var(--green);font-weight:800;font-size:.7rem;letter-spacing:.5px;margin-bottom:6px;text-transform:uppercase}
-.kelly-box .kelly-row{display:flex;justify-content:space-between;align-items:center;padding:3px 0}
-.kelly-box .kelly-row span:first-child{color:var(--muted);font-weight:600}
-.kelly-box .kelly-row span:last-child{font-weight:800}
-.kelly-box .kelly-full{color:var(--orange)}
-.kelly-box .kelly-half{color:var(--green)}
-.kelly-box .kelly-none{color:var(--red)}
-.kelly-box .kelly-msg{font-size:.68rem;color:var(--muted);margin-top:6px;font-style:italic}
 .coupon{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-top:8px;font-size:.8rem;line-height:1.8}
 .coupon b{color:var(--green);font-weight:900}
 .copy-btn{background:var(--bg2);border:1px solid var(--border2);color:var(--green);padding:12px;border-radius:10px;font-size:.8rem;font-weight:800;cursor:pointer;margin-top:10px;width:100%}
@@ -132,16 +111,8 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .coupon-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px;position:relative}
 .coupon-card .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:.75rem;font-weight:700}
 .coupon-card .head .week{color:var(--orange)}
-.coupon-card .head .status{padding:3px 8px;border-radius:6px;font-size:.65rem;font-weight:800}
-.coupon-card .head .status.win{background:var(--green-dim);color:var(--green)}
-.coupon-card .head .status.lose{background:rgba(255,77,94,.15);color:var(--red)}
-.coupon-card .head .status.wait{background:rgba(255,176,32,.15);color:var(--orange)}
 .coupon-card .picks{font-size:.75rem;line-height:1.8;color:var(--muted)}
 .coupon-card .picks b{color:var(--text)}
-.coupon-card .result-line{display:flex;justify-content:space-between;padding:4px 0;font-size:.75rem;border-bottom:1px solid var(--border)}
-.coupon-card .result-line:last-child{border:none}
-.coupon-card .result-line .ok{color:var(--green);font-weight:800}
-.coupon-card .result-line .no{color:var(--red);font-weight:800}
 .coupon-empty{text-align:center;padding:40px 20px;color:var(--muted);font-size:.85rem;line-height:1.7}
 </style>
 </head>
@@ -251,7 +222,7 @@ let currentMode='guvenli';
 let userPicks = {};
 let savedCoupons = JSON.parse(localStorage.getItem('skorlab_coupons') || '[]');
 
-const SYM=["1","0","2"];
+const SYM=["1","0","2","","","","","","","", "1X", "", "", "", "", "", "", "", "", "12", "", "", "", "", "", "", "", "", "", "X2"];
 const $=id=>document.getElementById(id);
 const pc=x=>(x*100).toFixed(1);
 const ordr=i=>[0,1,2].sort((a,b)=>PR[i][b]-PR[i][a]);
@@ -325,15 +296,23 @@ function initApp(){
 
 function togglePick(matchIdx, pickVal){
   if(!userPicks[matchIdx]) userPicks[matchIdx] = [];
+  
   const idx = userPicks[matchIdx].indexOf(pickVal);
   if(idx > -1){
     userPicks[matchIdx].splice(idx, 1);
   } else {
-    userPicks[matchIdx].push(pickVal);
+    if(pickVal >= 10){
+      userPicks[matchIdx] = [pickVal];
+    } else {
+      userPicks[matchIdx] = userPicks[matchIdx].filter(c => c >= 10);
+      userPicks[matchIdx].push(pickVal);
+    }
   }
+  
   if(userPicks[matchIdx].length === 0){
     delete userPicks[matchIdx];
   }
+  
   initApp();
 }
 
@@ -485,10 +464,10 @@ function generate(){
    15/15 tutma: <b class="green">%${(cov*100).toFixed(3)}</b><br>
    Tek kolonla: %${(single*100).toFixed(3)}<br>
    Redüksiyon: <b class="green">${(cov/single).toFixed(1)}×</b> artış<br><br>
-   <b style="color:var(--text);font-weight:900">KAPANAN MAÇLAR:</b><br>${c.list.length?c.list.map(([u,i])=>`#${i+1} ${matchesData[i].home} -${matchesData[i].away}: <b style="color:var(--orange)">${u.map(o=>SYM[o]).join('-')}</b>`).join('<br>'):'Yok.'}
+   <b style="color:var(--text);font-weight:900">KAPANAN MAÇLAR:</b><br>${c.list.length?c.list.map(([u,i])=>`#${i+1} ${matchesData[i].home} -${matchesData[i].away}: <b style="color:var(--orange)">${u.map(o=>codeToSym(o)).join('-')}</b>`).join('<br>'):'Yok.'}
    <br><br><div id="mcOut">Simülasyon çalışıyor...<div class="progress"><div id="bar-a"></div></div></div>`;
   $('outputContainer').innerHTML=r.map((x,i)=>`<div class="coupon"><b>KOLON #${String(i+1).padStart(2,'0')}</b> &nbsp;<span class="muted">%${(x.p*100).toFixed(3)}</span> <button onclick="copySingle(${i})" style="width:auto;padding:4px 8px;font-size:.7rem;float:right;box-shadow:none">📋</button><br>
-  <span style="letter-spacing:2px;font-size:.85rem">${x.pick.map((o,k)=>`<span class="muted">${k+1}:</span><b>${SYM[o]}</b>`).join(' ')}</span></div>`).join('');
+  <span style="letter-spacing:2px;font-size:.85rem">${x.pick.map((o,k)=>`<span class="muted">${k+1}:</span><b>${codeToSym(o)}</b>`).join(' ')}</span></div>`).join('');
   $('outputContainer').innerHTML += `<button class="copy-btn" id="copyBtn" onclick="copyCoupon()">📋 TÜM KUPONU KOPYALA</button>`;
   $('outputCard').scrollIntoView({behavior:'smooth'});
   runMC('mcOut','bar-a',false);
@@ -497,7 +476,7 @@ function generate(){
 function copyCoupon(){
   if(!cols.length){alert('Önce kupon oluştur.');return}
   let text='🎯 SKORLAB · KUPONUM\n━━━━━━━━━━━━━━━\n';
-  cols.forEach((c,idx)=>{text+=`\n📋 KOLON #${String(idx+1).padStart(2,'0')}\n`;c.forEach((o,i)=>{text+=`  ${i+1}. ${matchesData[i].home} - ${matchesData[i].away} : ${SYM[o]}\n`})});
+  cols.forEach((c,idx)=>{text+=`\n📋 KOLON #${String(idx+1).padStart(2,'0')}\n`;c.forEach((o,i)=>{text+=`  ${i+1}. ${matchesData[i].home} - ${matchesData[i].away} : ${codeToSym(o)}\n`})});
   text+='\n━━━━━━━━━━━━━━━\n🤖 SkorLab Akıllı Analiz';
   navigator.clipboard.writeText(text).then(()=>{
     const btn=$('copyBtn'),old=btn.innerText;btn.innerText='✅ KOPYALANDI';btn.classList.add('copied');
@@ -506,7 +485,7 @@ function copyCoupon(){
 }
 function copySingle(idx){
   const c=cols[idx];let text=`📋 KOLON #${String(idx+1).padStart(2,'0')}\n`;
-  c.forEach((o,i)=>{text+=`${i+1}. ${matchesData[i].home} - ${matchesData[i].away} : ${SYM[o]}\n`});
+  c.forEach((o,i)=>{text+=`${i+1}. ${matchesData[i].home} - ${matchesData[i].away} : ${codeToSym(o)}\n`});
   navigator.clipboard.writeText(text);
 }
 
@@ -597,7 +576,7 @@ function recoText(){
   const c=closedList(r.map(x=>x.pick));
   const modeLabel={guvenli:'🛡️ GÜVENLİ',dengeli:'⚖️ DENGELİ',agresif:'🚀 AGRESİF'}[currentMode];
   return `<b>${modeLabel} MOD · ${n*10} TL (${n} KOLON)</b><br><br>`+
-   (c.list.length?'<b>Kapanacak maçlar:</b><br>'+c.list.map(([u,i])=>`#${i+1} ${matchesData[i].home} - ${matchesData[i].away}: <b style="color:var(--orange)">${u.map(o=>SYM[o]).join('-')}</b>`).join('<br>')+'<br><br>':'Kapama yok.<br><br>')+
+   (c.list.length?'<b>Kapanacak maçlar:</b><br>'+c.list.map(([u,i])=>`#${i+1} ${matchesData[i].home} - ${matchesData[i].away}: <b style="color:var(--orange)">${u.map(o=>codeToSym(o)).join('-')}</b>`).join('<br>')+'<br><br>':'Kapama yok.<br><br>')+
    `15/15: <b class="green">%${(cov*100).toFixed(3)}</b><br>
    Redüksiyon: <b class="green">${(cov/r[0].p).toFixed(1)}×</b><br><br>
    <button onclick="switchTab(0,document.querySelector('.tab'));generate()">Kuponu Oluştur</button>`;
@@ -651,9 +630,9 @@ function analyze(i){
   s+=`${m.form}<br><br>`;
   s+=`Olasılıklar: 1: %${pc(p[0])} · 0: %${pc(p[1])} · 2: %${pc(p[2])}<br><br>`;
   s+=`🎯 En olası: <b>${outName(m,o[0])}</b> (adil ${(1/mx).toFixed(2)})<br>`;
-  s+=`📊 Çift şans ${SYM[o[0]]}-${SYM[o[1]]}: %${pc(dc)}<br>`;
+  s+=`📊 Çift şans ${codeToSym(o[0])}-${codeToSym(o[1])}: %${pc(dc)}<br>`;
   if(p[1]>=.28)s+=`⚠️ Beraberlik yüksek: %${pc(p[1])}<br>`;
-  s+=`<br><b>💡 Öneri:</b> `+(mx>=.7?`Tek <b>${SYM[o[0]]}</b>.`:mx>=.55?`<b>${SYM[o[0]]}</b> + <b>${SYM[o[1]]}</b>.`:`<b>${SYM[o[0]]}-${SYM[o[1]]}</b> çift şans.`);
+  s+=`<br><b>💡 Öneri:</b> `+(mx>=.7?`Tek <b>${codeToSym(o[0])}</b>.`:mx>=.55?`<b>${codeToSym(o[0])}</b> + <b>${codeToSym(o[1])}</b>.`:`<b>${codeToSym(o[0])}-${codeToSym(o[1])}</b> çift şans.`);
   return s;
 }
 
