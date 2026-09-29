@@ -222,7 +222,7 @@ let currentMode='guvenli';
 let userPicks = {};
 let savedCoupons = JSON.parse(localStorage.getItem('skorlab_coupons') || '[]');
 
-const SYM=["1","0","2","","","","","","","", "1X", "", "", "", "", "", "", "", "", "12", "", "", "", "", "", "", "", "", "", "X2"];
+const SYM=["1","0","2"];
 const $=id=>document.getElementById(id);
 const pc=x=>(x*100).toFixed(1);
 const ordr=i=>[0,1,2].sort((a,b)=>PR[i][b]-PR[i][a]);
