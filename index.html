@@ -14,7 +14,7 @@ header{padding:24px 20px 20px;text-align:center}
 header h1{font-size:1.6rem;font-weight:900;letter-spacing:-.5px;background:linear-gradient(135deg,#fff 0%,#a5b4c8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px}
 header p{font-size:.78rem;color:var(--muted);font-weight:500}
 .tabs{display:flex;background:var(--card2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}
-.tab{flex:1;text-align:center;padding:16px 4px;font-size:.68rem;font-weight:700;color:var(--muted);cursor:pointer;position:relative;transition:color .2s}
+.tab{flex:1;text-align:center;padding:16px 2px;font-size:.62rem;font-weight:700;color:var(--muted);cursor:pointer;position:relative;transition:color .2s}
 .tab .tab-num{display:block;font-size:.85rem;font-weight:900;margin-bottom:2px}
 .tab.active{color:var(--green)}
 .tab.active::after{content:"";position:absolute;bottom:0;left:20%;right:20%;height:3px;background:var(--green);border-radius:3px 3px 0 0;box-shadow:0 0 12px var(--green)}
@@ -149,8 +149,6 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .confirm-buttons button{padding:13px}
 .confirm-buttons .cancel{background:var(--bg2);color:var(--muted);border:1px solid var(--border)}
 .confirm-buttons .danger{background:linear-gradient(135deg,#ff4d5e,#d63447);color:#fff;box-shadow:0 6px 20px rgba(255,77,94,.3)}
-
-/* ===== SONUÇ TAKİBİ ===== */
 .result-status{padding:8px 12px;border-radius:8px;font-size:.75rem;font-weight:800;margin-top:12px;text-align:center;border:1px solid;cursor:pointer;transition:all .2s}
 .result-status.waiting{background:rgba(255,176,32,.1);color:var(--orange);border-color:rgba(255,176,32,.3)}
 .result-status.win{background:rgba(0,224,122,.15);color:var(--green);border-color:rgba(0,224,122,.3)}
@@ -161,6 +159,24 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .result-match .ok{color:var(--green);font-weight:800;font-size:1.1rem}
 .result-match .no{color:var(--red);font-weight:800;font-size:1.1rem}
 .result-match .pred{color:var(--muted);font-size:.7rem}
+
+/* ===== ARŞİV ===== */
+.archive-week{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;cursor:pointer;transition:all .2s}
+.archive-week:active{transform:scale(.98)}
+.archive-week .week-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.archive-week .week-title{color:var(--green);font-weight:900;font-size:1rem}
+.archive-week .week-info{color:var(--muted);font-size:.75rem;line-height:1.6}
+.archive-week .week-info b{color:var(--orange)}
+.archive-match{display:flex;justify-content:space-between;padding:6px 0;font-size:.78rem;border-bottom:1px solid var(--border)}
+.archive-match:last-child{border:none}
+.archive-match b{color:var(--text)}
+.archive-match .result{font-weight:900;color:var(--green);background:rgba(0,224,122,.15);padding:2px 8px;border-radius:5px;font-size:.75rem}
+.archive-match .result.x{color:var(--orange);background:rgba(255,176,32,.15)}
+.archive-match .result.two{color:var(--red);background:rgba(255,77,94,.15)}
+.ikramiye-row{display:flex;justify-content:space-between;padding:6px 0;font-size:.78rem;border-bottom:1px solid var(--border)}
+.ikramiye-row:last-child{border:none}
+.ikramiye-row .place{font-weight:800;color:var(--text)}
+.ikramiye-row .amount{color:var(--green);font-weight:800}
 </style>
 </head>
 <body>
@@ -176,6 +192,7 @@ button:disabled{opacity:.4;cursor:not-allowed}
   <div class="tab" onclick="switchTab(1,this)"><span class="tab-num">02</span>Bankobot</div>
   <div class="tab" onclick="switchTab(2,this)"><span class="tab-num">03</span>Monte Carlo</div>
   <div class="tab" onclick="switchTab(3,this)"><span class="tab-num">04</span>Kuponum</div>
+  <div class="tab" onclick="switchTab(4,this)"><span class="tab-num">05</span>Arşiv</div>
 </nav>
 
 <div class="container">
@@ -247,6 +264,18 @@ button:disabled{opacity:.4;cursor:not-allowed}
         Henüz kupon oluşturmadın.<br><br>
         📌 Bülten sekmesinden maçlara tıklayarak seçim yap,<br>
         sonra alttaki "Kuponu Kaydet" butonuna bas.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-4">
+  <div class="card">
+    <div class="result-title">📅 GEÇMİŞ HAFTALAR</div>
+    <div id="archiveContent">
+      <div class="coupon-empty">
+        Henüz arşivde hafta yok.<br><br>
+        Maçlar oynandıkça geçmiş haftalar burada görünecek.
       </div>
     </div>
   </div>
@@ -345,22 +374,16 @@ button:disabled{opacity:.4;cursor:not-allowed}
     <div style="font-size:.78rem;line-height:1.8;color:var(--text)">
       <p style="margin-bottom:12px"><b style="color:var(--green)">📌 Uygulama Amacı</b><br>
       SkorLab, spor müsabakaları için <b>istatistiksel analiz</b> ve <b>matematiksel modelleme</b> sunan bir araçtır. Sadece <b>bilgilendirme amaçlıdır</b>.</p>
-      
       <p style="margin-bottom:12px"><b style="color:var(--green)">🚫 Garanti Yoktur</b><br>
       Uygulamadaki tahminler, olasılıklar ve analizler <b>kesin sonuç garantisi vermez</b>. Spor müsabakalarında <b>sürprizler</b> her zaman mümkündür.</p>
-      
       <p style="margin-bottom:12px"><b style="color:var(--green)">⚖️ Yasal Sorumluluk</b><br>
       SkorLab, <b>yasal bahis hizmeti sunmaz</b>. Kullanıcıların yaptığı bahislerden doğacak <b>hiçbir maddi/manevi sorumluluk</b> kabul edilmez.</p>
-      
       <p style="margin-bottom:12px"><b style="color:var(--green)">🔞 Yaş Sınırı</b><br>
       Bu uygulama <b>18 yaşından büyük</b> kullanıcılar içindir.</p>
-      
       <p style="margin-bottom:12px"><b style="color:var(--green)">💰 Bağımlılık Riski</b><br>
       Bahis oynamak <b>bağımlılık</b> yapabilir. Kaybetme riskini göze alamayacağınız miktarlarla oynamayın.</p>
-      
       <p style="margin-bottom:12px"><b style="color:var(--green)">🔒 Gizlilik</b><br>
       SkorLab <b>hiçbir kişisel bilgi toplamaz</b>. Kuponlar <b>sadece cihazınızda</b> saklanır.</p>
-      
       <p style="border-top:1px solid var(--border);padding-top:12px;font-size:.72rem;color:var(--muted)">
       Uygulamayı kullanarak yukarıdaki şartları <b>kabul etmiş</b> sayılırsınız.</p>
     </div>
@@ -388,6 +411,7 @@ let activeOptimizeIndex = null;
 let deleteTargetIdx = null;
 let suggestMode = 'guvenli';
 let resultsData = { weeks: [] };
+let archiveData = { weeks: [] };
 
 const SYM=["1","0","2"];
 const $=id=>document.getElementById(id);
@@ -419,6 +443,7 @@ async function loadMatches(){
     document.body.innerHTML='<div style="padding:20px;color:#ff4d5e;font-size:.9rem">⚠️ matches.json yüklenemedi.<br><br>Hata: '+e.message+'</div>';
   }
   loadResults();
+  loadArchive();
 }
 
 async function loadResults(){
@@ -431,6 +456,18 @@ async function loadResults(){
     resultsData = { weeks: [] };
   }
   renderCoupons();
+}
+
+async function loadArchive(){
+  try{
+    const res = await fetch('arsiv.json');
+    const raw = await res.json();
+    archiveData = raw;
+  }catch(e){
+    console.warn('arsiv.json yüklenemedi:', e.message);
+    archiveData = { weeks: [] };
+  }
+  renderArchive();
 }
 
 function guessP(poisson){
@@ -748,6 +785,68 @@ function renderCoupons(){
         ${resultHTML}
       </div>`;
   }).join('') + `</div>`;
+}
+
+/* ===== ARŞİV ===== */
+function renderArchive(){
+  const container = $('archiveContent');
+  if(!container) return;
+  if(!archiveData || !archiveData.weeks || archiveData.weeks.length === 0){
+    container.innerHTML = `
+      <div class="coupon-empty">
+        Henüz arşivde hafta yok.<br><br>
+        Maçlar oynandıkça geçmiş haftalar burada görünecek.
+      </div>`;
+    return;
+  }
+  container.innerHTML = archiveData.weeks.map((w, idx) => {
+    const matchCount = w.matches ? w.matches.length : 0;
+    const hasResults = w.matches && w.matches.every(m => m.result);
+    const ikramiye = w.ikramiye ? '💰 İkramiye bilgisi mevcut' : '';
+    return `
+      <div class="archive-week" onclick="showArchiveWeek(${idx})">
+        <div class="week-head">
+          <span class="week-title">📅 ${w.week}</span>
+        </div>
+        <div class="week-info">
+          <b>${matchCount}</b> maç · ${hasResults ? '✅ Sonuçlar mevcut' : '⏳ Sonuç bekleniyor'}<br>
+          ${ikramiye}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function showArchiveWeek(idx){
+  const week = archiveData.weeks[idx];
+  if(!week) return;
+  let html = `<div style="margin-bottom:14px;text-align:center"><b style="color:var(--green);font-size:1.1rem">📅 ${week.week}</b></div>`;
+  html += `<div style="font-weight:800;color:var(--green);margin-bottom:8px;font-size:.85rem">⚽ MAÇLAR</div>`;
+  if(week.matches && week.matches.length > 0){
+    week.matches.forEach(m => {
+      const cls = m.result === '1' ? '' : (m.result === 'X' ? 'x' : 'two');
+      html += `
+        <div class="archive-match">
+          <span><b>#${m.id}</b> ${m.home} - ${m.away}</span>
+          <span class="result ${cls}">${m.result || '?'}</span>
+        </div>`;
+    });
+  }
+  if(week.ikramiye){
+    html += `<div style="font-weight:800;color:var(--orange);margin:16px 0 8px;font-size:.85rem">💰 İKRAMİYE DAĞILIMI</div>`;
+    ['15','14','13','12'].forEach(k => {
+      const ik = week.ikramiye[k];
+      if(ik){
+        html += `
+          <div class="ikramiye-row">
+            <span class="place">${k} Bilen (${ik.kisi.toLocaleString('tr')} kişi)</span>
+            <span class="amount">${ik.tutar.toLocaleString('tr')} TL</span>
+          </div>`;
+      }
+    });
+  }
+  $('resultModalTitle').innerText = '📅 Arşiv Detayı';
+  $('resultModalBody').innerHTML = html;
+  $('resultModal').classList.add('active');
 }
 
 /* ===== SONUÇ TAKİBİ ===== */
