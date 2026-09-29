@@ -4,8 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SkorLab Quiz</title>
-<!-- Soruları en başta yüklüyoruz -->
-<script src="sorular.js"></script>
 <style>
 :root{--bg:#070b14;--bg2:#0d1420;--card:#111a2b;--card2:#0a121f;--border:#1e2c47;--border2:#2a3d5c;--text:#f1f5fb;--muted:#7d8ba5;--green:#00e07a;--green2:#00b863;--green-dim:rgba(0,224,122,.12);--orange:#ffb020;--red:#ff4d5e;--blue:#3d8bff;--radius:16px}
 *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
@@ -226,6 +224,12 @@ button:active{transform:scale(.97)}
    SKORLAB QUIZ - OYUN MANTIĞI
    ============================================================ */
 
+// TÜM 400 SORU BURAYA GÖMÜLÜ (Artık ayrı dosya yok!)
+window.sorularVerisi = [
+  // BURAYA SENİN 400 SORUNUN TAMAMI GELECEK
+  // (sorular.js dosyasındaki tüm içeriği buraya kopyala)
+];
+
 let tumSorular = [];
 let oyunSorulari = [];
 let mevcutSoruIdx = 0;
@@ -247,31 +251,17 @@ const SKORLAB_URL = 'https://emrahmeltem90-ux.github.io/bilyonvip';
 const $ = id => document.getElementById(id);
 
 /* ============================================================
-   SORULARI YÜKLE (KESİN ÇÖZÜM)
+   SORULARI YÜKLE (Artık gömülü veriyi okuyor)
    ============================================================ */
 function sorulariYukle(){
-  // Bu fonksiyon sadece window.sorularVerisi'ni kontrol eder.
-  // Eğer sorular.js düzgün yüklendiyse burası çalışır.
-  
   if (typeof window.sorularVerisi !== 'undefined' && window.sorularVerisi.length > 0) {
     tumSorular = window.sorularVerisi;
     $('havuzBoyut').innerText = tumSorular.length;
     console.log('✅ ' + tumSorular.length + ' soru başarıyla yüklendi.');
   } else {
-    // Eğer sorular.js yüklenmediyse, alternatif olarak fetch ile deneyelim (yedek plan)
-    console.warn('sorular.js bulunamadı, fetch ile deneniyor...');
-    fetch('sorular.json')
-      .then(res => res.json())
-      .then(data => {
-        tumSorular = data.sorular || [];
-        $('havuzBoyut').innerText = tumSorular.length;
-        console.log('✅ (Yedek) ' + tumSorular.length + ' soru yüklendi.');
-      })
-      .catch(err => {
-        console.error('❌ Hata: Ne sorular.js ne de sorular.json yüklenebildi!', err);
-        $('havuzBoyut').innerText = '0';
-        alert("Kritik Hata: Sorular yüklenemedi. Lütfen dosya adlarını ve konumlarını kontrol edin.");
-      });
+    console.error('❌ Gömülü soru bulunamadı!');
+    $('havuzBoyut').innerText = '0';
+    alert("Hata: Gömülü sorular bulunamadı. Lütfen kodu kontrol edin.");
   }
 }
 
@@ -318,14 +308,14 @@ function soruGoster(){
   
   $('qNum').innerText = `SORU ${mevcutSoruIdx + 1}/${SORU_SAYISI}`;
   $('qScore').innerText = `🎯 ${puan}`;
-  $('qCategory').innerText = (soru.kategori || soru.category || 'GENEL').toUpperCase();
-  $('qText').innerText = soru.soru || soru.q || 'Soru yüklenemedi';
+  $('qCategory').innerText = (soru.kategori || 'GENEL').toUpperCase();
+  $('qText').innerText = soru.soru || 'Soru yüklenemedi';
   
   const container = $('answersContainer');
   container.innerHTML = '';
   const letters = ['A', 'B', 'C', 'D'];
   
-  const secenekler = soru.secenekler || soru.options || soru.secenek || [];
+  const secenekler = soru.secenekler || [];
   
   secenekler.forEach((sec, i) => {
     const btn = document.createElement('div');
@@ -382,7 +372,7 @@ function timerGuncelle(){
 function sureBitti(){
   yanlisSayisi++;
   const soru = oyunSorulari[mevcutSoruIdx];
-  const dogruIndex = soru.dogru !== undefined ? soru.dogru : (soru.correct !== undefined ? soru.correct : soru.doğru);
+  const dogruIndex = soru.dogru;
   
   document.querySelectorAll('.answer').forEach((el, i) => {
     el.classList.add('disabled');
@@ -408,7 +398,7 @@ function cevapla(secim, btn){
   const gecenSure = Math.min(SURE, Math.round((Date.now() - soruBaslangicZamani) / 1000));
   toplamSure += gecenSure;
   
-  const dogruIndex = soru.dogru !== undefined ? soru.dogru : (soru.correct !== undefined ? soru.correct : soru.doğru);
+  const dogruIndex = soru.dogru;
   
   document.querySelectorAll('.answer').forEach((el, i) => {
     el.classList.add('disabled');
@@ -419,7 +409,7 @@ function cevapla(secim, btn){
     btn.classList.add('correct');
     dogruSayisi++;
     
-    const zorluk = soru.zorluk || soru.level || 'orta';
+    const zorluk = soru.zorluk || 'orta';
     let puanKazanci = 10;
     if(zorluk === 'kolay') puanKazanci = 5;
     else if(zorluk === 'zor') puanKazanci = 15;
@@ -453,7 +443,7 @@ function useFiftyFifty(){
   $('jokerFifty').classList.add('used');
   
   const soru = oyunSorulari[mevcutSoruIdx];
-  const dogruIndex = soru.dogru !== undefined ? soru.dogru : (soru.correct !== undefined ? soru.correct : soru.doğru);
+  const dogruIndex = soru.dogru;
   const yanlislar = [0,1,2,3].filter(i => i !== dogruIndex);
   const silinecekler = [...yanlislar].sort(() => Math.random() - 0.5).slice(0, 2);
   
@@ -679,9 +669,7 @@ function closeModal(){
 /* ============================================================
    BAŞLANGIÇ
    ============================================================ */
-// Sayfa yüklendiğinde çalışacak
 window.addEventListener('load', () => {
-  // Soruları yüklemeyi dene
   sorulariYukle();
 });
 </script>
