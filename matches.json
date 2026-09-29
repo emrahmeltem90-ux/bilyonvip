@@ -1,395 +1,80 @@
 {
-  "last_updated": "2026-09-29",
-  "matches": [
-    {
-      "id": 1,
-      "league": "UEFA Uluslar Ligi",
-      "home_team": "Belçika",
-      "away_team": "Türkiye",
-      "date": "02 Eki",
-      "time": "21:45",
-      "p": [
-        56.2,
-        25.0,
-        18.8
-      ],
-      "form": "Belçika evinde güçlü.",
-      "series": [
-        "W",
-        "D",
-        "W",
-        "L",
-        "W"
-      ],
-      "poisson": {
-        "prediction": "MS 1",
-        "rate": "%56",
-        "confidence": "%78"
-      }
-    },
-    {
-      "id": 2,
-      "league": "UEFA Uluslar Ligi",
-      "home_team": "İtalya",
-      "away_team": "Türkiye",
-      "date": "05 Eki",
-      "time": "21:45",
-      "p": [
-        38.6,
-        27.4,
-        34.0
-      ],
-      "form": "İtalya evinde hafif favori.",
-      "series": [
-        "W",
-        "W",
-        "D",
-        "W",
-        "L"
-      ],
-      "poisson": {
-        "prediction": "MS 1",
-        "rate": "%39",
-        "confidence": "%69"
-      }
-    },
-    {
-      "id": 3,
-      "league": "UEFA Uluslar Ligi",
-      "home_team": "Bosna Hersek",
-      "away_team": "İsveç",
-      "date": "02 Eki",
-      "time": "21:45",
-      "p": [
-        22.3,
-        26.4,
-        51.3
-      ],
-      "form": "İsveç deplasmanda favori.",
-      "series": [
-        "L",
-        "D",
-        "W",
-        "L",
-        "D"
-      ],
-      "poisson": {
-        "prediction": "MS 2",
-        "rate": "%51",
-        "confidence": "%76"
-      }
-    },
-    {
-      "id": 4,
-      "league": "UEFA Uluslar Ligi",
-      "home_team": "Fransa",
-      "away_team": "İtalya",
-      "date": "02 Eki",
-      "time": "21:45",
-      "p": [
-        64.4,
-        23.5,
-        12.0
-      ],
-      "form": "Fransa net favori.",
-      "series": [
-        "W",
-        "W",
-        "D",
-        "W",
-        "W"
-      ],
-      "poisson": {
-        "prediction": "MS 1",
-        "rate": "%64",
-        "confidence": "%82"
-      }
-    },
-    {
-      "id": 5,
-      "league": "UEFA Uluslar Ligi",
-      "home_team": "Macaristan",
-      "away_team": "Gürcistan",
-      "date": "02 Eki",
-      "time": "21:45",
-      "p": [
-        47.1,
-        27.2,
-        25.6
-      ],
-      "form": "Macaristan evinde favori.",
-      "series": [
-        "W",
-        "D",
-        "L",
-        "W",
-        "D"
-      ],
-      "poisson": {
-        "prediction": "MS 1",
-        "rate": "%47",
-        "confidence": "%74"
-      }
-    },
-    {
-      "id": 6,
-      "league": "UEFA Uluslar Ligi",
-      "home_team": "Polonya",
-      "away_team": "Romanya",
-      "date": "02 Eki",
-      "time": "21:45",
-      "p": [
-        51.9,
-        26.0,
-        22.1
-      ],
-      "form": "Polonya evinde güçlü.",
-      "series": [
-        "W",
-        "W",
-        "D",
-        "L",
-        "W"
-      ],
-      "poisson": {
-        "prediction": "MS 1",
-        "rate": "%52",
-        "confidence": "%76"
-      }
-    },
-    {
-      "id": 7,
-      "league": "UEFA Uluslar Ligi",
-      "home_team": "Hırvatistan",
-      "away_team": "İngiltere",
-      "date": "03 Eki",
-      "time": "19:00",
-      "p": [
-        34.0,
-        27.6,
-        38.4
-      ],
-      "form": "Dengeli maç.",
-      "series": [
-        "D",
-        "W",
-        "L",
-        "W",
-        "D"
-      ],
-      "poisson": {
-        "prediction": "MS 2",
-        "rate": "%38",
-        "confidence": "%69"
-      }
-    },
-    {
-      "id": 8,
-      "league": "UEFA Uluslar Ligi",
-      "home_team": "Kuzey Makedonya",
-      "away_team": "İskoçya",
-      "date": "03 Eki",
-      "time": "21:45",
-      "p": [
-        28.7,
-        27.8,
-        43.4
-      ],
-      "form": "İskoçya favori.",
-      "series": [
-        "L",
-        "D",
-        "L",
-        "W",
-        "D"
-      ],
-      "poisson": {
-        "prediction": "MS 2",
-        "rate": "%43",
-        "confidence": "%72"
-      }
-    },
-    {
-      "id": 9,
-      "league": "UEFA Uluslar Ligi",
-      "home_team": "İspanya",
-      "away_team": "Çekya",
-      "date": "03 Eki",
-      "time": "21:45",
-      "p": [
-        69.3,
-        20.8,
-        9.9
-      ],
-      "form": "İspanya net favori.",
-      "series": [
-        "W",
-        "W",
-        "W",
-        "D",
-        "W"
-      ],
-      "poisson": {
-        "prediction": "MS 1",
-        "rate": "%69",
-        "confidence": "%85"
-      }
-    },
-    {
-      "id": 10,
-      "league": "UEFA Uluslar Ligi",
-      "home_team": "İsviçre",
-      "away_team": "Slovenya",
-      "date": "03 Eki",
-      "time": "21:45",
-      "p": [
-        50.6,
-        26.1,
-        23.3
-      ],
-      "form": "İsviçre evinde favori.",
-      "series": [
-        "W",
-        "D",
-        "W",
-        "W",
-        "L"
-      ],
-      "poisson": {
-        "prediction": "MS 1",
-        "rate": "%51",
-        "confidence": "%75"
-      }
-    },
-    {
-      "id": 11,
-      "league": "UEFA Uluslar Ligi",
-      "home_team": "Galler",
-      "away_team": "Danimarka",
-      "date": "04 Eki",
-      "time": "21:45",
-      "p": [
-        32.9,
-        27.7,
-        39.4
-      ],
-      "form": "Danimarka hafif favori.",
-      "series": [
-        "D",
-        "L",
-        "W",
-        "D",
-        "W"
-      ],
-      "poisson": {
-        "prediction": "MS 2",
-        "rate": "%39",
-        "confidence": "%70"
-      }
-    },
-    {
-      "id": 12,
-      "league": "UEFA Uluslar Ligi",
-      "home_team": "Hollanda",
-      "away_team": "Sırbistan",
-      "date": "04 Eki",
-      "time": "21:45",
-      "p": [
-        55.7,
-        25.0,
-        19.3
-      ],
-      "form": "Hollanda favori.",
-      "series": [
-        "W",
-        "W",
-        "D",
-        "W",
-        "W"
-      ],
-      "poisson": {
-        "prediction": "MS 1",
-        "rate": "%56",
-        "confidence": "%78"
-      }
-    },
-    {
-      "id": 13,
-      "league": "UEFA Uluslar Ligi",
-      "home_team": "Portekiz",
-      "away_team": "Norveç",
-      "date": "04 Eki",
-      "time": "21:45",
-      "p": [
-        57.3,
-        25.0,
-        17.6
-      ],
-      "form": "Portekiz güçlü.",
-      "series": [
-        "W",
-        "D",
-        "W",
-        "W",
-        "D"
-      ],
-      "poisson": {
-        "prediction": "MS 1",
-        "rate": "%57",
-        "confidence": "%79"
-      }
-    },
-    {
-      "id": 14,
-      "league": "UEFA Uluslar Ligi",
-      "home_team": "Yunanistan",
-      "away_team": "Almanya",
-      "date": "04 Eki",
-      "time": "21:45",
-      "p": [
-        31.8,
-        27.8,
-        40.4
-      ],
-      "form": "Almanya favori.",
-      "series": [
-        "D",
-        "W",
-        "L",
-        "D",
-        "W"
-      ],
-      "poisson": {
-        "prediction": "MS 2",
-        "rate": "%40",
-        "confidence": "%70"
-      }
-    },
-    {
-      "id": 15,
-      "league": "UEFA Uluslar Ligi",
-      "home_team": "Fransa",
-      "away_team": "Belçika",
-      "date": "05 Eki",
-      "time": "21:45",
-      "p": [
-        46.5,
-        26.8,
-        26.8
-      ],
-      "form": "Fransa hafif favori.",
-      "series": [
-        "W",
-        "W",
-        "D",
-        "W",
-        "W"
-      ],
-      "poisson": {
-        "prediction": "MS 1",
-        "rate": "%46",
-        "confidence": "%73"
-      }
-    }
-  ]
+    "last_updated": "2026-09-29 12:18:02",
+    "matches": [
+        {
+            "id": 1,
+            "league": "TFF 2. Lig • Beyaz Grup",
+            "home_team": "Serik Spor",
+            "away_team": "Fethiyespor",
+            "score": "0 - 1",
+            "minute": "MS",
+            "date": "27.09.2026",
+            "time": "19:00",
+            "poisson": {
+                "prediction": "MS 2",
+                "rate": "%64",
+                "confidence": "%82"
+            }
+        },
+        {
+            "id": 2,
+            "league": "UEFA Uluslar Lig • Grup A2",
+            "home_team": "Almanya",
+            "away_team": "Yunanistan",
+            "score": "0 - 0",
+            "minute": "69'",
+            "date": "27.09.2026",
+            "time": "21:45",
+            "poisson": {
+                "prediction": "MS 1",
+                "rate": "%55",
+                "confidence": "%78"
+            }
+        },
+        {
+            "id": 3,
+            "league": "UEFA Uluslar Lig • Grup A4",
+            "home_team": "Norveç",
+            "away_team": "Portekiz",
+            "score": "1 - 2",
+            "minute": "66'",
+            "date": "27.09.2026",
+            "time": "21:45",
+            "poisson": {
+                "prediction": "MS 2",
+                "rate": "%71",
+                "confidence": "%89"
+            }
+        },
+        {
+            "id": 4,
+            "league": "UEFA Uluslar Lig • Grup A2",
+            "home_team": "Sırbistan",
+            "away_team": "Hollanda",
+            "score": "1 - 2",
+            "minute": "MS",
+            "date": "27.09.2026",
+            "time": "21:45",
+            "poisson": {
+                "prediction": "MS 2",
+                "rate": "%58",
+                "confidence": "%81"
+            }
+        },
+        {
+            "id": 5,
+            "league": "UEFA Uluslar Lig • Grup B3",
+            "home_team": "Avusturya",
+            "away_team": "Kosova",
+            "score": "3 - 1",
+            "minute": "MS",
+            "date": "27.09.2026",
+            "time": "21:45",
+            "poisson": {
+                "prediction": "MS 1",
+                "rate": "%80",
+                "confidence": "%92"
+            }
+        }
+    ]
 }
