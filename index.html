@@ -362,7 +362,8 @@ function saveCoupon(){
   const couponData = {
     date: new Date().toLocaleDateString('tr-TR') + ' ' + new Date().toLocaleTimeString('tr-TR', {hour: '2-digit', minute:'2-digit'}),
     picks: {...userPicks},
-    totalMatches: keys.length
+    totalMatches: keys.length,
+    optimized: false
   };
   savedCoupons.unshift(couponData);
   localStorage.setItem('skorlab_coupons', JSON.stringify(savedCoupons));
@@ -409,13 +410,14 @@ function renderCoupons(){
     return `
       <div class="coupon-card">
         <div class="head">
-          <span class="week">KUPON #${savedCoupons.length - idx} · ${coupon.date}</span>
+          <span class="week">KUPON #${savedCoupons.length - idx} · ${coupon.date} ${coupon.optimized ? '<span style="background:rgba(255,176,32,.15);color:var(--orange);padding:3px 8px;border-radius:6px;font-size:.6rem;font-weight:800;margin-left:6px">⚡ OPTİMİZE</span>' : ''}</span>
           <button onclick="deleteCoupon(${idx})" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:.8rem;padding:2px 6px;">🗑️ Sil</button>
         </div>
         <div class="picks">${picksHtml}</div>
         <div style="margin-top:10px;font-size:.75rem;color:var(--green);font-weight:700">
           Tahmini Kazanma İhtimali: %${analysis.prob.toFixed(2)} (${analysis.count} Maç)
         </div>
+        <button onclick="optimizeCoupon(${idx})" style="margin-top:10px;background:var(--bg2);color:var(--green);border:1px solid var(--green);font-size:.75rem;padding:10px">💰 Bütçeye Göre Optimize Et</button>
       </div>`;
   }).join('') + `</div>`;
 }
@@ -425,6 +427,90 @@ function deleteCoupon(idx){
   savedCoupons.splice(idx, 1);
   localStorage.setItem('skorlab_coupons', JSON.stringify(savedCoupons));
   renderCoupons();
+}
+
+function optimizeCoupon(couponIdx){
+  const coupon = savedCoupons[couponIdx];
+  const butceStr = prompt('Bütçen kaç TL? (Örn: 200)', '200');
+  if(!butceStr) return;
+  const butce = parseInt(butceStr);
+  if(!butce || butce < 10){
+    alert('Bütçe en az 10 TL olmalı.');
+    return;
+  }
+  
+  const maxKolon = Math.floor(butce / 10);
+  
+  // Mevcut kolon sayısını hesapla
+  let mevcutKolon = 1;
+  for(let mIdx in coupon.picks){
+    let choices = 0;
+    coupon.picks[mIdx].forEach(c => {
+      if(c === 0 || c === 1 || c === 2) choices += 1;
+      else if(c === 10 || c === 12 || c === 20) choices += 2;
+    });
+    mevcutKolon *= choices;
+  }
+  
+  // Bütçe yeterli mi?
+  if(mevcutKolon * 10 <= butce){
+    alert(`✅ Mevcut kuponun (${mevcutKolon} kolon · ${mevcutKolon * 10} TL) bütçene uyuyor!\n\nKalan: ${butce - mevcutKolon * 10} TL`);
+    return;
+  }
+  
+  // Bütçeye göre optimize et
+  const optimizedPicks = JSON.parse(JSON.stringify(coupon.picks));
+  
+  // Maçları olasılık sırasına göre diz (en düşükten yükseğe)
+  const matchIndices = Object.keys(optimizedPicks).map(Number);
+  matchIndices.sort((a,b) => topP(a) - topP(b));
+  
+  // Çift şansları tek seçime indir, bütçeye sığana kadar
+  let currentKolon = mevcutKolon;
+  
+  for(const mIdx of matchIndices){
+    if(currentKolon <= maxKolon) break;
+    
+    const picks = optimizedPicks[mIdx];
+    // Çift şans varsa
+    if(picks.length === 1 && picks[0] >= 10){
+      let tekPick = 0;
+      if(picks[0] === 10) tekPick = PR[mIdx][0] > PR[mIdx][1] ? 0 : 1;
+      else if(picks[0] === 12) tekPick = PR[mIdx][0] > PR[mIdx][2] ? 0 : 2;
+      else if(picks[0] === 20) tekPick = PR[mIdx][1] > PR[mIdx][2] ? 1 : 2;
+      
+      optimizedPicks[mIdx] = [tekPick];
+      currentKolon = Math.floor(currentKolon / 2);
+    }
+  }
+  
+  // Sonuç kolon hesapla
+  let finalKolon = 1;
+  for(let mIdx in optimizedPicks){
+    let choices = 0;
+    optimizedPicks[mIdx].forEach(c => {
+      if(c === 0 || c === 1 || c === 2) choices += 1;
+      else if(c === 10 || c === 12 || c === 20) choices += 2;
+    });
+    finalKolon *= choices;
+  }
+  
+  const finalTutar = finalKolon * 10;
+  
+  const optimizedCoupon = {
+    date: new Date().toLocaleDateString('tr-TR') + ' ' + new Date().toLocaleTimeString('tr-TR', {hour: '2-digit', minute:'2-digit'}),
+    picks: optimizedPicks,
+    totalMatches: Object.keys(optimizedPicks).length,
+    optimized: true,
+    originalKolon: mevcutKolon,
+    butce: butce
+  };
+  
+  savedCoupons.unshift(optimizedCoupon);
+  localStorage.setItem('skorlab_coupons', JSON.stringify(savedCoupons));
+  renderCoupons();
+  
+  alert(`✅ Kupon optimize edildi!\n\n📊 Eski: ${mevcutKolon} kolon (${mevcutKolon*10} TL)\n📊 Yeni: ${finalKolon} kolon (${finalTutar} TL)\n💰 Bütçe: ${butce} TL\n🎯 Kalan: ${butce - finalTutar} TL`);
 }
 
 function switchTab(i,el){
