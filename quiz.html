@@ -2,193 +2,209 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SkorLab Quiz</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Saha Bilgini</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Permanent+Marker&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#070b14;--bg2:#0d1420;--card:#111a2b;--card2:#0a121f;--border:#1e2c47;--border2:#2a3d5c;--text:#f1f5fb;--muted:#7d8ba5;--green:#00e07a;--green2:#00b863;--green-dim:rgba(0,224,122,.12);--orange:#ffb020;--red:#ff4d5e;--blue:#3d8bff;--radius:16px}
-*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
-body{background:var(--bg);color:var(--text);min-height:100vh;padding:16px;background-image:radial-gradient(circle at 50% 0%, rgba(0,224,122,.08) 0%, transparent 50%);overflow-x:hidden}
-.container{max-width:600px;margin:auto;min-height:calc(100vh - 32px);display:flex;flex-direction:column}
-.screen{display:none;animation:fade .3s ease;flex:1}
-.screen.active{display:flex;flex-direction:column}
-@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.logo{text-align:center;padding:20px 0;margin-bottom:16px}
-.logo-badge{display:inline-flex;align-items:center;gap:8px;background:var(--green-dim);border:1px solid rgba(0,224,122,.3);color:var(--green);padding:6px 14px;border-radius:20px;font-size:.7rem;font-weight:700;letter-spacing:.5px;margin-bottom:12px}
-.logo-badge::before{content:"";width:6px;height:6px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green)}
-.logo h1{font-size:2rem;font-weight:900;letter-spacing:-1px;background:linear-gradient(135deg,#fff 0%,#a5b4c8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
-.logo p{font-size:.85rem;color:var(--muted);font-weight:500}
-.card{background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:14px;position:relative;overflow:hidden}
-.card::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent)}
-button{width:100%;padding:16px;border:0;border-radius:12px;background:linear-gradient(135deg,var(--green),var(--green2));color:#04140c;font-size:1rem;font-weight:800;cursor:pointer;letter-spacing:.3px;transition:transform .15s,box-shadow .2s;box-shadow:0 6px 20px rgba(0,224,122,.25);margin-bottom:10px}
-button:active{transform:scale(.97)}
-.btn-secondary{background:var(--bg2);color:var(--text);border:1px solid var(--border);box-shadow:none}
-.info-box{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px}
-.info-row{display:flex;justify-content:space-between;padding:8px 0;font-size:.85rem;font-weight:600;border-bottom:1px solid var(--border)}
-.info-row:last-child{border:none}
-.info-row span:first-child{color:var(--muted)}
-.info-row span:last-child{color:var(--green);font-weight:900}
+:root{--neon:#00ff88;--neon-dark:#00c96b;--black:#050505;--dark:#07100d;--white:#ffffff;--gray:#aab4c5}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:#050505;color:white;font-family:"Inter",sans-serif;min-height:100vh;overflow-x:hidden}
+.app{position:relative;width:100%;max-width:600px;min-height:100vh;margin:auto;overflow:hidden;background:#050908}
+.stadium-bg{position:fixed;inset:0;background-image:url("assets/stadium-bg.jpg");background-size:cover;background-position:center;z-index:0;transform:scale(1.05)}
+.dark-overlay{position:fixed;inset:0;background:radial-gradient(circle at 50% 25%,rgba(0,255,136,.18),transparent 40%),linear-gradient(to bottom,rgba(2,10,8,.45),#050908 80%,#050505 100%);z-index:1}
+.screen{display:none;position:relative;z-index:2;padding-bottom:100px}
+.screen.active{display:block}
+.topbar{height:82px;display:flex;align-items:center;justify-content:space-between;padding:15px 20px}
+.profile-btn,.settings-btn{width:48px;height:48px;border-radius:50%;border:1px solid rgba(0,255,136,.7);background:rgba(3,15,12,.75);color:white;font-size:21px;box-shadow:0 0 15px rgba(0,255,136,.18)}
+.player-info{display:flex;align-items:center;gap:10px;padding:9px 16px;border-radius:30px;background:rgba(2,15,12,.75);border:1px solid rgba(0,255,136,.35)}
+.player-info strong{display:block;font-size:13px;letter-spacing:.5px}
+.player-info small{display:block;margin-top:2px;color:#8f9bad;font-size:10px}
+.crown{color:var(--neon);font-size:25px}
+.content{padding:5px 20px 20px}
+.logo-area{text-align:center;padding:10px 0 20px}
+.logo-img{width:min(82vw,390px);max-height:250px;object-fit:contain;filter:drop-shadow(0 0 10px rgba(0,255,136,.5)) drop-shadow(0 0 30px rgba(0,255,136,.18))}
+.logo-text{font-size:2.5rem;font-weight:900;color:var(--neon);text-shadow:0 0 20px rgba(0,255,136,.6);letter-spacing:2px;margin-bottom:5px}
+.subtitle{margin-top:5px;font-size:13px;font-weight:800;letter-spacing:2px;color:white}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:15px;border-radius:24px;background:rgba(3,15,13,.82);border:1px solid rgba(0,255,136,.35);box-shadow:0 0 30px rgba(0,0,0,.4),inset 0 0 30px rgba(0,255,136,.03)}
+.stat-card{min-height:115px;padding:15px 10px;border-radius:18px;text-align:center;background:rgba(5,18,15,.85);border:1px solid rgba(0,255,136,.20)}
+.stat-icon{font-size:25px;margin-bottom:7px}
+.stat-card span{display:block;color:#9ca8ba;font-size:11px;font-weight:600}
+.stat-card strong{display:block;margin-top:5px;color:var(--neon);font-size:25px;font-weight:900;text-shadow:0 0 12px rgba(0,255,136,.5)}
+.main-button{position:relative;width:100%;height:72px;margin-top:20px;border:none;border-radius:24px;background:var(--neon);color:#00150b;font-size:22px;font-weight:900;display:flex;align-items:center;justify-content:center;gap:13px;box-shadow:0 0 12px rgba(0,255,136,.75),0 0 35px rgba(0,255,136,.3);cursor:pointer}
+.main-button:active{transform:scale(.97)}
+.ball{font-size:30px}
+.arrow{position:absolute;right:22px;font-size:38px;line-height:1}
+.menu-button{width:100%;height:65px;margin-top:12px;padding:0 20px;display:flex;align-items:center;gap:15px;border-radius:20px;border:1px solid rgba(0,255,136,.4);background:rgba(3,14,12,.85);color:white;font-size:16px;font-weight:800;text-align:left;cursor:pointer}
+.menu-icon{font-size:25px}
+.menu-button .arrow{margin-left:auto;position:static;color:#b8c1cc;font-size:24px}
+.slogan{padding:25px 0 5px;text-align:center}
+.slogan span{font-family:"Permanent Marker",cursive;font-size:25px;color:var(--neon);transform:rotate(-3deg);display:inline-block;text-shadow:0 0 10px rgba(0,255,136,.35)}
+.tactics{margin-top:10px;color:#839092;font-size:20px;opacity:.7}
 .question-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;font-size:.8rem;font-weight:800}
-.question-header .q-num{color:var(--orange);background:rgba(255,176,32,.1);padding:5px 12px;border-radius:8px;border:1px solid rgba(255,176,32,.2)}
-.question-header .q-score{color:var(--green);background:var(--green-dim);padding:5px 12px;border-radius:8px;border:1px solid rgba(0,224,122,.2)}
-.timer-bar{height:8px;background:var(--bg2);border-radius:10px;overflow:hidden;margin-bottom:16px;border:1px solid var(--border)}
-.timer-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--green2));width:100%;transition:width 1s linear}
-.timer-fill.warning{background:linear-gradient(90deg,var(--orange),#ff8c00)}
-.timer-fill.danger{background:linear-gradient(90deg,var(--red),#d63447)}
-.timer-text{text-align:center;font-size:.9rem;font-weight:800;color:var(--muted);margin-bottom:16px}
-.timer-text b{color:var(--green);font-size:1.2rem}
-.question-image{width:100%;max-height:220px;object-fit:contain;border-radius:12px;margin-bottom:16px;background:var(--bg2);border:1px solid var(--border)}
-.question-text{font-size:1.15rem;font-weight:800;line-height:1.5;margin-bottom:22px;color:var(--text);min-height:40px}
-.question-category{display:inline-block;font-size:.65rem;font-weight:700;color:var(--blue);background:rgba(61,139,255,.1);padding:4px 10px;border-radius:6px;border:1px solid rgba(61,139,255,.2);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
+.q-num{color:#ffb020;background:rgba(255,176,32,.1);padding:6px 14px;border-radius:8px;border:1px solid rgba(255,176,32,.3)}
+.q-score{color:var(--neon);background:rgba(0,255,136,.12);padding:6px 14px;border-radius:8px;border:1px solid rgba(0,255,136,.3)}
+.timer-bar{height:8px;background:rgba(0,255,136,.1);border-radius:10px;overflow:hidden;margin-bottom:12px;border:1px solid rgba(0,255,136,.2)}
+.timer-fill{height:100%;background:linear-gradient(90deg,var(--neon),var(--neon-dark));width:100%;transition:width 1s linear}
+.timer-fill.warning{background:linear-gradient(90deg,#ffb020,#ff8c00)}
+.timer-fill.danger{background:linear-gradient(90deg,#ff4d5e,#d63447)}
+.timer-text{text-align:center;font-size:.9rem;font-weight:800;color:#9ca8ba;margin-bottom:16px}
+.timer-text b{color:var(--neon);font-size:1.2rem}
+.question-category{display:inline-block;font-size:.65rem;font-weight:700;color:#3d8bff;background:rgba(61,139,255,.15);padding:4px 10px;border-radius:6px;border:1px solid rgba(61,139,255,.3);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
+.question-image{width:100%;max-height:220px;object-fit:contain;border-radius:12px;margin-bottom:16px;background:rgba(3,15,12,.8);border:1px solid rgba(0,255,136,.2)}
+.question-text{font-size:1.15rem;font-weight:800;line-height:1.5;margin-bottom:22px;color:white;min-height:40px}
 .answers{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
-.answer{background:var(--bg2);border:2px solid var(--border);border-radius:12px;padding:16px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .2s;text-align:left;color:var(--text);display:flex;align-items:center;gap:12px}
+.answer{background:rgba(3,15,12,.85);border:2px solid rgba(0,255,136,.2);border-radius:12px;padding:16px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .2s;text-align:left;color:white;display:flex;align-items:center;gap:12px}
 .answer:active{transform:scale(.98)}
-.answer .letter{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:var(--card);color:var(--muted);font-weight:900;font-size:.8rem;flex-shrink:0}
-.answer.correct{background:linear-gradient(135deg,var(--green),var(--green2));border-color:var(--green);color:#04140c}
-.answer.correct .letter{background:rgba(4,20,12,.15);color:#04140c}
-.answer.wrong{background:linear-gradient(135deg,var(--red),#d63447);border-color:var(--red);color:#fff}
+.answer .letter{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:rgba(0,255,136,.1);color:#9ca8ba;font-weight:900;font-size:.8rem;flex-shrink:0}
+.answer.correct{background:linear-gradient(135deg,var(--neon),var(--neon-dark));border-color:var(--neon);color:#00150b}
+.answer.correct .letter{background:rgba(0,20,12,.15);color:#00150b}
+.answer.wrong{background:linear-gradient(135deg,#ff4d5e,#d63447);border-color:#ff4d5e;color:#fff}
 .answer.wrong .letter{background:rgba(255,255,255,.2);color:#fff}
 .answer.disabled{opacity:.5;pointer-events:none}
 .answer.removed{opacity:.2;pointer-events:none;text-decoration:line-through}
 .jokers{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
-.joker{background:var(--bg2);border:1px dashed var(--border2);border-radius:12px;padding:12px 8px;text-align:center;cursor:pointer;font-size:.75rem;font-weight:800;color:var(--muted);transition:all .2s}
+.joker{background:rgba(3,15,12,.85);border:1px dashed rgba(0,255,136,.4);border-radius:12px;padding:12px 8px;text-align:center;cursor:pointer;font-size:.75rem;font-weight:800;color:#9ca8ba;transition:all .2s}
 .joker:active{transform:scale(.95)}
 .joker .j-icon{display:block;font-size:1.4rem;margin-bottom:4px}
-.joker:not(.used){color:var(--orange);border-color:rgba(255,176,32,.4);background:rgba(255,176,32,.05)}
+.joker:not(.used){color:#ffb020;border-color:rgba(255,176,32,.5);background:rgba(255,176,32,.05)}
 .joker.used{opacity:.3;pointer-events:none}
 .result-icon{font-size:5rem;text-align:center;margin:20px 0}
-.result-title{text-align:center;font-size:1.6rem;font-weight:900;color:var(--green);margin-bottom:8px}
-.result-subtitle{text-align:center;font-size:.85rem;color:var(--muted);margin-bottom:24px}
-.score-big{text-align:center;padding:24px;background:var(--bg2);border:1px solid var(--border);border-radius:16px;margin-bottom:20px}
-.score-big .score-num{font-size:3.5rem;font-weight:900;color:var(--green);line-height:1}
-.score-big .score-lbl{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-top:6px}
+.result-title{text-align:center;font-size:1.6rem;font-weight:900;color:var(--neon);margin-bottom:8px;text-shadow:0 0 15px rgba(0,255,136,.5)}
+.result-subtitle{text-align:center;font-size:.85rem;color:#9ca8ba;margin-bottom:24px}
+.score-big{text-align:center;padding:24px;background:rgba(3,15,12,.85);border:1px solid rgba(0,255,136,.3);border-radius:16px;margin-bottom:20px}
+.score-big .score-num{font-size:3.5rem;font-weight:900;color:var(--neon);line-height:1;text-shadow:0 0 20px rgba(0,255,136,.5)}
+.score-big .score-lbl{font-size:.8rem;color:#9ca8ba;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-top:6px}
+.result-info{display:flex;justify-content:space-between;padding:10px 0;font-size:.85rem;font-weight:600;border-bottom:1px solid rgba(0,255,136,.15)}
+.result-info:last-child{border:none}
+.result-info span:first-child{color:#9ca8ba}
+.result-info span:last-child{color:var(--neon);font-weight:900}
 .leader-list{display:flex;flex-direction:column;gap:8px}
-.leader-item{display:flex;justify-content:space-between;align-items:center;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:.85rem;font-weight:700}
-.leader-item .rank{color:var(--orange);font-weight:900;min-width:30px}
-.leader-item .date{color:var(--muted);font-size:.72rem;font-weight:600}
-.leader-item .pts{color:var(--green);font-weight:900}
-.empty-msg{text-align:center;padding:30px 20px;color:var(--muted);font-size:.85rem;line-height:1.6}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--card);border:1px solid var(--border2);border-radius:12px;padding:12px 20px;font-size:.82rem;font-weight:700;color:var(--text);box-shadow:0 10px 30px rgba(0,0,0,.5);transition:transform .3s ease;z-index:100;max-width:90%}
+.leader-item{display:flex;justify-content:space-between;align-items:center;background:rgba(3,15,12,.85);border:1px solid rgba(0,255,136,.2);border-radius:10px;padding:12px 14px;font-size:.85rem;font-weight:700}
+.leader-item .rank{color:#ffb020;font-weight:900;min-width:30px}
+.leader-item .date{color:#9ca8ba;font-size:.72rem;font-weight:600}
+.leader-item .pts{color:var(--neon);font-weight:900}
+.empty-msg{text-align:center;padding:30px 20px;color:#9ca8ba;font-size:.85rem;line-height:1.6}
+.back-btn{display:inline-block;margin-bottom:16px;padding:10px 18px;border-radius:12px;border:1px solid rgba(0,255,136,.4);background:rgba(3,14,12,.85);color:var(--neon);font-weight:800;cursor:pointer;font-size:.85rem}
+.toast{position:fixed;bottom:110px;left:50%;transform:translateX(-50%) translateY(100px);background:rgba(3,15,12,.95);border:1px solid rgba(0,255,136,.5);border-radius:12px;padding:12px 20px;font-size:.82rem;font-weight:700;color:white;box-shadow:0 10px 30px rgba(0,0,0,.5);transition:transform .3s ease;z-index:100;max-width:90%}
 .toast.show{transform:translateX(-50%) translateY(0)}
-.toast.success{border-color:rgba(0,224,122,.4);color:var(--green)}
-.toast.warning{border-color:rgba(255,176,32,.4);color:var(--orange)}
-.toast.error{border-color:rgba(255,77,94,.4);color:var(--red)}
-.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.8);backdrop-filter:blur(6px);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px}
+.toast.success{border-color:rgba(0,255,136,.6);color:var(--neon)}
+.toast.warning{border-color:rgba(255,176,32,.6);color:#ffb020}
+.toast.error{border-color:rgba(255,77,94,.6);color:#ff4d5e}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.85);backdrop-filter:blur(6px);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px}
 .modal-overlay.active{display:flex}
-.modal-box{background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--border2);border-radius:var(--radius);padding:24px;max-width:360px;width:100%;text-align:center}
-.modal-box h3{color:var(--green);font-size:1.1rem;font-weight:900;margin-bottom:12px}
-.modal-box p{color:var(--muted);font-size:.85rem;line-height:1.6;margin-bottom:18px;text-align:left}
-.modal-box .modal-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.modal-box .modal-buttons button{margin:0;padding:13px;font-size:.85rem}
-.modal-box .cancel{background:var(--bg2);color:var(--muted);border:1px solid var(--border);box-shadow:none}
+.modal-box{background:linear-gradient(180deg,#0a1814,#050908);border:1px solid rgba(0,255,136,.4);border-radius:16px;padding:24px;max-width:360px;width:100%;text-align:center}
+.modal-box h3{color:var(--neon);font-size:1.1rem;font-weight:900;margin-bottom:12px}
+.modal-box p{color:#9ca8ba;font-size:.85rem;line-height:1.6;margin-bottom:18px;text-align:left}
+.modal-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.modal-buttons button{padding:13px;border:none;border-radius:10px;font-weight:800;cursor:pointer;font-size:.85rem}
+.modal-buttons .confirm{background:var(--neon);color:#00150b}
+.modal-buttons .cancel{background:rgba(3,14,12,.85);color:#9ca8ba;border:1px solid rgba(0,255,136,.3)}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,600px);height:85px;display:grid;grid-template-columns:repeat(5,1fr);padding:8px 5px 5px;background:linear-gradient(to top,rgba(3,7,8,.98),rgba(3,10,9,.94));border-top:1px solid rgba(0,255,136,.25);backdrop-filter:blur(18px);z-index:50}
+.nav-item{color:#8994a6;text-decoration:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:22px;cursor:pointer;background:none;border:none}
+.nav-item small{font-size:9px;font-weight:700}
+.nav-item.active{color:var(--neon);text-shadow:0 0 10px rgba(0,255,136,.5)}
+.nav-item.active::after{content:"";width:30px;height:3px;border-radius:5px;background:var(--neon);box-shadow:0 0 10px var(--neon)}
+@media(max-width:380px){.content{padding-left:14px;padding-right:14px}.stat-card{min-height:105px}.stat-card strong{font-size:22px}.main-button{font-size:19px}.player-info{padding:8px 11px}}
 </style>
 </head>
 <body>
 
-<div class="container">
+<div class="app">
+  <div class="stadium-bg"></div>
+  <div class="dark-overlay"></div>
 
-<div class="screen active" id="screen-start">
-  <div class="logo">
-  <div class="logo-badge">● SAHA BİLGİNİ</div>
-<h1>FUTBOL BİLGİ YARIŞMASI</h1>
-<p>Futbol bilgini konuştur!</p>
-    
-  </div>
-  
-  <div class="card">
-    <div class="info-box">
-      <div class="info-row"><span>📊 Soru Sayısı</span><span>15</span></div>
-      <div class="info-row"><span>⏱️ Soru Başına Süre</span><span>20 saniye</span></div>
-      <div class="info-row"><span>🎯 Maksimum Puan</span><span>300</span></div>
-      <div class="info-row"><span>🎲 Soru Havuzu</span><span id="havuzBoyut">...</span></div>
-    </div>
-    
-    <button onclick="startGame()">🎯 OYUNA BAŞLA</button>
-    <button class="btn-secondary" onclick="showLeaderboard()">🏆 LİDERLİK TABLOSU</button>
-    <button class="btn-secondary" onclick="showRules()">📖 NASIL OYNANIR?</button>
-  </div>
-</div>
-
-<div class="screen" id="screen-question">
-  <div class="question-header">
-    <div class="q-num" id="qNum">SORU 1/15</div>
-    <div class="q-score" id="qScore">🎯 0</div>
-  </div>
-  
-  <div class="timer-bar">
-    <div class="timer-fill" id="timerFill"></div>
-  </div>
-  
-  <div class="timer-text" id="timerText">⏱️ <b>20</b> saniye</div>
-  
-  <div class="card">
-    <div class="question-category" id="qCategory">DÜNYA KUPASI</div>
-    <img id="qImage" class="question-image" style="display:none;" alt="Soru Görseli">
-    <div class="question-text" id="qText">Soru yükleniyor...</div>
-    
-    <div class="answers" id="answersContainer"></div>
-    
-    <div class="jokers">
-      <div class="joker" id="jokerFifty" onclick="useFiftyFifty()">
-        <span class="j-icon">✂️</span>
-        %50 JOKER
+  <!-- ANA MENÜ -->
+  <div class="screen active" id="screen-start">
+    <header class="topbar">
+      <button class="profile-btn">👤</button>
+      <div class="player-info">
+        <span class="crown">♛</span>
+        <div><strong>SAHA BİLGİNİ</strong><small>Futbolun Kalbinde</small></div>
       </div>
-      <div class="joker" id="jokerTime" onclick="useTimeJoker()">
-        <span class="j-icon">⏸️</span>
-        SÜRE DURDUR
+      <button class="settings-btn">⚙</button>
+    </header>
+    <main class="content">
+      <section class="logo-area">
+        <img src="assets/saha-bilgini-logo.png" alt="Saha Bilgini" class="logo-img" onerror="this.style.display='none'; document.getElementById('logoText').style.display='block';">
+        <div id="logoText" class="logo-text" style="display:none;">SAHA BİLGİNİ</div>
+        <p class="subtitle">FUTBOL BİLGİNİ KONUŞTUR!</p>
+      </section>
+      <section class="stats">
+        <div class="stat-card"><div class="stat-icon">🏆</div><span>Toplam Puan</span><strong>300</strong></div>
+        <div class="stat-card"><div class="stat-icon">🎯</div><span>Doğru Cevap</span><strong>15</strong></div>
+        <div class="stat-card"><div class="stat-icon">⏱</div><span>Süre Hedefi</span><strong>20 sn</strong></div>
+        <div class="stat-card"><div class="stat-icon">📊</div><span>Soru Havuzu</span><strong id="havuzBoyut">...</strong></div>
+      </section>
+      <button class="main-button" onclick="startGame()"><span class="ball">⚽</span><span>OYUNA BAŞLA</span><span class="arrow">›</span></button>
+      <button class="menu-button" onclick="showLeaderboard()"><span class="menu-icon">🏆</span><span>LİDERLİK TABLOSU</span><span class="arrow">›</span></button>
+      <button class="menu-button" onclick="showRules()"><span class="menu-icon">📖</span><span>NASIL OYNANIR?</span><span class="arrow">›</span></button>
+      <div class="slogan"><span>Bilgin Kazandırır!</span><div class="tactics">× &nbsp;&nbsp; ○──────→</div></div>
+    </main>
+  </div>
+
+  <!-- SORU EKRANI -->
+  <div class="screen" id="screen-question">
+    <main class="content">
+      <div class="question-header"><div class="q-num" id="qNum">SORU 1/15</div><div class="q-score" id="qScore">🎯 0</div></div>
+      <div class="timer-bar"><div class="timer-fill" id="timerFill"></div></div>
+      <div class="timer-text" id="timerText">⏱️ <b>20</b> saniye</div>
+      <div class="question-category" id="qCategory">GENEL</div>
+      <img id="qImage" class="question-image" style="display:none;" alt="Soru Görseli">
+      <div class="question-text" id="qText">Soru yükleniyor...</div>
+      <div class="answers" id="answersContainer"></div>
+      <div class="jokers">
+        <div class="joker" id="jokerFifty" onclick="useFiftyFifty()"><span class="j-icon">✂️</span>%50 JOKER</div>
+        <div class="joker" id="jokerTime" onclick="useTimeJoker()"><span class="j-icon">⏸️</span>SÜRE DURDUR</div>
       </div>
+    </main>
+  </div>
+
+  <!-- SONUÇ EKRANI -->
+  <div class="screen" id="screen-result">
+    <main class="content">
+      <div class="result-icon" id="resultIcon">🏆</div>
+      <div class="result-title" id="resultTitle">TEBRİKLER!</div>
+      <div class="result-subtitle" id="resultSubtitle">Harika bir performans!</div>
+      <div class="score-big"><div class="score-num" id="finalScore">0</div><div class="score-lbl">TOPLAM PUAN</div></div>
+      <div style="margin-bottom:20px;">
+        <div class="result-info"><span>✅ Doğru Cevap</span><span id="finalCorrect">0/15</span></div>
+        <div class="result-info"><span>❌ Yanlış Cevap</span><span id="finalWrong">0</span></div>
+        <div class="result-info"><span>⏱️ Ortalama Süre</span><span id="finalAvgTime">0 sn</span></div>
+        <div class="result-info"><span>🏅 Seviye</span><span id="finalLevel">Amatör</span></div>
+      </div>
+      <button class="main-button" onclick="startGame()"><span class="ball">⚽</span><span>YENİDEN OYNA</span></button>
+      <button class="menu-button" onclick="goHome()"><span class="menu-icon">🏠</span><span>ANA MENÜ</span><span class="arrow">›</span></button>
+    </main>
+  </div>
+
+  <!-- LİDERLİK -->
+  <div class="screen" id="screen-leaderboard">
+    <main class="content" style="padding-top:30px;">
+      <button class="back-btn" onclick="goHome()">← Geri</button>
+      <h2 style="text-align:center;color:var(--neon);margin-bottom:20px;font-weight:900;">🏆 LİDERLİK TABLOSU</h2>
+      <div class="leader-list" id="leaderList"><div class="empty-msg">Henüz skor yok.<br>Oyna ve ilk skoru sen yap! 🎯</div></div>
+    </main>
+  </div>
+
+  <!-- ALT NAV -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" onclick="goHome()"><span>⌂</span><small>Ana Sayfa</small></button>
+    <button class="nav-item" onclick="showLeaderboard()"><span>🏆</span><small>Puanlar</small></button>
+    <button class="nav-item" onclick="showRules()"><span>📖</span><small>Soru Arşivi</small></button>
+    <button class="nav-item" onclick="showModal('Yakında','Arkadaşlar özelliği çok yakında!',[{text:'Tamam',action:closeModal}])"><span>👥</span><small>Arkadaşlar</small></button>
+    <button class="nav-item" onclick="showModal('Yakında','Ayarlar özelliği çok yakında!',[{text:'Tamam',action:closeModal}])"><span>⚙</span><small>Ayarlar</small></button>
+  </nav>
+
+  <div class="toast" id="toast">Mesaj</div>
+  <div class="modal-overlay" id="modal">
+    <div class="modal-box">
+      <h3 id="modalTitle">Başlık</h3>
+      <p id="modalText">Metin</p>
+      <div class="modal-buttons" id="modalButtons"></div>
     </div>
   </div>
-</div>
-
-<div class="screen" id="screen-result">
-  <div class="result-icon" id="resultIcon">🏆</div>
-  <div class="result-title" id="resultTitle">TEBRİKLER!</div>
-  <div class="result-subtitle" id="resultSubtitle">Harika bir performans!</div>
-  
-  <div class="card">
-    <div class="score-big">
-      <div class="score-num" id="finalScore">0</div>
-      <div class="score-lbl">TOPLAM PUAN</div>
-    </div>
-    
-    <div class="info-box">
-      <div class="info-row"><span>✅ Doğru Cevap</span><span id="finalCorrect">0/15</span></div>
-      <div class="info-row"><span>❌ Yanlış Cevap</span><span class="red" id="finalWrong">0</span></div>
-      <div class="info-row"><span>⏱️ Ortalama Süre</span><span class="orange" id="finalAvgTime">0 sn</span></div>
-      <div class="info-row"><span>🏅 Seviye</span><span id="finalLevel">Amatör</span></div>
-    </div>
-    
-    <button onclick="startGame()">🎯 YENİDEN OYNA</button>
-    <button class="btn-secondary" onclick="goHome()">🏠 ANA MENÜ</button>
-  </div>
-</div>
-
-<div class="screen" id="screen-leaderboard">
-  <div class="logo">
-    <div class="logo-badge">● SKORLAB ULTRA</div>
-    <h1>🏆 LİDERLİK</h1>
-    <p>En iyi skorların</p>
-  </div>
-  
-  <div class="card">
-    <div class="leader-list" id="leaderList">
-      <div class="empty-msg">Henüz skor yok.<br>Oyna ve ilk skoru sen yap! 🎯</div>
-    </div>
-  </div>
-  
-  <button onclick="goHome()">🏠 ANA MENÜ</button>
-</div>
-
-<div class="modal-overlay" id="modal">
-  <div class="modal-box">
-    <h3 id="modalTitle">Başlık</h3>
-    <p id="modalText">Metin</p>
-    <div class="modal-buttons" id="modalButtons"></div>
-  </div>
-</div>
-
-<div class="toast" id="toast">Mesaj</div>
-
 </div>
 
 <script>
@@ -197,1211 +213,761 @@ button:active{transform:scale(.97)}
    ============================================================ */
 window.sorularVerisi = [
   {
-    "id": 1,
-    "kategori": "Efsaneler",
-    "zorluk": "kolay",
+    "id": 1, "kategori": "Efsaneler", "zorluk": "kolay",
     "soru": "Futbol dünyasında 'O Fenômeno' lakabıyla tanınan efsane Brezilyalı futbolcu kimdir?",
-    "secenekler": ["Ronaldinho", "Rivaldo", "Ronaldo Nazário", "Kaká"],
-    "dogru": 2
+    "secenekler": ["Ronaldinho", "Rivaldo", "Ronaldo Nazário", "Kaká"], "dogru": 2
   },
   {
-    "id": 2,
-    "kategori": "Uluslararası",
-    "zorluk": "kolay",
+    "id": 2, "kategori": "Uluslararası", "zorluk": "kolay",
     "soru": "Brezilya millî takımı tarihindeki en çok gol atan oyunculardan biri olan Pelé'nin asıl adı nedir?",
-    "secenekler": ["Edson Arantes do Nascimento", "Garrincha", "Zico", "Rivaldo Vitor"],
-    "dogru": 0
+    "secenekler": ["Edson Arantes do Nascimento", "Garrincha", "Zico", "Rivaldo Vitor"], "dogru": 0
   },
   {
-    "id": 3,
-    "kategori": "La Liga",
-    "zorluk": "kolay",
+    "id": 3, "kategori": "La Liga", "zorluk": "kolay",
     "soru": "Real Madrid'in iç saha maçlarını oynadığı stadyumun adı nedir?",
-    "secenekler": ["Camp Nou", "Wanda Metropolitano", "Santiago Bernabéu", "Mestalla"],
-    "dogru": 2
+    "secenekler": ["Camp Nou", "Wanda Metropolitano", "Santiago Bernabéu", "Mestalla"], "dogru": 2
   },
   {
-    "id": 4,
-    "kategori": "Serie A",
-    "zorluk": "kolay",
+    "id": 4, "kategori": "Serie A", "zorluk": "kolay",
     "soru": "İtalya'nın Juventus takımı hangi renk formayla mücadele eder?",
-    "secenekler": ["Kırmızı-Siyah", "Siyah-Beyaz", "Mavi-Beyaz", "Bordo-Mavi"],
-    "dogru": 1
+    "secenekler": ["Kırmızı-Siyah", "Siyah-Beyaz", "Mavi-Beyaz", "Bordo-Mavi"], "dogru": 1
   },
   {
-    "id": 5,
-    "kategori": "Süper Lig",
-    "zorluk": "kolay",
+    "id": 5, "kategori": "Süper Lig", "zorluk": "kolay",
     "soru": "Beşiktaş'ın simgesi olan ve maçlarını oynadığı stadyumun adı nedir?",
-    "secenekler": ["Türk Telekom Arena", "Şükrü Saracoğlu", "Vodafone Park (Beşiktaş Park)", "Atatürk Olimpiyat"],
-    "dogru": 2
+    "secenekler": ["Türk Telekom Arena", "Şükrü Saracoğlu", "Vodafone Park", "Atatürk Olimpiyat"], "dogru": 2
   },
   {
-    "id": 6,
-    "kategori": "Ödüller",
-    "zorluk": "kolay",
-    "soru": "Yılın en iyi futbolcusuna verilen ve Fransız futbol dergisi France Football tarafından düzenlenen ödülün adı nedir?",
-    "secenekler": ["The Best", "Golden Boy", "Ballon d'Or", "Puskas Ödülü"],
-    "dogru": 2
+    "id": 6, "kategori": "Ödüller", "zorluk": "kolay",
+    "soru": "Yılın en iyi futbolcusuna verilen ve France Football tarafından düzenlenen ödülün adı nedir?",
+    "secenekler": ["The Best", "Golden Boy", "Ballon d'Or", "Puskas Ödülü"], "dogru": 2
   },
   {
-    "id": 7,
-    "kategori": "Bundesliga",
-    "zorluk": "kolay",
+    "id": 7, "kategori": "Bundesliga", "zorluk": "kolay",
     "soru": "Almanya Bundesliga'da en çok şampiyonluk kazanan kulüp hangisidir?",
-    "secenekler": ["Borussia Dortmund", "Bayern Münih", "RB Leipzig", "Bayer Leverkusen"],
-    "dogru": 1
+    "secenekler": ["Borussia Dortmund", "Bayern Münih", "RB Leipzig", "Bayer Leverkusen"], "dogru": 1
   },
   {
-    "id": 8,
-    "kategori": "Fransa Lig 1",
-    "zorluk": "kolay",
+    "id": 8, "kategori": "Fransa Lig 1", "zorluk": "kolay",
     "soru": "Paris Saint-Germain (PSG) hangi ülkenin takımıdır?",
-    "secenekler": ["İtalya", "Fransa", "İspanya", "Almanya"],
-    "dogru": 1
+    "secenekler": ["İtalya", "Fransa", "İspanya", "Almanya"], "dogru": 1
   },
   {
-    "id": 9,
-    "kategori": "Süper Lig",
-    "zorluk": "kolay",
+    "id": 9, "kategori": "Süper Lig", "zorluk": "kolay",
     "soru": "Fenerbahçe'nin kadıköydeki stadının resmi adı nedir?",
-    "secenekler": ["Ali Sami Yen", "Ülker Stadyumu Şükrü Saracoğlu Spor Kompleksi", "Vodafone Park", "Fenerbahçe Arena"],
-    "dogru": 1
+    "secenekler": ["Ali Sami Yen", "Şükrü Saracoğlu Spor Kompleksi", "Vodafone Park", "Fenerbahçe Arena"], "dogru": 1
   },
   {
-    "id": 10,
-    "kategori": "Kural",
-    "zorluk": "kolay",
+    "id": 10, "kategori": "Kural", "zorluk": "kolay",
     "soru": "Futbol maçlarında bir takım sahada toplam kaç futbolcu ile yer alır?",
-    "secenekler": ["9", "10", "11", "12"],
-    "dogru": 2
+    "secenekler": ["9", "10", "11", "12"], "dogru": 2
   },
   {
-    "id": 11,
-    "kategori": "İngiltere",
-    "zorluk": "kolay",
+    "id": 11, "kategori": "İngiltere", "zorluk": "kolay",
     "soru": "Arsenal kulübünün merkezi hangi İngiltere şehrindedir?",
-    "secenekler": ["Manchester", "Liverpool", "Londra", "Birmingham"],
-    "dogru": 2
+    "secenekler": ["Manchester", "Liverpool", "Londra", "Birmingham"], "dogru": 2
   },
   {
-    "id": 12,
-    "kategori": "Dünya Kupası",
-    "zorluk": "kolay",
+    "id": 12, "kategori": "Dünya Kupası", "zorluk": "kolay",
     "soru": "Tarihte ilk FIFA Dünya Kupası hangi yılda düzenlenmiştir?",
-    "secenekler": ["1920", "1930", "1942", "1950"],
-    "dogru": 1
+    "secenekler": ["1920", "1930", "1942", "1950"], "dogru": 1
   },
   {
-    "id": 13,
-    "kategori": "La Liga",
-    "zorluk": "kolay",
+    "id": 13, "kategori": "La Liga", "zorluk": "kolay",
     "soru": "Barcelona ile Real Madrid arasındaki ezeli rekabet maçlarının genel adı nedir?",
-    "secenekler": ["Derbi", "El Clasico", "Supercopa", "Galacticos"],
-    "dogru": 1
+    "secenekler": ["Derbi", "El Clasico", "Supercopa", "Galacticos"], "dogru": 1
   },
   {
-    "id": 14,
-    "kategori": "Portekiz",
-    "zorluk": "kolay",
+    "id": 14, "kategori": "Portekiz", "zorluk": "kolay",
     "soru": "Portekiz'in köklü kulüplerinden FC Porto hangi şehrin takımıdır?",
-    "secenekler": ["Lizbon", "Porto", "Braga", "Coimbra"],
-    "dogru": 1
+    "secenekler": ["Lizbon", "Porto", "Braga", "Coimbra"], "dogru": 1
   },
   {
-    "id": 15,
-    "kategori": "Efsaneler",
-    "zorluk": "kolay",
+    "id": 15, "kategori": "Efsaneler", "zorluk": "kolay",
     "soru": "Hollandalı efsane futbolcu ve teknik direktör Johan Cruyff hangi meşhur oyun felsefesiyle özdeşleşmiştir?",
-    "secenekler": ["Katı Defans", "Total Futbol", "Kontra Atak", "Otobüs Çekme"],
-    "dogru": 1
+    "secenekler": ["Katı Defans", "Total Futbol", "Kontra Atak", "Otobüs Çekme"], "dogru": 1
   },
   {
-    "id": 16,
-    "kategori": "Milli Takım",
-    "zorluk": "kolay",
+    "id": 16, "kategori": "Milli Takım", "zorluk": "kolay",
     "soru": "Almanya milli futbol takımının takma adı veya genel unvanı nedir?",
-    "secenekler": ["Gök Mavililer", "Panzerler", "Gecenin Kralları", "Boğalar"],
-    "dogru": 1
+    "secenekler": ["Gök Mavililer", "Panzerler", "Gecenin Kralları", "Boğalar"], "dogru": 1
   },
   {
-    "id": 17,
-    "kategori": "Süper Lig",
-    "zorluk": "kolay",
+    "id": 17, "kategori": "Süper Lig", "zorluk": "kolay",
     "soru": "Trabzonspor'un renkleri hangi seçenekte doğru verilmiştir?",
-    "secenekler": ["Sarı-Lacivert", "Sarı-Kırmızı", "Bordo-Mavi", "Siyah-Beyaz"],
-    "dogru": 2
+    "secenekler": ["Sarı-Lacivert", "Sarı-Kırmızı", "Bordo-Mavi", "Siyah-Beyaz"], "dogru": 2
   },
   {
-    "id": 18,
-    "kategori": "Dünya Kupası",
-    "zorluk": "kolay",
+    "id": 18, "kategori": "Dünya Kupası", "zorluk": "kolay",
     "soru": "2014 FIFA Dünya Kupası hangi ülkede düzenlenmiştir?",
-    "secenekler": ["Güney Afrika", "Brezilya", "Rusya", "Katar"],
-    "dogru": 1
+    "secenekler": ["Güney Afrika", "Brezilya", "Rusya", "Katar"], "dogru": 1
   },
   {
-    "id": 19,
-    "kategori": "Fransa",
-    "zorluk": "kolay",
-    "soru": "Fransa Milli Futbol Takımı'nın formalarında ve amblemlerinde yer alan milli sembol hayvan hangisidir?",
-    "secenekler": ["Aslan", "Kartal", "Horoz", "Kurt"],
-    "dogru": 2
+    "id": 19, "kategori": "Fransa", "zorluk": "kolay",
+    "soru": "Fransa Milli Futbol Takımı'nın formalarında yer alan milli sembol hayvan hangisidir?",
+    "secenekler": ["Aslan", "Kartal", "Horoz", "Kurt"], "dogru": 2
   },
   {
-    "id": 20,
-    "kategori": "İspanya",
-    "zorluk": "kolay",
+    "id": 20, "kategori": "İspanya", "zorluk": "kolay",
     "soru": "Atletico Madrid hangi İspanyol şehrinin takımıdır?",
-    "secenekler": ["Barselona", "Madrid", "Valensiya", "Sevilla"],
-    "dogru": 1
+    "secenekler": ["Barselona", "Madrid", "Valensiya", "Sevilla"], "dogru": 1
   },
   {
-    "id": 21,
-    "kategori": "Dünya Kupası",
-    "zorluk": "kolay",
+    "id": 21, "kategori": "Dünya Kupası", "zorluk": "kolay",
     "soru": "Hangi ülke 5 kez ile en çok FIFA Dünya Kupası kazanan takımdır?",
-    "secenekler": ["Almanya", "İtalya", "Arjantin", "Brezilya"],
-    "dogru": 3
+    "secenekler": ["Almanya", "İtalya", "Arjantin", "Brezilya"], "dogru": 3
   },
   {
-    "id": 22,
-    "kategori": "Kural",
-    "zorluk": "kolay",
-    "soru": "Futbol maçında hakemin oyuncuya ihraç (oyundan atılma) amacıyla gösterdiği kartın rengi nedir?",
-    "secenekler": ["Sarı", "Kırmızı", "Mavi", "Yeşil"],
-    "dogru": 1
+    "id": 22, "kategori": "Kural", "zorluk": "kolay",
+    "soru": "Futbol maçında hakemin oyuncuya ihraç amacıyla gösterdiği kartın rengi nedir?",
+    "secenekler": ["Sarı", "Kırmızı", "Mavi", "Yeşil"], "dogru": 1
   },
   {
-    "id": 23,
-    "kategori": "Süper Lig",
-    "zorluk": "kolay",
+    "id": 23, "kategori": "Süper Lig", "zorluk": "kolay",
     "soru": "Süper Lig'de 'Taçsız Kral' lakabıyla bilinen efsane golcü kimdir?",
-    "secenekler": ["Hakan Şükür", "Metin Oktay", "Tanju Çolak", "Fevzi Zemzem"],
-    "dogru": 1
+    "secenekler": ["Hakan Şükür", "Metin Oktay", "Tanju Çolak", "Fevzi Zemzem"], "dogru": 1
   },
   {
-    "id": 24,
-    "kategori": "Kariyer",
-    "zorluk": "kolay",
+    "id": 24, "kategori": "Kariyer", "zorluk": "kolay",
     "soru": "Zlatan Ibrahimović kariyeri boyunca hangi ülkenin milli takımında forma giymiştir?",
-    "secenekler": ["Danimarka", "Norveç", "İsveç", "Finlandiya"],
-    "dogru": 2
+    "secenekler": ["Danimarka", "Norveç", "İsveç", "Finlandiya"], "dogru": 2
   },
   {
-    "id": 25,
-    "kategori": "İtalya",
-    "zorluk": "kolay",
+    "id": 25, "kategori": "İtalya", "zorluk": "kolay",
     "soru": "AC Milan ve Inter takımlarının ortaklaşa kullandığı ünlü stadyumun adı nedir?",
-    "secenekler": ["Stadio Olimpico", "San Siro (Giuseppe Meazza)", "Juventus Stadium", "Stadio Artemio Franchi"],
-    "dogru": 1
+    "secenekler": ["Stadio Olimpico", "San Siro (Giuseppe Meazza)", "Juventus Stadium", "Stadio Artemio Franchi"], "dogru": 1
   },
   {
-    "id": 26,
-    "kategori": "Kurallar",
-    "zorluk": "kolay",
+    "id": 26, "kategori": "Kurallar", "zorluk": "kolay",
     "soru": "Futbol sahasında orta yuvarlağın yarı çapı kaç metredir?",
-    "secenekler": ["7.32 metre", "9.15 metre", "11 metre", "16.5 metre"],
-    "dogru": 1
+    "secenekler": ["7.32 metre", "9.15 metre", "11 metre", "16.5 metre"], "dogru": 1
   },
   {
-    "id": 27,
-    "kategori": "İngiltere",
-    "zorluk": "kolay",
+    "id": 27, "kategori": "İngiltere", "zorluk": "kolay",
     "soru": "Manchester United'ın iç saha maçlarını oynadığı stadyumun adı nedir?",
-    "secenekler": ["Anfield", "Etihad Stadyumu", "Old Trafford", "Stamford Bridge"],
-    "dogru": 2
+    "secenekler": ["Anfield", "Etihad Stadyumu", "Old Trafford", "Stamford Bridge"], "dogru": 2
   },
   {
-    "id": 28,
-    "kategori": "Süper Lig",
-    "zorluk": "kolay",
+    "id": 28, "kategori": "Süper Lig", "zorluk": "kolay",
     "soru": "Beşiktaş'ın efsanevi başkanı Süleyman Seba'nın kulübe kazandırdığı en önemli prensip nedir?",
-    "secenekler": ["Önce Şeref, Sonra Başarı", "Parasal Güç", "Sadece Transfer", "Yabancı Sınırı"],
-    "dogru": 0
+    "secenekler": ["Önce Şeref, Sonra Başarı", "Parasal Güç", "Sadece Transfer", "Yabancı Sınırı"], "dogru": 0
   },
   {
-    "id": 29,
-    "kategori": "Asya",
-    "zorluk": "kolay",
+    "id": 29, "kategori": "Asya", "zorluk": "kolay",
     "soru": "Güney Koreli futbolcu Son Heung-min hangi Premier Lig kulübünde uzun yıllar forma giymiştir?",
-    "secenekler": ["Arsenal", "Chelsea", "Tottenham Hotspur", "Liverpool"],
-    "dogru": 2
+    "secenekler": ["Arsenal", "Chelsea", "Tottenham Hotspur", "Liverpool"], "dogru": 2
   },
   {
-    "id": 30,
-    "kategori": "İngiltere",
-    "zorluk": "kolay",
+    "id": 30, "kategori": "İngiltere", "zorluk": "kolay",
     "soru": "Chelsea kulübünün takma adı nedir?",
-    "secenekler": ["Kırmızı Şeytanlar", "Mavililer (The Blues)", "Topçular", "Beyazlar"],
-    "dogru": 1
+    "secenekler": ["Kırmızı Şeytanlar", "Mavililer (The Blues)", "Topçular", "Beyazlar"], "dogru": 1
   },
   {
-    "id": 31,
-    "kategori": "Efsaneler",
-    "zorluk": "kolay",
+    "id": 31, "kategori": "Efsaneler", "zorluk": "kolay",
     "soru": "İngiliz futbol efsanesi David Beckham, kariyerinde hangi meşhur forma numarasını uzun süre giymiştir?",
-    "secenekler": ["7", "9", "10", "11"],
-    "dogru": 0
+    "secenekler": ["7", "9", "10", "11"], "dogru": 0
   },
   {
-    "id": 32,
-    "kategori": "Uluslararası",
-    "zorluk": "kolay",
+    "id": 32, "kategori": "Uluslararası", "zorluk": "kolay",
     "soru": "Copa America hangi kıtanın milli futbol takımları arasında düzenlenen turnuvadır?",
-    "secenekler": ["Avrupa", "Güney Amerika", "Kuzey Amerika", "Asya"],
-    "dogru": 1
+    "secenekler": ["Avrupa", "Güney Amerika", "Kuzey Amerika", "Asya"], "dogru": 1
   },
   {
-    "id": 33,
-    "kategori": "Süper Lig",
-    "zorluk": "kolay",
+    "id": 33, "kategori": "Süper Lig", "zorluk": "kolay",
     "soru": "Fenerbahçe'nin ve Türk futbolunun efsane kalecisi, 'Uçan Kaleci' unvanlı isim kimdir?",
-    "secenekler": ["Rüştü Reçber", "Volkan Demirel", "Cihat Arman", "Engin İpekoğlu"],
-    "dogru": 2
+    "secenekler": ["Rüştü Reçber", "Volkan Demirel", "Cihat Arman", "Engin İpekoğlu"], "dogru": 2
   },
   {
-    "id": 34,
-    "kategori": "Efsaneler",
-    "zorluk": "kolay",
+    "id": 34, "kategori": "Efsaneler", "zorluk": "kolay",
     "soru": "Brezilyalı eski futbolcu Ronaldinho en çok hangi kulüpte gösterdiği performansla Ballon d'Or kazanmıştır?",
-    "secenekler": ["AC Milan", "PSG", "Barcelona", "Gremio"],
-    "dogru": 2
+    "secenekler": ["AC Milan", "PSG", "Barcelona", "Gremio"], "dogru": 2
   },
   {
-    "id": 35,
-    "kategori": "Uluslararası",
-    "zorluk": "kolay",
+    "id": 35, "kategori": "Uluslararası", "zorluk": "kolay",
     "soru": "Japonya milli futbol takımının formalarında genel olarak baskın olan ana renk hangisidir?",
-    "secenekler": ["Kırmızı", "Mavi", "Beyaz", "Sarı"],
-    "dogru": 1
+    "secenekler": ["Kırmızı", "Mavi", "Beyaz", "Sarı"], "dogru": 1
   },
   {
-    "id": 36,
-    "kategori": "Süper Lig",
-    "zorluk": "kolay",
+    "id": 36, "kategori": "Süper Lig", "zorluk": "kolay",
     "soru": "Trabzonspor'un simgesi olan sembolik unvan/lakap hangisidir?",
-    "secenekler": ["Aslan", "Kartal", "Kanarya", "Fırtına (Hamsi)"],
-    "dogru": 3
+    "secenekler": ["Aslan", "Kartal", "Kanarya", "Fırtına (Hamsi)"], "dogru": 3
   },
   {
-    "id": 37,
-    "kategori": "Kariyer",
-    "zorluk": "kolay",
+    "id": 37, "kategori": "Kariyer", "zorluk": "kolay",
     "soru": "Gallerli ünlü futbolcu Gareth Bale kariyerinde hangi dev kulüpte uzun yıllar başarıyla oynamıştır?",
-    "secenekler": ["Barcelona", "Real Madrid", "Bayern Münih", "Juventus"],
-    "dogru": 1
+    "secenekler": ["Barcelona", "Real Madrid", "Bayern Münih", "Juventus"], "dogru": 1
   },
   {
-    "id": 38,
-    "kategori": "Süper Lig",
-    "zorluk": "kolay",
+    "id": 38, "kategori": "Süper Lig", "zorluk": "kolay",
     "soru": "Fenerbahçe'nin ve Türk futbolunun unutulmaz isimlerinden, 'Ordinaryüs' lakaplı efsane oyuncu kimdir?",
-    "secenekler": ["Lefter Küçükandonyadis", "Can Bartu", "Gündüz Kılıç", "Fikret Arıcan"],
-    "dogru": 0
+    "secenekler": ["Lefter Küçükandonyadis", "Can Bartu", "Gündüz Kılıç", "Fikret Arıcan"], "dogru": 0
   },
   {
-    "id": 39,
-    "kategori": "Almanya",
-    "zorluk": "kolay",
+    "id": 39, "kategori": "Almanya", "zorluk": "kolay",
     "soru": "Bayern Münih takımının iç saha maçlarını oynadığı ünlü modern stadyumun adı nedir?",
-    "secenekler": ["Signal Iduna Park", "Allianz Arena", "Veltins-Arena", "Olimpiyat Stadyumu Berlin"],
-    "dogru": 1
+    "secenekler": ["Signal Iduna Park", "Allianz Arena", "Veltins-Arena", "Olimpiyat Stadyumu Berlin"], "dogru": 1
   },
   {
-    "id": 40,
-    "kategori": "İngiltere",
-    "zorluk": "kolay",
+    "id": 40, "kategori": "İngiltere", "zorluk": "kolay",
     "soru": "Liverpool FC'nin en büyük ezeli yerel rakibi hangi kulüptür?",
-    "secenekler": ["Everton", "Manchester United", "Manchester City", "Tranmere Rovers"],
-    "dogru": 0
+    "secenekler": ["Everton", "Manchester United", "Manchester City", "Tranmere Rovers"], "dogru": 0
   },
   {
-    "id": 41,
-    "kategori": "Dünya Kupası",
-    "zorluk": "kolay",
+    "id": 41, "kategori": "Dünya Kupası", "zorluk": "kolay",
     "soru": "2022 FIFA Dünya Kupası hangi ülkede düzenlenmiştir?",
-    "secenekler": ["Rusya", "Brezilya", "Katar", "Güney Afrika"],
-    "dogru": 2
+    "secenekler": ["Rusya", "Brezilya", "Katar", "Güney Afrika"], "dogru": 2
   },
   {
-    "id": 42,
-    "kategori": "Efsaneler",
-    "zorluk": "kolay",
+    "id": 42, "kategori": "Efsaneler", "zorluk": "kolay",
     "soru": "Arjantinli yıldız futbolcu Lionel Messi'nin milli takımda giydiği klasik sırt numarası hangisidir?",
-    "secenekler": ["7", "9", "10", "11"],
-    "dogru": 2
+    "secenekler": ["7", "9", "10", "11"], "dogru": 2
   },
   {
-    "id": 43,
-    "kategori": "Süper Lig",
-    "zorluk": "kolay",
+    "id": 43, "kategori": "Süper Lig", "zorluk": "kolay",
     "soru": "Fenerbahçe'nin efsanevi golcülerinden, 'Boğa' lakaplı milli futbolcu kimdir?",
-    "secenekler": ["Ayhan Akman", "Semih Şentürk", "Aykut Kocaman", "Tuncay Şanlı"],
-    "dogru": 1
+    "secenekler": ["Ayhan Akman", "Semih Şentürk", "Aykut Kocaman", "Tuncay Şanlı"], "dogru": 1
   },
   {
-    "id": 44,
-    "kategori": "Kural",
-    "zorluk": "kolay",
+    "id": 44, "kategori": "Kural", "zorluk": "kolay",
     "soru": "Bir futbol maçının normal süresi toplamda kaç dakikadır?",
-    "secenekler": ["80 dakika", "90 dakika", "100 dakika", "120 dakika"],
-    "dogru": 1
+    "secenekler": ["80 dakika", "90 dakika", "100 dakika", "120 dakika"], "dogru": 1
   },
   {
-    "id": 45,
-    "kategori": "Uluslararası",
-    "zorluk": "kolay",
+    "id": 45, "kategori": "Uluslararası", "zorluk": "kolay",
     "soru": "Brezilya milli futbol takımının formalarında taşıdığı geleneksel ana renk kombinasyonu nedir?",
-    "secenekler": ["Mavi-Beyaz", "Sarı-Yeşil", "Kırmızı-Siyah", "Bordo-Mavi"],
-    "dogru": 1
+    "secenekler": ["Mavi-Beyaz", "Sarı-Yeşil", "Kırmızı-Siyah", "Bordo-Mavi"], "dogru": 1
   },
   {
-    "id": 46,
-    "kategori": "Efsaneler",
-    "zorluk": "kolay",
+    "id": 46, "kategori": "Efsaneler", "zorluk": "kolay",
     "soru": "Futbol dünyasında 'Kral' (The King) lakaplı ünlü Brezilyalı futbolcu kimdir?",
-    "secenekler": ["Maradona", "Pele", "Zico", "Ronaldinho"],
-    "dogru": 1
+    "secenekler": ["Maradona", "Pele", "Zico", "Ronaldinho"], "dogru": 1
   },
   {
-    "id": 47,
-    "kategori": "Süper Lig",
-    "zorluk": "kolay",
+    "id": 47, "kategori": "Süper Lig", "zorluk": "kolay",
     "soru": "Galatasaray'ın renkleri hangi seçenekte doğru verilmiştir?",
-    "secenekler": ["Sarı-Lacivert", "Sarı-Kırmızı", "Siyah-Beyaz", "Bordo-Mavi"],
-    "dogru": 1
+    "secenekler": ["Sarı-Lacivert", "Sarı-Kırmızı", "Siyah-Beyaz", "Bordo-Mavi"], "dogru": 1
   },
   {
-    "id": 48,
-    "kategori": "İngiltere",
-    "zorluk": "kolay",
+    "id": 48, "kategori": "İngiltere", "zorluk": "kolay",
     "soru": "Arsenal kulübünün logosunda ve ambleminde yer alan ana figür nedir?",
-    "secenekler": ["Aslan", "Top (Kanon)", "Kartal", "At"],
-    "dogru": 1
+    "secenekler": ["Aslan", "Top (Kanon)", "Kartal", "At"], "dogru": 1
   },
   {
-    "id": 49,
-    "kategori": "Süper Lig",
-    "zorluk": "kolay",
+    "id": 49, "kategori": "Süper Lig", "zorluk": "kolay",
     "soru": "Beşiktaş'ın renkleri hangi seçenekte doğru verilmiştir?",
-    "secenekler": ["Sarı-Kırmızı", "Sarı-Lacivert", "Siyah-Beyaz", "Bordo-Mavi"],
-    "dogru": 2
+    "secenekler": ["Sarı-Kırmızı", "Sarı-Lacivert", "Siyah-Beyaz", "Bordo-Mavi"], "dogru": 2
   },
   {
-    "id": 50,
-    "kategori": "Süper Lig",
-    "zorluk": "kolay",
+    "id": 50, "kategori": "Süper Lig", "zorluk": "kolay",
     "soru": "Fenerbahçe'nin renkleri hangi seçenekte doğru verilmiştir?",
-    "secenekler": ["Sarı-Kırmızı", "Sarı-Lacivert", "Siyah-Beyaz", "Yeşil-Beyaz"],
-    "dogru": 1
+    "secenekler": ["Sarı-Kırmızı", "Sarı-Lacivert", "Siyah-Beyaz", "Yeşil-Beyaz"], "dogru": 1
   },
   {
-    "id": 51,
-    "kategori": "Süper Lig",
-    "zorluk": "orta",
+    "id": 51, "kategori": "Süper Lig", "zorluk": "orta",
     "soru": "Türkiye Süper Ligi'nde bir sezonda en çok gol atan (39 gol) futbolcu kimdir?",
-    "secenekler": ["Hakan Şükür", "Tanju Çolak", "Alex de Souza", "Mario Gomez"],
-    "dogru": 1
+    "secenekler": ["Hakan Şükür", "Tanju Çolak", "Alex de Souza", "Mario Gomez"], "dogru": 1
   },
   {
-    "id": 52,
-    "kategori": "Şampiyonlar Ligi",
-    "zorluk": "orta",
+    "id": 52, "kategori": "Şampiyonlar Ligi", "zorluk": "orta",
     "soru": "UEFA Şampiyonlar Ligi tarihinin en çok gol atan futbolcusu kimdir?",
-    "secenekler": ["Lionel Messi", "Robert Lewandowski", "Cristiano Ronaldo", "Karim Benzema"],
-    "dogru": 2
+    "secenekler": ["Lionel Messi", "Robert Lewandowski", "Cristiano Ronaldo", "Karim Benzema"], "dogru": 2
   },
   {
-    "id": 53,
-    "kategori": "Dünya Kupası",
-    "zorluk": "orta",
+    "id": 53, "kategori": "Dünya Kupası", "zorluk": "orta",
     "soru": "2022 FIFA Dünya Kupası'nı hangi ülke kazanmıştır?",
-    "secenekler": ["Brezilya", "Arjantin", "Fransa", "Almanya"],
-    "dogru": 1
+    "secenekler": ["Brezilya", "Arjantin", "Fransa", "Almanya"], "dogru": 1
   },
   {
-    "id": 54,
-    "kategori": "Efsaneler",
-    "zorluk": "orta",
+    "id": 54, "kategori": "Efsaneler", "zorluk": "orta",
     "soru": "Arjantinli efsane Diego Maradona'nın 1986 Dünya Kupası'nda İngiltere'ye attığı elle golün tarihe geçen adı nedir?",
-    "secenekler": ["Tanrının Eli", "Yüzyılın Golü", "Maradona Tokadı", "Arjantin Darbesi"],
-    "dogru": 0
+    "secenekler": ["Tanrının Eli", "Yüzyılın Golü", "Maradona Tokadı", "Arjantin Darbesi"], "dogru": 0
   },
   {
-    "id": 55,
-    "kategori": "Milli Takım",
-    "zorluk": "orta",
+    "id": 55, "kategori": "Milli Takım", "zorluk": "orta",
     "soru": "Türkiye A Milli Futbol Takımı, 2002 FIFA Dünya Kupası'nda hangi dereceyi elde etmiştir?",
-    "secenekler": ["Şampiyon", "İkinci", "Üçüncü", "Çeyrek Finalist"],
-    "dogru": 2
+    "secenekler": ["Şampiyon", "İkinci", "Üçüncü", "Çeyrek Finalist"], "dogru": 2
   },
   {
-    "id": 56,
-    "kategori": "Teknik Direktör",
-    "zorluk": "orta",
+    "id": 56, "kategori": "Teknik Direktör", "zorluk": "orta",
     "soru": "Futbol taktiğinde 'Tiki-Taka' sistemiyle tanınan ünlü İspanyol teknik direktör kimdir?",
-    "secenekler": ["Jose Mourinho", "Carlo Ancelotti", "Pep Guardiola", "Jurgen Klopp"],
-    "dogru": 2
+    "secenekler": ["Jose Mourinho", "Carlo Ancelotti", "Pep Guardiola", "Jurgen Klopp"], "dogru": 2
   },
   {
-    "id": 57,
-    "kategori": "Dünya Kupası",
-    "zorluk": "orta",
+    "id": 57, "kategori": "Dünya Kupası", "zorluk": "orta",
     "soru": "1998 FIFA Dünya Kupası'nı ev sahibi olarak kazanan ülke hangisidir?",
-    "secenekler": ["Brezilya", "Fransa", "İtalya", "Almanya"],
-    "dogru": 1
+    "secenekler": ["Brezilya", "Fransa", "İtalya", "Almanya"], "dogru": 1
   },
   {
-    "id": 58,
-    "kategori": "Şampiyonlar Ligi",
-    "zorluk": "orta",
+    "id": 58, "kategori": "Şampiyonlar Ligi", "zorluk": "orta",
     "soru": "Şampiyonlar Ligi kupasını en çok kazanan kulüp hangisidir?",
-    "secenekler": ["AC Milan", "Bayern Münih", "Real Madrid", "Barcelona"],
-    "dogru": 2
+    "secenekler": ["AC Milan", "Bayern Münih", "Real Madrid", "Barcelona"], "dogru": 2
   },
   {
-    "id": 59,
-    "kategori": "Kariyer",
-    "zorluk": "orta",
+    "id": 59, "kategori": "Kariyer", "zorluk": "orta",
     "soru": "Lionel Messi, profesyonel kulüp kariyerinin büyük kısmını hangi İspanyol kulübünde geçirmiştir?",
-    "secenekler": ["Real Madrid", "Atletico Madrid", "Barcelona", "Valencia"],
-    "dogru": 2
+    "secenekler": ["Real Madrid", "Atletico Madrid", "Barcelona", "Valencia"], "dogru": 2
   },
   {
-    "id": 60,
-    "kategori": "Güney Amerika",
-    "zorluk": "orta",
+    "id": 60, "kategori": "Güney Amerika", "zorluk": "orta",
     "soru": "Arjantin'in köklü kulüpleri Boca Juniors ve River Plate arasındaki ezeli rekabetin adı nedir?",
-    "secenekler": ["Superclasico", "El Clasico", "Derby della Madonnina", "North West Derby"],
-    "dogru": 0
+    "secenekler": ["Superclasico", "El Clasico", "Derby della Madonnina", "North West Derby"], "dogru": 0
   },
   {
-    "id": 61,
-    "kategori": "Süper Lig",
-    "zorluk": "orta",
+    "id": 61, "kategori": "Süper Lig", "zorluk": "orta",
     "soru": "2010 yılında Süper Lig şampiyonu olan ve tarihe geçen Ertuğrul Sağlam yönetimindeki kulüp hangisidir?",
-    "secenekler": ["Trabzonspor", "Bursaspor", "Başakşehir", "Sivasspor"],
-    "dogru": 1
+    "secenekler": ["Trabzonspor", "Bursaspor", "Başakşehir", "Sivasspor"], "dogru": 1
   },
   {
-    "id": 62,
-    "kategori": "Kulüpler",
-    "zorluk": "orta",
+    "id": 62, "kategori": "Kulüpler", "zorluk": "orta",
     "soru": "Hollanda futbolunun köklü kulübü Ajax hangi şehrin takımıdır?",
-    "secenekler": ["Rotterdam", "Eindhoven", "Amsterdam", "Utrecht"],
-    "dogru": 2
+    "secenekler": ["Rotterdam", "Eindhoven", "Amsterdam", "Utrecht"], "dogru": 2
   },
   {
-    "id": 63,
-    "kategori": "Şampiyonlar Ligi",
-    "zorluk": "orta",
+    "id": 63, "kategori": "Şampiyonlar Ligi", "zorluk": "orta",
     "soru": "1999 Şampiyonlar Ligi finalinde Bayern Münih'i uzatmalarda bulduğu gollerle 2-1 yenerek kupayı kazanan İngiliz kulübü hangisidir?",
-    "secenekler": ["Manchester City", "Manchester United", "Arsenal", "Chelsea"],
-    "dogru": 1
+    "secenekler": ["Manchester City", "Manchester United", "Arsenal", "Chelsea"], "dogru": 1
   },
   {
-    "id": 64,
-    "kategori": "Süper Lig",
-    "zorluk": "orta",
+    "id": 64, "kategori": "Süper Lig", "zorluk": "orta",
     "soru": "Süper Lig tarihinde 'Gol Kralı' unvanını en çok kazanan yerli futbolcu kimdir?",
-    "secenekler": ["Hakan Şükür", "Tanju Çolak", "Metin Oktay", "Burak Yılmaz"],
-    "dogru": 0
+    "secenekler": ["Hakan Şükür", "Tanju Çolak", "Metin Oktay", "Burak Yılmaz"], "dogru": 0
   },
   {
-    "id": 65,
-    "kategori": "İtalya",
-    "zorluk": "orta",
-    "soru": "İtalya Serie A'da 'Derby d'Italia' (İtalya Derbisi) hangi iki takım arasında oynanır?",
-    "secenekler": ["AC Milan - Inter", "Juventus - Inter", "Roma - Lazio", "Napoli - Juventus"],
-    "dogru": 1
+    "id": 65, "kategori": "İtalya", "zorluk": "orta",
+    "soru": "İtalya Serie A'da 'Derby d'Italia' hangi iki takım arasında oynanır?",
+    "secenekler": ["AC Milan - Inter", "Juventus - Inter", "Roma - Lazio", "Napoli - Juventus"], "dogru": 1
   },
   {
-    "id": 66,
-    "kategori": "Süper Lig",
-    "zorluk": "orta",
+    "id": 66, "kategori": "Süper Lig", "zorluk": "orta",
     "soru": "Türkiye Kupası'nı en çok kazanan kulüp hangisidir?",
-    "secenekler": ["Fenerbahçe", "Beşiktaş", "Galatasaray", "Trabzonspor"],
-    "dogru": 2
+    "secenekler": ["Fenerbahçe", "Beşiktaş", "Galatasaray", "Trabzonspor"], "dogru": 2
   },
   {
-    "id": 67,
-    "kategori": "Kurallar",
-    "zorluk": "orta",
+    "id": 67, "kategori": "Kurallar", "zorluk": "orta",
     "soru": "Bir futbol maçında kalecinin topu ellerinde tutabilmesi için azami süre ne kadardır?",
-    "secenekler": ["4 saniye", "6 saniye", "10 saniye", "Sınır yoktur"],
-    "dogru": 1
+    "secenekler": ["4 saniye", "6 saniye", "10 saniye", "Sınır yoktur"], "dogru": 1
   },
   {
-    "id": 68,
-    "kategori": "İtalya",
-    "zorluk": "orta",
+    "id": 68, "kategori": "İtalya", "zorluk": "orta",
     "soru": "İtalya Serie A'da 'Scudetto' ne anlama gelmektedir?",
-    "secenekler": ["Gol Kralı", "Şampiyonluk Kalkanı/Arması", "Küme Düşme Hattı", "Fair-Play Ödülü"],
-    "dogru": 1
+    "secenekler": ["Gol Kralı", "Şampiyonluk Kalkanı/Arması", "Küme Düşme Hattı", "Fair-Play Ödülü"], "dogru": 1
   },
   {
-    "id": 69,
-    "kategori": "Fransa",
-    "zorluk": "orta",
+    "id": 69, "kategori": "Fransa", "zorluk": "orta",
     "soru": "Fransa Ligue 1'de mücadele eden ve liman kenti Marsilya'yı temsil eden kulüp hangisidir?",
-    "secenekler": ["Lyon", "Marseille (Olympique de Marseille)", "Monaco", "Bordeaux"],
-    "dogru": 1
+    "secenekler": ["Lyon", "Marseille (Olympique de Marseille)", "Monaco", "Bordeaux"], "dogru": 1
   },
   {
-    "id": 70,
-    "kategori": "Kurallar",
-    "zorluk": "orta",
+    "id": 70, "kategori": "Kurallar", "zorluk": "orta",
     "soru": "Futbol maçında penaltı atışı yapılırken kaleci kale çizgisi hakkında hangi kurala uymak zorundadır?",
-    "secenekler": ["Çizginin tamamen gerisinde durmalıdır", "En az bir ayağının bir kısmı çizgiye temas etmeli veya hizasında olmalıdır", "Ön çizgiyi geçerek öne atlayabilir", "İstediği yerde durabilir"],
-    "dogru": 1
+    "secenekler": ["Çizginin tamamen gerisinde durmalıdır", "En az bir ayağının bir kısmı çizgiye temas etmeli veya hizasında olmalıdır", "Ön çizgiyi geçerek öne atlayabilir", "İstediği yerde durabilir"], "dogru": 1
   },
   {
-    "id": 71,
-    "kategori": "İtalya",
-    "zorluk": "orta",
+    "id": 71, "kategori": "İtalya", "zorluk": "orta",
     "soru": "İtalya Serie A'da 'I Bianconeri' (Siyah-Beyazlılar) lakabı hangi kulübe aittir?",
-    "secenekler": ["AC Milan", "Inter", "Juventus", "Udinese"],
-    "dogru": 2
+    "secenekler": ["AC Milan", "Inter", "Juventus", "Udinese"], "dogru": 2
   },
   {
-    "id": 72,
-    "kategori": "Dünya Kupası",
-    "zorluk": "orta",
+    "id": 72, "kategori": "Dünya Kupası", "zorluk": "orta",
     "soru": "2026 FIFA Dünya Kupası hangi ülkeler tarafından ortaklaşa düzenlenecektir?",
-    "secenekler": ["İspanya - Portekiz - Fas", "ABD - Kanada - Meksika", "Arjantin - Uruguay - Şili", "Çin - Japonya - Güney Kore"],
-    "dogru": 1
+    "secenekler": ["İspanya - Portekiz - Fas", "ABD - Kanada - Meksika", "Arjantin - Uruguay - Şili", "Çin - Japonya - Güney Kore"], "dogru": 1
   },
-    {
-    "id": 73,
-    "kategori": "Teknik Direktör",
-    "zorluk": "orta",
+  {
+    "id": 73, "kategori": "Teknik Direktör", "zorluk": "orta",
     "soru": "Atletico Madrid'i uzun yıllardır çalıştıran ve takımın başında kazanma hırsıyla tanınan Arjantinli teknik direktör kimdir?",
-    "secenekler": ["Mauricio Pochettino", "Diego Simeone", "Marcelo Bielsa", "Ernesto Valverde"],
-    "dogru": 1
+    "secenekler": ["Mauricio Pochettino", "Diego Simeone", "Marcelo Bielsa", "Ernesto Valverde"], "dogru": 1
   },
   {
-    "id": 74,
-    "kategori": "Ödüller",
-    "zorluk": "orta",
+    "id": 74, "kategori": "Ödüller", "zorluk": "orta",
     "soru": "FIFA tarafından verilen ve yılın en iyi futbolcusuna sunulan ödülün resmi adı nedir?",
-    "secenekler": ["Ballon d'Or", "The Best FIFA Men's Player", "Golden Foot", "World Soccer Ödülü"],
-    "dogru": 1
+    "secenekler": ["Ballon d'Or", "The Best FIFA Men's Player", "Golden Foot", "World Soccer Ödülü"], "dogru": 1
   },
   {
-    "id": 75,
-    "kategori": "Süper Lig",
-    "zorluk": "orta",
+    "id": 75, "kategori": "Süper Lig", "zorluk": "orta",
     "soru": "Beşiktaş'ın efsane stadyumu İnönü Stadyumu'nun deniz kıyısına en yakın tribününün adı neydi?",
-    "secenekler": ["Numaralı", "Kapalı", "Eski Açık", "Yeni Açık"],
-    "dogru": 2
+    "secenekler": ["Numaralı", "Kapalı", "Eski Açık", "Yeni Açık"], "dogru": 2
   },
   {
-    "id": 76,
-    "kategori": "Avrupa Kupaları",
-    "zorluk": "orta",
+    "id": 76, "kategori": "Avrupa Kupaları", "zorluk": "orta",
     "soru": "UEFA Şampiyonlar Ligi kupasını kazanan ilk Hollanda kulübü hangisidir?",
-    "secenekler": ["Ajax", "Feyenoord", "PSV Eindhoven", "AZ Alkmaar"],
-    "dogru": 1
+    "secenekler": ["Ajax", "Feyenoord", "PSV Eindhoven", "AZ Alkmaar"], "dogru": 1
   },
   {
-    "id": 77,
-    "kategori": "İspanya",
-    "zorluk": "orta",
+    "id": 77, "kategori": "İspanya", "zorluk": "orta",
     "soru": "Real Madrid kulübünün takma adı veya taraftarlarına verilen yaygın isim nedir?",
-    "secenekler": ["Los Blancos (Beyaz Şimşekler)", "Los Colchoneros", "Los Cules", "Blaugrana"],
-    "dogru": 0
+    "secenekler": ["Los Blancos (Beyaz Şimşekler)", "Los Colchoneros", "Los Cules", "Blaugrana"], "dogru": 0
   },
   {
-    "id": 78,
-    "kategori": "Uluslararası",
-    "zorluk": "orta",
+    "id": 78, "kategori": "Uluslararası", "zorluk": "orta",
     "soru": "Meksika millî futbol takımının resmi takma adı veya unvanı nedir?",
-    "secenekler": ["Los Cafeteros", "El Tri (Tricolor)", "La Celeste", "Los Incas"],
-    "dogru": 1
+    "secenekler": ["Los Cafeteros", "El Tri (Tricolor)", "La Celeste", "Los Incas"], "dogru": 1
   },
   {
-    "id": 79,
-    "kategori": "Kurallar",
-    "zorluk": "orta",
+    "id": 79, "kategori": "Kurallar", "zorluk": "orta",
     "soru": "Futbol oyun kurallarına göre kaleci, takım arkadaşının ayağıyla bilerek kaleciye gönderdiği topa elleriyle müdahale edebilir mi?",
-    "secenekler": ["Edebilir", "Edemez", "Sadece ceza sahası dışındaysa edebilir", "Hakem onay verirse edebilir"],
-    "dogru": 1
+    "secenekler": ["Edebilir", "Edemez", "Sadece ceza sahası dışındaysa edebilir", "Hakem onay verirse edebilir"], "dogru": 1
   },
   {
-    "id": 80,
-    "kategori": "Avrupa Şampiyonası",
-    "zorluk": "orta",
+    "id": 80, "kategori": "Avrupa Şampiyonası", "zorluk": "orta",
     "soru": "EURO 2020 finalinde İngiltere'yi penaltılarla yenerek Avrupa Şampiyonu olan ülke hangisidir?",
-    "secenekler": ["İtalya", "İspanya", "Danimarka", "Belçika"],
-    "dogru": 0
+    "secenekler": ["İtalya", "İspanya", "Danimarka", "Belçika"], "dogru": 0
   },
   {
-    "id": 81,
-    "kategori": "Süper Lig",
-    "zorluk": "orta",
+    "id": 81, "kategori": "Süper Lig", "zorluk": "orta",
     "soru": "Süper Lig tarihinde 2021-2022 sezonunda şampiyonluğa ulaşan Karadeniz temsilcisi Trabzonspor'un teknik direktörü kimdi?",
-    "secenekler": ["Ünal Karaman", "Şenol Güneş", "Abdullah Avcı", "Ersun Yanal"],
-    "dogru": 2
+    "secenekler": ["Ünal Karaman", "Şenol Güneş", "Abdullah Avcı", "Ersun Yanal"], "dogru": 2
   },
   {
-    "id": 82,
-    "kategori": "Avrupa Kupaları",
-    "zorluk": "orta",
+    "id": 82, "kategori": "Avrupa Kupaları", "zorluk": "orta",
     "soru": "UEFA Şampiyonlar Ligi'nde mutlu sona ulaşan ilk Portekiz kulübü hangisidir?",
-    "secenekler": ["Porto", "Benfica", "Sporting Lizbon", "Boavista"],
-    "dogru": 1
+    "secenekler": ["Porto", "Benfica", "Sporting Lizbon", "Boavista"], "dogru": 1
   },
   {
-    "id": 83,
-    "kategori": "Fransa",
-    "zorluk": "orta",
+    "id": 83, "kategori": "Fransa", "zorluk": "orta",
     "soru": "Marseille kulübünün tarihi boyunca kazandığı en büyük uluslararası başarı nedir?",
-    "secenekler": ["UEFA Kupası", "UEFA Şampiyonlar Ligi", "UEFA Kupa Galipleri Kupası", "UEFA Süper Kupa"],
-    "dogru": 1
+    "secenekler": ["UEFA Kupası", "UEFA Şampiyonlar Ligi", "UEFA Kupa Galipleri Kupası", "UEFA Süper Kupa"], "dogru": 1
   },
   {
-    "id": 84,
-    "kategori": "Teknik Direktör",
-    "zorluk": "orta",
+    "id": 84, "kategori": "Teknik Direktör", "zorluk": "orta",
     "soru": "A Milli Futbol Takımı'nı 2002 Dünya Kupası'nda üçüncülüğe taşıyan efsane teknik direktör kimdir?",
-    "secenekler": ["Fatih Terim", "Şenol Güneş", "Mustafa Denizli", "Ersun Yanal"],
-    "dogru": 1
+    "secenekler": ["Fatih Terim", "Şenol Güneş", "Mustafa Denizli", "Ersun Yanal"], "dogru": 1
   },
   {
-    "id": 85,
-    "kategori": "İspanya",
-    "zorluk": "orta",
+    "id": 85, "kategori": "İspanya", "zorluk": "orta",
     "soru": "Athletic Bilbao kulübünün en büyük kadro yapılanması özelliği ve politikası nedir?",
-    "secenekler": ["Yalnızca yabancı oyuncu oynatmak", "Yalnızca Bask bölgesi kökenli futbolcuları kadroda bulundurmak", "Hiç altyapı oyuncusu kullanmamak", "Sadece İspanyol milli oyuncuları almak"],
-    "dogru": 1
+    "secenekler": ["Yalnızca yabancı oyuncu oynatmak", "Yalnızca Bask bölgesi kökenli futbolcuları kadroda bulundurmak", "Hiç altyapı oyuncusu kullanmamak", "Sadece İspanyol milli oyuncuları almak"], "dogru": 1
   },
   {
-    "id": 86,
-    "kategori": "Kurallar",
-    "zorluk": "orta",
+    "id": 86, "kategori": "Kurallar", "zorluk": "orta",
     "soru": "Futbol sahasında köşe vuruşu (korner) kullanılırken top nereye konulmalıdır?",
-    "secenekler": ["Taç çizgisinin dışına", "Köşe yayının içerisine", "Ceza sahası köşesindeki çizgi üzerine", "Doğrudan kaleye 5 metre mesafeye"],
-    "dogru": 1
+    "secenekler": ["Taç çizgisinin dışına", "Köşe yayının içerisine", "Ceza sahası köşesindeki çizgi üzerine", "Doğrudan kaleye 5 metre mesafeye"], "dogru": 1
   },
   {
-    "id": 87,
-    "kategori": "Uluslararası",
-    "zorluk": "orta",
+    "id": 87, "kategori": "Uluslararası", "zorluk": "orta",
     "soru": "Afrika Uluslar Kupası'nı en çok kazanan ülke hangisidir?",
-    "secenekler": ["Nijerya", "Gana", "Mısır", "Kamerun"],
-    "dogru": 2
+    "secenekler": ["Nijerya", "Gana", "Mısır", "Kamerun"], "dogru": 2
   },
   {
-    "id": 88,
-    "kategori": "İtalya",
-    "zorluk": "orta",
+    "id": 88, "kategori": "İtalya", "zorluk": "orta",
     "soru": "İtalya Serie A'da 'Gök Mavililer' (Gli Azzurri) lakabı milli takım dışında hangi köklü kulüple de anılır?",
-    "secenekler": ["Napoli", "Lazio", "Atalanta", "Fiorentina"],
-    "dogru": 0
+    "secenekler": ["Napoli", "Lazio", "Atalanta", "Fiorentina"], "dogru": 0
   },
   {
-    "id": 89,
-    "kategori": "Avrupa Kupaları",
-    "zorluk": "orta",
+    "id": 89, "kategori": "Avrupa Kupaları", "zorluk": "orta",
     "soru": "Şampiyonlar Ligi'ni kazanan ilk Fransız kulübü hangisidir?",
-    "secenekler": ["PSG", "Monaco", "Marseille", "Lyon"],
-    "dogru": 2
+    "secenekler": ["PSG", "Monaco", "Marseille", "Lyon"], "dogru": 2
   },
   {
-    "id": 90,
-    "kategori": "Kariyer",
-    "zorluk": "orta",
+    "id": 90, "kategori": "Kariyer", "zorluk": "orta",
     "soru": "Fransız golcü Karim Benzema uzun yıllar hangi dev kulüpte forma giymiş ve kaptanlık yapmıştır?",
-    "secenekler": ["Barcelona", "Real Madrid", "Bayern Münih", "Juventus"],
-    "dogru": 1
+    "secenekler": ["Barcelona", "Real Madrid", "Bayern Münih", "Juventus"], "dogru": 1
   },
   {
-    "id": 91,
-    "kategori": "İspanya",
-    "zorluk": "orta",
+    "id": 91, "kategori": "İspanya", "zorluk": "orta",
     "soru": "Valencia kulübünün ambleminde ve armasında yer alan hayvan figürü nedir?",
-    "secenekler": ["Aslan", "Yarasa", "Kartal", "Boğa"],
-    "dogru": 1
+    "secenekler": ["Aslan", "Yarasa", "Kartal", "Boğa"], "dogru": 1
   },
   {
-    "id": 92,
-    "kategori": "İngiltere",
-    "zorluk": "orta",
+    "id": 92, "kategori": "İngiltere", "zorluk": "orta",
     "soru": "Tottenham Hotspur kulübünün ambleminde yer alan ana figür nedir?",
-    "secenekler": ["Kanon", "Horoz (Top üstünde horoz)", "Aslan", "Kılıç"],
-    "dogru": 1
+    "secenekler": ["Kanon", "Horoz", "Aslan", "Kılıç"], "dogru": 1
   },
   {
-    "id": 93,
-    "kategori": "Almanya",
-    "zorluk": "orta",
+    "id": 93, "kategori": "Almanya", "zorluk": "orta",
     "soru": "Bayer Leverkusen kulübü hangi Alman ilaç ve kimya şirketinin çalışanları tarafından kurulmuştur?",
-    "secenekler": ["BASF", "Bayer", "Siemens", "Volkswagen"],
-    "dogru": 1
+    "secenekler": ["BASF", "Bayer", "Siemens", "Volkswagen"], "dogru": 1
   },
   {
-    "id": 94,
-    "kategori": "Süper Lig",
-    "zorluk": "orta",
+    "id": 94, "kategori": "Süper Lig", "zorluk": "orta",
     "soru": "Süper Lig'de 'Üç Büyükler' olarak anılan kulüpler dışında şampiyonluk yaşamış kulüp sayısı kaçtır?",
-    "secenekler": ["2", "3", "4", "5"],
-    "dogru": 1
+    "secenekler": ["2", "3", "4", "5"], "dogru": 1
   },
   {
-    "id": 95,
-    "kategori": "Kariyer",
-    "zorluk": "orta",
+    "id": 95, "kategori": "Kariyer", "zorluk": "orta",
     "soru": "Belçikalı yıldız futbolcu Kevin De Bruyne, Premier Lig'de hangi kulüpte uzun yıllar üst düzey başarılara imza atmıştır?",
-    "secenekler": ["Chelsea", "Manchester United", "Manchester City", "Arsenal"],
-    "dogru": 2
+    "secenekler": ["Chelsea", "Manchester United", "Manchester City", "Arsenal"], "dogru": 2
   },
   {
-    "id": 96,
-    "kategori": "Fransa",
-    "zorluk": "orta",
+    "id": 96, "kategori": "Fransa", "zorluk": "orta",
     "soru": "Paris Saint-Germain (PSG) kulübü hangi yıl kurulmuştur?",
-    "secenekler": ["1900", "1950", "1970", "1992"],
-    "dogru": 2
+    "secenekler": ["1900", "1950", "1970", "1992"], "dogru": 2
   },
   {
-    "id": 97,
-    "kategori": "İngiltere",
-    "zorluk": "orta",
+    "id": 97, "kategori": "İngiltere", "zorluk": "orta",
     "soru": "İngiltere Premier Lig'in resmi ambleminde yer alan hayvan figürü hangisidir?",
-    "secenekler": ["Kartal", "Aslan", "Kutup Ayısı", "Boğa"],
-    "dogru": 1
+    "secenekler": ["Kartal", "Aslan", "Kutup Ayısı", "Boğa"], "dogru": 1
   },
   {
-    "id": 98,
-    "kategori": "Güney Amerika",
-    "zorluk": "orta",
+    "id": 98, "kategori": "Güney Amerika", "zorluk": "orta",
     "soru": "Brezilya'nın en popüler kulüplerinden olan ve Rio de Janeiro'da bulunan Flamengo hangi renk formalarla mücadele eder?",
-    "secenekler": ["Sarı-Yeşil", "Kırmızı-Siyah (Rubro-Negro)", "Mavi-Beyaz", "Bordo-Beyaz"],
-    "dogru": 1
+    "secenekler": ["Sarı-Yeşil", "Kırmızı-Siyah", "Mavi-Beyaz", "Bordo-Beyaz"], "dogru": 1
   },
   {
-    "id": 99,
-    "kategori": "Avrupa Kupaları",
-    "zorluk": "orta",
-    "soru": "UEFA Şampiyonlar Ligi'nde en çok final kaybeden kulüplerden biri olan ve kupayı uzun süre kazanamayan İtalyan kulübü hangisidir?",
-    "secenekler": ["Juventus", "AC Milan", "Inter", "Roma"],
-    "dogru": 0
+    "id": 99, "kategori": "Avrupa Kupaları", "zorluk": "orta",
+    "soru": "UEFA Şampiyonlar Ligi'nde en çok final kaybeden kulüplerden biri olan İtalyan kulübü hangisidir?",
+    "secenekler": ["Juventus", "AC Milan", "Inter", "Roma"], "dogru": 0
   },
   {
-    "id": 100,
-    "kategori": "Süper Lig",
-    "zorluk": "orta",
+    "id": 100, "kategori": "Süper Lig", "zorluk": "orta",
     "soru": "Süper Lig tarihinde bir maçta en çok gol atan futbolcu rekoru kime aittir (Bir maçta 6 gol)?",
-    "secenekler": ["Tanju Çolak", "Hakan Şükür", "Cenk Tosun", "Alex de Souza"],
-    "dogru": 0
+    "secenekler": ["Tanju Çolak", "Hakan Şükür", "Cenk Tosun", "Alex de Souza"], "dogru": 0
   },
   {
-    "id": 101,
-    "kategori": "Dünya Kupası",
-    "zorluk": "zor",
+    "id": 101, "kategori": "Şampiyonlar Ligi", "zorluk": "zor",
     "soru": "2005 UEFA Şampiyonlar Ligi Finali'nde Milan karşısında 3-0'dan maçı çeviren takım hangisidir?",
-    "secenekler": ["AC Milan", "Liverpool", "Manchester United", "Barcelona"],
-    "dogru": 1
+    "secenekler": ["AC Milan", "Liverpool", "Manchester United", "Barcelona"], "dogru": 1
   },
   {
-    "id": 102,
-    "kategori": "Kurallar",
-    "zorluk": "zor",
+    "id": 102, "kategori": "Kurallar", "zorluk": "zor",
     "soru": "Futbolda bir maçta sahadaki takımın en az kaç oyuncuya düşmesi durumunda maç tatil edilir?",
-    "secenekler": ["5", "6", "7", "8"],
-    "dogru": 2
+    "secenekler": ["5", "6", "7", "8"], "dogru": 2
   },
   {
-    "id": 103,
-    "kategori": "İstatistik",
-    "zorluk": "zor",
+    "id": 103, "kategori": "İstatistik", "zorluk": "zor",
     "soru": "Bir Dünya Kupası maçında tek bir maçta en çok gol atan (5 gol) oyuncu kimdir?",
-    "secenekler": ["Oleg Salenko", "Pele", "Just Fontaine", "Sandor Kocsis"],
-    "dogru": 0
+    "secenekler": ["Oleg Salenko", "Pele", "Just Fontaine", "Sandor Kocsis"], "dogru": 0
   },
   {
-    "id": 104,
-    "kategori": "Dünya Kupası",
-    "zorluk": "zor",
+    "id": 104, "kategori": "Dünya Kupası", "zorluk": "zor",
     "soru": "1950 Dünya Kupası final grubunda Brezilya'yı yenerek şampiyon olan ve 'Maracanazo' trajedisine sebep olan ülke hangisidir?",
-    "secenekler": ["Uruguay", "Arjantin", "İsveç", "İtalya"],
-    "dogru": 0
+    "secenekler": ["Uruguay", "Arjantin", "İsveç", "İtalya"], "dogru": 0
   },
   {
-    "id": 105,
-    "kategori": "Kurallar",
-    "zorluk": "zor",
-    "soru": "Ofsayt kuralına göre, bir oyuncunun ofsayt pozisyonunda sayılması için rakip kaleye geçişte kaç rakip oyuncu (kaleci dahil) olmalıdır?",
-    "secenekler": ["1", "2", "3", "0"],
-    "dogru": 1
+    "id": 105, "kategori": "Kurallar", "zorluk": "zor",
+    "soru": "Ofsayt kuralına göre, bir oyuncunun ofsayt pozisyonunda sayılması için rakip kaleye geçişte kaç rakip oyuncu olmalıdır?",
+    "secenekler": ["1", "2", "3", "0"], "dogru": 1
   },
   {
-    "id": 106,
-    "kategori": "Süper Lig",
-    "zorluk": "zor",
-    "soru": "Türkiye Süper Lig tarihinde şampiyonluk yaşayan ilk Anadolu kulübü (İstanbul dışı) hangisidir?",
-    "secenekler": ["Bursaspor", "Trabzonspor", "Göztepe", "Kocaelispor"],
-    "dogru": 1
+    "id": 106, "kategori": "Süper Lig", "zorluk": "zor",
+    "soru": "Türkiye Süper Lig tarihinde şampiyonluk yaşayan ilk Anadolu kulübü hangisidir?",
+    "secenekler": ["Bursaspor", "Trabzonspor", "Göztepe", "Kocaelispor"], "dogru": 1
   },
   {
-    "id": 107,
-    "kategori": "Stadyumlar",
-    "zorluk": "zor",
+    "id": 107, "kategori": "Stadyumlar", "zorluk": "zor",
     "soru": "Brezilya'nın ünlü Maracanã Stadyumu hangi şehirde yer almaktadır?",
-    "secenekler": ["Sao Paulo", "Rio de Janeiro", "Brasilia", "Salvador"],
-    "dogru": 1
+    "secenekler": ["Sao Paulo", "Rio de Janeiro", "Brasilia", "Salvador"], "dogru": 1
   },
   {
-    "id": 108,
-    "kategori": "Gol",
-    "zorluk": "zor",
-    "soru": "Bir yıl içinde (takvim yılı) resmi maçlarda en çok gol atma rekorunu elinde bulunduran futbolcu kimdir?",
-    "secenekler": ["Pele", "Cristiano Ronaldo", "Lionel Messi", "Gerd Muller"],
-    "dogru": 2
+    "id": 108, "kategori": "Gol", "zorluk": "zor",
+    "soru": "Bir yıl içinde resmi maçlarda en çok gol atma rekorunu elinde bulunduran futbolcu kimdir?",
+    "secenekler": ["Pele", "Cristiano Ronaldo", "Lionel Messi", "Gerd Muller"], "dogru": 2
   },
   {
-    "id": 109,
-    "kategori": "Transfer",
-    "zorluk": "zor",
+    "id": 109, "kategori": "Transfer", "zorluk": "zor",
     "soru": "Futbol tarihinin en yüksek bonservis bedeliyle transfer olan oyuncusu kimdir?",
-    "secenekler": ["Kylian Mbappe", "Neymar", "Ousmane Dembele", "Paul Pogba"],
-    "dogru": 1
+    "secenekler": ["Kylian Mbappe", "Neymar", "Ousmane Dembele", "Paul Pogba"], "dogru": 1
   },
   {
-    "id": 110,
-    "kategori": "Teknik Direktör",
-    "zorluk": "zor",
+    "id": 110, "kategori": "Teknik Direktör", "zorluk": "zor",
     "soru": "Manchester United'ı 26 yılı aşkın süre çalıştıran ve 'Sir' unvanlı efsane teknik direktör kimdir?",
-    "secenekler": ["Sir Bobby Charlton", "Sir Alex Ferguson", "Arsene Wenger", "Pep Guardiola"],
-    "dogru": 1
+    "secenekler": ["Sir Bobby Charlton", "Sir Alex Ferguson", "Arsene Wenger", "Pep Guardiola"], "dogru": 1
   },
   {
-    "id": 111,
-    "kategori": "Efsaneler",
-    "zorluk": "zor",
+    "id": 111, "kategori": "Efsaneler", "zorluk": "zor",
     "soru": "Fransız futbol efsanesi Zinedine Zidane'ın 2006 Dünya Kupası finalinde kırmızı kart görmesine sebep olan oyuncu kimdir?",
-    "secenekler": ["Gianluigi Buffon", "Marco Materazzi", "Fabio Cannavaro", "Andrea Pirlo"],
-    "dogru": 1
+    "secenekler": ["Gianluigi Buffon", "Marco Materazzi", "Fabio Cannavaro", "Andrea Pirlo"], "dogru": 1
   },
   {
-    "id": 112,
-    "kategori": "Kaleci",
-    "zorluk": "zor",
+    "id": 112, "kategori": "Kaleci", "zorluk": "zor",
     "soru": "Kariyeri boyunca resmi maçlarda 100'den fazla gol atan ünlü kaleci kimdir?",
-    "secenekler": ["Lev Yashin", "Manuel Neuer", "Rogerio Ceni", "Jose Luis Chilavert"],
-    "dogru": 2
+    "secenekler": ["Lev Yashin", "Manuel Neuer", "Rogerio Ceni", "Jose Luis Chilavert"], "dogru": 2
   },
   {
-    "id": 113,
-    "kategori": "Uluslararası",
-    "zorluk": "zor",
+    "id": 113, "kategori": "Uluslararası", "zorluk": "zor",
     "soru": "Afrika Uluslar Kupası'nı (AFCON) en çok kazanan ülke hangisidir?",
-    "secenekler": ["Gana", "Kamerun", "Mısır", "Nijerya"],
-    "dogru": 2
+    "secenekler": ["Gana", "Kamerun", "Mısır", "Nijerya"], "dogru": 2
   },
   {
-    "id": 114,
-    "kategori": "Ödüller",
-    "zorluk": "zor",
+    "id": 114, "kategori": "Ödüller", "zorluk": "zor",
     "soru": "Yılın en estetik ve güzel golüne verilen FIFA ödülünün adı nedir?",
-    "secenekler": ["Ballon d'Or", "Puskas Ödülü", "Golden Boy", "Gerd Muller Ödülü"],
-    "dogru": 1
+    "secenekler": ["Ballon d'Or", "Puskas Ödülü", "Golden Boy", "Gerd Muller Ödülü"], "dogru": 1
   },
   {
-    "id": 115,
-    "kategori": "Almanya",
-    "zorluk": "zor",
+    "id": 115, "kategori": "Almanya", "zorluk": "zor",
     "soru": "Bundesliga tarihinde bir sezonda 41 gol atarak Gerd Muller'in rekorunu kıran Polonyalı golcü kimdir?",
-    "secenekler": ["Erling Haaland", "Robert Lewandowski", "Timo Werner", "Harry Kane"],
-    "dogru": 1
+    "secenekler": ["Erling Haaland", "Robert Lewandowski", "Timo Werner", "Harry Kane"], "dogru": 1
   },
   {
-    "id": 116,
-    "kategori": "Dünya Kupası",
-    "zorluk": "zor",
-    "soru": "1986 Dünya Kupası'nda turnuvanın gol kralı olan ve İngiltere'ye attığı golle ünlenen İngiliz futbolcu kimdir?",
-    "secenekler": ["Bobby Charlton", "Gary Lineker", "Alan Shearer", "Michael Owen"],
-    "dogru": 1
+    "id": 116, "kategori": "Dünya Kupası", "zorluk": "zor",
+    "soru": "1986 Dünya Kupası'nda turnuvanın gol kralı olan İngiliz futbolcu kimdir?",
+    "secenekler": ["Bobby Charlton", "Gary Lineker", "Alan Shearer", "Michael Owen"], "dogru": 1
   },
   {
-    "id": 117,
-    "kategori": "Şampiyonlar Ligi",
-    "zorluk": "zor",
-    "soru": "Şampiyonlar Ligi tarihinde üst üste 3 kez bu kupayı kazanan ilk ve tek teknik direktör kimdir?",
-    "secenekler": ["Pep Guardiola", "Zinedine Zidane", "Carlo Ancelotti", "Sir Alex Ferguson"],
-    "dogru": 1
+    "id": 117, "kategori": "Şampiyonlar Ligi", "zorluk": "zor",
+    "soru": "Şampiyonlar Ligi tarihinde üst üste 3 kez bu kupayı kazanan ilk teknik direktör kimdir?",
+    "secenekler": ["Pep Guardiola", "Zinedine Zidane", "Carlo Ancelotti", "Sir Alex Ferguson"], "dogru": 1
   },
   {
-    "id": 118,
-    "kategori": "Asya Futbolu",
-    "zorluk": "zor",
+    "id": 118, "kategori": "Asya Futbolu", "zorluk": "zor",
     "soru": "Asya Kupası'nı (AFC Asian Cup) en çok kazanan ülke hangisidir?",
-    "secenekler": ["Güney Kore", "Japonya", "Suudi Arabistan", "İran"],
-    "dogru": 1
+    "secenekler": ["Güney Kore", "Japonya", "Suudi Arabistan", "İran"], "dogru": 1
   },
   {
-    "id": 119,
-    "kategori": "Kural",
-    "zorluk": "zor",
+    "id": 119, "kategori": "Kural", "zorluk": "zor",
     "soru": "Futbol oyun kurallarına göre eleme usulü maçlarda uzatma devreleri toplamda kaç dakikadır?",
-    "secenekler": ["15 dakika", "30 dakika", "45 dakika", "60 dakika"],
-    "dogru": 1
+    "secenekler": ["15 dakika", "30 dakika", "45 dakika", "60 dakika"], "dogru": 1
   },
   {
-    "id": 120,
-    "kategori": "Uluslararası",
-    "zorluk": "zor",
+    "id": 120, "kategori": "Uluslararası", "zorluk": "zor",
     "soru": "Futbol tarihindeki ilk resmi uluslararası milli maç hangi iki ülke arasında oynanmıştır?",
-    "secenekler": ["İngiltere - İskoçya", "Brezilya - Arjantin", "Fransa - Almanya", "Uruguay - Brezilya"],
-    "dogru": 0
+    "secenekler": ["İngiltere - İskoçya", "Brezilya - Arjantin", "Fransa - Almanya", "Uruguay - Brezilya"], "dogru": 0
   },
   {
-    "id": 121,
-    "kategori": "Avrupa Kupaları",
-    "zorluk": "zor",
+    "id": 121, "kategori": "Avrupa Kupaları", "zorluk": "zor",
     "soru": "UEFA Kupa Galipleri Kupası'nı en çok kazanan kulüp hangisidir?",
-    "secenekler": ["Liverpool", "Juventus", "Sevilla", "Inter"],
-    "dogru": 2
+    "secenekler": ["Liverpool", "Juventus", "Sevilla", "Inter"], "dogru": 2
   },
   {
-    "id": 122,
-    "kategori": "İngiltere",
-    "zorluk": "zor",
+    "id": 122, "kategori": "İngiltere", "zorluk": "zor",
     "soru": "Premier Lig tarihinde 'Invincibles' (Yenilmezler) unvanıyla hiç maç kaybetmeden şampiyon olan kulüp hangisidir?",
-    "secenekler": ["Manchester United", "Chelsea", "Arsenal", "Manchester City"],
-    "dogru": 2
+    "secenekler": ["Manchester United", "Chelsea", "Arsenal", "Manchester City"], "dogru": 2
   },
   {
-    "id": 123,
-    "kategori": "Güney Amerika",
-    "zorluk": "zor",
+    "id": 123, "kategori": "Güney Amerika", "zorluk": "zor",
     "soru": "Güney Amerika'nın kulüpler bazındaki en büyük kupası olan Copa Libertadores'i en çok kazanan kulüp hangisidir?",
-    "secenekler": ["Boca Juniors", "River Plate", "Independiente", "Flamengo"],
-    "dogru": 2
+    "secenekler": ["Boca Juniors", "River Plate", "Independiente", "Flamengo"], "dogru": 2
   },
   {
-    "id": 124,
-    "kategori": "Almanya",
-    "zorluk": "zor",
+    "id": 124, "kategori": "Almanya", "zorluk": "zor",
     "soru": "Borussia Dortmund'un maçlarını oynadığı ve ünlü 'Sarı Duvar' tribününe ev sahipliği yapan stadyumun adı nedir?",
-    "secenekler": ["Allianz Arena", "Signal Iduna Park", "BayArena", "Veltins-Arena"],
-    "dogru": 1
+    "secenekler": ["Allianz Arena", "Signal Iduna Park", "BayArena", "Veltins-Arena"], "dogru": 1
   },
   {
-    "id": 125,
-    "kategori": "Avrupa Şampiyonası",
-    "zorluk": "zor",
+    "id": 125, "kategori": "Avrupa Şampiyonası", "zorluk": "zor",
     "soru": "Avrupa Futbol Şampiyonası tarihinde turnuva tarihindeki ilk golü atan ülke hangisidir?",
-    "secenekler": ["Fransa", "Sovyetler Birliği", "Almanya", "İspanya"],
-    "dogru": 0
+    "secenekler": ["Fransa", "Sovyetler Birliği", "Almanya", "İspanya"], "dogru": 0
   },
   {
-    "id": 126,
-    "kategori": "Kariyer",
-    "zorluk": "zor",
+    "id": 126, "kategori": "Kariyer", "zorluk": "zor",
     "soru": "Cristiano Ronaldo profesyonel kariyerine hangi kulübün altyapısında başlamıştır?",
-    "secenekler": ["Real Madrid", "Sporting Lizbon", "Manchester United", "Porto"],
-    "dogru": 1
+    "secenekler": ["Real Madrid", "Sporting Lizbon", "Manchester United", "Porto"], "dogru": 1
   },
   {
-    "id": 127,
-    "kategori": "Uluslararası",
-    "zorluk": "zor",
+    "id": 127, "kategori": "Uluslararası", "zorluk": "zor",
     "soru": "FIFA sıralamasında 1. sırada en uzun süre kalan ülke hangisidir?",
-    "secenekler": ["Almanya", "Brezilya", "İspanya", "Arjantin"],
-    "dogru": 1
+    "secenekler": ["Almanya", "Brezilya", "İspanya", "Arjantin"], "dogru": 1
   },
   {
-    "id": 128,
-    "kategori": "Teknik Direktör",
-    "zorluk": "zor",
+    "id": 128, "kategori": "Teknik Direktör", "zorluk": "zor",
     "soru": "Milan ile hem futbolcu hem de teknik direktör olarak Şampiyonlar Ligi kazanan efsane isim kimdir?",
-    "secenekler": ["Johan Cruyff", "Carlo Ancelotti", "Zinedine Zidane", "Pep Guardiola"],
-    "dogru": 1
+    "secenekler": ["Johan Cruyff", "Carlo Ancelotti", "Zinedine Zidane", "Pep Guardiola"], "dogru": 1
   },
   {
-    "id": 129,
-    "kategori": "Dünya Kupası",
-    "zorluk": "zor",
+    "id": 129, "kategori": "Dünya Kupası", "zorluk": "zor",
     "soru": "Dünya Kupası tarihinde kalesini en uzun süre gole kapatan kaleci rekoru kime aittir? (517 dakika)",
-    "secenekler": ["Gianluigi Buffon", "Walter Zenga", "Iker Casillas", "Manuel Neuer"],
-    "dogru": 1
+    "secenekler": ["Gianluigi Buffon", "Walter Zenga", "Iker Casillas", "Manuel Neuer"], "dogru": 1
   },
   {
-    "id": 130,
-    "kategori": "Kurallar",
-    "zorluk": "zor",
+    "id": 130, "kategori": "Kurallar", "zorluk": "zor",
     "soru": "Futbol oyun kurallarına göre kale vuruşunda topun ceza sahası dışına çıkma zorunluluğu hangi yıl kaldırılmıştır?",
-    "secenekler": ["2016", "2019", "2021", "2023"],
-    "dogru": 1
+    "secenekler": ["2016", "2019", "2021", "2023"], "dogru": 1
   },
   {
-    "id": 131,
-    "kategori": "Tarih",
-    "zorluk": "zor",
+    "id": 131, "kategori": "Tarih", "zorluk": "zor",
     "soru": "FIFA hangi şehirde kurulmuştur?",
-    "secenekler": ["Londra", "Paris", "Zürih", "Cenevre"],
-    "dogru": 1
+    "secenekler": ["Londra", "Paris", "Zürih", "Cenevre"], "dogru": 1
   },
   {
-    "id": 132,
-    "kategori": "Avrupa Kupaları",
-    "zorluk": "zor",
+    "id": 132, "kategori": "Avrupa Kupaları", "zorluk": "zor",
     "soru": "UEFA Konferans Ligi ilk kez hangi sezonda düzenlenmeye başlamıştır?",
-    "secenekler": ["2019-2020", "2020-2021", "2021-2022", "2022-2023"],
-    "dogru": 2
+    "secenekler": ["2019-2020", "2020-2021", "2021-2022", "2022-2023"], "dogru": 2
   },
   {
-    "id": 133,
-    "kategori": "Dünya Kupası",
-    "zorluk": "zor",
+    "id": 133, "kategori": "Dünya Kupası", "zorluk": "zor",
     "soru": "1994 FIFA Dünya Kupası finalinde Brezilya ile İtalya arasındaki maç tarihte ilk kez ne ile sonuçlanmıştır?",
-    "secenekler": ["Altın Gol", "Penaltı Atışları", "Kur’a Çekimi", "Maçın Tekrarı"],
-    "dogru": 1
+    "secenekler": ["Altın Gol", "Penaltı Atışları", "Kur’a Çekimi", "Maçın Tekrarı"], "dogru": 1
   },
   {
-    "id": 134,
-    "kategori": "İspanya",
-    "zorluk": "zor",
+    "id": 134, "kategori": "İspanya", "zorluk": "zor",
     "soru": "La Liga tarihinde Real Madrid ve Barcelona dışında lig şampiyonluğu yaşamış son kulüp hangisidir?",
-    "secenekler": ["Valencia", "Atletico Madrid", "Deportivo La Coruna", "Real Sociedad"],
-    "dogru": 1
+    "secenekler": ["Valencia", "Atletico Madrid", "Deportivo La Coruna", "Real Sociedad"], "dogru": 1
   },
   {
-    "id": 135,
-    "kategori": "Süper Lig",
-    "zorluk": "zor",
+    "id": 135, "kategori": "Süper Lig", "zorluk": "zor",
     "soru": "Süper Lig tarihinde 100 gol barajını geçen en genç futbolcu unvanı kime aittir?",
-    "secenekler": ["Hakan Şükür", "Metin Oktay", "Aykut Kocaman", "Sergen Yalçın"],
-    "dogru": 0
+    "secenekler": ["Hakan Şükür", "Metin Oktay", "Aykut Kocaman", "Sergen Yalçın"], "dogru": 0
   },
   {
-    "id": 136,
-    "kategori": "Şampiyonlar Ligi",
-    "zorluk": "zor",
+    "id": 136, "kategori": "Şampiyonlar Ligi", "zorluk": "zor",
     "soru": "Şampiyonlar Ligi finalinde kendi ülkesinin takımıyla kupa kazanan ilk Türk asıllı Alman teknik direktör kimdir?",
-    "secenekler": ["Mesut Özil", "Thomas Tuchel", "Jürgen Klopp", "Hans-Dieter Flick"],
-    "dogru": 1
+    "secenekler": ["Mesut Özil", "Thomas Tuchel", "Jürgen Klopp", "Hans-Dieter Flick"], "dogru": 1
   },
   {
-    "id": 137,
-    "kategori": "Fransa",
-    "zorluk": "zor",
-    "soru": "Fransa Ligue 1'de PSG dışında en çok şampiyonluk kazanan kulüplerden biri olan, Saint-Etienne'in şampiyonluk sayısı kaçtır?",
-    "secenekler": ["7", "10", "12", "5"],
-    "dogru": 1
+    "id": 137, "kategori": "Fransa", "zorluk": "zor",
+    "soru": "Fransa Ligue 1'de PSG dışında en çok şampiyonluk kazanan kulüplerden Saint-Etienne'in şampiyonluk sayısı kaçtır?",
+    "secenekler": ["7", "10", "12", "5"], "dogru": 1
   },
   {
-    "id": 138,
-    "kategori": "Kural",
-    "zorluk": "zor",
+    "id": 138, "kategori": "Kural", "zorluk": "zor",
     "soru": "Futbol oyun kurallarına göre, taç atışı kullanılırken oyuncunun ayaklarının durumu nasıl olmalıdır?",
-    "secenekler": ["Her iki ayağının da tamamı taç çizgisinin içinde olmalıdır", "Ayaklardan biri havada olabilir ama diğeri tamamen çizgi dışına basmalıdır", "Taç çizgisine veya dışına basmalı, havada olmamalıdır", "Çizgiye basma zorunluluğu yoktur"],
-    "dogru": 2
+    "secenekler": ["Her iki ayağının da tamamı taç çizgisinin içinde olmalıdır", "Ayaklardan biri havada olabilir ama diğeri tamamen çizgi dışına basmalıdır", "Taç çizgisine veya dışına basmalı, havada olmamalıdır", "Çizgiye basma zorunluluğu yoktur"], "dogru": 2
   },
   {
-    "id": 139,
-    "kategori": "İngiltere",
-    "zorluk": "zor",
+    "id": 139, "kategori": "İngiltere", "zorluk": "zor",
     "soru": "Premier Lig tarihinde bir sezonda en çok gol atma rekorunu kıran Norveçli golcü kimdir?",
-    "secenekler": ["Ole Gunnar Solskjaer", "Erling Haaland", "Tore Andre Flo", "John Carew"],
-    "dogru": 1
+    "secenekler": ["Ole Gunnar Solskjaer", "Erling Haaland", "Tore Andre Flo", "John Carew"], "dogru": 1
   },
   {
-    "id": 140,
-    "kategori": "Dünya Kupası",
-    "zorluk": "zor",
-    "soru": "1962 Dünya Kupası'nda turnuvanın gol kralı olan ve adını duyuran Şilili futbolcu kimdir?",
-    "secenekler": ["Leonel Sanchez", "Garrincha", "Vavá", "Elías Figueroa"],
-    "dogru": 0
+    "id": 140, "kategori": "Dünya Kupası", "zorluk": "zor",
+    "soru": "1962 Dünya Kupası'nda turnuvanın gol kralı olan Şilili futbolcu kimdir?",
+    "secenekler": ["Leonel Sanchez", "Garrincha", "Vavá", "Elías Figueroa"], "dogru": 0
   },
   {
-    "id": 141,
-    "kategori": "İtalya",
-    "zorluk": "zor",
+    "id": 141, "kategori": "İtalya", "zorluk": "zor",
     "soru": "İtalya Serie A'da 'Derby della Madonnina' olarak bilinen derbi hangi iki takım arasında oynanır?",
-    "secenekler": ["Juventus - Torino", "Roma - Lazio", "AC Milan - Inter", "Napoli - Salernitana"],
-    "dogru": 2
+    "secenekler": ["Juventus - Torino", "Roma - Lazio", "AC Milan - Inter", "Napoli - Salernitana"], "dogru": 2
   },
   {
-    "id": 142,
-    "kategori": "Dünya Kupası",
-    "zorluk": "zor",
+    "id": 142, "kategori": "Dünya Kupası", "zorluk": "zor",
     "soru": "1938 FIFA Dünya Kupası hangi ülkede düzenlenmiştir?",
-    "secenekler": ["İtalya", "Fransa", "Brezilya", "Arjantin"],
-    "dogru": 1
+    "secenekler": ["İtalya", "Fransa", "Brezilya", "Arjantin"], "dogru": 1
   },
   {
-    "id": 143,
-    "kategori": "Güney Amerika",
-    "zorluk": "zor",
+    "id": 143, "kategori": "Güney Amerika", "zorluk": "zor",
     "soru": "Uruguay'ın en köklü ve başarılı iki kulübü olan Nacional ile Penarol arasındaki rekabetin adı nedir?",
-    "secenekler": ["Superclasico", "Clasico del Futbol Uruguayo", "Derby Uruguay", "Bilarista"],
-    "dogru": 1
+    "secenekler": ["Superclasico", "Clasico del Futbol Uruguayo", "Derby Uruguay", "Bilarista"], "dogru": 1
   },
   {
-    "id": 144,
-    "kategori": "Teknik Direktör",
-    "zorluk": "zor",
+    "id": 144, "kategori": "Teknik Direktör", "zorluk": "zor",
     "soru": "Hollandalı teknik direktör Louis van Gaal kariyerinde hangi kulüple Şampiyonlar Ligi'ni kazanmıştır?",
-    "secenekler": ["Barcelona", "Ajax", "Bayern Münih", "Manchester United"],
-    "dogru": 1
+    "secenekler": ["Barcelona", "Ajax", "Bayern Münih", "Manchester United"], "dogru": 1
   },
   {
-    "id": 145,
-    "kategori": "Kurallar",
-    "zorluk": "zor",
+    "id": 145, "kategori": "Kurallar", "zorluk": "zor",
     "soru": "Bir futbol maçında kaleci serbest vuruş veya aut kullanırken topa ikinci kez dokunabilir mi?",
-    "secenekler": ["Doğrudan dokunabilir", "Başka bir oyuncu dokunmadan ikinci kez dokunamaz", "Sadece ceza sahası dışındayken dokunabilir", "Hakem izniyle dokunabilir"],
-    "dogru": 1
+    "secenekler": ["Doğrudan dokunabilir", "Başka bir oyuncu dokunmadan ikinci kez dokunamaz", "Sadece ceza sahası dışındayken dokunabilir", "Hakem izniyle dokunabilir"], "dogru": 1
   },
   {
-    "id": 146,
-    "kategori": "İspanya",
-    "zorluk": "zor",
+    "id": 146, "kategori": "İspanya", "zorluk": "zor",
     "soru": "Barcelona'nın efsanevi altyapı tesislerinin adı nedir?",
-    "secenekler": ["Castilla", "La Masia", "Lezama", "Valdebebas"],
-    "dogru": 1
+    "secenekler": ["Castilla", "La Masia", "Lezama", "Valdebebas"], "dogru": 1
   },
   {
-    "id": 147,
-    "kategori": "İtalya",
-    "zorluk": "zor",
+    "id": 147, "kategori": "İtalya", "zorluk": "zor",
     "soru": "İtalya Serie A'da 'Roma Derbisi' (Derby della Capitale) hangi iki takım arasında oynanır?",
-    "secenekler": ["Juventus - Torino", "Inter - AC Milan", "AS Roma - SS Lazio", "Napoli - Salernitana"],
-    "dogru": 2
+    "secenekler": ["Juventus - Torino", "Inter - AC Milan", "AS Roma - SS Lazio", "Napoli - Salernitana"], "dogru": 2
   },
   {
-    "id": 148,
-    "kategori": "Dünya Kupası",
-    "zorluk": "zor",
+    "id": 148, "kategori": "Dünya Kupası", "zorluk": "zor",
     "soru": "1954 FIFA Dünya Kupası finalinde, favori Macaristan'ı yenerek şampiyon olan ve 'Bern Mucizesi'ne imza atan ülke hangisidir?",
-    "secenekler": ["Brezilya", "Batı Almanya", "Uruguay", "İsveç"],
-    "dogru": 1
+    "secenekler": ["Brezilya", "Batı Almanya", "Uruguay", "İsveç"], "dogru": 1
   },
   {
-    "id": 149,
-    "kategori": "Avrupa Kupaları",
-    "zorluk": "zor",
+    "id": 149, "kategori": "Avrupa Kupaları", "zorluk": "zor",
     "soru": "Şampiyonlar Ligi'nde penaltı atışları sonucunda kupa kazanan ilk İngiliz kulübü hangisidir?",
-    "secenekler": ["Manchester United", "Liverpool", "Chelsea", "Aston Villa"],
-    "dogru": 1
+    "secenekler": ["Manchester United", "Liverpool", "Chelsea", "Aston Villa"], "dogru": 1
   },
   {
-    "id": 150,
-    "kategori": "Dünya Kupası",
-    "zorluk": "zor",
+    "id": 150, "kategori": "Dünya Kupası", "zorluk": "zor",
     "soru": "1974 Dünya Kupası'nda 'Total Futbol' felsefesiyle göz kamaştıran ancak finalde Batı Almanya'ya kaybeden efsane ülke hangisidir?",
-    "secenekler": ["Brezilya", "Hollanda", "Arjantin", "İtalya"],
-    "dogru": 1
+    "secenekler": ["Brezilya", "Hollanda", "Arjantin", "İtalya"], "dogru": 1
   }
+];
 ];
 
 /* ============================================================
    OYUN MOTORU
    ============================================================ */
-
 let tumSorular = [];
 let oyunSorulari = [];
 let mevcutSoruIdx = 0;
@@ -1418,7 +984,6 @@ let sureDuruyor = false;
 
 const SORU_SAYISI = 15;
 const SURE = 20;
-
 const $ = id => document.getElementById(id);
 
 function sorulariYukle(){
@@ -1431,290 +996,185 @@ function sorulariYukle(){
   }
 }
 
+function karistir(liste){ return [...liste].sort(() => Math.random() - 0.5); }
+
 function startGame(){
-  if(tumSorular.length < SORU_SAYISI){
-    showModal('Yetersiz Soru', 'Soru havuzunda yeterli soru yok.', [
-      {text:'Tamam', action: goHome}
-    ]);
+  if (tumSorular.length < SORU_SAYISI) {
+    showModal('Yetersiz Soru', `En az ${SORU_SAYISI} soru gerekli. Mevcut: ${tumSorular.length}`, [{text:'Tamam', action: goHome}]);
     return;
   }
-  
-  // Zorluk seviyesine göre ayır
-  const kolaylar = tumSorular.filter(s => s.zorluk === 'kolay');
-  const ortaS = tumSorular.filter(s => s.zorluk === 'orta');
-  const zorlar = tumSorular.filter(s => s.zorluk === 'zor');
-  
-  // Her seviyeden 5'er soru seç (yoksa mevcut olanı al)
-  const secilenKolay = kolaylar.sort(() => Math.random() - 0.5).slice(0, 5);
-  const secilenOrta = ortaS.sort(() => Math.random() - 0.5).slice(0, 5);
-  const secilenZor = zorlar.sort(() => Math.random() - 0.5).slice(0, 5);
-  
-  oyunSorulari = [...secilenKolay, ...secilenOrta, ...secilenZor];
-  
-  mevcutSoruIdx = 0;
-  puan = 0;
-  dogruSayisi = 0;
-  yanlisSayisi = 0;
-  toplamSure = 0;
-  jokerFiftyUsed = false;
-  jokerTimeUsed = false;
-  sureDuruyor = false;
-  
+  const secilen = [];
+  ['kolay','orta','zor'].forEach(zorluk => {
+    const grup = karistir(tumSorular.filter(s => s.zorluk === zorluk));
+    secilen.push(...grup.slice(0,5));
+  });
+  const secilenSet = new Set(secilen);
+  const kalanSorular = karistir(tumSorular.filter(s => !secilenSet.has(s)));
+  const eksik = SORU_SAYISI - secilen.length;
+  if (eksik > 0) secilen.push(...kalanSorular.slice(0, eksik));
+  const zorlukSirasi = { kolay:0, orta:1, zor:2 };
+  oyunSorulari = secilen.slice(0, SORU_SAYISI).sort((a,b) => (zorlukSirasi[a.zorluk] ?? 1) - (zorlukSirasi[b.zorluk] ?? 1));
+  mevcutSoruIdx = 0; puan = 0; dogruSayisi = 0; yanlisSayisi = 0; toplamSure = 0;
+  jokerFiftyUsed = false; jokerTimeUsed = false; sureDuruyor = false;
   $('jokerFifty').classList.remove('used');
   $('jokerTime').classList.remove('used');
-  
   showScreen('screen-question');
   soruGoster();
 }
 
 function soruGoster(){
-  if(mevcutSoruIdx >= oyunSorulari.length){
-    oyunBitir();
-    return;
-  }
-  
+  if(mevcutSoruIdx >= oyunSorulari.length){ oyunBitir(); return; }
   const soru = oyunSorulari[mevcutSoruIdx];
-  
   $('qNum').innerText = `SORU ${mevcutSoruIdx + 1}/${SORU_SAYISI}`;
   $('qScore').innerText = `🎯 ${puan}`;
   $('qCategory').innerText = (soru.kategori || 'GENEL').toUpperCase();
   $('qText').innerText = soru.soru || 'Soru yüklenemedi';
-  
-  // Fotoğraf varsa göster, yoksa gizle
   const img = $('qImage');
-  if(soru.resim){
-    img.src = soru.resim;
-    img.style.display = 'block';
-  } else {
-    img.style.display = 'none';
-  }
-  
+  if(soru.resim){ img.src = soru.resim; img.style.display = 'block'; }
+  else { img.style.display = 'none'; }
   const container = $('answersContainer');
   container.innerHTML = '';
-  const letters = ['A', 'B', 'C', 'D'];
-  
+  const letters = ['A','B','C','D'];
   const secenekler = soru.secenekler || [];
-  
-  secenekler.forEach((sec, i) => {
+  secenekler.forEach((sec,i) => {
     const btn = document.createElement('div');
     btn.className = 'answer';
     btn.innerHTML = `<span class="letter">${letters[i]}</span><span>${sec}</span>`;
-    btn.addEventListener('click', function() {
-      cevapla(i, btn);
-    });
+    btn.addEventListener('click', function(){ cevapla(i, btn); });
     container.appendChild(btn);
   });
-  
   soruBaslangicZamani = Date.now();
-  kalanSure = SURE;
-  sureDuruyor = false;
+  kalanSure = SURE; sureDuruyor = false;
   timerBaslat();
 }
 
 function timerBaslat(){
   if(timerInterval) clearInterval(timerInterval);
   timerGuncelle();
-  
   timerInterval = setInterval(() => {
     if(sureDuruyor) return;
-    kalanSure--;
-    timerGuncelle();
-    if(kalanSure <= 0){
-      clearInterval(timerInterval);
-      sureBitti();
-    }
+    kalanSure--; timerGuncelle();
+    if(kalanSure <= 0){ clearInterval(timerInterval); sureBitti(); }
   }, 1000);
 }
 
 function timerGuncelle(){
-  const fill = $('timerFill');
-  const text = $('timerText');
-  const yuzde = (kalanSure / SURE) * 100;
-  
-  fill.style.width = yuzde + '%';
+  const fill = $('timerFill'); const text = $('timerText');
+  fill.style.width = (kalanSure / SURE) * 100 + '%';
   text.innerHTML = `⏱️ <b>${kalanSure}</b> saniye`;
-  
-  fill.classList.remove('warning', 'danger');
-  text.classList.remove('warning', 'danger');
-  
-  if(kalanSure <= 5){
-    fill.classList.add('danger');
-    text.classList.add('danger');
-  } else if(kalanSure <= 10){
-    fill.classList.add('warning');
-    text.classList.add('warning');
-  }
+  fill.classList.remove('warning','danger');
+  text.classList.remove('warning','danger');
+  if(kalanSure <= 5){ fill.classList.add('danger'); text.classList.add('danger'); }
+  else if(kalanSure <= 10){ fill.classList.add('warning'); text.classList.add('warning'); }
 }
 
 function sureBitti(){
   yanlisSayisi++;
   const soru = oyunSorulari[mevcutSoruIdx];
   const dogruIndex = soru.dogru;
-  
-  document.querySelectorAll('.answer').forEach((el, i) => {
+  document.querySelectorAll('.answer').forEach((el,i) => {
     el.classList.add('disabled');
     if(i === dogruIndex) el.classList.add('correct');
   });
-  
   toplamSure += SURE;
-  
-  setTimeout(() => {
-    mevcutSoruIdx++;
-    soruGoster();
-  }, 1500);
+  setTimeout(() => { mevcutSoruIdx++; soruGoster(); }, 1500);
 }
 
 function cevapla(secim, btn){
   if(timerInterval) clearInterval(timerInterval);
-  
   const soru = oyunSorulari[mevcutSoruIdx];
   const gecenSure = Math.min(SURE, Math.round((Date.now() - soruBaslangicZamani) / 1000));
   toplamSure += gecenSure;
-  
   const dogruIndex = soru.dogru;
-  
-  document.querySelectorAll('.answer').forEach((el, i) => {
+  document.querySelectorAll('.answer').forEach((el,i) => {
     el.classList.add('disabled');
     if(i === dogruIndex) el.classList.add('correct');
   });
-  
   if(secim === dogruIndex){
     btn.classList.add('correct');
     dogruSayisi++;
-    
     const zorluk = soru.zorluk || 'orta';
     let puanKazanci = 20;
     if(zorluk === 'kolay') puanKazanci = 10;
     else if(zorluk === 'zor') puanKazanci = 30;
-    
     if(gecenSure <= 10) puanKazanci += 5;
-    
     puan += puanKazanci;
     $('qScore').innerText = `🎯 ${puan}`;
-    
     showToast(`✅ Doğru! +${puanKazanci} puan`, 'success');
   } else {
     btn.classList.add('wrong');
     yanlisSayisi++;
     showToast(`❌ Yanlış! Doğru cevap: ${['A','B','C','D'][dogruIndex]}`, 'error');
   }
-  
-  setTimeout(() => {
-    mevcutSoruIdx++;
-    soruGoster();
-  }, 1800);
+  setTimeout(() => { mevcutSoruIdx++; soruGoster(); }, 1800);
 }
 
 function useFiftyFifty(){
   if(jokerFiftyUsed) return;
   if(mevcutSoruIdx >= oyunSorulari.length) return;
-  
   jokerFiftyUsed = true;
   $('jokerFifty').classList.add('used');
-  
   const soru = oyunSorulari[mevcutSoruIdx];
   const dogruIndex = soru.dogru;
   const yanlislar = [0,1,2,3].filter(i => i !== dogruIndex);
   const silinecekler = [...yanlislar].sort(() => Math.random() - 0.5).slice(0, 2);
-  
-  document.querySelectorAll('.answer').forEach((el, i) => {
+  document.querySelectorAll('.answer').forEach((el,i) => {
     if(silinecekler.includes(i)) el.classList.add('removed');
   });
-  
   showToast('✂️ 2 yanlış şık silindi!', 'warning');
 }
 
 function useTimeJoker(){
   if(jokerTimeUsed) return;
   if(mevcutSoruIdx >= oyunSorulari.length) return;
-  
   jokerTimeUsed = true;
   $('jokerTime').classList.add('used');
   sureDuruyor = true;
-  
   showToast('⏸️ Süre 10 saniye duruyor!', 'warning');
-  
-  setTimeout(() => {
-    sureDuruyor = false;
-  }, 10000);
+  setTimeout(() => { sureDuruyor = false; }, 10000);
 }
 
 function oyunBitir(){
   if(timerInterval) clearInterval(timerInterval);
-  
-  let seviye = 'Amatör';
-  let icon = '😔';
-  let baslik = 'TEKRAR DENE!';
-  let altBaslik = 'Biraz daha çalışmalısın!';
-  
-  if(dogruSayisi >= 14){
-    seviye = 'Efsane'; icon = '👑'; baslik = 'EFSANE!'; altBaslik = 'Futbol bilgin mükemmel!';
-  } else if(dogruSayisi >= 11){
-    seviye = 'Profesyonel'; icon = '🏆'; baslik = 'TEBRİKLER!'; altBaslik = 'Harika bir performans!';
-  } else if(dogruSayisi >= 8){
-    seviye = 'Orta Seviye'; icon = '👍'; baslik = 'İYİ!'; altBaslik = 'Daha iyisini yapabilirsin!';
-  } else if(dogruSayisi >= 5){
-    seviye = 'Amatör'; icon = '😐'; baslik = 'FENA DEĞİL'; altBaslik = 'Biraz daha pratik lazım!';
-  }
-  
-  $('resultIcon').innerText = icon;
-  $('resultTitle').innerText = baslik;
-  $('resultSubtitle').innerText = altBaslik;
-  $('finalScore').innerText = puan;
-  $('finalCorrect').innerText = dogruSayisi + '/15';
-  $('finalWrong').innerText = yanlisSayisi;
-  $('finalAvgTime').innerText = Math.round(toplamSure / SORU_SAYISI) + ' sn';
+  let seviye='Amatör', icon='😔', baslik='TEKRAR DENE!', altBaslik='Biraz daha çalışmalısın!';
+  if(dogruSayisi >= 14){ seviye='Efsane'; icon='👑'; baslik='EFSANE!'; altBaslik='Futbol bilgin mükemmel!'; }
+  else if(dogruSayisi >= 11){ seviye='Profesyonel'; icon='🏆'; baslik='TEBRİKLER!'; altBaslik='Harika bir performans!'; }
+  else if(dogruSayisi >= 8){ seviye='Orta Seviye'; icon='👍'; baslik='İYİ!'; altBaslik='Daha iyisini yapabilirsin!'; }
+  else if(dogruSayisi >= 5){ seviye='Amatör'; icon='😐'; baslik='FENA DEĞİL'; altBaslik='Biraz daha pratik lazım!'; }
+  $('resultIcon').innerText = icon; $('resultTitle').innerText = baslik; $('resultSubtitle').innerText = altBaslik;
+  $('finalScore').innerText = puan; $('finalCorrect').innerText = dogruSayisi + '/15';
+  $('finalWrong').innerText = yanlisSayisi; $('finalAvgTime').innerText = Math.round(toplamSure / SORU_SAYISI) + ' sn';
   $('finalLevel').innerText = seviye;
-  
   skorKaydet(puan, dogruSayisi);
-  
   showScreen('screen-result');
 }
 
 function skorKaydet(puan, dogru){
   let skorlar = JSON.parse(localStorage.getItem('skorlab_quiz_scores') || '[]');
-  
-  skorlar.push({
-    puan: puan,
-    dogru: dogru,
-    tarih: new Date().toLocaleDateString('tr-TR') + ' ' + new Date().toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'})
-  });
-  
+  skorlar.push({ puan: puan, dogru: dogru, tarih: new Date().toLocaleDateString('tr-TR') + ' ' + new Date().toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'}) });
   skorlar.sort((a,b) => b.puan - a.puan);
   skorlar = skorlar.slice(0, 10);
-  
   localStorage.setItem('skorlab_quiz_scores', JSON.stringify(skorlar));
 }
 
 function showLeaderboard(){
   const skorlar = JSON.parse(localStorage.getItem('skorlab_quiz_scores') || '[]');
   const list = $('leaderList');
-  
-  if(skorlar.length === 0){
-    list.innerHTML = '<div class="empty-msg">Henüz skor yok.<br>Oyna ve ilk skoru sen yap! 🎯</div>';
-  } else {
-    list.innerHTML = skorlar.map((s, i) => `
+  if(skorlar.length === 0){ list.innerHTML = '<div class="empty-msg">Henüz skor yok.<br>Oyna ve ilk skoru sen yap! 🎯</div>'; }
+  else {
+    list.innerHTML = skorlar.map((s,i) => `
       <div class="leader-item ${i === 0 ? 'first' : ''}">
         <span class="rank">${i === 0 ? '👑' : '#' + (i+1)}</span>
-        <div>
-          <div class="pts">${s.puan} puan</div>
-          <div class="date">${s.dogru}/15 doğru · ${s.tarih}</div>
-        </div>
+        <div><div class="pts">${s.puan} puan</div><div class="date">${s.dogru}/15 doğru · ${s.tarih}</div></div>
       </div>
     `).join('');
   }
-  
   showScreen('screen-leaderboard');
 }
 
 function showRules(){
   showModal('📖 Nasıl Oynanır?', 
-    '🎯 15 soru kolaydan zora sıralanır.<br><br>' +
-    '⏱️ Her soru için 20 saniyen var.<br><br>' +
-    '✂️ %50 Joker: 2 yanlış şıkkı siler (1 hak).<br><br>' +
-    '⏸️ Süre Durdur: 10 saniye durdurur (1 hak).<br><br>' +
-    '🎯 Kolay: 10 puan<br>🎯 Orta: 20 puan<br>🎯 Zor: 30 puan<br>⚡ Hız bonusu: +5 puan (10 sn altı)<br><br>' +
-    '❌ Yanlış cevapta oyun bitmez, devam eder!', 
+    '🎯 15 soru kolaydan zora sıralanır.<br><br>⏱️ Her soru için 20 saniyen var.<br><br>✂️ %50 Joker: 2 yanlış şıkkı siler (1 hak).<br><br>⏸️ Süre Durdur: 10 saniye durdurur (1 hak).<br><br>🎯 Kolay: 10 puan<br>🎯 Orta: 20 puan<br>🎯 Zor: 30 puan<br>⚡ Hız bonusu: +5 puan (10 sn altı)<br><br>❌ Yanlış cevapta oyun bitmez, devam eder!', 
     [{text:'Anladım', action: closeModal}]
   );
 }
@@ -1736,45 +1196,31 @@ function showToast(msg, type = 'success'){
   toast.className = 'toast ' + type;
   toast.innerText = msg;
   toast.classList.add('show');
-  
   if(toastTimer) clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => {
-    toast.classList.remove('show');
-  }, 2000);
+  toastTimer = setTimeout(() => { toast.classList.remove('show'); }, 2000);
 }
 
 function showModal(title, text, buttons){
   $('modalTitle').innerText = title;
   $('modalText').innerHTML = text;
-  
   const btnContainer = $('modalButtons');
   btnContainer.innerHTML = '';
-  
   buttons.forEach(b => {
     const btn = document.createElement('button');
     btn.innerText = b.text;
     if(b.className) btn.className = b.className;
-    btn.onclick = () => {
-      b.action();
-      closeModal();
-    };
+    btn.onclick = () => { b.action(); closeModal(); };
     btnContainer.appendChild(btn);
   });
-  
   if(buttons.length === 1) btnContainer.style.gridTemplateColumns = '1fr';
   else btnContainer.style.gridTemplateColumns = '1fr 1fr';
-  
   $('modal').classList.add('active');
 }
 
-function closeModal(){
-  $('modal').classList.remove('active');
-}
+function closeModal(){ $('modal').classList.remove('active'); }
 
 window.addEventListener('load', () => {
-  setTimeout(() => {
-    sorulariYukle();
-  }, 200);
+  setTimeout(() => { sorulariYukle(); }, 200);
 });
 </script>
 </body>
