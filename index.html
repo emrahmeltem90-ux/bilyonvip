@@ -95,26 +95,20 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .stat-box .lbl{font-size:.68rem;color:var(--muted);margin-top:4px;font-weight:700;letter-spacing:.3px;text-transform:uppercase}
 .green{color:var(--green)}
 .muted{color:var(--muted)}
-
-/* ===== KUPON OLUŞTURMA & MANUEL SEÇİM ===== */
 .pick-btn{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 4px;text-align:center;font-weight:800;font-size:.85rem;cursor:pointer;user-select:none;transition:all .2s;color:var(--text)}
 .pick-btn:active{transform:scale(.95)}
 .pick-btn.active{background:linear-gradient(135deg,var(--green),var(--green2));color:#04140c;border-color:var(--green);box-shadow:0 4px 12px rgba(0,224,122,.3)}
 .pick-btn .pick-pct{display:block;font-size:.65rem;color:var(--muted);margin-top:2px;font-weight:600}
 .pick-btn.active .pick-pct{color:rgba(4,20,12,.7)}
 .pick-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-top:10px}
-
 .suggest-btn{background:linear-gradient(135deg,#3d8bff,#2563eb);color:#fff;margin-top:10px;box-shadow:0 6px 20px rgba(61,139,255,.25)}
-
 .suggest-info-box{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px;font-size:.78rem;line-height:1.7;margin-bottom:14px;color:var(--muted)}
 .suggest-info-box b{color:var(--green)}
 .suggest-info-box .big{font-size:1.3rem;font-weight:900;color:var(--green);display:block;text-align:center;margin:6px 0}
-
 .save-bar{position:fixed;bottom:0;left:0;right:0;background:var(--card2);border-top:1px solid var(--border);padding:12px 16px;display:flex;gap:10px;align-items:center;z-index:100;box-shadow:0 -8px 24px rgba(0,0,0,.4)}
 .save-bar .info{flex:1;font-size:.75rem;font-weight:700;line-height:1.4}
 .save-bar .info b{color:var(--green);font-size:.9rem}
 .save-bar button{width:auto;padding:12px 16px;font-size:.8rem}
-
 .coupon-list{display:flex;flex-direction:column;gap:10px;margin-top:12px}
 .coupon-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px;position:relative}
 .coupon-card .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:.75rem;font-weight:700}
@@ -122,8 +116,6 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .coupon-card .picks{font-size:.75rem;line-height:1.8;color:var(--muted)}
 .coupon-card .picks b{color:var(--text)}
 .coupon-empty{text-align:center;padding:40px 20px;color:var(--muted);font-size:.85rem;line-height:1.7}
-
-/* ===== MODAL STİLLERİ ===== */
 .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px}
 .modal-overlay.active{display:flex}
 .modal-box{background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--border2);border-radius:var(--radius);padding:22px;max-width:380px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.6);animation:modalIn .25s ease}
@@ -136,8 +128,6 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .modal-buttons{display:grid;grid-template-columns:1fr 2fr;gap:10px}
 .modal-buttons button{padding:13px}
 .modal-buttons .cancel{background:var(--bg2);color:var(--muted);border:1px solid var(--border)}
-
-/* ===== TOAST BİLDİRİM ===== */
 .toast-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);backdrop-filter:blur(5px);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px}
 .toast-overlay.active{display:flex}
 .toast-box{background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--border2);border-radius:var(--radius);padding:24px;max-width:360px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.6);animation:modalIn .25s ease;text-align:center}
@@ -155,12 +145,22 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .toast-msg .row .green{color:var(--green)}
 .toast-msg .row .orange{color:var(--orange)}
 .toast-msg .row .red{color:var(--red)}
-
-/* ===== ONAY BUTONLARI ===== */
 .confirm-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
 .confirm-buttons button{padding:13px}
 .confirm-buttons .cancel{background:var(--bg2);color:var(--muted);border:1px solid var(--border)}
 .confirm-buttons .danger{background:linear-gradient(135deg,#ff4d5e,#d63447);color:#fff;box-shadow:0 6px 20px rgba(255,77,94,.3)}
+
+/* ===== SONUÇ TAKİBİ ===== */
+.result-status{padding:8px 12px;border-radius:8px;font-size:.75rem;font-weight:800;margin-top:12px;text-align:center;border:1px solid;cursor:pointer;transition:all .2s}
+.result-status.waiting{background:rgba(255,176,32,.1);color:var(--orange);border-color:rgba(255,176,32,.3)}
+.result-status.win{background:rgba(0,224,122,.15);color:var(--green);border-color:rgba(0,224,122,.3)}
+.result-status.lose{background:rgba(255,77,94,.1);color:var(--red);border-color:rgba(255,77,94,.3)}
+.result-status:active{transform:scale(.98)}
+.result-match{display:flex;justify-content:space-between;align-items:center;padding:8px 0;font-size:.75rem;border-bottom:1px solid var(--border)}
+.result-match:last-child{border:none}
+.result-match .ok{color:var(--green);font-weight:800;font-size:1.1rem}
+.result-match .no{color:var(--red);font-weight:800;font-size:1.1rem}
+.result-match .pred{color:var(--muted);font-size:.7rem}
 </style>
 </head>
 <body>
@@ -368,6 +368,15 @@ button:disabled{opacity:.4;cursor:not-allowed}
   </div>
 </div>
 
+<!-- SONUÇ DETAY MODALI -->
+<div class="toast-overlay" id="resultModal" onclick="if(event.target===this)closeResultModal()">
+  <div class="toast-box" style="max-width:420px;text-align:left;max-height:85vh;overflow-y:auto">
+    <div class="modal-title" id="resultModalTitle" style="margin-bottom:14px">📊 Kupon Sonucu</div>
+    <div id="resultModalBody" style="font-size:.78rem;line-height:1.7;color:var(--text)"></div>
+    <button onclick="closeResultModal()" style="margin-top:16px">Tamam</button>
+  </div>
+</div>
+
 <script>
 let matchesData=[];
 let PR=[];
@@ -378,6 +387,7 @@ let savedCoupons = JSON.parse(localStorage.getItem('skorlab_coupons') || '[]');
 let activeOptimizeIndex = null;
 let deleteTargetIdx = null;
 let suggestMode = 'guvenli';
+let resultsData = { weeks: [] };
 
 const SYM=["1","0","2"];
 const $=id=>document.getElementById(id);
@@ -408,6 +418,19 @@ async function loadMatches(){
   }catch(e){
     document.body.innerHTML='<div style="padding:20px;color:#ff4d5e;font-size:.9rem">⚠️ matches.json yüklenemedi.<br><br>Hata: '+e.message+'</div>';
   }
+  loadResults();
+}
+
+async function loadResults(){
+  try{
+    const res = await fetch('sonuclar.json');
+    const raw = await res.json();
+    resultsData = raw;
+  }catch(e){
+    console.warn('sonuclar.json yüklenemedi:', e.message);
+    resultsData = { weeks: [] };
+  }
+  renderCoupons();
 }
 
 function guessP(poisson){
@@ -516,7 +539,6 @@ function codeToProb(matchIdx, code){
   return 0;
 }
 
-/* ===== RASTGELE KUPON ÜRETİCİ (BÜTÇE DESTEKLİ) ===== */
 function openSuggestModal(){
   suggestMode = 'guvenli';
   document.querySelectorAll('#suggestModal .mode').forEach(e=>e.classList.remove('active'));
@@ -550,17 +572,13 @@ function updateSuggestEstimate(){
   $('suggestEstimate').innerText = `≈ ${butce} TL · ${maxKolon} kolon hedefi`;
 }
 
-/* Kupon üretirken bütçeye göre optimize edilmiş pick seç */
 function buildPicksForMode(mode){
   const tempPicks = {};
-  
   matchesData.forEach((m, i) => {
     const p = PR[i];
     const o = ordr(i);
     const top = p[o[0]];
-    
     let pickCode;
-    
     if(mode === 'guvenli'){
       if(top >= 0.55) pickCode = o[0];
       else {
@@ -586,10 +604,8 @@ function buildPicksForMode(mode){
         else pickCode = 20;
       }
     }
-    
     tempPicks[i] = [pickCode];
   });
-  
   return tempPicks;
 }
 
@@ -606,19 +622,14 @@ function calculateKolon(picks){
   return kolon;
 }
 
-/* Bütçeye sığana kadar çift şansları azalt */
 function optimizeForBudget(picks, maxKolon){
   const optimized = JSON.parse(JSON.stringify(picks));
   let currentKolon = calculateKolon(optimized);
-  
-  // Maçları olasılığa göre sırala (en düşük olasılıklı önce)
   const matchIndices = Object.keys(optimized).map(Number);
   matchIndices.sort((a,b) => topP(a) - topP(b));
-  
   for(const mIdx of matchIndices){
     if(currentKolon <= maxKolon) break;
     const p = optimized[mIdx];
-    // Çift şansa sahip maçları tek seçime indir
     if(p.length === 1 && p[0] >= 10){
       let tekPick = 0;
       if(p[0] === 10) tekPick = PR[mIdx][0] > PR[mIdx][1] ? 0 : 1;
@@ -628,7 +639,6 @@ function optimizeForBudget(picks, maxKolon){
       currentKolon = Math.floor(currentKolon / 2);
     }
   }
-  
   return optimized;
 }
 
@@ -638,27 +648,18 @@ function applySuggest(){
     showToast('error', 'Geçersiz Bütçe', '<div style="text-align:center">Lütfen en az <b>10 TL</b> girin.</div>');
     return;
   }
-  
   const maxKolon = Math.floor(butce / 10);
-  
-  // 1. Moda göre ilk picks oluştur
   let picks = buildPicksForMode(suggestMode);
   let kolon = calculateKolon(picks);
-  
-  // 2. Bütçe yetmezse optimize et
   if(kolon > maxKolon){
     picks = optimizeForBudget(picks, maxKolon);
     kolon = calculateKolon(picks);
   }
-  
   userPicks = picks;
-  
   closeSuggestModal();
   initApp();
-  
   const tutar = kolon * 10;
   const modeLabel = {guvenli:'🛡️ Güvenli', dengeli:'⚖️ Dengeli', agresif:'🚀 Agresif'}[suggestMode];
-  
   showToast('success', 'Kupon Üretildi!', `
     <div class="row"><span>Mod:</span><span>${modeLabel}</span></div>
     <div class="row"><span>Maç:</span><span>${Object.keys(userPicks).length}/15</span></div>
@@ -667,11 +668,9 @@ function applySuggest(){
     <div class="row"><span>Bütçe:</span><span>${butce} TL</span></div>
     <div class="row"><span>Kalan:</span><span class="orange">${(butce - tutar).toLocaleString('tr')} TL</span></div>
   `);
-  
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-/* ===== KUPON KAYDET ===== */
 function saveCoupon(){
   const keys = Object.keys(userPicks);
   if(keys.length === 0){
@@ -680,6 +679,7 @@ function saveCoupon(){
   }
   const couponData = {
     date: new Date().toLocaleDateString('tr-TR') + ' ' + new Date().toLocaleTimeString('tr-TR', {hour: '2-digit', minute:'2-digit'}),
+    week: '02.10 - 05.10',
     picks: {...userPicks},
     totalMatches: keys.length,
     optimized: false
@@ -726,6 +726,14 @@ function renderCoupons(){
       const syms = coupon.picks[mIdx].map(c => codeToSym(c)).join(', ');
       picksHtml += `<div><b>#${parseInt(mIdx)+1} ${m.home} - ${m.away}</b>: ${syms}</div>`;
     }
+    const check = checkCoupon(coupon);
+    let resultHTML = '';
+    if(check.status === 'waiting'){
+      resultHTML = `<div class="result-status waiting" onclick="showCouponResult(${idx})">⏳ Sonuç Bekleniyor</div>`;
+    } else {
+      const win = check.correct >= 12;
+      resultHTML = `<div class="result-status ${win ? 'win' : 'lose'}" onclick="showCouponResult(${idx})">${win ? '🎉' : '📊'} ${check.correct}/${check.total} — Detay için tıkla</div>`;
+    }
     return `
       <div class="coupon-card">
         <div class="head">
@@ -737,8 +745,92 @@ function renderCoupons(){
           Tahmini Kazanma İhtimali: %${analysis.prob.toFixed(2)} (${analysis.count} Maç)
         </div>
         <button onclick="optimizeCoupon(${idx})" style="margin-top:10px;background:var(--bg2);color:var(--green);border:1px solid var(--green);font-size:.75rem;padding:10px">💰 Bütçeye Göre Optimize Et</button>
+        ${resultHTML}
       </div>`;
   }).join('') + `</div>`;
+}
+
+/* ===== SONUÇ TAKİBİ ===== */
+function getResultsForWeek(week){
+  if(!resultsData || !resultsData.weeks) return null;
+  const w = resultsData.weeks.find(x => x.week === week);
+  if(!w || !w.results || w.results.length === 0) return null;
+  return w.results;
+}
+
+function checkCoupon(coupon){
+  const results = getResultsForWeek(coupon.week);
+  if(!results) return { status: 'waiting', correct: 0, total: Object.keys(coupon.picks).length };
+  let correct = 0;
+  let total = 0;
+  const details = [];
+  for(let mIdx in coupon.picks){
+    const matchId = matchesData[parseInt(mIdx)]?.id;
+    if(!matchId) continue;
+    const r = results.find(x => x.id === matchId);
+    if(!r) continue;
+    total++;
+    const picks = coupon.picks[mIdx];
+    const isCorrect = picks.some(c => codeToSym(c) === r.result);
+    if(isCorrect) correct++;
+    details.push({
+      matchIdx: parseInt(mIdx),
+      match: matchesData[parseInt(mIdx)],
+      prediction: picks.map(c => codeToSym(c)).join(', '),
+      result: r.result,
+      isCorrect: isCorrect
+    });
+  }
+  return { status: 'done', correct, total, details };
+}
+
+function showCouponResult(idx){
+  const coupon = savedCoupons[idx];
+  const check = checkCoupon(coupon);
+  $('resultModalTitle').innerText = '📊 Kupon #' + (savedCoupons.length - idx);
+  if(check.status === 'waiting'){
+    $('resultModalBody').innerHTML = `
+      <div style="text-align:center;padding:20px">
+        <div style="font-size:3rem;margin-bottom:12px">⏳</div>
+        <div style="color:var(--orange);font-weight:800;font-size:1rem">Sonuçlar Bekleniyor</div>
+        <div style="color:var(--muted);margin-top:10px;font-size:.82rem">
+          <b>${coupon.week || 'Bu hafta'}</b> haftası henüz oynanmadı.<br>
+          Maçlar bittikten sonra sonuçlar burada görünecek.
+        </div>
+      </div>`;
+  } else {
+    const win = check.correct >= 12;
+    let detailsHTML = '';
+    check.details.forEach(d => {
+      const sym = d.isCorrect ? '✅' : '❌';
+      const cls = d.isCorrect ? 'ok' : 'no';
+      detailsHTML += `
+        <div class="result-match">
+          <div>
+            <b>#${d.match.id} ${d.match.home} - ${d.match.away}</b><br>
+            <span class="pred">Senin: ${d.prediction} · Sonuç: ${d.result}</span>
+          </div>
+          <div class="${cls}">${sym}</div>
+        </div>`;
+    });
+    $('resultModalBody').innerHTML = `
+      <div style="text-align:center;padding:12px 0 18px;border-bottom:1px solid var(--border);margin-bottom:14px">
+        <div style="font-size:2.5rem;margin-bottom:6px">${win ? '🎉' : '😔'}</div>
+        <div style="color:${win ? 'var(--green)' : 'var(--red)'};font-weight:900;font-size:1.3rem">
+          ${check.correct}/${check.total}
+        </div>
+        <div style="color:var(--muted);font-size:.8rem;margin-top:4px">
+          ${win ? 'Tebrikler, ikramiye kazandın!' : 'Maalesef ikramiye kazanamadın.'}
+        </div>
+      </div>
+      ${detailsHTML}
+    `;
+  }
+  $('resultModal').classList.add('active');
+}
+
+function closeResultModal(){
+  $('resultModal').classList.remove('active');
 }
 
 /* ===== SİLME ONAY ===== */
@@ -800,14 +892,11 @@ function confirmOptimize(){
   const coupon = savedCoupons[activeOptimizeIndex];
   const butceStr = $('modalBudgetInput').value;
   const butce = parseInt(butceStr);
-  
   if(!butce || butce < 10){
     showToast('error', 'Geçersiz Bütçe', '<div style="text-align:center">Lütfen en az <b>10 TL</b> girin.</div>');
     return;
   }
-  
   const maxKolon = Math.floor(butce / 10);
-  
   let mevcutKolon = 1;
   for(let mIdx in coupon.picks){
     let choices = 0;
@@ -817,7 +906,6 @@ function confirmOptimize(){
     });
     mevcutKolon *= choices;
   }
-  
   if(mevcutKolon * 10 <= butce){
     closeBudgetModal();
     showToast('success', 'Kupon Zaten Uygun', `
@@ -828,11 +916,9 @@ function confirmOptimize(){
     `);
     return;
   }
-  
   const optimizedPicks = JSON.parse(JSON.stringify(coupon.picks));
   const matchIndices = Object.keys(optimizedPicks).map(Number);
   matchIndices.sort((a,b) => topP(a) - topP(b));
-  
   let currentKolon = mevcutKolon;
   for(const mIdx of matchIndices){
     if(currentKolon <= maxKolon) break;
@@ -846,7 +932,6 @@ function confirmOptimize(){
       currentKolon = Math.floor(currentKolon / 2);
     }
   }
-  
   let finalKolon = 1;
   for(let mIdx in optimizedPicks){
     let choices = 0;
@@ -856,22 +941,20 @@ function confirmOptimize(){
     });
     finalKolon *= choices;
   }
-  
   const finalTutar = finalKolon * 10;
   const optimizedCoupon = {
     date: new Date().toLocaleDateString('tr-TR') + ' ' + new Date().toLocaleTimeString('tr-TR', {hour: '2-digit', minute:'2-digit'}),
+    week: coupon.week,
     picks: optimizedPicks,
     totalMatches: Object.keys(optimizedPicks).length,
     optimized: true,
     originalKolon: mevcutKolon,
     butce: butce
   };
-  
   savedCoupons.unshift(optimizedCoupon);
   localStorage.setItem('skorlab_coupons', JSON.stringify(savedCoupons));
   closeBudgetModal();
   renderCoupons();
-  
   showToast('success', 'Kupon Optimize Edildi!', `
     <div class="row"><span>Eski:</span><span>${mevcutKolon} kolon (${mevcutKolon * 10} TL)</span></div>
     <div class="row"><span>Yeni:</span><span class="green">${finalKolon} kolon (${finalTutar} TL)</span></div>
