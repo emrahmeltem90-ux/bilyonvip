@@ -1,0 +1,24 @@
+{
+  "sorular": [
+    {"id":1,"kategori":"Dünya Kupası","soru":"2022 Dünya Kupası'nı hangi ülke kazandı?","secenekler":["Fransa","Arjantin","Brezilya","Almanya"],"dogru":1,"zorluk":"kolay"},
+    {"id":2,"kategori":"Dünya Kupası","soru":"Dünya Kupası'nı en çok kazanan ülke hangisi?","secenekler":["Almanya","İtalya","Brezilya","Arjantin"],"dogru":2,"zorluk":"kolay"},
+    {"id":3,"kategori":"Dünya Kupası","soru":"2014 Dünya Kupası finali hangi iki takım arasındaydı?","secenekler":["Almanya - Arjantin","Brezilya - Almanya","Fransa - Hırvatistan","İspanya - Hollanda"],"dogru":0,"zorluk":"orta"},
+    {"id":4,"kategori":"Dünya Kupası","soru":"Türkiye hangi yıl Dünya Kupası'nda 3. oldu?","secenekler":["1998","2002","2006","2010"],"dogru":1,"zorluk":"orta"},
+    {"id":5,"kategori":"Şampiyonlar Ligi","soru":"Şampiyonlar Ligi'ni en çok kazanan takım hangisi?","secenekler":["Barcelona","Bayern Münih","Real Madrid","Milan"],"dogru":2,"zorluk":"kolay"},
+    {"id":6,"kategori":"Şampiyonlar Ligi","soru":"2023 Şampiyonlar Ligi finalini kim kazandı?","secenekler":["Inter","Manchester City","Real Madrid","Bayern Münih"],"dogru":1,"zorluk":"orta"},
+    {"id":7,"kategori":"Şampiyonlar Ligi","soru":"Şampiyonlar Ligi'nin eski adı neydi?","secenekler":["UEFA Kupası","Avrupa Kupası","Kupa Galipleri Kupası","Süper Kupa"],"dogru":1,"zorluk":"zor"},
+    {"id":8,"kategori":"Şampiyonlar Ligi","soru":"En çok Şampiyonlar Ligi golü atan oyuncu kim?","secenekler":["Messi","Ronaldo","Lewandowski","Benzema"],"dogru":1,"zorluk":"kolay"},
+    {"id":9,"kategori":"Türk Futbolu","soru":"Süper Lig'i en çok kazanan takım hangisi?","secenekler":["Fenerbahçe","Beşiktaş","Galatasaray","Trabzonspor"],"dogru":2,"zorluk":"kolay"},
+    {"id":10,"kategori":"Türk Futbolu","soru":"Türkiye'nin ilk Süper Lig şampiyonu kim?","secenekler":["Fenerbahçe","Beşiktaş","Galatasaray","Trabzonspor"],"dogru":0,"zorluk":"zor"},
+    {"id":11,"kategori":"Türk Futbolu","soru":"Türkiye A Milli Takımı'nın en çok gol atan oyuncusu kim?","secenekler":["Hakan Şükür","Burak Yılmaz","Cenk Tosun","Arda Turan"],"dogru":0,"zorluk":"orta"},
+    {"id":12,"kategori":"Türk Futbolu","soru":"Türkiye hangi yıl Avrupa Şampiyonası'nda yarı final oynadı?","secenekler":["2000","2004","2008","2012"],"dogru":2,"zorluk":"orta"},
+    {"id":13,"kategori":"Futbolcular","soru":"Messi kaç Ballon d'Or kazandı?","secenekler":["6","7","8","9"],"dogru":2,"zorluk":"kolay"},
+    {"id":14,"kategori":"Futbolcular","soru":"Ronaldo hangi takımda oynuyor?","secenekler":["Al-Nassr","Real Madrid","Juventus","Manchester United"],"dogru":0,"zorluk":"kolay"},
+    {"id":15,"kategori":"Futbolcular","soru":"Neymar hangi ülkenin oyuncusu?","secenekler":["Arjantin","Brezilya","Portekiz","İspanya"],"dogru":1,"zorluk":"kolay"},
+    {"id":16,"kategori":"Tarihsel Maçlar","soru":"2005 Şampiyonlar Ligi finalinde Liverpool hangi takımı yendi?","secenekler":["Milan","Juventus","Barcelona","Bayern"],"dogru":0,"zorluk":"zor"},
+    {"id":17,"kategori":"Tarihsel Maçlar","soru":"Türkiye hangi ülkeyi 1954 Dünya Kupası'nda 7-0 yendi?","secenekler":["Güney Kore","Japonya","Çin","Avustralya"],"dogru":0,"zorluk":"zor"},
+    {"id":18,"kategori":"Tarihsel Maçlar","soru":"1986 Dünya Kupası'nda 'Tanrı'nın Eli' golünü kim attı?","secenekler":["Pele","Maradona","Zidane","Cruyff"],"dogru":1,"zorluk":"kolay"},
+    {"id":19,"kategori":"Tarihsel Maçlar","soru":"2014 Dünya Kupası'nda Brezilya hangi takıma 7-1 yenildi?","secenekler":["Arjantin","Almanya","Hollanda","Fransa"],"dogru":1,"zorluk":"kolay"},
+    {"id":20,"kategori":"Tarihsel Maçlar","soru":"Zidane 2006 Dünya Kupası finalinde hangi oyuncuya kafa attı?","secenekler":["Materazzi","Cannavaro","Gattuso","Pirlo"],"dogru":0,"zorluk":"orta"}
+  ]
+}
