@@ -1,80 +1,20 @@
 {
-    "last_updated": "2026-09-29 00:19:08",
-    "matches": [
-        {
-            "id": 1,
-            "league": "TFF 2. Lig • Beyaz Grup",
-            "home_team": "Serik Spor",
-            "away_team": "Fethiyespor",
-            "score": "0 - 1",
-            "minute": "MS",
-            "date": "27.09.2026",
-            "time": "19:00",
-            "poisson": {
-                "prediction": "MS 2",
-                "rate": "%64",
-                "confidence": "%82"
-            }
-        },
-        {
-            "id": 2,
-            "league": "UEFA Uluslar Lig • Grup A2",
-            "home_team": "Almanya",
-            "away_team": "Yunanistan",
-            "score": "0 - 0",
-            "minute": "69'",
-            "date": "27.09.2026",
-            "time": "21:45",
-            "poisson": {
-                "prediction": "MS 1",
-                "rate": "%55",
-                "confidence": "%78"
-            }
-        },
-        {
-            "id": 3,
-            "league": "UEFA Uluslar Lig • Grup A4",
-            "home_team": "Norveç",
-            "away_team": "Portekiz",
-            "score": "1 - 2",
-            "minute": "66'",
-            "date": "27.09.2026",
-            "time": "21:45",
-            "poisson": {
-                "prediction": "MS 2",
-                "rate": "%71",
-                "confidence": "%89"
-            }
-        },
-        {
-            "id": 4,
-            "league": "UEFA Uluslar Lig • Grup A2",
-            "home_team": "Sırbistan",
-            "away_team": "Hollanda",
-            "score": "1 - 2",
-            "minute": "MS",
-            "date": "27.09.2026",
-            "time": "21:45",
-            "poisson": {
-                "prediction": "MS 2",
-                "rate": "%58",
-                "confidence": "%81"
-            }
-        },
-        {
-            "id": 5,
-            "league": "UEFA Uluslar Lig • Grup B3",
-            "home_team": "Avusturya",
-            "away_team": "Kosova",
-            "score": "3 - 1",
-            "minute": "MS",
-            "date": "27.09.2026",
-            "time": "21:45",
-            "poisson": {
-                "prediction": "MS 1",
-                "rate": "%80",
-                "confidence": "%92"
-            }
-        }
-    ]
+  "last_updated": "2026-09-29",
+  "matches": [
+    {"id":1,"league":"UEFA Uluslar Ligi","home_team":"Belçika","away_team":"Türkiye","date":"02 Eki","time":"21:45","p":[69.4,17.0,13.6],"form":"Belçika: İtalya'yı 2-0 yendi, Fransa'ya 0-1 kaybetti. Türkiye: Fransa'ya 0-1, İtalya'ya 1-4 yenildi.","series":["W","L","W","D","W"]},
+    {"id":2,"league":"UEFA Uluslar Ligi","home_team":"İtalya","away_team":"Türkiye","date":"05 Eki","time":"21:45","p":[61.7,23.1,15.2],"form":"İtalya: Belçika'ya 0-2 yenildi, Türkiye'yi 4-1 yendi.","series":["L","W","W","D","W"]},
+    {"id":3,"league":"UEFA Uluslar Ligi","home_team":"Bosna Hersek","away_team":"İsveç","date":"02 Eki","time":"21:45","p":[15.6,25.4,59.0],"form":"Bosna: Polonya 0-0, Romanya'yı 4-2 yendi. İsveç: Romanya'yı 2-1, Polonya'yı 3-1 yendi.","series":["D","W","L","W","D"]},
+    {"id":4,"league":"UEFA Uluslar Ligi","home_team":"Fransa","away_team":"İtalya","date":"02 Eki","time":"21:45","p":[81.4,12.8,5.8],"form":"Fransa: Türkiye'yi 1-0, Belçika'yı 1-0 yendi.","series":["W","W","W","D","W"]},
+    {"id":5,"league":"UEFA Uluslar Ligi","home_team":"Macaristan","away_team":"Gürcistan","date":"02 Eki","time":"21:45","p":[63.2,24.1,12.8],"form":"Macaristan: Ukrayna'ya 0-1, K.İrlanda 0-0.","series":["L","D","W","W","D"]},
+    {"id":6,"league":"UEFA Uluslar Ligi","home_team":"Polonya","away_team":"Romanya","date":"02 Eki","time":"21:45","p":[65.9,23.4,10.7],"form":"Polonya: Bosna 0-0, İsveç'e 1-3 yenildi.","series":["D","L","W","L","W"]},
+    {"id":7,"league":"UEFA Uluslar Ligi","home_team":"Hırvatistan","away_team":"İngiltere","date":"03 Eki","time":"19:00","p":[34.4,30.2,35.4],"form":"Hırvatistan: Çekya'yı 2-1 yendi.","series":["W","L","D","W","L"]},
+    {"id":8,"league":"UEFA Uluslar Ligi","home_team":"Kuzey Makedonya","away_team":"İskoçya","date":"03 Eki","time":"21:45","p":[23.1,31.6,45.3],"form":"K.Makedonya: İsviçre'ye 0-3 yenildi.","series":["L","L","D","L","W"]},
+    {"id":9,"league":"UEFA Uluslar Ligi","home_team":"İspanya","away_team":"Çekya","date":"03 Eki","time":"21:45","p":[73.5,18.4,8.1],"form":"İspanya: İngiltere'yi 3-2 yendi.","series":["W","W","D","W","W"]},
+    {"id":10,"league":"UEFA Uluslar Ligi","home_team":"İsviçre","away_team":"Slovenya","date":"03 Eki","time":"21:45","p":[55.5,28.9,15.6],"form":"İsviçre: K.Makedonya'yı 3-0 yendi.","series":["W","D","W","L","W"]},
+    {"id":11,"league":"UEFA Uluslar Ligi","home_team":"Galler","away_team":"Danimarka","date":"04 Eki","time":"21:45","p":[23.4,29.2,47.4],"form":"Galler: Portekiz'e 0-1, Danimarka'ya 0-2 yenildi.","series":["L","L","D","L","D"]},
+    {"id":12,"league":"UEFA Uluslar Ligi","home_team":"Hollanda","away_team":"Sırbistan","date":"04 Eki","time":"21:45","p":[59.2,25.2,15.6],"form":"Hollanda: Almanya 1-1, Sırbistan'ı 2-1 yendi.","series":["D","W","W","D","W"]},
+    {"id":13,"league":"UEFA Uluslar Ligi","home_team":"Portekiz","away_team":"Norveç","date":"04 Eki","time":"21:45","p":[60.4,24.6,15.0],"form":"Portekiz: Galler'i 1-0, Norveç'i 2-1 yendi.","series":["W","W","D","W","L"]},
+    {"id":14,"league":"UEFA Uluslar Ligi","home_team":"Yunanistan","away_team":"Almanya","date":"04 Eki","time":"21:45","p":[26.2,29.6,44.2],"form":"Yunanistan: Sırbistan'ı 2-1, Almanya'yı 1-0 yendi.","series":["W","W","L","D","W"]},
+    {"id":15,"league":"UEFA Uluslar Ligi","home_team":"Fransa","away_team":"Belçika","date":"05 Eki","time":"21:45","p":[50.4,28.2,21.4],"form":"Fransa: 2 maçta 2 galibiyet.","series":["W","W","D","W","W"]}
+  ]
 }
