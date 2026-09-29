@@ -114,6 +114,33 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .stat-box .lbl{font-size:.68rem;color:var(--muted);margin-top:4px;font-weight:700;letter-spacing:.3px;text-transform:uppercase}
 .green{color:var(--green)}
 .muted{color:var(--muted)}
+
+/* ===== KUPON OLUŞTURMA ===== */
+.pick-btn{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 4px;text-align:center;font-weight:800;font-size:.85rem;cursor:pointer;user-select:none;transition:all .2s;color:var(--text)}
+.pick-btn:active{transform:scale(.95)}
+.pick-btn.active{background:linear-gradient(135deg,var(--green),var(--green2));color:#04140c;border-color:var(--green);box-shadow:0 4px 12px rgba(0,224,122,.3)}
+.pick-btn .pick-pct{display:block;font-size:.65rem;color:var(--muted);margin-top:2px;font-weight:600}
+.pick-btn.active .pick-pct{color:rgba(4,20,12,.7)}
+.pick-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-top:10px}
+.save-bar{position:fixed;bottom:0;left:0;right:0;background:var(--card2);border-top:1px solid var(--border);padding:12px 16px;display:flex;gap:10px;align-items:center;z-index:100;box-shadow:0 -8px 24px rgba(0,0,0,.4)}
+.save-bar .info{flex:1;font-size:.78rem;font-weight:700}
+.save-bar .info b{color:var(--green);font-size:1rem}
+.save-bar button{width:auto;padding:12px 20px;font-size:.85rem}
+.coupon-list{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.coupon-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px;position:relative}
+.coupon-card .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:.75rem;font-weight:700}
+.coupon-card .head .week{color:var(--orange)}
+.coupon-card .head .status{padding:3px 8px;border-radius:6px;font-size:.65rem;font-weight:800}
+.coupon-card .head .status.win{background:var(--green-dim);color:var(--green)}
+.coupon-card .head .status.lose{background:rgba(255,77,94,.15);color:var(--red)}
+.coupon-card .head .status.wait{background:rgba(255,176,32,.15);color:var(--orange)}
+.coupon-card .picks{font-size:.75rem;line-height:1.8;color:var(--muted)}
+.coupon-card .picks b{color:var(--text)}
+.coupon-card .result-line{display:flex;justify-content:space-between;padding:4px 0;font-size:.75rem;border-bottom:1px solid var(--border)}
+.coupon-card .result-line:last-child{border:none}
+.coupon-card .result-line .ok{color:var(--green);font-weight:800}
+.coupon-card .result-line .no{color:var(--red);font-weight:800}
+.coupon-empty{text-align:center;padding:40px 20px;color:var(--muted);font-size:.85rem;line-height:1.7}
 </style>
 </head>
 <body>
@@ -254,7 +281,7 @@ function initApp(){
     <div class="teams">${m.home} <span class="muted" style="font-weight:400">-</span> ${m.away}<span class="badge ${levelClass(i)}">${level(i)}</span></div>
     <div class="series">${(m.series||[]).map(s=>`<span class="series-dot ${s}"></span>`).join('')}<span class="series-label">SON 5 (EV)</span></div>
     <div class="formline">${m.form}</div>
-    <div class="probs">${[0,1,2].map(o=>`<div class="pick ${used[i].includes(o)?'selected':''}">${SYM[o]} <span>%${m.p[o].toFixed(1)}</span></div>`).join('')}</div>
+    <div class="probs">${[0,1,2].map(o=>`<div class="pick ${used[i].includes(o)?'selected':''}">${SYM[o]} <span>\%${m.p[o].toFixed(1)}</span></div>`).join('')}</div>
     <div class="value-row">
       <input type="number" step="0.01" min="1" placeholder="Piyasa oranı" id="odd-${i}" oninput="calcValue(${i})">
       <button onclick="calcValue(${i})">Değer</button>
@@ -296,12 +323,11 @@ function generate(){
   const r=topColumns(n);cols=r.map(x=>x.pick);
   const cov=r.reduce((t,x)=>t+x.p,0),single=r[0].p;
   const c=closedList(cols);used=c.u;initApp();
-  $('outputCard').style.display='block';
-  $('outputSummary').innerHTML=`<b style="color:var(--text);font-weight:900">${n*10} TL · ${n} KOLON</b><br><br>
+  $('outputCard').style.display='block';$('outputSummary').innerHTML=`<b style="color:var(--text);font-weight:900">${n*10} TL · ${n} KOLON</b><br><br>
    15/15 tutma: <b class="green">%${(cov*100).toFixed(3)}</b><br>
    Tek kolonla: %${(single*100).toFixed(3)}<br>
    Redüksiyon: <b class="green">${(cov/single).toFixed(1)}×</b> artış<br><br>
-   <b style="color:var(--text);font-weight:900">KAPANAN MAÇLAR:</b><br>${c.list.length?c.list.map(([u,i])=>`#${i+1} ${matchesData[i].home} - ${matchesData[i].away}: <b style="color:var(--orange)">${u.map(o=>SYM[o]).join('-')}</b>`).join('<br>'):'Yok.'}
+   <b style="color:var(--text);font-weight:900">KAPANAN MAÇLAR:</b><br>${c.list.length?c.list.map(([u,i])=>`#${i+1} ${matchesData[i].home} -${matchesData[i].away}: <b style="color:var(--orange)">${u.map(o=>SYM[o]).join('-')}</b>`).join('<br>'):'Yok.'}
    <br><br><div id="mcOut">Simülasyon çalışıyor...<div class="progress"><div id="bar-a"></div></div></div>`;
   $('outputContainer').innerHTML=r.map((x,i)=>`<div class="coupon"><b>KOLON #${String(i+1).padStart(2,'0')}</b> &nbsp;<span class="muted">%${(x.p*100).toFixed(3)}</span> <button onclick="copySingle(${i})" style="width:auto;padding:4px 8px;font-size:.7rem;float:right;box-shadow:none">📋</button><br>
   <span style="letter-spacing:2px;font-size:.85rem">${x.pick.map((o,k)=>`<span class="muted">${k+1}:</span><b>${SYM[o]}</b>`).join(' ')}</span></div>`).join('');
@@ -372,8 +398,7 @@ function draw(p){let r=Math.random();for(let o=0;o<3;o++){r-=p[o];if(r<0)return 
 function runMC(out,bar,clear){
   const N=10000,STEP=1000,L=matchesData.length,hist=new Array(L+1).fill(0);
   let done=0,sum=0;
-  if(clear){$(out).style.display='block';$(out).innerHTML=''}
-  $(bar).style.width='0';
+  if(clear){$(out).style.display='block';$(out).innerHTML=''}$(bar).style.width='0';
   (function chunk(){
     for(let s=0;s<STEP;s++){
       const res=PR.map(draw);let best=0;
@@ -387,7 +412,7 @@ function runMC(out,bar,clear){
     En iyi kolon ortalaması: <b class="green">${(sum/N).toFixed(2)} / ${L}</b><br><br>
     <b class="green">15/15: %${tail(L)}</b> | 14+: %${tail(L-1)}<br>
     13+: %${tail(L-2)} | 12+: %${tail(L-3)}<br><br>
-    ${hist.map((_,k)=>k).reverse().filter(k=>hist[k]>0).map(k=>`<div class="hrow"><span>${k}/${L}</span><div><div class="hbar" style="width:${hist[k]/mx*100}%"></div></div><span>%${(hist[k]/N*100).toFixed(1)}</span></div>`).join('')}`;
+    ${hist.map((_,k)=>k).reverse().filter(k=>hist[k]>0).map(k=>`<div class="hrow"><span>${k}/${L}</span><div><div class="hbar" style="width:${hist[k]/mx*100}\%"></div></div><span>\%${(hist[k]/N*100).toFixed(1)}</span></div>`).join('')}`;
     if($('runBtn'))$('runBtn').disabled=false;
   })();
 }
