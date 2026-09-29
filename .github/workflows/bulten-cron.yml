@@ -26,6 +26,6 @@ jobs:
         run: |
           git config --global user.name "SkorLab Bot"
           git config --global user.email "bot@skorlab.app"
-          git add bulten.json
-          git commit -m "Günlük bülten ve YZ tahminleri otomatik güncellendi [skip ci]" || echo "Değişiklik yok"
+          git add matches.json
+          git commit -m "SkorLab bülten güncellendi [skip ci]" || echo "Değişiklik yok"
           git push
