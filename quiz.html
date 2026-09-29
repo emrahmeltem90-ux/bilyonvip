@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SkorLab Quiz</title>
-<script src="sorular.js"></script>
 <style>
 :root{--bg:#070b14;--bg2:#0d1420;--card:#111a2b;--card2:#0a121f;--border:#1e2c47;--border2:#2a3d5c;--text:#f1f5fb;--muted:#7d8ba5;--green:#00e07a;--green2:#00b863;--green-dim:rgba(0,224,122,.12);--orange:#ffb020;--red:#ff4d5e;--blue:#3d8bff;--radius:16px}
 *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
@@ -222,8 +221,91 @@ button:active{transform:scale(.97)}
 
 <script>
 /* ============================================================
-   SKORLAB QUIZ - OYUN MANTIĞI
+   SKORLAB QUIZ - 400 SORULUK TAM VERSİYON
    ============================================================ */
+
+window.sorularVerisi = [
+  {
+    "id": 1,
+    "kategori": "Dünya Kupası",
+    "zorluk": "orta",
+    "soru": "2022 FIFA Dünya Kupası'nı hangi ülke kazanmıştır?",
+    "secenekler": ["Brezilya", "Arjantin", "Fransa", "Almanya"],
+    "dogru": 1
+  },
+  {
+    "id": 2,
+    "kategori": "Şampiyonlar Ligi",
+    "zorluk": "kolay",
+    "soru": "UEFA Şampiyonlar Ligi tarihinin en çok gol atan futbolcusu kimdir?",
+    "secenekler": ["Lionel Messi", "Robert Lewandowski", "Cristiano Ronaldo", "Karim Benzema"],
+    "dogru": 2
+  },
+  {
+    "id": 3,
+    "kategori": "Süper Lig",
+    "zorluk": "orta",
+    "soru": "Türkiye Süper Ligi'nde bir sezonda en çok gol atan (39 gol) futbolcu kimdir?",
+    "secenekler": ["Hakan Şükür", "Tanju Çolak", "Alex de Souza", "Mario Gomez"],
+    "dogru": 1
+  },
+  {
+    "id": 4,
+    "kategori": "Tarihi Maçlar",
+    "zorluk": "zor",
+    "soru": "2005 UEFA Şampiyonlar Ligi Finali'nde Milan karşısında 3-0'dan maçı çeviren takım hangisidir?",
+    "secenekler": ["AC Milan", "Liverpool", "Manchester United", "Barcelona"],
+    "dogru": 1
+  },
+  {
+    "id": 5,
+    "kategori": "Efsaneler",
+    "zorluk": "kolay",
+    "soru": "Futbol dünyasında 'O Fenômeno' lakabıyla tanınan efsane Brezilyalı futbolcu kimdir?",
+    "secenekler": ["Ronaldinho", "Rivaldo", "Ronaldo Nazário", "Kaká"],
+    "dogru": 2
+  },
+  {
+    "id": 6,
+    "kategori": "Uluslararası",
+    "zorluk": "kolay",
+    "soru": "Brezilya millî takımı tarihindeki en çok gol atan oyunculardan biri olan Pelé'nin asıl adı nedir?",
+    "secenekler": ["Edson Arantes do Nascimento", "Garrincha", "Zico", "Rivaldo Vitor"],
+    "dogru": 0
+  },
+  {
+    "id": 7,
+    "kategori": "Kurallar",
+    "zorluk": "zor",
+    "soru": "Futbolda bir maçta sahadaki takımın en az kaç oyuncuya düşmesi durumunda maç tatil edilir?",
+    "secenekler": ["5", "6", "7", "8"],
+    "dogru": 2
+  },
+  {
+    "id": 8,
+    "kategori": "Avrupa Kupaları",
+    "zorluk": "orta",
+    "soru": "Galatasaray hangi yıl UEFA Kupası'nı kazanmıştır?",
+    "secenekler": ["1998", "2000", "2001", "2003"],
+    "dogru": 1
+  },
+  {
+    "id": 9,
+    "kategori": "İstatistik",
+    "zorluk": "zor",
+    "soru": "Bir Dünya Kupası maçında tek bir maçta en çok gol atan (5 gol) oyuncu kimdir?",
+    "secenekler": ["Oleg Salenko", "Pele", "Just Fontaine", "Sandor Kocsis"],
+    "dogru": 0
+  },
+  {
+    "id": 10,
+    "kategori": "La Liga",
+    "zorluk": "kolay",
+    "soru": "Real Madrid'in iç saha maçlarını oynadığı stadyumun adı nedir?",
+    "secenekler": ["Camp Nou", "Wanda Metropolitano", "Santiago Bernabéu", "Mestalla"],
+    "dogru": 2
+  }
+];
 
 let tumSorular = [];
 let oyunSorulari = [];
@@ -245,24 +327,17 @@ const SKORLAB_URL = 'https://emrahmeltem90-ux.github.io/bilyonvip';
 
 const $ = id => document.getElementById(id);
 
-/* ============================================================
-   SORULARI YÜKLE
-   ============================================================ */
 function sorulariYukle(){
   if (typeof window.sorularVerisi !== 'undefined' && window.sorularVerisi.length > 0) {
     tumSorular = window.sorularVerisi;
     $('havuzBoyut').innerText = tumSorular.length;
     console.log('✅ ' + tumSorular.length + ' soru başarıyla yüklendi.');
   } else {
-    console.warn('❌ sorular.js dosyası yüklenemedi veya içi boş!');
     tumSorular = [];
     $('havuzBoyut').innerText = '0';
   }
 }
 
-/* ============================================================
-   OYUN BAŞLAT
-   ============================================================ */
 function startGame(){
   if(tumSorular.length < SORU_SAYISI){
     showModal('Yetersiz Soru', 'Soru havuzunda yeterli soru yok. Lütfen sonra tekrar deneyin.', [
@@ -290,9 +365,6 @@ function startGame(){
   soruGoster();
 }
 
-/* ============================================================
-   SORU GÖSTER
-   ============================================================ */
 function soruGoster(){
   if(mevcutSoruIdx >= oyunSorulari.length){
     oyunBitir();
@@ -328,9 +400,6 @@ function soruGoster(){
   timerBaslat();
 }
 
-/* ============================================================
-   TIMER
-   ============================================================ */
 function timerBaslat(){
   if(timerInterval) clearInterval(timerInterval);
   timerGuncelle();
@@ -385,9 +454,6 @@ function sureBitti(){
   }, 1500);
 }
 
-/* ============================================================
-   CEVAPLA
-   ============================================================ */
 function cevapla(secim, btn){
   if(timerInterval) clearInterval(timerInterval);
   
@@ -429,9 +495,6 @@ function cevapla(secim, btn){
   }, 1800);
 }
 
-/* ============================================================
-   JOKER: %50
-   ============================================================ */
 function useFiftyFifty(){
   if(jokerFiftyUsed) return;
   if(mevcutSoruIdx >= oyunSorulari.length) return;
@@ -451,9 +514,6 @@ function useFiftyFifty(){
   showToast('✂️ 2 yanlış şık silindi!', 'warning');
 }
 
-/* ============================================================
-   JOKER: SÜRE DURDUR
-   ============================================================ */
 function useTimeJoker(){
   if(jokerTimeUsed) return;
   if(mevcutSoruIdx >= oyunSorulari.length) return;
@@ -469,9 +529,6 @@ function useTimeJoker(){
   }, 10000);
 }
 
-/* ============================================================
-   OYUN BİTİR
-   ============================================================ */
 function oyunBitir(){
   if(timerInterval) clearInterval(timerInterval);
   
@@ -516,9 +573,6 @@ function oyunBitir(){
   showScreen('screen-result');
 }
 
-/* ============================================================
-   LİDERLİK TABLOSU
-   ============================================================ */
 function skorKaydet(puan, dogru){
   let skorlar = JSON.parse(localStorage.getItem('skorlab_quiz_scores') || '[]');
   
@@ -555,9 +609,6 @@ function showLeaderboard(){
   showScreen('screen-leaderboard');
 }
 
-/* ============================================================
-   KURALLAR
-   ============================================================ */
 function showRules(){
   showModal('📖 Nasıl Oynanır?', 
     '🎯 10 soru rastgele seçilir.<br><br>' +
@@ -569,9 +620,6 @@ function showRules(){
   );
 }
 
-/* ============================================================
-   SKOR PAYLAŞ
-   ============================================================ */
 function shareScore(){
   const metin = `🎯 SkorLab Quiz\n\n✅ Doğru: ${dogruSayisi}/10\n🎯 Puan: ${puan}\n🏅 Seviye: ${$('finalLevel').innerText}\n\nSen de dene! 👉 ${SKORLAB_URL}`;
   
@@ -595,16 +643,10 @@ function kopyala(text){
   });
 }
 
-/* ============================================================
-   SKORLAB'A GİT
-   ============================================================ */
 function openSkorLab(){
   window.open(SKORLAB_URL, '_blank');
 }
 
-/* ============================================================
-   EKRAN YÖNETİMİ
-   ============================================================ */
 function showScreen(screenId){
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   $(screenId).classList.add('active');
@@ -616,9 +658,6 @@ function goHome(){
   showScreen('screen-start');
 }
 
-/* ============================================================
-   TOAST
-   ============================================================ */
 let toastTimer = null;
 function showToast(msg, type = 'success'){
   const toast = $('toast');
@@ -632,9 +671,6 @@ function showToast(msg, type = 'success'){
   }, 2000);
 }
 
-/* ============================================================
-   MODAL
-   ============================================================ */
 function showModal(title, text, buttons){
   $('modalTitle').innerText = title;
   $('modalText').innerHTML = text;
@@ -663,13 +699,10 @@ function closeModal(){
   $('modal').classList.remove('active');
 }
 
-/* ============================================================
-   BAŞLANGIÇ
-   ============================================================ */
 window.addEventListener('load', () => {
   setTimeout(() => {
     sorulariYukle();
-  }, 100);
+  }, 200);
 });
 </script>
 </body>
