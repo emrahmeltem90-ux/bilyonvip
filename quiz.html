@@ -3530,7 +3530,8 @@ function soruGoster(){
     const btn = document.createElement('div');
     btn.className = 'answer';
     btn.innerHTML = `<span class="letter">${letters[i]}</span><span>${sec}</span>`;
-    btn.onclick = () => cevapla(i, btn);
+    btn.addEventListener('click', function() {
+    cevapla(i, btn);
     container.appendChild(btn);
   });
   
