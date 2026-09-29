@@ -3,64 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hedef 15 · Akıllı Redüksiyon</title>
+<title>SkorLab · Akıllı Analiz</title>
 <style>
-:root{
-  --bg:#070b14;
-  --bg2:#0d1420;
-  --card:#111a2b;
-  --card2:#0a121f;
-  --border:#1e2c47;
-  --border2:#2a3d5c;
-  --text:#f1f5fb;
-  --muted:#7d8ba5;
-  --green:#00e07a;
-  --green2:#00b863;
-  --green-dim:rgba(0,224,122,.12);
-  --orange:#ffb020;
-  --red:#ff4d5e;
-  --blue:#3d8bff;
-  --purple:#a855f7;
-  --radius:16px;
-}
+:root{--bg:#070b14;--bg2:#0d1420;--card:#111a2b;--card2:#0a121f;--border:#1e2c47;--border2:#2a3d5c;--text:#f1f5fb;--muted:#7d8ba5;--green:#00e07a;--green2:#00b863;--green-dim:rgba(0,224,122,.12);--orange:#ffb020;--red:#ff4d5e;--blue:#3d8bff;--radius:16px}
 *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--text);padding-bottom:60px;min-height:100vh;background-image:radial-gradient(circle at 50% 0%, rgba(0,224,122,.08) 0%, transparent 50%)}
-
-/* HEADER */
-header{padding:24px 20px 20px;text-align:center;position:relative}
+header{padding:24px 20px 20px;text-align:center}
 .logo-badge{display:inline-flex;align-items:center;gap:8px;background:var(--green-dim);border:1px solid rgba(0,224,122,.3);color:var(--green);padding:6px 14px;border-radius:20px;font-size:.7rem;font-weight:700;letter-spacing:.5px;margin-bottom:12px}
 .logo-badge::before{content:"";width:6px;height:6px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green)}
 header h1{font-size:1.6rem;font-weight:900;letter-spacing:-.5px;background:linear-gradient(135deg,#fff 0%,#a5b4c8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px}
 header p{font-size:.78rem;color:var(--muted);font-weight:500}
-
-/* TABS */
 .tabs{display:flex;background:var(--card2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}
 .tab{flex:1;text-align:center;padding:16px 6px;font-size:.72rem;font-weight:700;color:var(--muted);cursor:pointer;position:relative;transition:color .2s}
 .tab .tab-num{display:block;font-size:.9rem;font-weight:900;margin-bottom:2px}
 .tab.active{color:var(--green)}
 .tab.active::after{content:"";position:absolute;bottom:0;left:20%;right:20%;height:3px;background:var(--green);border-radius:3px 3px 0 0;box-shadow:0 0 12px var(--green)}
-
 .container{max-width:600px;margin:auto;padding:16px}
 .page{display:none;animation:fade .3s ease}
 .page.active{display:block}
 @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
 .card{background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:14px;position:relative;overflow:hidden}
 .card::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent)}
-
 label{display:block;color:var(--muted);font-size:.75rem;font-weight:700;margin-bottom:8px;letter-spacing:.3px;text-transform:uppercase}
 input{width:100%;padding:14px 16px;border-radius:12px;border:1px solid var(--border2);background:var(--bg2);color:#fff;font-size:1.05rem;font-weight:800;margin-bottom:14px;outline:none;transition:border .2s,box-shadow .2s}
 input:focus{border-color:var(--green);box-shadow:0 0 0 3px var(--green-dim)}
 button{width:100%;padding:15px;border:0;border-radius:12px;background:linear-gradient(135deg,var(--green),var(--green2));color:#04140c;font-size:.95rem;font-weight:800;cursor:pointer;letter-spacing:.3px;transition:transform .15s,box-shadow .2s;box-shadow:0 6px 20px rgba(0,224,122,.25)}
 button:active{transform:scale(.97)}
 button:disabled{opacity:.4;cursor:not-allowed}
-
 .bar-info{display:flex;justify-content:space-between;background:var(--bg2);border:1px solid var(--border);padding:14px 16px;border-radius:12px;margin-bottom:14px;font-size:.9rem;font-weight:600}
 .bar-info b{color:var(--green);font-weight:900;font-size:1rem}
-
 .result-title{color:var(--green);font-weight:800;font-size:.95rem;margin-bottom:10px;display:flex;align-items:center;gap:6px}
-
-/* MATCH CARDS */
 .match{background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;position:relative;overflow:hidden}
 .match::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),transparent)}
 .match-head{display:flex;justify-content:space-between;align-items:center;font-size:.7rem;font-weight:700;color:var(--muted);margin-bottom:12px;letter-spacing:.3px}
@@ -69,25 +41,18 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .badge{display:inline-block;padding:4px 9px;border-radius:6px;background:var(--green-dim);color:var(--green);font-size:.65rem;font-weight:800;margin-left:6px;letter-spacing:.3px;border:1px solid rgba(0,224,122,.2)}
 .badge.orange{background:rgba(255,176,32,.1);color:var(--orange);border-color:rgba(255,176,32,.2)}
 .badge.red{background:rgba(255,77,94,.1);color:var(--red);border-color:rgba(255,77,94,.2)}
-
 .formline{color:var(--muted);font-size:.75rem;line-height:1.6;margin-bottom:12px}
-
-/* SERIES */
 .series{display:flex;gap:5px;margin:8px 0;align-items:center}
 .series-dot{width:12px;height:12px;border-radius:50%;display:inline-block}
 .series-dot.W{background:var(--green);box-shadow:0 0 6px rgba(0,224,122,.5)}
 .series-dot.D{background:var(--orange);box-shadow:0 0 6px rgba(255,176,32,.4)}
 .series-dot.L{background:var(--red);box-shadow:0 0 6px rgba(255,77,94,.4)}
 .series-label{font-size:.68rem;color:var(--muted);margin-left:6px;font-weight:600}
-
-/* PROBS */
 .probs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .pick{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 6px;text-align:center;font-weight:900;font-size:1.05rem;user-select:none;transition:all .2s}
 .pick span{display:block;font-size:.7rem;color:var(--muted);margin-top:3px;font-weight:600}
 .pick.selected{background:linear-gradient(135deg,var(--green),var(--green2));border-color:var(--green);color:#04140c;box-shadow:0 4px 14px rgba(0,224,122,.3)}
 .pick.selected span{color:rgba(4,20,12,.7)}
-
-/* VALUE */
 .value-row{display:flex;gap:6px;align-items:center;margin-top:10px;font-size:.75rem}
 .value-row input{padding:9px 12px;font-size:.82rem;margin:0;flex:1;font-weight:600}
 .value-row button{width:auto;padding:9px 14px;font-size:.78rem;flex:0 0 auto;box-shadow:none}
@@ -95,72 +60,49 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .value-badge.high{background:var(--green-dim);color:var(--green)}
 .value-badge.low{background:rgba(255,77,94,.12);color:var(--red)}
 .value-badge.mid{background:rgba(255,176,32,.12);color:var(--orange)}
-
-/* COUPON */
-.coupon{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-top:8px;font-size:.8rem;line-height:1.8;transition:border .2s}
-.coupon:hover{border-color:var(--border2)}
+.coupon{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-top:8px;font-size:.8rem;line-height:1.8}
 .coupon b{color:var(--green);font-weight:900}
-.copy-btn{background:var(--bg2);border:1px solid var(--border2);color:var(--green);padding:12px;border-radius:10px;font-size:.8rem;font-weight:800;cursor:pointer;margin-top:10px;width:100%;transition:all .2s}
+.copy-btn{background:var(--bg2);border:1px solid var(--border2);color:var(--green);padding:12px;border-radius:10px;font-size:.8rem;font-weight:800;cursor:pointer;margin-top:10px;width:100%}
 .copy-btn.copied{background:var(--green);color:#04140c;border-color:var(--green)}
-
-/* PROGRESS */
 .progress{height:6px;background:var(--bg2);border-radius:10px;overflow:hidden;margin-top:10px;border:1px solid var(--border)}
 .progress div{height:100%;background:linear-gradient(90deg,var(--green),var(--green2));width:0;transition:width .1s;box-shadow:0 0 10px var(--green)}
-
-/* HISTOGRAM */
 .hrow{display:grid;grid-template-columns:50px 1fr 55px;gap:8px;align-items:center;margin:6px 0;font-size:.78rem;font-weight:600}
 .hbar{height:16px;background:linear-gradient(90deg,var(--orange),#ff8c00);border-radius:4px;min-width:2px;box-shadow:0 0 8px rgba(255,176,32,.3)}
-
 .note{font-size:.7rem;color:var(--muted);text-align:center;margin-top:14px;line-height:1.5;padding:0 20px}
-
-/* CHAT */
 #chat{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
 .b{max-width:94%;padding:14px 16px;border-radius:16px;font-size:.83rem;line-height:1.65;overflow-wrap:anywhere}
 .b.bot{background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--border);align-self:flex-start;border-bottom-left-radius:4px}
 .b.usr{background:linear-gradient(135deg,var(--green),var(--green2));color:#04140c;align-self:flex-end;border-bottom-right-radius:4px;font-weight:700}
 .b button{margin-top:10px;padding:10px;font-size:.8rem}
-
-/* CHIPS */
 .chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
 .chip{background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:20px;padding:9px 14px;font-size:.75rem;font-weight:700;cursor:pointer;transition:all .2s}
 .chip:active{background:var(--green);color:#04140c;border-color:var(--green)}
-
-/* INPUT ROW */
 .askrow{display:flex;gap:8px}
 .askrow input{margin:0;font-size:.9rem;font-weight:600}
 .askrow button{width:80px;padding:12px;font-size:.85rem}
-
-/* HEATMAP */
 .heatmap{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:12px 0}
-.heatmap .hm{aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:900;color:#04140c;cursor:pointer;transition:transform .15s;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.heatmap .hm{aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:900;color:#04140c;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3)}
 .heatmap .hm.green{background:linear-gradient(135deg,var(--green),var(--green2))}
 .heatmap .hm.yellow{background:linear-gradient(135deg,var(--orange),#ff8c00)}
 .heatmap .hm.red{background:linear-gradient(135deg,var(--red),#d63447);color:#fff}
-.heatmap .hm:active{transform:scale(.92)}
 .heatmap-legend{display:flex;gap:12px;font-size:.7rem;color:var(--muted);flex-wrap:wrap;margin-top:10px;font-weight:600}
 .heatmap-legend .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:middle}
 .heatmap-legend .dot.green{background:var(--green)}
 .heatmap-legend .dot.yellow{background:var(--orange)}
 .heatmap-legend .dot.red{background:var(--red)}
-
-/* MODES */
 .modes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
-.mode{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:12px 8px;text-align:center;cursor:pointer;font-size:.78rem;transition:all .2s}
+.mode{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:12px 8px;text-align:center;cursor:pointer;font-size:.78rem}
 .mode b{display:block;margin-bottom:4px;font-size:.95rem;font-weight:900}
 .mode span{font-size:.65rem;color:var(--muted);font-weight:600}
 .mode.active{background:linear-gradient(135deg,var(--green),var(--green2));border-color:var(--green);color:#04140c;box-shadow:0 4px 14px rgba(0,224,122,.3)}
 .mode.active span{color:rgba(4,20,12,.7)}
 .mode-info{margin-top:12px;padding:14px;background:var(--bg2);border-radius:12px;font-size:.78rem;line-height:1.65;border-left:3px solid var(--green)}
 .mode-info b{color:var(--green)}
-
-/* STATS */
 .stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px}
 .stat-box{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center;position:relative;overflow:hidden}
 .stat-box::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),transparent)}
 .stat-box .num{font-size:1.6rem;font-weight:900;color:var(--green);letter-spacing:-1px}
 .stat-box .lbl{font-size:.68rem;color:var(--muted);margin-top:4px;font-weight:700;letter-spacing:.3px;text-transform:uppercase}
-
-/* YARDIMCI */
 .green{color:var(--green)}
 .muted{color:var(--muted)}
 </style>
@@ -169,8 +111,8 @@ button:disabled{opacity:.4;cursor:not-allowed}
 
 <header>
   <div class="logo-badge">● CANLI ANALİZ</div>
-  <h1>HEDEF 15</h1>
-  <p>Akıllı Redüksiyon & Monte Carlo Sistemi</p>
+  <h1>SKORLAB</h1>
+  <p>Akıllı Spor Toto Analiz Sistemi</p>
 </header>
 
 <nav class="tabs">
@@ -198,7 +140,7 @@ button:disabled{opacity:.4;cursor:not-allowed}
 
 <div class="page" id="page-1">
 <div class="card">
-<div class="result-title">🔥 BÜLTEN ISIL HARİTASI</div>
+<div class="result-title">🔥 BÜLTEN ISI HARİTASI</div>
 <div id="heatmap" class="heatmap"></div>
 <div class="heatmap-legend">
 <span><span class="dot green"></span>Güvenli ≥%65</span>
@@ -256,10 +198,17 @@ async function loadMatches(){
   try{
     const res=await fetch('matches.json');
     const raw=await res.json();
-    matchesData=raw.map(m=>({
-      id:m.id,home:m.home_team,away:m.away_team,
-      date:m.date+' '+m.time,p:m.p,form:m.form||'',
-      series:m.series||[],league:m.league||'',poisson:m.poisson||{}
+    const list = raw.matches || raw;
+    matchesData=list.map(m=>({
+      id:m.id,
+      home:m.home_team,
+      away:m.away_team,
+      date:(m.date||'')+' '+(m.time||''),
+      p:m.p || (m.poisson ? guessP(m.poisson) : [33,33,34]),
+      form:m.form||'',
+      series:m.series||[],
+      league:m.league||'',
+      poisson:m.poisson||{}
     }));
     PR=matchesData.map(m=>{const t=m.p.reduce((a,b)=>a+b,0);return m.p.map(x=>x/t)});
     used=matchesData.map(()=>[]);
@@ -268,6 +217,14 @@ async function loadMatches(){
   }catch(e){
     document.body.innerHTML='<div style="padding:20px;color:#ff4d5e;font-size:.9rem">⚠️ matches.json yüklenemedi.<br><br>Hata: '+e.message+'</div>';
   }
+}
+
+function guessP(poisson){
+  const rate = parseInt((poisson.rate||'%33').replace('%','')) || 33;
+  const pred = (poisson.prediction||'MS 1');
+  if(pred.includes('1')) return [rate, (100-rate)/2, (100-rate)/2];
+  if(pred.includes('2')) return [(100-rate)/2, (100-rate)/2, rate];
+  return [(100-rate)/2, rate, (100-rate)/2];
 }
 
 function level(i){
@@ -288,7 +245,7 @@ function initApp(){
     <div class="teams">${m.home} <span class="muted" style="font-weight:400">-</span> ${m.away}<span class="badge ${levelClass(i)}">${level(i)}</span></div>
     <div class="series">${(m.series||[]).map(s=>`<span class="series-dot ${s}"></span>`).join('')}<span class="series-label">SON 5 (EV)</span></div>
     <div class="formline">${m.form}</div>
-    <div class="probs">${[0,1,2].map(o=>`<div class="pick ${used[i].includes(o)?'selected':''}">${SYM[o]} <span>%${m.p[o]}</span></div>`).join('')}</div>
+    <div class="probs">${[0,1,2].map(o=>`<div class="pick ${used[i].includes(o)?'selected':''}">${SYM[o]} <span>%${m.p[o].toFixed(1)}</span></div>`).join('')}</div>
     <div class="value-row">
       <input type="number" step="0.01" min="1" placeholder="Piyasa oranı" id="odd-${i}" oninput="calcValue(${i})">
       <button onclick="calcValue(${i})">Değer</button>
@@ -335,7 +292,7 @@ function generate(){
    15/15 tutma: <b class="green">%${(cov*100).toFixed(3)}</b><br>
    Tek kolonla: %${(single*100).toFixed(3)}<br>
    Redüksiyon: <b class="green">${(cov/single).toFixed(1)}×</b> artış<br><br>
-   <b style="color:var(--text);font-weight:900">KAPANAN MAÇLAR:</b><br>${c.list.length?c.list.map(([u,i])=>`#${i+1} ${matchesData[i].home} - ${matchesData[i].away}: <b style="color:var(--orange)">${u.map(o=>SYM[o]).join('-')}</b>`).join('<br>'):'Yok, tek kolon.'}
+   <b style="color:var(--text);font-weight:900">KAPANAN MAÇLAR:</b><br>${c.list.length?c.list.map(([u,i])=>`#${i+1} ${matchesData[i].home} - ${matchesData[i].away}: <b style="color:var(--orange)">${u.map(o=>SYM[o]).join('-')}</b>`).join('<br>'):'Yok.'}
    <br><br><div id="mcOut">Simülasyon çalışıyor...<div class="progress"><div id="bar-a"></div></div></div>`;
   $('outputContainer').innerHTML=r.map((x,i)=>`<div class="coupon"><b>KOLON #${String(i+1).padStart(2,'0')}</b> &nbsp;<span class="muted">%${(x.p*100).toFixed(3)}</span> <button onclick="copySingle(${i})" style="width:auto;padding:4px 8px;font-size:.7rem;float:right;box-shadow:none">📋</button><br>
   <span style="letter-spacing:2px;font-size:.85rem">${x.pick.map((o,k)=>`<span class="muted">${k+1}:</span><b>${SYM[o]}</b>`).join(' ')}</span></div>`).join('');
@@ -348,19 +305,19 @@ function calcValue(i){
   const input=$('odd-'+i),res=$('valres-'+i);
   const odd=parseFloat(input.value);
   if(!odd||odd<=1){res.innerHTML='';return}
-  const o=ordr(i)[0],modelProb=PR[i][o],fairOdd=1/modelProb,value=(modelProb*odd)-1;
+  const o=ordr(i)[0],modelProb=PR[i][o],value=(modelProb*odd)-1;
   let badge='';
   if(value>=0.05)badge=`<span class="value-badge high">✅ Değerli +${(value*100).toFixed(1)}%</span>`;
   else if(value>=-0.05)badge=`<span class="value-badge mid">⚖️ Nötr ${(value*100).toFixed(1)}%</span>`;
   else badge=`<span class="value-badge low">❌ Değersiz ${(value*100).toFixed(1)}%</span>`;
-  res.innerHTML=`${badge}`;
+  res.innerHTML=badge;
 }
 
 function copyCoupon(){
   if(!cols.length){alert('Önce kupon oluştur.');return}
-  let text='🎯 HEDEF 15 · KUPONUM\n━━━━━━━━━━━━━━━\n';
+  let text='🎯 SKORLAB · KUPONUM\n━━━━━━━━━━━━━━━\n';
   cols.forEach((c,idx)=>{text+=`\n📋 KOLON #${String(idx+1).padStart(2,'0')}\n`;c.forEach((o,i)=>{text+=`  ${i+1}. ${matchesData[i].home} - ${matchesData[i].away} : ${SYM[o]}\n`})});
-  text+='\n━━━━━━━━━━━━━━━\n🤖 Hedef 15 Akıllı Redüksiyon';
+  text+='\n━━━━━━━━━━━━━━━\n🤖 SkorLab Akıllı Analiz';
   navigator.clipboard.writeText(text).then(()=>{
     const btn=$('copyBtn'),old=btn.innerText;btn.innerText='✅ KOPYALANDI';btn.classList.add('copied');
     setTimeout(()=>{btn.innerText=old;btn.classList.remove('copied')},2000);
@@ -447,7 +404,7 @@ function summary(){
   ✈️ Deplasman favorisi: <b>${depFav}</b><br>
   🎯 Beklenen doğru: <b>${exp.toFixed(1)}/${L}</b><br>
   ⚠️ En dengeli: <b>#${matchesData[enDengeli[0]].id} ${matchesData[enDengeli[0]].home}-${matchesData[enDengeli[0]].away}</b> (%${pc(enDengeli[1])})<br><br>
-  <b>💡 YORUM:</b> ${dengeli>=6?'<b style="color:#ff4d5e">Zor bülten.</b> Çift şanslı kolonlar önerilir.':dengeli>=3?'<b style="color:#ffb020">Orta zorluk.</b> Dengeli mod ideal.':'<b style="color:#00e07a">Kolay bülten.</b> Bankolar güvenilir.'}`;
+  <b>💡 YORUM:</b> ${dengeli>=6?'<b style="color:#ff4d5e">Zor bülten.</b>':dengeli>=3?'<b style="color:#ffb020">Orta zorluk.</b>':'<b style="color:#00e07a">Kolay bülten.</b>'}`;
 }
 
 function recoText(){
@@ -462,7 +419,6 @@ function recoText(){
   return `<b>${modeLabel} MOD · ${n*10} TL (${n} KOLON)</b><br><br>`+
    (c.list.length?'<b>Kapanacak maçlar:</b><br>'+c.list.map(([u,i])=>`#${i+1} ${matchesData[i].home} - ${matchesData[i].away}: <b style="color:var(--orange)">${u.map(o=>SYM[o]).join('-')}</b>`).join('<br>')+'<br><br>':'Kapama yok.<br><br>')+
    `15/15: <b class="green">%${(cov*100).toFixed(3)}</b><br>
-   Tek kolon: %${(r[0].p*100).toFixed(3)}<br>
    Redüksiyon: <b class="green">${(cov/r[0].p).toFixed(1)}×</b><br><br>
    <button onclick="switchTab(0,document.querySelector('.tab'));generate()">Kuponu Oluştur</button>`;
 }
@@ -471,30 +427,29 @@ function listBanko(){
   const b=matchesData.map((m,i)=>[m,i]).filter(x=>topP(x[1])>=.7);
   const g=matchesData.map((m,i)=>[m,i]).filter(x=>topP(x[1])>=.55&&topP(x[1])<.7);
   let s='';
-  if(b.length)s+=`<b style="color:#00e07a">🏦 BANKOLAR (≥%70):</b><br>`+b.map(([m,i])=>`#${m.id} ${m.home} - ${m.away}: <b>${outName(m,ordr(i)[0])}</b> %${pc(topP(i))}`).join('<br>');
-  else s+='<b>Banko yok.</b><br>';
-  if(g.length)s+=`<br><br><b style="color:var(--orange)">⭐ GÜÇLÜ FAVORİLER (%55-70):</b><br>`+g.map(([m,i])=>`#${m.id} ${m.home} - ${m.away}: <b>${outName(m,ordr(i)[0])}</b> %${pc(topP(i))}`).join('<br>');
+  if(b.length)s+=`<b style="color:#00e07a">🏦 BANKOLAR:</b><br>`+b.map(([m,i])=>`#${m.id} ${m.home} - ${m.away}: <b>${outName(m,ordr(i)[0])}</b> %${pc(topP(i))}`).join('<br>');
+  else s+='Banko yok.<br>';
+  if(g.length)s+=`<br><br><b style="color:var(--orange)">⭐ GÜÇLÜ FAVORİLER:</b><br>`+g.map(([m,i])=>`#${m.id} ${m.home} - ${m.away}: <b>${outName(m,ordr(i)[0])}</b> %${pc(topP(i))}`).join('<br>');
   return s;
 }
 
 function listRisk(){
   const r=matchesData.map((m,i)=>[m,i]).filter(x=>topP(x[1])<.5).sort((a,b)=>topP(a[1])-topP(b[1]));
   if(!r.length)return 'Riskli maç yok.';
-  return `<b style="color:#ff4d5e">⚠️ RİSKLİ MAÇLAR:</b><br>`+r.map(([m,i])=>`#${m.id} ${m.home} - ${m.away}<br>&nbsp;&nbsp;→ ${outName(m,ordr(i)[0])} %${pc(topP(i))}`).join('<br><br>');
+  return `<b style="color:#ff4d5e">⚠️ RİSKLİ MAÇLAR:</b><br>`+r.map(([m,i])=>`#${m.id} ${m.home} - ${m.away}: ${outName(m,ordr(i)[0])} %${pc(topP(i))}`).join('<br>');
 }
 
 function top5Safe(){
   const t=matchesData.map((m,i)=>[m,i]).sort((a,b)=>topP(b[1])-topP(a[1])).slice(0,5);
-  return `<b style="color:#00e07a">🛡️ EN GÜVENLİ 5 MAÇ</b><br><br>`+
-    t.map(([m,i],k)=>`<b>${k+1}.</b> #${m.id} ${m.home} - ${m.away}<br>&nbsp;&nbsp;→ <b style="color:var(--orange)">${outName(m,ordr(i)[0])}</b> %${pc(topP(i))}`).join('<br><br>')+
-    `<br><br>💡 Bu 5 maçı banko yaparsan, kalan 10'da 7 doğru = 12/15.`;
+  return `<b style="color:#00e07a">🛡️ EN GÜVENLİ 5</b><br><br>`+
+    t.map(([m,i],k)=>`<b>${k+1}.</b> #${m.id} ${m.home} - ${m.away}: <b style="color:var(--orange)">${outName(m,ordr(i)[0])}</b> %${pc(topP(i))}`).join('<br>');
 }
 
 function surpriseCandidates(){
   const s=matchesData.map((m,i)=>{const fav=ordr(i)[0];return {m,i,pFav:PR[i][fav]}}).filter(x=>x.pFav<.65&&x.pFav>.4).sort((a,b)=>a.pFav-b.pFav).slice(0,3);
-  if(!s.length)return 'Bu hafta sürpriz adayı yok.';
+  if(!s.length)return 'Sürpriz adayı yok.';
   return `<b style="color:#ffb020">🎲 SÜRPRİZ ADAYLARI</b><br><br>`+
-    s.map(x=>`#${x.m.id} <b>${x.m.home} - ${x.m.away}</b><br>&nbsp;&nbsp;Favori: ${outName(x.m,ordr(x.i)[0])} %${pc(x.pFav)}<br>&nbsp;&nbsp;Sürpriz: <b style="color:#ff4d5e">%${(100-x.pFav*100).toFixed(1)}</b>`).join('<br><br>');
+    s.map(x=>`#${x.m.id} ${x.m.home} - ${x.m.away}<br>Favori: ${outName(x.m,ordr(x.i)[0])} %${pc(x.pFav)}<br>Sürpriz: <b style="color:#ff4d5e">%${(100-x.pFav*100).toFixed(1)}</b>`).join('<br><br>');
 }
 
 function difficulty(){
@@ -502,14 +457,10 @@ function difficulty(){
   const banko=matchesData.filter((_,i)=>topP(i)>=.7).length;
   const exp=PR.reduce((t,_,i)=>t+topP(i),0);
   let seviye,renk,yorum;
-  if(banko>=5){seviye='KOLAY';renk='#00e07a';yorum='Banko bol, güvenli oyna.'}
+  if(banko>=5){seviye='KOLAY';renk='#00e07a';yorum='Banko bol.'}
   else if(banko>=2&&dengeli<=5){seviye='ORTA';renk='#ffb020';yorum='Dengeli strateji ideal.'}
   else{seviye='ZOR';renk='#ff4d5e';yorum='Çift şans ve kapama şart.'}
-  return `<b>📅 HAFTA ZORLUK ANALİZİ</b><br><br>
-  Seviye: <b style="color:${renk};font-size:1.3rem">${seviye}</b><br>
-  Banko: <b>${banko}</b> · Dengeli: <b>${dengeli}</b><br>
-  Beklenen doğru: <b>${exp.toFixed(1)}/15</b><br><br>
-  💡 ${yorum}`;
+  return `<b>📅 HAFTA ZORLUK</b><br><br>Seviye: <b style="color:${renk};font-size:1.3rem">${seviye}</b><br>Banko: <b>${banko}</b> · Dengeli: <b>${dengeli}</b><br>Beklenen doğru: <b>${exp.toFixed(1)}/${matchesData.length}</b><br><br>💡 ${yorum}`;
 }
 
 function analyze(i){
@@ -518,22 +469,19 @@ function analyze(i){
   s+=`<span class="muted">${m.date} · ${m.league||''}</span><br>`;
   s+=`Seviye: <b style="color:var(--orange)">${level(i)}</b><br><br>`;
   s+=`${m.form}<br><br>`;
-  s+=`<b>Olasılıklar:</b><br>1: %${pc(p[0])} · 0: %${pc(p[1])} · 2: %${pc(p[2])}<br><br>`;
+  s+=`Olasılıklar: 1: %${pc(p[0])} · 0: %${pc(p[1])} · 2: %${pc(p[2])}<br><br>`;
   s+=`🎯 En olası: <b>${outName(m,o[0])}</b> (adil ${(1/mx).toFixed(2)})<br>`;
   s+=`📊 Çift şans ${SYM[o[0]]}-${SYM[o[1]]}: %${pc(dc)}<br>`;
   if(p[1]>=.28)s+=`⚠️ Beraberlik yüksek: %${pc(p[1])}<br>`;
-  s+=`<br><b>💡 Öneri:</b> `+(mx>=.7?`Tek <b>${SYM[o[0]]}</b>.`:mx>=.55?`<b>${SYM[o[0]]}</b>, bütçe varsa <b>${SYM[o[1]]}</b>.`:`<b>${SYM[o[0]]}-${SYM[o[1]]}</b> çift şans.`);
+  s+=`<br><b>💡 Öneri:</b> `+(mx>=.7?`Tek <b>${SYM[o[0]]}</b>.`:mx>=.55?`<b>${SYM[o[0]]}</b> + <b>${SYM[o[1]]}</b>.`:`<b>${SYM[o[0]]}-${SYM[o[1]]}</b> çift şans.`);
   return s;
 }
 
 function compare(i1,i2){
-  if(!matchesData[i1]||!matchesData[i2])return 'Geçersiz maç numarası.';
+  if(!matchesData[i1]||!matchesData[i2])return 'Geçersiz maç.';
   const m1=matchesData[i1],m2=matchesData[i2],g1=topP(i1),g2=topP(i2);
   const safe=g1>g2?1:2;
-  return `<b>⚖️ KARŞILAŞTIRMA</b><br><br>
-  <b>#${m1.id} ${m1.home}-${m1.away}</b><br>Güven: %${pc(g1)} · ${level(i1)}<br><br>
-  <b>#${m2.id} ${m2.home}-${m2.away}</b><br>Güven: %${pc(g2)} · ${level(i2)}<br><br>
-  🏆 Daha güvenli: <b style="color:#00e07a">#${safe===1?m1.id:m2.id}</b>`;
+  return `<b>⚖️ KARŞILAŞTIRMA</b><br><br><b>#${m1.id} ${m1.home}-${m1.away}</b>: %${pc(g1)}<br><b>#${m2.id} ${m2.home}-${m2.away}</b>: %${pc(g2)}<br><br>🏆 Daha güvenli: <b style="color:#00e07a">#${safe===1?m1.id:m2.id}</b>`;
 }
 
 function reply(t){
@@ -554,7 +502,7 @@ function reply(t){
   if(nm){const i=parseInt(nm[1])-1;if(matchesData[i])return analyze(i)}
   const hits=matchesData.map((m,i)=>i).filter(i=>q.includes(matchesData[i].home.toLocaleLowerCase('tr'))||q.includes(matchesData[i].away.toLocaleLowerCase('tr')));
   if(hits.length)return hits.map(analyze).join('<br><br>');
-  return '🤖 <b>Neler sorabilirsin:</b><br>• Kupon öner<br>• Bülten özeti<br>• Bankolar / Riskli maçlar<br>• En güvenli 5 maç<br>• Sürpriz adayları<br>• Hafta zor mu?<br>• Karşılaştır 1 ve 4<br>• Takım adı veya maç 7';
+  return '🤖 Şunları sor:<br>• Kupon öner<br>• Bülten özeti<br>• Bankolar<br>• Riskli maçlar<br>• Sürpriz adayları<br>• Karşılaştır 1 ve 4<br>• Takım adı veya maç 7';
 }
 
 function ask(t){say(t,'usr');setTimeout(()=>say(reply(t),'bot'),250)}
