@@ -1,5 +1,4 @@
-{
-  "sorular": [
+    window.sorularVerisi = [
     {
       "id": 1,
       "kategori": "Dünya Kupası",
@@ -3209,6 +3208,5 @@
       "soru": "Futbol oyununda topun tamamının taç çizgisini veya kale çizgisini aşması durumunda oyunun durduğunu belirten hakem kimdir?",
       "secenekler": ["Orta hakem / Yan hakem (Yardımcı hakemler)", "Sadece 4. hakem", "VAR", "Saha görevlisi"],
       "dogru": 0
-    }
-
+      ];
     
