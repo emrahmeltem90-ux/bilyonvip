@@ -114,6 +114,20 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .coupon-card .picks{font-size:.75rem;line-height:1.8;color:var(--muted)}
 .coupon-card .picks b{color:var(--text)}
 .coupon-empty{text-align:center;padding:40px 20px;color:var(--muted);font-size:.85rem;line-height:1.7}
+
+/* ===== MODAL STİLLERİ ===== */
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.active{display:flex}
+.modal-box{background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--border2);border-radius:var(--radius);padding:22px;max-width:380px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.6);animation:modalIn .25s ease}
+@keyframes modalIn{from{opacity:0;transform:scale(.9) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal-title{color:var(--green);font-weight:900;font-size:1.05rem;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.modal-sub{color:var(--muted);font-size:.78rem;margin-bottom:18px;line-height:1.5}
+.modal-box input{margin-bottom:14px;text-align:center;font-size:1.3rem}
+.modal-info{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px;font-size:.75rem;line-height:1.7;margin-bottom:16px}
+.modal-info b{color:var(--orange)}
+.modal-buttons{display:grid;grid-template-columns:1fr 2fr;gap:10px}
+.modal-buttons button{padding:13px}
+.modal-buttons .cancel{background:var(--bg2);color:var(--muted);border:1px solid var(--border)}
 </style>
 </head>
 <body>
@@ -214,6 +228,23 @@ button:disabled{opacity:.4;cursor:not-allowed}
   <button onclick="clearPicks()" style="background:var(--bg2);color:var(--red);border:1px solid var(--border);width:44px;padding:12px 0">🗑️</button>
 </div>
 
+<!-- BÜTÇE OPTİMİZASYON MODALI -->
+<div class="modal-overlay" id="budgetModal">
+  <div class="modal-box">
+    <div class="modal-title">⚡ Bütçe Optimizasyonu</div>
+    <div class="modal-sub">Mevcut kuponunun maliyetini hedef bütçene göre akıllıca düşür.</div>
+    <label>Hedef Bütçe (TL)</label>
+    <input type="number" id="modalBudgetInput" value="200" min="10" step="10" inputmode="numeric">
+    <div class="modal-info" id="modalAnalysisInfo">
+      Mevcut Kolon: <b>-</b><br>Hedef Kolon: <b>-</b>
+    </div>
+    <div class="modal-buttons">
+      <button class="cancel" onclick="closeBudgetModal()">İptal</button>
+      <button onclick="confirmOptimize()">Optimize Et</button>
+    </div>
+  </div>
+</div>
+
 <script>
 let matchesData=[];
 let PR=[];
@@ -221,6 +252,7 @@ let cols=[],used=[];
 let currentMode='guvenli';
 let userPicks = {};
 let savedCoupons = JSON.parse(localStorage.getItem('skorlab_coupons') || '[]');
+let activeOptimizeIndex = null;
 
 const SYM=["1","0","2"];
 const $=id=>document.getElementById(id);
@@ -442,10 +474,34 @@ function deleteCoupon(idx){
 }
 
 function optimizeCoupon(couponIdx){
+  activeOptimizeIndex = couponIdx;
   const coupon = savedCoupons[couponIdx];
-  const butceStr = prompt('Bütçen kaç TL? (Örn: 200)', '200');
-  if(!butceStr) return;
+  let mevcutKolon = 1;
+  for(let mIdx in coupon.picks){
+    let choices = 0;
+    coupon.picks[mIdx].forEach(c => {
+      if(c === 0 || c === 1 || c === 2) choices += 1;
+      else if(c === 10 || c === 12 || c === 20) choices += 2;
+    });
+    mevcutKolon *= choices;
+  }
+  
+  $('modalBudgetInput').value = mevcutKolon * 10;
+  $('modalAnalysisInfo').innerHTML = `Mevcut Kolon: <b>${mevcutKolon} (${mevcutKolon * 10} TL)</b><br>Hedef Kolon: <b>${mevcutKolon} (${mevcutKolon * 10} TL)</b>`;
+  $('budgetModal').classList.add('active');
+}
+
+function closeBudgetModal(){
+  $('budgetModal').classList.remove('active');
+  activeOptimizeIndex = null;
+}
+
+function confirmOptimize(){
+  if(activeOptimizeIndex === null) return;
+  const coupon = savedCoupons[activeOptimizeIndex];
+  const butceStr = $('modalBudgetInput').value;
   const butce = parseInt(butceStr);
+  
   if(!butce || butce < 10){
     alert('Bütçe en az 10 TL olmalı.');
     return;
@@ -465,6 +521,7 @@ function optimizeCoupon(couponIdx){
   
   if(mevcutKolon * 10 <= butce){
     alert(`✅ Mevcut kuponun (${mevcutKolon} kolon · ${mevcutKolon * 10} TL) bütçene uyuyor!\n\nKalan: ${butce - mevcutKolon * 10} TL`);
+    closeBudgetModal();
     return;
   }
   
@@ -509,6 +566,7 @@ function optimizeCoupon(couponIdx){
   
   savedCoupons.unshift(optimizedCoupon);
   localStorage.setItem('skorlab_coupons', JSON.stringify(savedCoupons));
+  closeBudgetModal();
   renderCoupons();
   
   alert(`✅ Kupon optimize edildi!\n\n📊 Eski: ${mevcutKolon} kolon (${mevcutKolon*10} TL)\n📊 Yeni: ${finalKolon} kolon (${finalTutar} TL)\n💰 Bütçe: ${butce} TL\n🎯 Kalan: ${butce - finalTutar} TL`);
