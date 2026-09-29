@@ -147,6 +147,12 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .toast-msg .row .green{color:var(--green)}
 .toast-msg .row .orange{color:var(--orange)}
 .toast-msg .row .red{color:var(--red)}
+
+/* ===== ONAY BUTONLARI ===== */
+.confirm-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.confirm-buttons button{padding:13px}
+.confirm-buttons .cancel{background:var(--bg2);color:var(--muted);border:1px solid var(--border)}
+.confirm-buttons .danger{background:linear-gradient(135deg,#ff4d5e,#d63447);color:#fff;box-shadow:0 6px 20px rgba(255,77,94,.3)}
 </style>
 </head>
 <body>
@@ -274,6 +280,19 @@ button:disabled{opacity:.4;cursor:not-allowed}
   </div>
 </div>
 
+<!-- SİLME ONAY MODALI -->
+<div class="toast-overlay" id="confirmModal">
+  <div class="toast-box">
+    <span class="toast-icon error">⚠️</span>
+    <div class="toast-title error">Emin misin?</div>
+    <div class="toast-msg" style="text-align:center">Bu kuponu silmek istediğine emin misin?<br>Bu işlem <b>geri alınamaz</b>.</div>
+    <div class="confirm-buttons">
+      <button class="cancel" onclick="closeConfirm()">İptal</button>
+      <button class="danger" onclick="confirmDelete()">🗑️ Sil</button>
+    </div>
+  </div>
+</div>
+
 <script>
 let matchesData=[];
 let PR=[];
@@ -282,6 +301,7 @@ let currentMode='guvenli';
 let userPicks = {};
 let savedCoupons = JSON.parse(localStorage.getItem('skorlab_coupons') || '[]');
 let activeOptimizeIndex = null;
+let deleteTargetIdx = null;
 
 const SYM=["1","0","2"];
 const $=id=>document.getElementById(id);
@@ -423,7 +443,7 @@ function codeToProb(matchIdx, code){
 function saveCoupon(){
   const keys = Object.keys(userPicks);
   if(keys.length === 0){
-    showToast('error', 'Maç Seçilmedi', '<div class="row"><span>Lütfen en az bir maça tahmin yapın.</span></div>');
+    showToast('error', 'Maç Seçilmedi', '<div style="text-align:center">Lütfen en az bir maça tahmin yapın.</div>');
     return;
   }
   const couponData = {
@@ -478,7 +498,7 @@ function renderCoupons(){
       <div class="coupon-card">
         <div class="head">
           <span class="week">KUPON #${savedCoupons.length - idx} · ${coupon.date} ${coupon.optimized ? '<span style="background:rgba(255,176,32,.15);color:var(--orange);padding:3px 8px;border-radius:6px;font-size:.6rem;font-weight:800;margin-left:6px">⚡ OPTİMİZE</span>' : ''}</span>
-          <button onclick="deleteCoupon(${idx})" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:.8rem;padding:2px 6px;">🗑️ Sil</button>
+          <button onclick="askDeleteCoupon(${idx})" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:.8rem;padding:2px 6px;">🗑️ Sil</button>
         </div>
         <div class="picks">${picksHtml}</div>
         <div style="margin-top:10px;font-size:.75rem;color:var(--green);font-weight:700">
@@ -489,11 +509,25 @@ function renderCoupons(){
   }).join('') + `</div>`;
 }
 
-function deleteCoupon(idx){
-  if(!confirm('Bu kuponu silmek istediğine emin misin?')) return;
+/* ===== SİLME ONAY ===== */
+function askDeleteCoupon(idx){
+  deleteTargetIdx = idx;
+  $('confirmModal').classList.add('active');
+}
+
+function closeConfirm(){
+  $('confirmModal').classList.remove('active');
+  deleteTargetIdx = null;
+}
+
+function confirmDelete(){
+  if(deleteTargetIdx === null) return;
+  const idx = deleteTargetIdx;
+  closeConfirm();
   savedCoupons.splice(idx, 1);
   localStorage.setItem('skorlab_coupons', JSON.stringify(savedCoupons));
   renderCoupons();
+  showToast('success', 'Kupon Silindi', '<div style="text-align:center">Kupon başarıyla silindi.</div>');
 }
 
 /* ===== BÜTÇE OPTİMİZASYON MODAL ===== */
@@ -526,7 +560,7 @@ function confirmOptimize(){
   const butce = parseInt(butceStr);
   
   if(!butce || butce < 10){
-    showToast('error', 'Geçersiz Bütçe', '<div class="row"><span>Lütfen en az <b>10 TL</b> girin.</span></div>');
+    showToast('error', 'Geçersiz Bütçe', '<div style="text-align:center">Lütfen en az <b>10 TL</b> girin.</div>');
     return;
   }
   
