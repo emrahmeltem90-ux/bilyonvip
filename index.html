@@ -104,6 +104,8 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .pick-btn.active .pick-pct{color:rgba(4,20,12,.7)}
 .pick-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-top:10px}
 
+.suggest-btn{background:linear-gradient(135deg,#3d8bff,#2563eb);color:#fff;margin-top:10px;box-shadow:0 6px 20px rgba(61,139,255,.25)}
+
 .save-bar{position:fixed;bottom:0;left:0;right:0;background:var(--card2);border-top:1px solid var(--border);padding:12px 16px;display:flex;gap:10px;align-items:center;z-index:100;box-shadow:0 -8px 24px rgba(0,0,0,.4)}
 .save-bar .info{flex:1;font-size:.75rem;font-weight:700;line-height:1.4}
 .save-bar .info b{color:var(--green);font-size:.9rem}
@@ -180,6 +182,7 @@ button:disabled{opacity:.4;cursor:not-allowed}
 <input type="number" id="budget" value="250" min="10" step="10" inputmode="numeric" oninput="updateBar()">
 <div class="bar-info"><div>Toplam: <b id="lblCost">250 TL</b></div><div>Kolon: <b id="lblCount">25</b></div></div>
 <button onclick="generate()">⚡ Kupon Oluştur</button>
+<button class="suggest-btn" onclick="openSuggestModal()">🎲 Bana Kupon Öner</button>
 </div>
 <div class="card" id="outputCard" style="display:none">
 <div class="result-title">📋 KUPON RAPORU</div>
@@ -275,6 +278,35 @@ button:disabled{opacity:.4;cursor:not-allowed}
   </div>
 </div>
 
+<!-- KUPON ÖNERİ MODALI -->
+<div class="modal-overlay" id="suggestModal">
+  <div class="modal-box">
+    <div class="modal-title">🎲 Bana Kupon Öner</div>
+    <div class="modal-sub">Strateji modunu seç, sistem senin için otomatik 15 maçlık kupon üretsin.</div>
+    
+    <div class="modes" style="margin-bottom:16px">
+      <div class="mode active" id="sm-guvenli" onclick="selectSuggestMode('guvenli',this)">
+        <b>🛡️</b><span>GÜVENLİ</span>
+      </div>
+      <div class="mode" id="sm-dengeli" onclick="selectSuggestMode('dengeli',this)">
+        <b>⚖️</b><span>DENGELİ</span>
+      </div>
+      <div class="mode" id="sm-agresif" onclick="selectSuggestMode('agresif',this)">
+        <b>🚀</b><span>AGRESİF</span>
+      </div>
+    </div>
+    
+    <div class="modal-info" id="suggestInfo">
+      🛡️ <b>Güvenli Mod:</b> Her maçta en yüksek olasılıklı seçenek. Düşük olasılıklı maçlarda çift şans. Hedef: 12/15.
+    </div>
+    
+    <div class="modal-buttons">
+      <button class="cancel" onclick="closeSuggestModal()">İptal</button>
+      <button onclick="applySuggest()">Kuponu Üret</button>
+    </div>
+  </div>
+</div>
+
 <!-- TOAST BİLDİRİM MODALI -->
 <div class="toast-overlay" id="toastModal">
   <div class="toast-box">
@@ -337,6 +369,7 @@ let userPicks = {};
 let savedCoupons = JSON.parse(localStorage.getItem('skorlab_coupons') || '[]');
 let activeOptimizeIndex = null;
 let deleteTargetIdx = null;
+let suggestMode = 'guvenli';
 
 const SYM=["1","0","2"];
 const $=id=>document.getElementById(id);
@@ -475,6 +508,107 @@ function codeToProb(matchIdx, code){
   return 0;
 }
 
+/* ===== RASTGELE KUPON ÜRETİCİ ===== */
+function openSuggestModal(){
+  suggestMode = 'guvenli';
+  document.querySelectorAll('#suggestModal .mode').forEach(e=>e.classList.remove('active'));
+  $('sm-guvenli').classList.add('active');
+  $('suggestInfo').innerHTML = '🛡️ <b>Güvenli Mod:</b> Her maçta en yüksek olasılıklı seçenek. Düşük olasılıklı maçlarda çift şans. Hedef: 12/15.';
+  $('suggestModal').classList.add('active');
+}
+
+function closeSuggestModal(){
+  $('suggestModal').classList.remove('active');
+}
+
+function selectSuggestMode(mode, el){
+  suggestMode = mode;
+  document.querySelectorAll('#suggestModal .mode').forEach(e=>e.classList.remove('active'));
+  el.classList.add('active');
+  const infos = {
+    guvenli: '🛡️ <b>Güvenli Mod:</b> Her maçta en yüksek olasılıklı seçenek. Düşük olasılıklı maçlarda çift şans. Hedef: 12/15.',
+    dengeli: '⚖️ <b>Dengeli Mod:</b> Favoriler tek seçim, orta olasılıklı maçlarda çift şans. Hedef: 12-13/15.',
+    agresif: '🚀 <b>Agresif Mod:</b> Sadece çok yüksek olasılıklı maçlar tek seçim, geri kalanlar çift şans. Hedef: 14-15/15.'
+  };
+  $('suggestInfo').innerHTML = infos[mode];
+}
+
+function applySuggest(){
+  userPicks = {};
+  
+  matchesData.forEach((m, i) => {
+    const p = PR[i];
+    const o = ordr(i); // sıralı: en yüksekten en düşüğe
+    const top = p[o[0]];
+    const second = p[o[1]];
+    
+    let pickCode;
+    
+    if(suggestMode === 'guvenli'){
+      if(top >= 0.55){
+        pickCode = o[0];
+      } else {
+        // En yüksek 2 seçenek → çift şans
+        const sorted = [o[0], o[1]].sort((a,b)=>a-b);
+        if(sorted[0]===0 && sorted[1]===1) pickCode = 10;      // 1X
+        else if(sorted[0]===0 && sorted[1]===2) pickCode = 12; // 12
+        else pickCode = 20;                                     // X2
+      }
+    } else if(suggestMode === 'dengeli'){
+      if(top >= 0.60){
+        pickCode = o[0];
+      } else if(top >= 0.45){
+        // Orta olasılık → çift şans
+        const sorted = [o[0], o[1]].sort((a,b)=>a-b);
+        if(sorted[0]===0 && sorted[1]===1) pickCode = 10;
+        else if(sorted[0]===0 && sorted[1]===2) pickCode = 12;
+        else pickCode = 20;
+      } else {
+        pickCode = o[0];
+      }
+    } else { // agresif
+      if(top >= 0.65){
+        pickCode = o[0];
+      } else {
+        // Düşük güven → çift şans
+        const sorted = [o[0], o[1]].sort((a,b)=>a-b);
+        if(sorted[0]===0 && sorted[1]===1) pickCode = 10;
+        else if(sorted[0]===0 && sorted[1]===2) pickCode = 12;
+        else pickCode = 20;
+      }
+    }
+    
+    userPicks[i] = [pickCode];
+  });
+  
+  closeSuggestModal();
+  initApp();
+  
+  // Kolon ve tutar hesapla
+  let kolon = 1;
+  Object.keys(userPicks).forEach(idx => {
+    let choices = 0;
+    userPicks[idx].forEach(c => {
+      if(c === 0 || c === 1 || c === 2) choices += 1;
+      else choices += 2;
+    });
+    kolon *= choices;
+  });
+  const tutar = kolon * 10;
+  
+  const modeLabel = {guvenli:'🛡️ Güvenli', dengeli:'⚖️ Dengeli', agresif:'🚀 Agresif'}[suggestMode];
+  
+  showToast('success', 'Kupon Üretildi!', `
+    <div class="row"><span>Mod:</span><span>${modeLabel}</span></div>
+    <div class="row"><span>Maç:</span><span>${Object.keys(userPicks).length}/15</span></div>
+    <div class="row"><span>Kolon:</span><span>${kolon.toLocaleString('tr')}</span></div>
+    <div class="row"><span>Tutar:</span><span class="green">${tutar.toLocaleString('tr')} TL</span></div>
+  `);
+  
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ===== KUPON KAYDET ===== */
 function saveCoupon(){
   const keys = Object.keys(userPicks);
   if(keys.length === 0){
@@ -941,7 +1075,6 @@ function send(){const v=$('q').value.trim();if(!v)return;$('q').value='';ask(v)}
 window.onload = function(){
   loadMatches();
   renderCoupons();
-  // İlk açılışta yasal uyarıyı göster
   if(localStorage.getItem('skorlab_legal_accepted') !== 'true'){
     setTimeout(() => openLegal(), 800);
   }
