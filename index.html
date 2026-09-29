@@ -60,6 +60,15 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .value-badge.high{background:var(--green-dim);color:var(--green)}
 .value-badge.low{background:rgba(255,77,94,.12);color:var(--red)}
 .value-badge.mid{background:rgba(255,176,32,.12);color:var(--orange)}
+.kelly-box{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-top:8px;font-size:.75rem;line-height:1.6}
+.kelly-box .kelly-title{color:var(--green);font-weight:800;font-size:.7rem;letter-spacing:.5px;margin-bottom:6px;text-transform:uppercase}
+.kelly-box .kelly-row{display:flex;justify-content:space-between;align-items:center;padding:3px 0}
+.kelly-box .kelly-row span:first-child{color:var(--muted);font-weight:600}
+.kelly-box .kelly-row span:last-child{font-weight:800}
+.kelly-box .kelly-full{color:var(--orange)}
+.kelly-box .kelly-half{color:var(--green)}
+.kelly-box .kelly-none{color:var(--red)}
+.kelly-box .kelly-msg{font-size:.68rem;color:var(--muted);margin-top:6px;font-style:italic}
 .coupon{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-top:8px;font-size:.8rem;line-height:1.8}
 .coupon b{color:var(--green);font-weight:900}
 .copy-btn{background:var(--bg2);border:1px solid var(--border2);color:var(--green);padding:12px;border-radius:10px;font-size:.8rem;font-weight:800;cursor:pointer;margin-top:10px;width:100%}
@@ -305,12 +314,42 @@ function calcValue(i){
   const input=$('odd-'+i),res=$('valres-'+i);
   const odd=parseFloat(input.value);
   if(!odd||odd<=1){res.innerHTML='';return}
-  const o=ordr(i)[0],modelProb=PR[i][o],value=(modelProb*odd)-1;
+  
+  const o=ordr(i)[0];
+  const modelProb=PR[i][o];
+  const value=(modelProb*odd)-1;
+  
   let badge='';
   if(value>=0.05)badge=`<span class="value-badge high">✅ Değerli +${(value*100).toFixed(1)}%</span>`;
   else if(value>=-0.05)badge=`<span class="value-badge mid">⚖️ Nötr ${(value*100).toFixed(1)}%</span>`;
   else badge=`<span class="value-badge low">❌ Değersiz ${(value*100).toFixed(1)}%</span>`;
-  res.innerHTML=badge;
+  
+  const kelly = (modelProb * odd - 1) / (odd - 1);
+  const yarimKelly = kelly / 2;
+  
+  const butce = parseFloat($('budget').value) || 0;
+  const kellyTL = butce * kelly;
+  const yarimKellyTL = butce * yarimKelly;
+  
+  let kellyHTML = '';
+  if(kelly > 0){
+    kellyHTML = `
+      <div class="kelly-box">
+        <div class="kelly-title">💰 Kelly Kriteri</div>
+        <div class="kelly-row"><span>Tam Kelly</span><span class="kelly-full">%${(kelly*100).toFixed(2)} → ${kellyTL.toFixed(2)} TL</span></div>
+        <div class="kelly-row"><span>Yarım Kelly (güvenli)</span><span class="kelly-half">%${(yarimKelly*100).toFixed(2)} → ${yarimKellyTL.toFixed(2)} TL</span></div>
+        <div class="kelly-msg">💡 Öneri: ${yarimKellyTL.toFixed(0)} TL ile oyna (yarım Kelly)</div>
+      </div>`;
+  } else {
+    kellyHTML = `
+      <div class="kelly-box">
+        <div class="kelly-title">💰 Kelly Kriteri</div>
+        <div class="kelly-row"><span class="kelly-none">❌ Bu bahis değerli değil</span></div>
+        <div class="kelly-msg">Model olasılığı piyasa oranından düşük. Bahis önerilmez.</div>
+      </div>`;
+  }
+  
+  res.innerHTML = badge + kellyHTML;
 }
 
 function copyCoupon(){
