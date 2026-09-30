@@ -260,7 +260,6 @@ function sorulariYukle(){
     tumSorular = window.sorularVerisi;
     $('havuzBoyut').innerText = tumSorular.length;
   } else {
-    // Eğer sorular henüz yüklenmediyse kısa bir süre sonra tekrar dene
     setTimeout(sorulariYukle, 150);
   }
 }
@@ -285,7 +284,8 @@ function startGame(){
   oyunSorulari = secilen.slice(0, SORU_SAYISI).sort((a,b) => (zorlukSirasi[a.zorluk] ?? 1) - (zorlukSirasi[b.zorluk] ?? 1));
   mevcutSoruIdx = 0; puan = 0; dogruSayisi = 0; yanlisSayisi = 0; toplamSure = 0;
   jokerFiftyUsed = false; jokerTimeUsed = false; sureDuruyor = false;
-  $('jokerFifty').classList.remove('used');$('jokerTime').classList.remove('used');
+  $('jokerFifty').classList.remove('used');
+  $('jokerTime').classList.remove('used');
   showScreen('screen-question');
   soruGoster();
 }
@@ -295,7 +295,8 @@ function soruGoster(){
   const soru = oyunSorulari[mevcutSoruIdx];
   $('qNum').innerText = `SORU ${mevcutSoruIdx + 1}/${SORU_SAYISI}`;
   $('qScore').innerText = `🎯 ${puan}`;
-  $('qCategory').innerText = (soru.kategori \vert{}\vert{} 'GENEL').toUpperCase();$('qText').innerText = soru.soru || 'Soru yüklenemedi';
+  $('qCategory').innerText = (soru.kategori || 'GENEL').toUpperCase();
+  $('qText').innerText = soru.soru || 'Soru yüklenemedi';
   const img = $('qImage');
   if(soru.resim){ img.src = soru.resim; img.style.display = 'block'; }
   else { img.style.display = 'none'; }
@@ -326,7 +327,7 @@ function timerBaslat(){
 }
 
 function timerGuncelle(){
-  const fill = $('timerFill'); const text =$('timerText');
+  const fill = $('timerFill'); const text = $('timerText');
   fill.style.width = (kalanSure / SURE) * 100 + '%';
   text.innerHTML = `⏱️ <b>${kalanSure}</b> saniye`;
   fill.classList.remove('warning','danger');
@@ -397,7 +398,7 @@ function useTimeJoker(){
   jokerTimeUsed = true;
   $('jokerTime').classList.add('used');
   sureDuruyor = true;
-  showToast('⏸️️ Süre 10 saniye duruyor!', 'warning');
+  showToast('⏸️ Süre 10 saniye duruyor!', 'warning');
   setTimeout(() => { sureDuruyor = false; }, 10000);
 }
 
@@ -409,7 +410,9 @@ function oyunBitir(){
   else if(dogruSayisi >= 8){ seviye='Orta Seviye'; icon='👍'; baslik='İYİ!'; altBaslik='Daha iyisini yapabilirsin!'; }
   else if(dogruSayisi >= 5){ seviye='Amatör'; icon='😐'; baslik='FENA DEĞİL'; altBaslik='Biraz daha pratik lazım!'; }
   $('resultIcon').innerText = icon; $('resultTitle').innerText = baslik; $('resultSubtitle').innerText = altBaslik;
-  $('finalScore').innerText = puan; $('finalCorrect').innerText = dogruSayisi + '/15';$('finalWrong').innerText = yanlisSayisi; $('finalAvgTime').innerText = Math.round(toplamSure / SORU_SAYISI) + ' sn';$('finalLevel').innerText = seviye;
+  $('finalScore').innerText = puan; $('finalCorrect').innerText = dogruSayisi + '/15';
+  $('finalWrong').innerText = yanlisSayisi; $('finalAvgTime').innerText = Math.round(toplamSure / SORU_SAYISI) + ' sn';
+  $('finalLevel').innerText = seviye;
   skorKaydet(puan, dogruSayisi);
   showScreen('screen-result');
 }
