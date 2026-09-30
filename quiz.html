@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Permanent+Marker&display=swap" rel="stylesheet">
+<script src="sorular.js"></script>
 <style>
 :root{--neon:#00ff88;--neon-dark:#00c96b;--black:#050505;--dark:#07100d;--white:#ffffff;--gray:#aab4c5}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -193,46 +194,15 @@ body{background:#050505;color:white;font-family:"Inter",sans-serif;min-height:10
     <main class="content" style="padding-top:30px;">
       <button class="back-btn" onclick="goHome()">← Geri</button>
       <h2 style="text-align:center;color:var(--neon);margin-bottom:20px;font-weight:900;">⚙ AYARLAR</h2>
-      
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px;">
-        <button class="menu-button" id="btn-music" onclick="toggleMusic()" style="flex-direction:column;height:80px;justify-content:center;padding:0;">
-          <span style="font-size:28px;">🎵</span>
-          <small style="font-size:10px;margin-top:5px;">MÜZİK</small>
-        </button>
-        <button class="menu-button" id="btn-sound" onclick="toggleSound()" style="flex-direction:column;height:80px;justify-content:center;padding:0;">
-          <span style="font-size:28px;">🔊</span>
-          <small style="font-size:10px;margin-top:5px;">SES</small>
-        </button>
-        <button class="menu-button" id="btn-vibration" onclick="toggleVibration()" style="flex-direction:column;height:80px;justify-content:center;padding:0;">
-          <span style="font-size:28px;">📳</span>
-          <small style="font-size:10px;margin-top:5px;">TİTREŞİM</small>
-        </button>
+        <button class="menu-button" id="btn-music" onclick="toggleMusic()" style="flex-direction:column;height:80px;justify-content:center;padding:0;"><span style="font-size:28px;">🎵</span><small style="font-size:10px;margin-top:5px;">MÜZİK</small></button>
+        <button class="menu-button" id="btn-sound" onclick="toggleSound()" style="flex-direction:column;height:80px;justify-content:center;padding:0;"><span style="font-size:28px;">🔊</span><small style="font-size:10px;margin-top:5px;">SES</small></button>
+        <button class="menu-button" id="btn-vibration" onclick="toggleVibration()" style="flex-direction:column;height:80px;justify-content:center;padding:0;"><span style="font-size:28px;">📳</span><small style="font-size:10px;margin-top:5px;">TİTREŞİM</small></button>
       </div>
-
-      <button class="menu-button" onclick="showStats()">
-        <span class="menu-icon">📊</span>
-        <span>İSTATİSTİKLER</span>
-        <span class="arrow">›</span>
-      </button>
-
-      <button class="menu-button" onclick="resetGameConfirm()">
-        <span class="menu-icon">🔄</span>
-        <span>OYUNU SIFIRLA</span>
-        <span class="arrow">›</span>
-      </button>
-
-      <button class="menu-button" onclick="showModal('Yakında','Değerlendirme özelliği yakında eklenecek!',[{text:'Tamam',action:closeModal}])">
-        <span class="menu-icon">⭐</span>
-        <span>BİZİ DEĞERLENDİR</span>
-        <span class="arrow">›</span>
-      </button>
-
-      <button class="menu-button" onclick="showAbout()">
-        <span class="menu-icon">ℹ️</span>
-        <span>HAKKINDA</span>
-        <span class="arrow">›</span>
-      </button>
-
+      <button class="menu-button" onclick="showStats()"><span class="menu-icon">📊</span><span>İSTATİSTİKLER</span><span class="arrow">›</span></button>
+      <button class="menu-button" onclick="resetGameConfirm()"><span class="menu-icon">🔄</span><span>OYUNU SIFIRLA</span><span class="arrow">›</span></button>
+      <button class="menu-button" onclick="showModal('Yakında','Değerlendirme özelliği yakında eklenecek!',[{text:'Tamam',action:closeModal}])"><span class="menu-icon">⭐</span><span>BİZİ DEĞERLENDİR</span><span class="arrow">›</span></button>
+      <button class="menu-button" onclick="showAbout()"><span class="menu-icon">ℹ️</span><span>HAKKINDA</span><span class="arrow">›</span></button>
       <div style="text-align:center;margin-top:25px;color:#9ca8ba;font-size:11px;line-height:1.8;">
         <p style="margin-bottom:5px;">
           <a href="#" onclick="showModal('Gizlilik Politikası','Bu oyun hiçbir kişisel veri toplamaz. Tüm veriler cihazınızda saklanır.',[{text:'Tamam',action:closeModal}]);return false;" style="color:var(--neon);text-decoration:none;">Gizlilik Politikası</a>
@@ -264,14 +234,8 @@ body{background:#050505;color:white;font-family:"Inter",sans-serif;min-height:10
 
 <script>
 /* ============================================================
-   SORULARIN YAPILACAĞI YER
-   ============================================================ */
-window.sorularVerisi = [
-  // BURAYA 150 SORUYU YAPIŞTIR
-];
-
-/* ============================================================
    OYUN MOTORU
+   Sorular window.sorularVerisi'den geliyor (sorular.js dosyasından)
    ============================================================ */
 let tumSorular = [];
 let oyunSorulari = [];
@@ -539,26 +503,13 @@ function showStats(){
   const enYuksek = toplamOyun > 0 ? skorlar[0].puan : 0;
   const toplamDogru = skorlar.reduce((a,b) => a + b.dogru, 0);
   const ortalama = toplamOyun > 0 ? Math.round(skorlar.reduce((a,b) => a + b.puan, 0) / toplamOyun) : 0;
-  
-  const text = `
-    <strong style="color:var(--neon);">📊 İstatistikleriniz</strong><br><br>
-    🎮 Oynanan Oyun: <strong>${toplamOyun}</strong><br>
-    🏆 En Yüksek Puan: <strong>${enYuksek}</strong><br>
-    🎯 Toplam Doğru: <strong>${toplamDogru}</strong><br>
-    📈 Ortalama Puan: <strong>${ortalama}</strong>
-  `;
+  const text = `<strong style="color:var(--neon);">📊 İstatistikleriniz</strong><br><br>🎮 Oynanan Oyun: <strong>${toplamOyun}</strong><br>🏆 En Yüksek Puan: <strong>${enYuksek}</strong><br>🎯 Toplam Doğru: <strong>${toplamDogru}</strong><br>📈 Ortalama Puan: <strong>${ortalama}</strong>`;
   showModal('İstatistikler', text, [{text:'Tamam', action: closeModal}]);
 }
 
 function showAbout(){
   showModal('Hakkında', 
-    '<strong style="color:var(--neon);">SAHA BİLGİNİ</strong><br><br>' +
-    'Futbol bilgini konuştur!<br><br>' +
-    '🎯 150 soruluk dev quiz havuzu<br>' +
-    '🏆 Kolaydan zora 15 soru<br>' +
-    '✂️ %50 Joker ve Süre Durdur<br><br>' +
-    'Versiyon: V1.0.0<br>' +
-    '© 2026 Saha Bilgini', 
+    '<strong style="color:var(--neon);">SAHA BİLGİNİ</strong><br><br>Futbol bilgini konuştur!<br><br>🎯 400 soruluk dev quiz havuzu<br>🏆 Kolaydan zora 15 soru<br>✂️ %50 Joker ve Süre Durdur<br><br>Versiyon: V1.0.0<br>© 2026 Saha Bilgini', 
     [{text:'Tamam', action: closeModal}]
   );
 }
@@ -567,12 +518,7 @@ function showProfile(){
   const skorlar = JSON.parse(localStorage.getItem('skorlab_quiz_scores') || '[]');
   const toplamOyun = skorlar.length;
   const enYuksek = toplamOyun > 0 ? skorlar[0].puan : 0;
-  
-  const text = `
-    <strong style="color:var(--neon);">👤 Profilin</strong><br><br>
-    🎮 Oynanan Oyun: <strong>${toplamOyun}</strong><br>
-    🏆 En Yüksek Puan: <strong>${enYuksek}</strong>
-  `;
+  const text = `<strong style="color:var(--neon);">👤 Profilin</strong><br><br>🎮 Oynanan Oyun: <strong>${toplamOyun}</strong><br>🏆 En Yüksek Puan: <strong>${enYuksek}</strong>`;
   showModal('Profil', text, [{text:'Tamam', action: closeModal}]);
 }
 
