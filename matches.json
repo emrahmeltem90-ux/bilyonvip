@@ -1,20 +1,20 @@
 {
   "last_updated": "2026-10-04",
   "matches": [
-    {"id":1,"league":"Süper Lig","home_team":"Galatasaray A.Ş.","away_team":"Kasımpaşa A.Ş.","date":"09 Eki","time":"20:00"},
-    {"id":2,"league":"Süper Lig","home_team":"Gençlerbirliği","away_team":"Amed Sportif Faaliyetler","date":"10 Eki","time":"13:30"},
-    {"id":3,"league":"Süper Lig","home_team":"Alanyaspor","away_team":"Erzurumspor FK","date":"10 Eki","time":"16:00"},
-    {"id":4,"league":"Süper Lig","home_team":"Samsunspor A.Ş.","away_team":"Trabzonspor A.Ş.","date":"10 Eki","time":"16:00"},
-    {"id":5,"league":"Süper Lig","home_team":"Çaykur Rizespor A.Ş.","away_team":"Fenerbahçe A.Ş.","date":"10 Eki","time":"19:00"},
-    {"id":6,"league":"Süper Lig","home_team":"Konyaspor","away_team":"Başakşehir FK","date":"11 Eki","time":"13:30"},
-    {"id":7,"league":"Süper Lig","home_team":"Gaziantep FK A.Ş.","away_team":"Çorum FK","date":"11 Eki","time":"16:00"},
-    {"id":8,"league":"Süper Lig","home_team":"Beşiktaş A.Ş.","away_team":"Kocaelispor","date":"11 Eki","time":"19:00"},
-    {"id":9,"league":"Süper Lig","home_team":"Eyüpspor","away_team":"Göztepe A.Ş.","date":"12 Eki","time":"20:00"},
-    {"id":10,"league":"Bundesliga","home_team":"Augsburg","away_team":"Bayern Münih","date":"10 Eki","time":"16:30"},
-    {"id":11,"league":"Bundesliga","home_team":"Leipzig","away_team":"Eintracht Frankfurt","date":"10 Eki","time":"19:30"},
-    {"id":12,"league":"Premier Lig","home_team":"Manchester United","away_team":"Tottenham","date":"10 Eki","time":"19:30"},
-    {"id":13,"league":"Premier Lig","home_team":"Liverpool","away_team":"Manchester City","date":"11 Eki","time":"18:30"},
-    {"id":14,"league":"La Liga","home_team":"Real Madrid","away_team":"Villarreal","date":"10 Eki","time":"22:00"},
-    {"id":15,"league":"Serie A","home_team":"Como 1907","away_team":"AS Roma","date":"11 Eki","time":"13:30"}
+    {"id":1,"home_team":"Galatasaray A.Ş.","away_team":"Kasımpaşa A.Ş.","date":"09 Eki","time":"20:00","p":[68.5,18.2,13.3],"form":"Galatasaray evinde net favori.","series":["W","W","W","D","W"]},
+    {"id":2,"home_team":"Gençlerbirliği","away_team":"Amed Sportif Faaliyetler","date":"10 Eki","time":"13:30","p":[42.0,30.0,28.0],"form":"Gençlerbirliği saha avantajıyla hafif önde.","series":["D","W","L","W","D"]},
+    {"id":3,"home_team":"Alanyaspor","away_team":"Erzurumspor FK","date":"10 Eki","time":"16:00","p":[54.5,26.5,19.0],"form":"Alanyaspor evinde favori.","series":["W","L","D","W","W"]},
+    {"id":4,"home_team":"Samsunspor A.Ş.","away_team":"Trabzonspor A.Ş.","date":"10 Eki","time":"16:00","p":[31.0,29.0,40.0],"form":"Trabzonspor deplasmanda hafif favori.","series":["D","W","L","D","W"]},
+    {"id":5,"home_team":"Çaykur Rizespor A.Ş.","away_team":"Fenerbahçe A.Ş.","date":"10 Eki","time":"19:00","p":[16.5,22.5,61.0],"form":"Fenerbahçe deplasmanda güçlü.","series":["W","W","W","L","W"]},
+    {"id":6,"home_team":"Konyaspor","away_team":"Başakşehir FK","date":"11 Eki","time":"13:30","p":[33.5,31.0,35.5],"form":"Dengeli ve sürprize açık maç.","series":["L","D","W","D","L"]},
+    {"id":7,"home_team":"Gaziantep FK A.Ş.","away_team":"Çorum FK","date":"11 Eki","time":"16:00","p":[58.0,25.0,17.0],"form":"Gaziantep FK evinde favori.","series":["W","D","W","L","D"]},
+    {"id":8,"home_team":"Beşiktaş A.Ş.","away_team":"Kocaelispor","date":"11 Eki","time":"19:00","p":[65.0,21.0,14.0],"form":"Beşiktaş evinde güçlü favori.","series":["W","W","D","W","W"]},
+    {"id":9,"home_team":"Eyüpspor","away_team":"Göztepe A.Ş.","date":"12 Eki","time":"20:00","p":[39.0,31.0,30.0],"form":"Eyüpspor evinde hafif önde.","series":["D","W","W","L","D"]},
+    {"id":10,"home_team":"Augsburg","away_team":"Bayern Münih","date":"10 Eki","time":"16:30","p":[11.0,17.5,71.5],"form":"Bayern Münih net favori.","series":["W","W","W","W","D"]},
+    {"id":11,"home_team":"Leipzig","away_team":"Eintracht Frankfurt","date":"10 Eki","time":"19:30","p":[52.0,26.0,22.0],"form":"Leipzig evinde favori.","series":["W","L","W","W","D"]},
+    {"id":12,"home_team":"Manchester United","away_team":"Tottenham","date":"10 Eki","time":"19:30","p":[41.5,27.5,31.0],"form":"Manchester United hafif favori.","series":["L","W","D","W","L"]},
+    {"id":13,"home_team":"Liverpool","away_team":"Manchester City","date":"11 Eki","time":"18:30","p":[36.0,28.0,36.0],"form":"Oranlar eşit, haftanın dev maçı.","series":["W","W","D","W","W"]},
+    {"id":14,"home_team":"Real Madrid","away_team":"Villarreal","date":"10 Eki","time":"22:00","p":[67.0,19.0,14.0],"form":"Real Madrid evinde net favori.","series":["W","W","W","D","W"]},
+    {"id":15,"home_team":"Como 1907","away_team":"AS Roma","date":"11 Eki","time":"13:30","p":[22.0,28.0,50.0],"form":"Roma deplasmanda favori.","series":["D","L","W","D","W"]}
   ]
 }
