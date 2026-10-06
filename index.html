@@ -29,6 +29,12 @@
   <div class="page active" id="page-0">
     <div class="card">
       <div class="result-title">📅 <span id="weekTitle">Yükleniyor...</span></div>
+      <div class="stat-grid c4" style="margin-top:12px">
+        <div class="stat-box"><div class="num" id="statBanko">-</div><div class="lbl">Banko</div></div>
+        <div class="stat-box"><div class="num" id="statDengeli">-</div><div class="lbl">Dengeli</div></div>
+        <div class="stat-box"><div class="num" id="statValue">-</div><div class="lbl">Değerli</div></div>
+        <div class="stat-box"><div class="num" id="statZorluk">-</div><div class="lbl">Zorluk</div></div>
+      </div>
     </div>
 
     <div class="card">
@@ -103,6 +109,7 @@
         1, X, 2, KG Var, 2.5 Üst, Kombo oranlarını gir. Sistem anında analiz eder.
       </p>
       <button onclick="kaydetOranlar()">💾 Oranları Kaydet</button>
+      <button onclick="kuponOlusturModal()" style="margin-top:8px">⚡ Kupon Oluştur (Oranlarımdan)</button>
       <button onclick="indirJSON()" class="blue" style="margin-top:8px">⬇️ JSON İndir</button>
       <button onclick="temizleOranlar()" style="margin-top:8px;background:var(--bg2);color:var(--red);border:1px solid var(--border)">🗑️ Tümünü Temizle</button>
     </div>
@@ -113,7 +120,7 @@
     <div class="card">
       <div class="result-title">📋 KUPONUM</div>
       <div id="couponContent">
-        <div class="coupon-empty">Henüz kupon oluşturmadın.<br><br>📌 Bülten sekmesinden seçim yap.</div>
+        <div class="coupon-empty">Henüz kupon oluşturmadın.<br><br>📌 Oran sekmesinden kupon oluştur.</div>
       </div>
     </div>
   </div>
@@ -152,8 +159,8 @@
 
 <div class="modal-overlay" id="suggestModal">
   <div class="modal-box">
-    <div class="modal-title">🎲 Bana Kupon Öner</div>
-    <div class="modal-sub">Strateji seç, bütçe gir, sistem otomatik üretsin.</div>
+    <div class="modal-title">🎲 Kupon Oluştur</div>
+    <div class="modal-sub">Strateji seç, bütçe gir, sistem senin oranlarınla üretsin.</div>
     <div class="modes" style="margin-bottom:16px">
       <div class="mode active" id="sm-guvenli" onclick="selectSuggestMode('guvenli',this)"><b>🛡️</b><span>GÜVENLİ</span></div>
       <div class="mode" id="sm-dengeli" onclick="selectSuggestMode('dengeli',this)"><b>⚖️</b><span>DENGELİ</span></div>
