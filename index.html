@@ -17,17 +17,19 @@
 <nav class="tabs">
   <div class="tab active" onclick="switchTab(0,this)"><span class="tab-num">01</span>Bülten</div>
   <div class="tab" onclick="switchTab(1,this)"><span class="tab-num">02</span>Bankobot</div>
-  <div class="tab" onclick="switchTab(2,this)"><span class="tab-num">03</span>Monte Carlo</div>
+  <div class="tab" onclick="switchTab(2,this)"><span class="tab-num">03</span>Monte</div>
   <div class="tab" onclick="switchTab(3,this)"><span class="tab-num">04</span>Oran</div>
   <div class="tab" onclick="switchTab(4,this)"><span class="tab-num">05</span>Serbest</div>
-  <div class="tab" onclick="switchTab(5,this)"><span class="tab-num">06</span>Kuponum</div>
+  <div class="tab" onclick="switchTab(5,this)"><span class="tab-num">06</span>Kupon</div>
   <div class="tab" onclick="switchTab(6,this)"><span class="tab-num">07</span>Kelly</div>
   <div class="tab" onclick="switchTab(7,this)"><span class="tab-num">08</span>Backtest</div>
   <div class="tab" onclick="switchTab(8,this)"><span class="tab-num">09</span>Sürpriz</div>
+  <div class="tab" onclick="switchTab(9,this)"><span class="tab-num">10</span>Gol</div>
 </nav>
 
 <div class="container">
 
+  <!-- SAYFA 0: BÜLTEN -->
   <div class="page active" id="page-0">
     <div class="card">
       <div class="result-title">📅 <span id="weekTitle">Yükleniyor...</span></div>
@@ -56,6 +58,7 @@
     <div class="legal-link"><a href="#" onclick="openLegal();return false">⚠️ Yasal Uyarı</a></div>
   </div>
 
+  <!-- SAYFA 1: BANKOBOT -->
   <div class="page" id="page-1">
     <div class="card">
       <div class="result-title">🔥 ISI HARİTASI</div>
@@ -89,6 +92,7 @@
     </div>
   </div>
 
+  <!-- SAYFA 2: MONTE CARLO -->
   <div class="page" id="page-2">
     <div class="card">
       <div class="result-title">🎲 MONTE CARLO LAB <span class="badge">10.000 deneme</span></div>
@@ -99,6 +103,7 @@
     <div id="res-full" class="card" style="display:none"></div>
   </div>
 
+  <!-- SAYFA 3: ORAN -->
   <div class="page" id="page-3">
     <div class="card">
       <div class="result-title">🎯 ORAN ANALİZ</div>
@@ -110,12 +115,11 @@
     <div id="oranListesi"></div>
   </div>
 
+  <!-- SAYFA 4: SERBEST -->
   <div class="page" id="page-4">
     <div class="card">
       <div class="result-title">🎯 SERBEST ANALİZ</div>
-      <p class="muted" style="font-size:.76rem;margin-bottom:14px;line-height:1.6">
-        İstediğin maçı ekle, oranları gir. Bülten dışı maçlar için!
-      </p>
+      <p class="muted" style="font-size:.76rem;margin-bottom:14px;line-height:1.6">İstediğin maçı ekle, oranları gir. Bülten dışı maçlar için!</p>
       <div class="serbest-actions">
         <button onclick="openSerbestModal()">➕ Maç Ekle</button>
         <button onclick="kuponSerbestModal()" class="purple">⚡ Kupon Oluştur</button>
@@ -125,6 +129,7 @@
     <div id="serbestListesi"></div>
   </div>
 
+  <!-- SAYFA 5: KUPONUM -->
   <div class="page" id="page-5">
     <div class="card">
       <div class="result-title">📋 KUPONUM</div>
@@ -134,6 +139,7 @@
     </div>
   </div>
 
+  <!-- SAYFA 6: KELLY -->
   <div class="page" id="page-6">
     <div class="card">
       <div class="result-title">💼 KELLY CRITERION</div>
@@ -150,6 +156,7 @@
     </div>
   </div>
 
+  <!-- SAYFA 7: BACKTEST -->
   <div class="page" id="page-7">
     <div class="card">
       <div class="result-title">📊 BACKTEST</div>
@@ -158,16 +165,35 @@
     </div>
   </div>
 
+  <!-- SAYFA 8: SÜRPRİZ -->
   <div class="page" id="page-8">
     <div class="card">
       <div class="result-title">🚨 SÜRPRİZ RADARI</div>
-      <p class="muted" style="font-size:.76rem;margin-bottom:14px;line-height:1.6">Bu sekme haftanın <b>sürprize açık</b> maçlarını listeler. Banko yazmadan önce mutlaka bak!</p>
+      <p class="muted" style="font-size:.76rem;margin-bottom:14px;line-height:1.6">Bu sekme haftanın <b>sürprize açık</b> maçlarını listeler.</p>
       <div id="sürprizRadar"></div>
+    </div>
+  </div>
+
+  <!-- SAYFA 9: GOL ANALİZİ -->
+  <div class="page" id="page-9">
+    <div class="card">
+      <div class="result-title">🎯 MOD SEÇİMİ</div>
+      <div class="mod-secim">
+        <div class="mod-btn iddaa active" id="mod-iddaa" onclick="setMod('iddaa')">🎲 İDDAA MODU</div>
+        <div class="mod-btn toto" id="mod-toto" onclick="setMod('toto')">⚽ TOTO MODU</div>
+      </div>
+      <div id="modAciklama" class="muted" style="font-size:.75rem;line-height:1.6;padding:10px;background:var(--bg2);border-radius:10px"></div>
+    </div>
+    <div class="card">
+      <div class="result-title">⚽ GOL ANALİZİ</div>
+      <p class="muted" style="font-size:.76rem;margin-bottom:14px;line-height:1.6">Serbest sekmesinden maç ekle. Oranları girdiysen burada gol analizi çıkar.</p>
+      <div id="golAnalizListesi"></div>
     </div>
   </div>
 
 </div>
 
+<!-- SAVE BAR -->
 <div class="save-bar" id="saveBar" style="display:none">
   <div class="info">Seçilen: <b id="pickCount">0</b>/15 | Kolon: <b id="colCount">1</b><br>Tutar: <b id="colPrice">10 TL</b></div>
   <button onclick="saveCoupon()">💾 Kaydet</button>
@@ -194,6 +220,13 @@
         <div class="oran-item"><label>KG Var</label><input type="number" step="0.01" placeholder="1.00" id="sm-kg"></div>
         <div class="oran-item"><label>2.5 Üst</label><input type="number" step="0.01" placeholder="1.00" id="sm-u25"></div>
         <div class="oran-item"><label>KG+2.5Ü</label><input type="number" step="0.01" placeholder="1.00" id="sm-kgu"></div>
+      </div>
+      <label>Ev/Dep Gol Bahisleri</label>
+      <div class="oran-grid">
+        <div class="oran-item"><label>Ev 0.5Ü</label><input type="number" step="0.01" placeholder="1.00" id="sm-ev05"></div>
+        <div class="oran-item"><label>Ev 1.5Ü</label><input type="number" step="0.01" placeholder="1.00" id="sm-ev15"></div>
+        <div class="oran-item"><label>Dep 0.5Ü</label><input type="number" step="0.01" placeholder="1.00" id="sm-dep05"></div>
+        <div class="oran-item"><label>Dep 1.5Ü</label><input type="number" step="0.01" placeholder="1.00" id="sm-dep15"></div>
       </div>
       <label>Toplam Gol</label>
       <div class="oran-grid">
@@ -270,4 +303,4 @@
 
 <script src="app.js"></script>
 </body>
-  </html>
+</html>
