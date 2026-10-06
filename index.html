@@ -26,9 +26,8 @@
 
 <div class="container">
 
-  <!-- SAYFA 0: BÜLTEN -->
   <div class="page active" id="page-0">
-    <div class="card" id="weekCard">
+    <div class="card">
       <div class="result-title">📅 <span id="weekTitle">Yükleniyor...</span></div>
     </div>
 
@@ -49,11 +48,10 @@
 
     <div id="matchesList"></div>
 
-    <p class="note">Olasılıklar oranlardan hesaplanır, bahisçi marjı temizlenmiştir. Kesin sonuç garantisi yoktur.</p>
+    <p class="note">Olasılıklar oranlardan hesaplanır, bahisçi marjı temizlenmiştir.</p>
     <div class="legal-link"><a href="#" onclick="openLegal();return false">⚠️ Yasal Uyarı</a></div>
   </div>
 
-  <!-- SAYFA 1: BANKOBOT -->
   <div class="page" id="page-1">
     <div class="card">
       <div class="result-title">🔥 ISI HARİTASI</div>
@@ -88,7 +86,6 @@
     </div>
   </div>
 
-  <!-- SAYFA 2: MONTE CARLO -->
   <div class="page" id="page-2">
     <div class="card">
       <div class="result-title">🎲 MONTE CARLO LAB <span class="badge">10.000 deneme</span></div>
@@ -99,12 +96,11 @@
     <div id="res-full" class="card" style="display:none"></div>
   </div>
 
-  <!-- SAYFA 3: ORAN ANALİZ -->
   <div class="page" id="page-3">
     <div class="card">
       <div class="result-title">🎯 ORAN ANALİZ</div>
       <p class="muted" style="font-size:.76rem;margin-bottom:14px;line-height:1.6">
-        1, X, 2, KG Var, 2.5 Üst, Kombo oranlarını gir. Sistem anında analiz eder. Boş bıraktığın oranları Poisson ile hesaplar.
+        1, X, 2, KG Var, 2.5 Üst, Kombo oranlarını gir. Sistem anında analiz eder.
       </p>
       <button onclick="kaydetOranlar()">💾 Oranları Kaydet</button>
       <button onclick="indirJSON()" class="blue" style="margin-top:8px">⬇️ JSON İndir</button>
@@ -113,7 +109,6 @@
     <div id="oranListesi"></div>
   </div>
 
-  <!-- SAYFA 4: KUPONUM -->
   <div class="page" id="page-4">
     <div class="card">
       <div class="result-title">📋 KUPONUM</div>
@@ -123,7 +118,6 @@
     </div>
   </div>
 
-  <!-- SAYFA 5: KELLY -->
   <div class="page" id="page-5">
     <div class="card">
       <div class="result-title">💼 KELLY CRITERION</div>
@@ -140,7 +134,6 @@
     </div>
   </div>
 
-  <!-- SAYFA 6: BACKTEST -->
   <div class="page" id="page-6">
     <div class="card">
       <div class="result-title">📊 BACKTEST</div>
@@ -151,14 +144,12 @@
 
 </div>
 
-<!-- SAVE BAR -->
 <div class="save-bar" id="saveBar" style="display:none">
   <div class="info">Seçilen: <b id="pickCount">0</b>/15 | Kolon: <b id="colCount">1</b><br>Tutar: <b id="colPrice">10 TL</b></div>
   <button onclick="saveCoupon()">💾 Kaydet</button>
   <button onclick="clearPicks()" style="background:var(--bg2);color:var(--red);border:1px solid var(--border);width:44px;padding:12px 0">🗑️</button>
 </div>
 
-<!-- SUGGEST MODAL -->
 <div class="modal-overlay" id="suggestModal">
   <div class="modal-box">
     <div class="modal-title">🎲 Bana Kupon Öner</div>
@@ -181,7 +172,6 @@
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast-overlay" id="toastModal">
   <div class="toast-box">
     <span class="toast-icon" id="toastIcon">✅</span>
@@ -191,7 +181,6 @@
   </div>
 </div>
 
-<!-- LEGAL -->
 <div class="toast-overlay" id="legalModal" onclick="if(event.target===this)closeModal('legalModal')">
   <div class="toast-box" style="max-width:440px;text-align:left;max-height:85vh;overflow-y:auto">
     <div class="modal-title" style="color:var(--orange);margin-bottom:14px;font-size:1rem">⚠️ Yasal Uyarı</div>
