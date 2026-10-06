@@ -22,6 +22,7 @@
   <div class="tab" onclick="switchTab(4,this)"><span class="tab-num">05</span>Kuponum</div>
   <div class="tab" onclick="switchTab(5,this)"><span class="tab-num">06</span>Kelly</div>
   <div class="tab" onclick="switchTab(6,this)"><span class="tab-num">07</span>Backtest</div>
+  <div class="tab" onclick="switchTab(7,this)"><span class="tab-num">08</span>Sürpriz</div>
 </nav>
 
 <div class="container">
@@ -68,7 +69,6 @@
         <span><span class="dot red"></span>Riskli <50%</span>
       </div>
     </div>
-
     <div class="card">
       <div class="result-title">🎯 STRATEJİ MODU</div>
       <div class="modes">
@@ -78,7 +78,6 @@
       </div>
       <div id="modeInfo" class="mode-info"></div>
     </div>
-
     <div id="chat"></div>
     <div class="chips">
       <span class="chip" onclick="ask('Bülten özeti')">Bülten özeti</span>
@@ -110,7 +109,7 @@
       </p>
       <button onclick="kuponOlusturModal()">⚡ Kupon Oluştur (Oranlarımdan)</button>
       <button onclick="indirJSON()" class="blue" style="margin-top:8px">⬇️ JSON İndir</button>
-      <button onclick="temizleOranlar()" style="margin-top:8px;background:var(--bg2);color:var(--red);border:1px solid var(--border)">🗑️ Tümünü Temizle</button>
+      <button onclick="temizleOranlar()" class="danger" style="margin-top:8px">🗑️ Tümünü Temizle</button>
     </div>
     <div id="oranListesi"></div>
   </div>
@@ -145,6 +144,16 @@
       <div class="result-title">📊 BACKTEST</div>
       <p class="muted" style="font-size:.76rem;margin-bottom:14px;line-height:1.6">Geçmiş haftaların sonuçlarına göre sistemin ne kadar tuttuğunu ölçer.</p>
       <div id="backtestOutput"><div class="coupon-empty">Henüz geçmiş sonuç yok.</div></div>
+    </div>
+  </div>
+
+  <div class="page" id="page-7">
+    <div class="card">
+      <div class="result-title">🚨 SÜRPRİZ RADARI</div>
+      <p class="muted" style="font-size:.76rem;margin-bottom:14px;line-height:1.6">
+        Bu sekme haftanın <b>sürprize açık</b> maçlarını listeler. Banko yazmadan önce mutlaka bak!
+      </p>
+      <div id="sürprizRadar"></div>
     </div>
   </div>
 
