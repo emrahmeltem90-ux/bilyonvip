@@ -1,5 +1,5 @@
 /* ============================================================
-   SKORLAB v5 · SERBEST ANALİZ DAHİL
+   SKORLAB v6 · NE YAPMALIYIM DAHİL
    ============================================================ */
 
 let matchesData = [];
@@ -12,7 +12,6 @@ let userPicks = {};
 let savedCoupons = JSON.parse(localStorage.getItem('skorlab_coupons') || '[]');
 let suggestMode = 'guvenli';
 let archiveData = { weeks: [] };
-let serbestMode = 'normal';
 
 const $ = id => document.getElementById(id);
 const pc = x => (x * 100).toFixed(1);
@@ -129,6 +128,69 @@ function degerVarMi(bahisAdi, gercekOran, bizimOlas){
   return { var: fark > 5, fark: fark.toFixed(1), bahisciOlas: bahisciOlas.toFixed(1), bizimOlas: bizimOlas.toFixed(1) };
 }
 
+/* ============ NE YAPMALIYIM ============ */
+function neYapmaliyimHTML(p1, pX, p2, kg, u25, kgu){
+  const o = oranToOlasilik(parseFloat(p1), parseFloat(pX), parseFloat(p2));
+  const o1 = o.p[0], oX = o.p[1], o2 = o.p[2];
+  const enYuksek = Math.max(o1, oX, o2);
+  const favori = o1 === enYuksek ? '1' : oX === enYuksek ? 'X' : '2';
+  const xg = xGTahmin(o1/100, oX/100, o2/100);
+  const poi = poissonBahisler(xg.evXg, xg.depXg);
+  const s = sürprizHesapla(p1, pX, p2);
+  
+  let oyna = [];
+  let oynama = [];
+  
+  // 1/X/2 kontrolü
+  const dv1 = degerVarMi('1', parseFloat(p1), o1);
+  const dvX = degerVarMi('X', parseFloat(pX), oX);
+  const dv2 = degerVarMi('2', parseFloat(p2), o2);
+  if(dv1.var) oyna.push('1 (Ev Sahibi)');
+  if(dvX.var) oyna.push('X (Beraberlik)');
+  if(dv2.var) oyna.push('2 (Deplasman)');
+  
+  // KG Var
+  if(kg){
+    const dv = degerVarMi('KG Var', parseFloat(kg), poi.kg);
+    if(dv.var) oyna.push(`KG Var (${kg})`);
+    else oynama.push(`KG Var (${kg})`);
+  }
+  
+  // 2.5 Üst
+  if(u25){
+    const dv = degerVarMi('2.5 Üst', parseFloat(u25), poi.ust25);
+    if(dv.var) oyna.push(`2.5 Üst (${u25})`);
+    else oynama.push(`2.5 Üst (${u25})`);
+  }
+  
+  // KG+2.5Ü
+  if(kgu){
+    const dv = degerVarMi('KG+2.5Ü', parseFloat(kgu), poi.kgUst25);
+    if(dv.var) oyna.push(`KG+2.5Ü (${kgu})`);
+    else oynama.push(`KG+2.5Ü (${kgu})`);
+  }
+  
+  // Öneri
+  let oneriCumle = '';
+  if(s.puan > 75) oneriCumle = '🚨 Çok riskli! Banko yazma, çift şans yap.';
+  else if(s.puan > 50) oneriCumle = '⚠️ Yüksek risk. Banko yazma, çift şans yap.';
+  else if(s.puan > 25) oneriCumle = '⚡ Orta risk. Tek oyna ama dikkatli ol.';
+  else oneriCumle = '✅ Güvenli. Banko yazabilirsin.';
+  
+  if(enYuksek >= 70 && s.puan <= 25) oneriCumle = `✅ Banko! Tek ${favori} oyna.`;
+  else if(enYuksek >= 55 && enYuksek < 70 && s.puan <= 50) oneriCumle = `👍 Tek ${favori} + çift şans öner.`;
+  else if(enYuksek < 45) oneriCumle = `⚠️ Çok dengeli. Çift şans yap, banko yazma.`;
+  
+  return `
+    <div class="ne-yapmaliyim">
+      <div class="baslik">🎯 NE YAPMALIYIM?</div>
+      ${oyna.length ? `<div class="satir"><span class="oyna">✅ OYNA:</span> ${oyna.join(' · ')}</div>` : ''}
+      ${oynama.length ? `<div class="satir"><span class="oynama">❌ OYNANMAZ:</span> ${oynama.join(' · ')}</div>` : ''}
+      ${!oyna.length && !oynama.length ? '<div class="satir muted">Sadece 1/X/2 oynanabilir, değerli bahis yok.</div>' : ''}
+      <div class="oneri">💡 ${oneriCumle}</div>
+    </div>`;
+}
+
 /* ============ KELLY ============ */
 function kelly(olasilik, oran, frac = 0.5){
   const p = olasilik / 100;
@@ -165,7 +227,7 @@ async function loadMatches(){
     renderOranlar();
     renderSürprizRadar();
     renderSerbest();
-    say('🤖 <b>SkorLab v5 hazır!</b><br><br>Bülten + Serbest Analiz. İstediğin maçı ekle, oran gir, analiz et.', 'bot');
+    say('🤖 <b>SkorLab v6 hazır!</b><br><br>Serbest sekmesinde maç ekle, analiz et. Her maçta "NE YAPMALIYIM" kutusu var.', 'bot');
   }catch(e){
     document.body.innerHTML = '<div style="padding:20px;color:#ff4d5e">⚠️ matches.json yüklenemedi: ' + e.message + '</div>';
   }
@@ -403,6 +465,7 @@ function analizHTML(i, od, poisson){
     </div>
     ${sürprizDetayHTML}
     ${valueHTML}
+    ${neYapmaliyimHTML(od['1'], od['X'], od['2'], od['KG_Var'], od['Ust_25'], od['KG_Ust25'])}
   `;
 }
 
@@ -530,7 +593,6 @@ function renderSerbest(){
     const renk = s.renk === 'yellow' ? 'orange' : s.renk;
     const xg = xGTahmin(o1/100, oX/100, o2/100);
     const poi = poissonBahisler(xg.evXg, xg.depXg);
-    
     let ekBahislerHTML = '';
     if(m.kg){
       const dv = degerVarMi('KG Var', m.kg, poi.kg);
@@ -544,7 +606,6 @@ function renderSerbest(){
       const dv = degerVarMi('KG+2.5Ü', m.kgu, poi.kgUst25);
       ekBahislerHTML += `<div class="analiz-row"><span>KG+2.5Ü (${m.kgu})</span><span>Bizim: %${poi.kgUst25.toFixed(1)} ${dv.var ? '<b class="green">💎 DEĞERLİ</b>' : (dv.fark > 0 ? '<b class="orange">+%'+dv.fark+'</b>' : '<span class="muted">-%'+Math.abs(dv.fark)+'</span>')}</span></div>`;
     }
-    
     return `
     <div class="serbest-card">
       <div class="head">
@@ -573,6 +634,7 @@ function renderSerbest(){
         <div class="analiz-row"><span>KG+2.5Ü: <b>%${poi.kgUst25.toFixed(1)}</b></span></div>
         <div class="analiz-row"><span class="muted">En olası skor: ${poi.enOlasiSkor} (%${poi.enOlasiSkorP})</span></div>
       </div>
+      ${neYapmaliyimHTML(m.o1, m.oX, m.o2, m.kg, m.u25, m.kgu)}
       <div class="analiz-row muted" style="font-size:.65rem;margin-top:8px">📅 ${m.tarih}</div>
     </div>`;
   }).join('');
@@ -599,13 +661,12 @@ function kuponSerbestModal(){
     showToast('error', 'Maç Yok', 'Önce maç ekle.');
     return;
   }
-  const secim = prompt('Kaç maçlık kupon olsun? (2-15 arası)', Math.min(5, serbestData.length));
+  const secim = prompt('Kaç maçlık kupon olsun? (2-' + Math.min(15, serbestData.length) + ' arası)', Math.min(5, serbestData.length));
   const n = parseInt(secim);
   if(!n || n < 2 || n > serbestData.length){
     showToast('error', 'Geçersiz', 'Geçerli bir sayı gir.');
     return;
   }
-  // En güvenli maçları seç (sürpriz skoru düşük olanlar)
   const siralanmis = serbestData.map((m,idx) => ({
     ...m,
     s: sürprizHesapla(m.o1, m.oX, m.o2)
@@ -617,14 +678,18 @@ function kuponSerbestModal(){
     picks: {},
     totalMatches: n,
     serbest: true,
-    maclar: siralanmis.map(m => ({ mac: m.mac, favori: Math.max(m.o1,m.oX,m.o2) === m.o1 ? '1' : Math.max(m.o1,m.oX,m.o2) === m.oX ? 'X' : '2', oran: Math.max(m.o1,m.oX,m.o2) }))
+    maclar: siralanmis.map(m => {
+      const maxOran = Math.max(m.o1, m.oX, m.o2);
+      const fav = maxOran === m.o1 ? '1' : maxOran === m.oX ? 'X' : '2';
+      return { mac: m.mac, favori: fav, oran: maxOran };
+    })
   };
   savedCoupons.unshift(kupon);
   localStorage.setItem('skorlab_coupons', JSON.stringify(savedCoupons));
   renderCoupons();
   switchTab(5, document.querySelectorAll('.tab')[5]);
   showToast('success', 'Kupon Oluşturuldu!', `${n} maçlık serbest kupon oluşturuldu.`);
-     }
+         }
 /* ============ SÜRPRİZ RADARI ============ */
 function renderSürprizRadar(){
   const container = $('sürprizRadar');
