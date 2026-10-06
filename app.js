@@ -1,6 +1,5 @@
 /* ============================================================
    SKORLAB v3 · JAVASCRIPT MOTORU
-   6 Oran Girişi · Marj Temizleme · Değer Bahis · Poisson · Kelly
    ============================================================ */
 
 let matchesData = [];
@@ -18,7 +17,7 @@ const pc = x => (x * 100).toFixed(1);
 const ordr = i => [0,1,2].sort((a,b) => PR[i][b] - PR[i][a]);
 const topP = i => Math.max(...PR[i]);
 
-/* ============ ORAN → OLASILIK (MARJ TEMİZLEME) ============ */
+/* ============ ORAN → OLASILIK ============ */
 function oranToOlasilik(o1, oX, o2){
   const r1 = 1/o1, rX = 1/oX, r2 = 1/o2;
   const toplam = r1 + rX + r2;
@@ -28,25 +27,22 @@ function oranToOlasilik(o1, oX, o2){
   };
 }
 
-/* ============ POISSON DAĞILIMI ============ */
+/* ============ POISSON ============ */
 function poissonPmf(k, lambda){
   let p = Math.exp(-lambda);
   for(let i = 1; i <= k; i++) p *= lambda / i;
   return p;
 }
 
-// 1X2 olasılığından ev/dep xG tahmin et (basit ters Poisson)
 function xGTahmin(p1, pX, p2){
-  // Toplam gol beklentisi ~2.6, ev avantajı ~1.15
   const totalP = p1 + p2;
-  const homeShare = p1 / (p1 + p2 || 1);
-  const toplamGol = 2.4 + (1 - pX) * 0.8; // beraberlik düşükse gol çok
+  const homeShare = p1 / (totalP || 1);
+  const toplamGol = 2.4 + (1 - pX) * 0.8;
   const evXg = toplamGol * homeShare * 1.15;
   const depXg = toplamGol * (1 - homeShare);
   return { evXg: Math.max(0.3, evXg), depXg: Math.max(0.3, depXg) };
 }
 
-/* ============ POISSON İLE BAHİS TAHMİNİ ============ */
 function poissonBahisler(evXg, depXg){
   const MAX = 10;
   let p_kg = 0, p_ust25 = 0, p_kg_ust25 = 0;
@@ -60,7 +56,6 @@ function poissonBahisler(evXg, depXg){
       const pa = poissonPmf(a, depXg);
       const p = ph * pa;
       const toplam = h + a;
-
       if(h >= 1 && a >= 1) p_kg += p;
       if(toplam > 2.5) p_ust25 += p;
       if(h >= 1 && a >= 1 && toplam > 2.5) p_kg_ust25 += p;
@@ -69,14 +64,11 @@ function poissonBahisler(evXg, depXg){
       if(toplam > 4.5) p_ust45 += p;
       if(toplam < 0.5) p_alt05 += p;
       if(toplam > 0.5) p_ust05 += p;
-
       const key = h + '-' + a;
       skorlar[key] = (skorlar[key] || 0) + p;
     }
   }
-
   const enOlasi = Object.entries(skorlar).sort((a,b) => b[1] - a[1]).slice(0,3);
-
   return {
     kg: p_kg * 100,
     kgYok: (1 - p_kg) * 100,
@@ -97,7 +89,7 @@ function poissonBahisler(evXg, depXg){
   };
 }
 
-/* ============ DEĞER BAHİS KONTROLÜ ============ */
+/* ============ DEĞER BAHİS ============ */
 function degerVarMi(matchIdx, bahis, gercekOran, bizimOlas){
   if(!gercekOran || gercekOran <= 1) return { var: false, fark: 0 };
   const bahisciOlas = 100 / gercekOran;
@@ -105,7 +97,7 @@ function degerVarMi(matchIdx, bahis, gercekOran, bizimOlas){
   return { var: fark > 5, fark: fark.toFixed(1), bahisciOlas: bahisciOlas.toFixed(1), bizimOlas: bizimOlas.toFixed(1) };
 }
 
-/* ============ KELLY CRITERION ============ */
+/* ============ KELLY ============ */
 function kelly(olasilik, oran, frac = 0.5){
   const p = olasilik / 100;
   const b = oran - 1;
@@ -126,11 +118,7 @@ async function loadMatches(){
       date: (m.date || '') + ' ' + (m.time || ''),
       league: m.league || ''
     }));
-
-    // localStorage'dan kayıtlı oranları al
     oddsData = JSON.parse(localStorage.getItem('skorlab_odds') || '{}');
-
-    // PR'ı hesapla (kayıtlı oran varsa)
     PR = matchesData.map((m,i) => {
       const od = oddsData[m.id];
       if(od && od['1'] && od['X'] && od['2']){
@@ -139,13 +127,13 @@ async function loadMatches(){
       }
       return [0.33, 0.33, 0.34];
     });
-
     $('weekTitle').innerText = raw.week || 'Bu Hafta';
     initApp();
     updateBar();
+    renderStats();
     setMode('guvenli');
     renderOranlar();
-    say('🤖 <b>SkorLab v3 hazır!</b><br><br>Oranları gir, sistem anında analiz etsin. 6 kutu: 1, X, 2, KG Var, 2.5 Üst, Kombo.<br><br>Girmediğin oranları sistem Poisson ile hesaplar.', 'bot');
+    say('🤖 <b>SkorLab v3 hazır!</b><br><br>Oran sekmesinden oranları gir. Sistem anında analiz eder. Sonra "Kupon Oluştur" ile senin oranlarına göre kupon üretir.', 'bot');
   }catch(e){
     document.body.innerHTML = '<div style="padding:20px;color:#ff4d5e">⚠️ matches.json yüklenemedi: ' + e.message + '</div>';
   }
@@ -182,11 +170,28 @@ function updateBar(){
   $('lblCost').innerText = (n*10) + ' TL';
 }
 
-/* ============ ANA EKRAN (MAÇ KARTLARI) ============ */
+/* ============ MAÇ KARTLARI ============ */
 function initApp(){
   $('matchesList').innerHTML = matchesData.map((m,i) => {
     const sel = userPicks[i] || [];
     const od = oddsData[m.id] || {};
+    const mx = topP(i);
+    const hasOdds = od['1'] && od['X'] && od['2'];
+    
+    let surpriseHTML = '';
+    if(hasOdds){
+      if(mx < 0.45) surpriseHTML = '<span class="badge red" style="margin-left:6px">⚠️ Sürpriz riski</span>';
+      else if(mx < 0.55) surpriseHTML = '<span class="badge orange" style="margin-left:6px">⚠️ Dengeli</span>';
+    }
+    
+    let valueHTML = '';
+    if(hasOdds && od['KG_Var']){
+      const xg = xGTahmin(PR[i][0], PR[i][1], PR[i][2]);
+      const poi = poissonBahisler(xg.evXg, xg.depXg);
+      const dv = degerVarMi(i, 'KG_Var', parseFloat(od['KG_Var']), poi.kg);
+      if(dv.var) valueHTML = `<div class="value-bet-box" style="margin-top:8px">💎 KG Var değerli! Fark: +%${dv.fark}</div>`;
+    }
+    
     return `
     <div class="match">
       <div class="match-head">
@@ -196,11 +201,31 @@ function initApp(){
       <div class="teams">${m.home} <span class="muted" style="font-weight:400">-</span> ${m.away}
         <span class="badge ${levelClass(i)}">${level(i)}</span>
         ${m.league ? '<span class="league-tag">' + m.league + '</span>' : ''}
+        ${surpriseHTML}
       </div>
+      ${hasOdds ? `
+      <div class="odds-bar">
+        <div class="odds-box ${degerVarMi(i,'1',parseFloat(od['1']),PR[i][0]*100).var ? 'value' : ''}">
+          <div class="lbl">1</div>
+          <div class="val">${parseFloat(od['1']).toFixed(2)}</div>
+          <div class="pct">%${(PR[i][0]*100).toFixed(1)}</div>
+        </div>
+        <div class="odds-box ${degerVarMi(i,'X',parseFloat(od['X']),PR[i][1]*100).var ? 'value' : ''}">
+          <div class="lbl">X</div>
+          <div class="val">${parseFloat(od['X']).toFixed(2)}</div>
+          <div class="pct">%${(PR[i][1]*100).toFixed(1)}</div>
+        </div>
+        <div class="odds-box ${degerVarMi(i,'2',parseFloat(od['2']),PR[i][2]*100).var ? 'value' : ''}">
+          <div class="lbl">2</div>
+          <div class="val">${parseFloat(od['2']).toFixed(2)}</div>
+          <div class="pct">%${(PR[i][2]*100).toFixed(1)}</div>
+        </div>
+      </div>` : '<div class="muted" style="font-size:.72rem;text-align:center;padding:8px">Oran gir → analiz gelsin</div>'}
+      ${valueHTML}
       <div class="pick-grid">
-        <div class="pick-btn ${sel.includes(0)?'active':''}" onclick="togglePick(${i},0)">1</div>
-        <div class="pick-btn ${sel.includes(1)?'active':''}" onclick="togglePick(${i},1)">X</div>
-        <div class="pick-btn ${sel.includes(2)?'active':''}" onclick="togglePick(${i},2)">2</div>
+        <div class="pick-btn ${sel.includes(0)?'active':''}" onclick="togglePick(${i},0)">1<span class="pick-pct">${hasOdds ? '%'+Math.round(PR[i][0]*100) : ''}</span></div>
+        <div class="pick-btn ${sel.includes(1)?'active':''}" onclick="togglePick(${i},1)">X<span class="pick-pct">${hasOdds ? '%'+Math.round(PR[i][1]*100) : ''}</span></div>
+        <div class="pick-btn ${sel.includes(2)?'active':''}" onclick="togglePick(${i},2)">2<span class="pick-pct">${hasOdds ? '%'+Math.round(PR[i][2]*100) : ''}</span></div>
         <div class="pick-btn ${sel.includes(10)?'active':''}" onclick="togglePick(${i},10)" style="font-size:.7rem">1X</div>
         <div class="pick-btn ${sel.includes(12)?'active':''}" onclick="togglePick(${i},12)" style="font-size:.7rem">12</div>
         <div class="pick-btn ${sel.includes(20)?'active':''}" onclick="togglePick(${i},20)" style="font-size:.7rem">X2</div>
@@ -267,7 +292,7 @@ function codeToProb(matchIdx, code){
   return 0;
 }
 
-/* ============ ORAN ANALİZ SEKMESİ ============ */
+/* ============ ORAN SEKMESİ ============ */
 function renderOranlar(){
   const container = $('oranListesi');
   if(!container) return;
@@ -285,34 +310,14 @@ function renderOranlar(){
         <span class="mid">#${m.id}</span>
       </div>
       <div class="teams" style="margin-bottom:12px">${m.home} - ${m.away}</div>
-      
       <div class="oran-grid">
-        <div class="oran-item">
-          <label>1</label>
-          <input type="number" step="0.01" placeholder="1.00" value="${od['1']||''}" oninput="oranGuncelle(${m.id},'1',this.value)">
-        </div>
-        <div class="oran-item">
-          <label>X</label>
-          <input type="number" step="0.01" placeholder="1.00" value="${od['X']||''}" oninput="oranGuncelle(${m.id},'X',this.value)">
-        </div>
-        <div class="oran-item">
-          <label>2</label>
-          <input type="number" step="0.01" placeholder="1.00" value="${od['2']||''}" oninput="oranGuncelle(${m.id},'2',this.value)">
-        </div>
-        <div class="oran-item">
-          <label>KG Var</label>
-          <input type="number" step="0.01" placeholder="1.00" value="${od['KG_Var']||''}" oninput="oranGuncelle(${m.id},'KG_Var',this.value)">
-        </div>
-        <div class="oran-item">
-          <label>2.5 Üst</label>
-          <input type="number" step="0.01" placeholder="1.00" value="${od['Ust_25']||''}" oninput="oranGuncelle(${m.id},'Ust_25',this.value)">
-        </div>
-        <div class="oran-item">
-          <label>KG+2.5Ü</label>
-          <input type="number" step="0.01" placeholder="1.00" value="${od['KG_Ust25']||''}" oninput="oranGuncelle(${m.id},'KG_Ust25',this.value)">
-        </div>
+        <div class="oran-item"><label>1</label><input type="number" step="0.01" placeholder="1.00" value="${od['1']||''}" oninput="oranGuncelle(${m.id},'1',this.value)"></div>
+        <div class="oran-item"><label>X</label><input type="number" step="0.01" placeholder="1.00" value="${od['X']||''}" oninput="oranGuncelle(${m.id},'X',this.value)"></div>
+        <div class="oran-item"><label>2</label><input type="number" step="0.01" placeholder="1.00" value="${od['2']||''}" oninput="oranGuncelle(${m.id},'2',this.value)"></div>
+        <div class="oran-item"><label>KG Var</label><input type="number" step="0.01" placeholder="1.00" value="${od['KG_Var']||''}" oninput="oranGuncelle(${m.id},'KG_Var',this.value)"></div>
+        <div class="oran-item"><label>2.5 Üst</label><input type="number" step="0.01" placeholder="1.00" value="${od['Ust_25']||''}" oninput="oranGuncelle(${m.id},'Ust_25',this.value)"></div>
+        <div class="oran-item"><label>KG+2.5Ü</label><input type="number" step="0.01" placeholder="1.00" value="${od['KG_Ust25']||''}" oninput="oranGuncelle(${m.id},'KG_Ust25',this.value)"></div>
       </div>
-      
       ${analizHTML(i, od, poisson)}
     </div>`;
   }).join('');
@@ -330,7 +335,6 @@ function analizHTML(i, od, poisson){
   const favori = o1 === enYuksek ? '1' : oX === enYuksek ? 'X' : '2';
 
   let valueHTML = '';
-  // Değer bahis kontrolü
   if(od['KG_Var']){
     const dv = degerVarMi(i, 'KG_Var', parseFloat(od['KG_Var']), poi.kg);
     if(dv.var) valueHTML += `<div class="value-bet-box">💎 <b>KG Var</b> değerli! Bizim: %${dv.bizimOlas} · Bahisçi: %${dv.bahisciOlas} · Fark: <b>+%${dv.fark}</b></div>`;
@@ -344,25 +348,22 @@ function analizHTML(i, od, poisson){
     if(dv.var) valueHTML += `<div class="value-bet-box">💎 <b>KG+2.5Ü</b> değerli! Bizim: %${dv.bizimOlas} · Bahisçi: %${dv.bahisciOlas} · Fark: <b>+%${dv.fark}</b></div>`;
   }
 
+  let surpriseHTML = '';
+  if(enYuksek < 0.45) surpriseHTML = '<div class="analiz-row"><span class="red">⚠️ Yüksek sürpriz riski! Banko yok.</span></div>';
+  else if(enYuksek < 0.55) surpriseHTML = '<div class="analiz-row"><span class="orange">⚠️ Dengeli maç, sürprize açık</span></div>';
+
   return `
     <div class="analiz-box">
-      <div class="analiz-row">
-        <span class="analiz-lbl">📊 Olasılık (marj temizlenmiş)</span>
-      </div>
+      <div class="analiz-row"><span class="analiz-lbl">📊 Olasılık (marj temizlenmiş)</span></div>
       <div class="analiz-row">
         <span>1: <b class="green">%${o1.toFixed(1)}</b></span>
         <span>X: <b class="green">%${oX.toFixed(1)}</b></span>
         <span>2: <b class="green">%${o2.toFixed(1)}</b></span>
       </div>
-      <div class="analiz-row">
-        <span class="muted">Marj: %${o.marj}</span>
-      </div>
+      <div class="analiz-row"><span class="muted">Marj: %${o.marj}</span></div>
     </div>
-
     <div class="analiz-box">
-      <div class="analiz-row">
-        <span class="analiz-lbl">🎲 Poisson Tahmini (goller)</span>
-      </div>
+      <div class="analiz-row"><span class="analiz-lbl">🎲 Poisson Tahmini</span></div>
       <div class="analiz-row">
         <span>2.5 Üst: <b>%${poi.ust25.toFixed(1)}</b></span>
         <span>2.5 Alt: <b>%${poi.alt25.toFixed(1)}</b></span>
@@ -371,26 +372,15 @@ function analizHTML(i, od, poisson){
         <span>KG Var: <b>%${poi.kg.toFixed(1)}</b></span>
         <span>KG Yok: <b>%${poi.kgYok.toFixed(1)}</b></span>
       </div>
-      <div class="analiz-row">
-        <span>KG+2.5Ü: <b>%${poi.kgUst25.toFixed(1)}</b></span>
-      </div>
-      <div class="analiz-row">
-        <span class="muted">En olası skor: ${poi.enOlasiSkor} (%${poi.enOlasiSkorP})</span>
-      </div>
+      <div class="analiz-row"><span>KG+2.5Ü: <b>%${poi.kgUst25.toFixed(1)}</b></span></div>
+      <div class="analiz-row"><span class="muted">En olası skor: ${poi.enOlasiSkor} (%${poi.enOlasiSkorP})</span></div>
     </div>
-
     <div class="analiz-box">
-      <div class="analiz-row">
-        <span class="analiz-lbl">💡 Öneri</span>
-      </div>
-      <div class="analiz-row">
-        <span>Favori: <b class="orange">${favori}</b> (%${enYuksek.toFixed(1)})</span>
-      </div>
-      <div class="analiz-row">
-        <span class="muted">${enYuksek >= 70 ? 'Tek oyna (Banko)' : enYuksek >= 55 ? 'Tek + çift şans' : 'Çift şans öner'}</span>
-      </div>
+      <div class="analiz-row"><span class="analiz-lbl">💡 Öneri</span></div>
+      <div class="analiz-row"><span>Favori: <b class="orange">${favori}</b> (%${enYuksek.toFixed(1)})</span></div>
+      <div class="analiz-row"><span class="muted">${enYuksek >= 70 ? 'Tek oyna (Banko)' : enYuksek >= 55 ? 'Tek + çift şans' : 'Çift şans öner'}</span></div>
+      ${surpriseHTML}
     </div>
-
     ${valueHTML}
   `;
 }
@@ -401,7 +391,6 @@ function oranGuncelle(matchId, alan, deger){
   else oddsData[matchId][alan] = parseFloat(deger);
   localStorage.setItem('skorlab_odds', JSON.stringify(oddsData));
 
-  // PR'ı güncelle
   const idx = matchesData.findIndex(m => m.id === matchId);
   const od = oddsData[matchId];
   if(od && od['1'] && od['X'] && od['2']){
@@ -410,34 +399,32 @@ function oranGuncelle(matchId, alan, deger){
   } else {
     PR[idx] = [0.33, 0.33, 0.34];
   }
+
+  initApp();
+  updateBar();
+  renderStats();
 }
 
-/* ============ TOPLU KAYDET / İNDİR ============ */
 function kaydetOranlar(){
   localStorage.setItem('skorlab_odds', JSON.stringify(oddsData));
   showToast('success', 'Kaydedildi!', 'Tüm oranlar tarayıcıya kaydedildi.');
   initApp();
+  renderStats();
 }
 
 function indirJSON(){
   const cikti = {
     week: $('weekTitle').innerText,
     matches: matchesData.map(m => ({
-      id: m.id,
-      home_team: m.home,
-      away_team: m.away,
-      date: m.date.split(' ')[0],
-      time: m.date.split(' ')[1] || '',
-      league: m.league,
-      odds: oddsData[m.id] || null
+      id: m.id, home_team: m.home, away_team: m.away,
+      date: m.date.split(' ')[0], time: m.date.split(' ')[1] || '',
+      league: m.league, odds: oddsData[m.id] || null
     }))
   };
   const blob = new Blob([JSON.stringify(cikti, null, 2)], {type:'application/json'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url;
-  a.download = 'matches-guncel.json';
-  a.click();
+  a.href = url; a.download = 'matches-guncel.json'; a.click();
   URL.revokeObjectURL(url);
   showToast('success', 'İndirildi!', 'matches-guncel.json olarak indirildi.');
 }
@@ -449,6 +436,7 @@ function temizleOranlar(){
   PR = matchesData.map(() => [0.33, 0.33, 0.34]);
   renderOranlar();
   initApp();
+  renderStats();
   showToast('success', 'Temizlendi!', 'Tüm oranlar silindi.');
 }
 
@@ -539,15 +527,28 @@ function runLab(){
   runMC('res-full','bar-full');
 }
 
-/* ============ BANA KUPON ÖNER ============ */
+/* ============ KUPON ÖNER ============ */
 function openSuggestModal(){
   suggestMode = 'guvenli';
   document.querySelectorAll('#suggestModal .mode').forEach(e => e.classList.remove('active'));
   $('sm-guvenli').classList.add('active');
-  $('suggestModeInfo').innerHTML = '🛡️ <b>Güvenli:</b> En yüksek olasılıklı seçenekler.';
+  $('suggestModeInfo').innerHTML = '🛡️ <b>Güvenli:</b> Sadece bankolar ve güçlü favoriler.';
   $('suggestBudget').value = 200;
   updateSuggestEstimate();
   $('suggestModal').classList.add('active');
+}
+
+function kuponOlusturModal(){
+  let eksik = [];
+  matchesData.forEach(m => {
+    const od = oddsData[m.id];
+    if(!od || !od['1'] || !od['X'] || !od['2']) eksik.push('#' + m.id);
+  });
+  if(eksik.length > 0){
+    showToast('error', 'Eksik Oran', `Şu maçların 1/X/2 oranları eksik:<br><b>${eksik.join(', ')}</b><br><br>Lütfen tüm maçların oranlarını gir.`);
+    return;
+  }
+  openSuggestModal();
 }
 
 function selectSuggestMode(mode, el){
@@ -555,9 +556,9 @@ function selectSuggestMode(mode, el){
   document.querySelectorAll('#suggestModal .mode').forEach(e => e.classList.remove('active'));
   el.classList.add('active');
   const infos = {
-    guvenli: '🛡️ <b>Güvenli:</b> En yüksek olasılıklı seçenekler.',
-    dengeli: '⚖️ <b>Dengeli:</b> Favoriler tek, orta maçlar çift şans.',
-    agresif: '🚀 <b>Agresif:</b> Sürprizlere ağırlık verilir.'
+    guvenli: '🛡️ <b>Güvenli:</b> Sadece bankolar ve güçlü favoriler. Hedef: 12/15.',
+    dengeli: '⚖️ <b>Dengeli:</b> Favoriler + orta maçlarda çift şans. Hedef: 12-13/15.',
+    agresif: '🚀 <b>Agresif:</b> Sürprizlere ağırlık verilir. Hedef: 14-15/15.'
   };
   $('suggestModeInfo').innerHTML = infos[mode];
   updateSuggestEstimate();
@@ -643,6 +644,7 @@ function applySuggest(){
     <div class="row"><span>Tutar:</span><span class="green">${tutar} TL</span></div>
     <div class="row"><span>Kalan:</span><span class="orange">${b - tutar} TL</span></div>
   `);
+  switchTab(0, document.querySelectorAll('.tab')[0]);
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -679,7 +681,7 @@ function renderCoupons(){
   const c = $('couponContent');
   if(!c) return;
   if(!savedCoupons.length){
-    c.innerHTML = `<div class="coupon-empty">Henüz kupon yok.<br><br>📌 Bülten sekmesinden seçim yap.</div>`;
+    c.innerHTML = `<div class="coupon-empty">Henüz kupon yok.<br><br>📌 Oran sekmesinden kupon oluştur.</div>`;
     return;
   }
   c.innerHTML = '<div class="coupon-list">' + savedCoupons.map((coupon, idx) => {
@@ -713,7 +715,6 @@ function renderKelly(){
   const bank = parseFloat($('kellyBank')?.value) || 0;
   const frac = parseFloat($('kellyFrac')?.value) || 0.5;
   if(!bank) return;
-
   let html = '<table class="kelly-table"><thead><tr><th>Maç</th><th>Seçim</th><th>Oran</th><th>Kelly %</th><th>Yatır</th></tr></thead><tbody>';
   matchesData.forEach((m,i) => {
     const o = ordr(i)[0];
@@ -723,7 +724,7 @@ function renderKelly(){
     const oran = od[sym];
     if(!oran) return;
     const olas = PR[i][o] * 100;
-    const k = kelly(olas, oran, frac);
+    const k = kelly(olas, parseFloat(oran), frac);
     const yatir = (bank * k).toFixed(0);
     const cls = k > 0.03 ? 'green' : 'muted';
     html += `<tr>
@@ -743,7 +744,7 @@ function renderBacktest(){
   const c = $('backtestOutput');
   if(!c) return;
   if(!archiveData.weeks || !archiveData.weeks.length){
-    c.innerHTML = '<div class="coupon-empty">Henüz geçmiş sonuç yok.<br><br>archive.json dosyasına sonuçları ekleyin.</div>';
+    c.innerHTML = '<div class="coupon-empty">Henüz geçmiş sonuç yok.</div>';
     return;
   }
   let html = '', totalCorrect = 0, totalMatches = 0;
@@ -790,6 +791,28 @@ function setMode(mode, el){
   if(el2) el2.innerHTML = info[mode];
 }
 
+/* ============ İSTATİSTİK ============ */
+function renderStats(){
+  const statBanko = $('statBanko');
+  if(!statBanko) return;
+  const banko = matchesData.filter((_,i) => topP(i) >= 0.7).length;
+  const dengeli = matchesData.filter((_,i) => topP(i) < 0.5).length;
+  let valueCount = 0;
+  matchesData.forEach((m,i) => {
+    const od = oddsData[m.id];
+    if(!od) return;
+    const xg = xGTahmin(PR[i][0], PR[i][1], PR[i][2]);
+    const poi = poissonBahisler(xg.evXg, xg.depXg);
+    if(od['KG_Var'] && degerVarMi(i,'KG_Var',parseFloat(od['KG_Var']),poi.kg).var) valueCount++;
+    if(od['Ust_25'] && degerVarMi(i,'Ust_25',parseFloat(od['Ust_25']),poi.ust25).var) valueCount++;
+  });
+  const zorluk = banko >= 5 ? 'Kolay' : dengeli >= 6 ? 'Zor' : 'Orta';
+  statBanko.innerText = banko;
+  const sD = $('statDengeli'); if(sD) sD.innerText = dengeli;
+  const sV = $('statValue'); if(sV) sV.innerText = valueCount;
+  const sZ = $('statZorluk'); if(sZ) sZ.innerText = zorluk;
+}
+
 /* ============ BANKOBOT ============ */
 function say(html, who){
   const chat = $('chat');
@@ -805,12 +828,10 @@ function outName(m,o){ return o === 0 ? m.home + ' (1)' : o === 1 ? 'Beraberlik 
 function summary(){
   const L = matchesData.length;
   const banko = matchesData.filter((_,i) => topP(i) >= 0.7).length;
-  const guclu = matchesData.filter((_,i) => topP(i) >= 0.55 && topP(i) < 0.7).length;
-  const dengeli = matchesData.filter((_,i) => topP(i) < 0.45).length;
+  const dengeli = matchesData.filter((_,i) => topP(i) < 0.5).length;
   const exp = PR.reduce((t,_,i) => t + topP(i), 0);
   return `<b>📊 BÜLTEN ÖZETİ (${L} MAÇ)</b><br><br>
     🏦 Banko: <b>${banko}</b><br>
-    ⭐ Güçlü: <b>${guclu}</b><br>
     ⚠️ Dengeli: <b>${dengeli}</b><br>
     🎯 Beklenen doğru: <b>${exp.toFixed(1)}/${L}</b><br><br>
     💡 ${dengeli >= 6 ? '<b style="color:#ff4d5e">Zor bülten.</b>' : dengeli >= 3 ? '<b style="color:#ffb020">Orta zorluk.</b>' : '<b style="color:#00e07a">Kolay bülten.</b>'}`;
@@ -874,12 +895,14 @@ function switchTab(i, el){
   $('page-' + i).classList.add('active');
   if(i === 3) renderOranlar();
   if(i === 5) renderKelly();
+  if(i === 1) renderHeatmap();
+  if(i === 6) renderBacktest();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
 function openModal(id){ $(id).classList.add('active'); }
 function closeModal(id){ $(id).classList.remove('active'); }
-function openLegal(){ openModal('legalModal'); }
+function openLegal(){ openModal('legalModal'); localStorage.setItem('skorlab_legal', 'true'); }
 
 function showToast(type, title, msg){
   $('toastIcon').innerText = type === 'success' ? '✅' : '❌';
