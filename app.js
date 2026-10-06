@@ -1,10 +1,11 @@
 /* ============================================================
-   SKORLAB v2 · JAVASCRIPT MOTORU
-   Oran okuma · Marj temizleme · Değer bahis · Monte Carlo · Kelly · Backtest
+   SKORLAB v3 · JAVASCRIPT MOTORU
+   6 Oran Girişi · Marj Temizleme · Değer Bahis · Poisson · Kelly
    ============================================================ */
 
 let matchesData = [];
 let PR = [];
+let oddsData = {};
 let cols = [];
 let currentMode = 'guvenli';
 let userPicks = {};
@@ -27,51 +28,124 @@ function oranToOlasilik(o1, oX, o2){
   };
 }
 
-/* ============ DEĞER BAHİS KONTROLÜ ============ */
-function degerVarMi(matchIdx, sonuc){
-  const m = matchesData[matchIdx];
-  if(!m.odds) return { var: false, fark: 0 };
-  const oran = m.odds[sonuc];
-  const bahisciOlas = 100 / oran;
-  const bizimOlas = PR[matchIdx][sonuc === '1' ? 0 : sonuc === 'X' ? 1 : 2] * 100;
-  const fark = bizimOlas - bahisciOlas;
-  return { var: fark > 5, fark: fark.toFixed(1) };
+/* ============ POISSON DAĞILIMI ============ */
+function poissonPmf(k, lambda){
+  let p = Math.exp(-lambda);
+  for(let i = 1; i <= k; i++) p *= lambda / i;
+  return p;
 }
 
-/* ============ MAÇ VERİSİ YÜKLE ============ */
+// 1X2 olasılığından ev/dep xG tahmin et (basit ters Poisson)
+function xGTahmin(p1, pX, p2){
+  // Toplam gol beklentisi ~2.6, ev avantajı ~1.15
+  const totalP = p1 + p2;
+  const homeShare = p1 / (p1 + p2 || 1);
+  const toplamGol = 2.4 + (1 - pX) * 0.8; // beraberlik düşükse gol çok
+  const evXg = toplamGol * homeShare * 1.15;
+  const depXg = toplamGol * (1 - homeShare);
+  return { evXg: Math.max(0.3, evXg), depXg: Math.max(0.3, depXg) };
+}
+
+/* ============ POISSON İLE BAHİS TAHMİNİ ============ */
+function poissonBahisler(evXg, depXg){
+  const MAX = 10;
+  let p_kg = 0, p_ust25 = 0, p_kg_ust25 = 0;
+  let p_ust15 = 0, p_ust35 = 0, p_ust45 = 0;
+  let p_alt05 = 0, p_ust05 = 0;
+  const skorlar = {};
+
+  for(let h = 0; h <= MAX; h++){
+    for(let a = 0; a <= MAX; a++){
+      const ph = poissonPmf(h, evXg);
+      const pa = poissonPmf(a, depXg);
+      const p = ph * pa;
+      const toplam = h + a;
+
+      if(h >= 1 && a >= 1) p_kg += p;
+      if(toplam > 2.5) p_ust25 += p;
+      if(h >= 1 && a >= 1 && toplam > 2.5) p_kg_ust25 += p;
+      if(toplam > 1.5) p_ust15 += p;
+      if(toplam > 3.5) p_ust35 += p;
+      if(toplam > 4.5) p_ust45 += p;
+      if(toplam < 0.5) p_alt05 += p;
+      if(toplam > 0.5) p_ust05 += p;
+
+      const key = h + '-' + a;
+      skorlar[key] = (skorlar[key] || 0) + p;
+    }
+  }
+
+  const enOlasi = Object.entries(skorlar).sort((a,b) => b[1] - a[1]).slice(0,3);
+
+  return {
+    kg: p_kg * 100,
+    kgYok: (1 - p_kg) * 100,
+    ust25: p_ust25 * 100,
+    alt25: (1 - p_ust25) * 100,
+    kgUst25: p_kg_ust25 * 100,
+    ust15: p_ust15 * 100,
+    alt15: (1 - p_ust15) * 100,
+    ust35: p_ust35 * 100,
+    alt35: (1 - p_ust35) * 100,
+    ust45: p_ust45 * 100,
+    alt45: (1 - p_ust45) * 100,
+    alt05: p_alt05 * 100,
+    ust05: p_ust05 * 100,
+    enOlasiSkor: enOlasi[0] ? enOlasi[0][0] : '1-1',
+    enOlasiSkorP: enOlasi[0] ? (enOlasi[0][1]*100).toFixed(1) : '0',
+    top3: enOlasi.map(x => x[0] + ' (%' + (x[1]*100).toFixed(1) + ')')
+  };
+}
+
+/* ============ DEĞER BAHİS KONTROLÜ ============ */
+function degerVarMi(matchIdx, bahis, gercekOran, bizimOlas){
+  if(!gercekOran || gercekOran <= 1) return { var: false, fark: 0 };
+  const bahisciOlas = 100 / gercekOran;
+  const fark = bizimOlas - bahisciOlas;
+  return { var: fark > 5, fark: fark.toFixed(1), bahisciOlas: bahisciOlas.toFixed(1), bizimOlas: bizimOlas.toFixed(1) };
+}
+
+/* ============ KELLY CRITERION ============ */
+function kelly(olasilik, oran, frac = 0.5){
+  const p = olasilik / 100;
+  const b = oran - 1;
+  if(b <= 0) return 0;
+  const k = (b * p - (1 - p)) / b;
+  return Math.max(0, k * frac);
+}
+
+/* ============ VERİ YÜKLE ============ */
 async function loadMatches(){
   try{
     const res = await fetch('matches.json');
     const raw = await res.json();
-    const list = raw.matches || raw;
-    matchesData = list.map(m => {
-      let olas;
-      if(m.odds){
-        olas = oranToOlasilik(m.odds['1'], m.odds['X'], m.odds['2']);
-      } else {
-        olas = { p: [33.3, 33.3, 33.3], marj: '0' };
+    matchesData = (raw.matches || raw).map(m => ({
+      id: m.id,
+      home: m.home_team,
+      away: m.away_team,
+      date: (m.date || '') + ' ' + (m.time || ''),
+      league: m.league || ''
+    }));
+
+    // localStorage'dan kayıtlı oranları al
+    oddsData = JSON.parse(localStorage.getItem('skorlab_odds') || '{}');
+
+    // PR'ı hesapla (kayıtlı oran varsa)
+    PR = matchesData.map((m,i) => {
+      const od = oddsData[m.id];
+      if(od && od['1'] && od['X'] && od['2']){
+        const o = oranToOlasilik(parseFloat(od['1']), parseFloat(od['X']), parseFloat(od['2']));
+        return o.p.map(x => x/100);
       }
-      return {
-        id: m.id,
-        home: m.home_team,
-        away: m.away_team,
-        date: (m.date || '') + ' ' + (m.time || ''),
-        odds: m.odds || null,
-        p: olas.p,
-        marj: olas.marj,
-        league: m.league || '',
-        form: m.form || ''
-      };
+      return [0.33, 0.33, 0.34];
     });
-    PR = matchesData.map(m => m.p.map(x => x/100));
+
     $('weekTitle').innerText = raw.week || 'Bu Hafta';
     initApp();
     updateBar();
-    renderHeatmap();
     setMode('guvenli');
-    renderStats();
-    renderKelly();
-    say('🤖 <b>Merhaba, ben Bankobot.</b><br><br>Oranları gerçek olasılığa çeviriyorum, bahisçi marjını temizliyorum, değer bahis arıyorum.<br><br>' + summary(), 'bot');
+    renderOranlar();
+    say('🤖 <b>SkorLab v3 hazır!</b><br><br>Oranları gir, sistem anında analiz etsin. 6 kutu: 1, X, 2, KG Var, 2.5 Üst, Kombo.<br><br>Girmediğin oranları sistem Poisson ile hesaplar.', 'bot');
   }catch(e){
     document.body.innerHTML = '<div style="padding:20px;color:#ff4d5e">⚠️ matches.json yüklenemedi: ' + e.message + '</div>';
   }
@@ -89,7 +163,7 @@ async function loadArchive(){
   renderBacktest();
 }
 
-/* ============ SEVİYE / İSTATİSTİK ============ */
+/* ============ SEVİYE ============ */
 function level(i){
   const o = ordr(i), mx = PR[i][o[0]], gap = mx - PR[i][o[1]];
   return mx >= 0.7 ? 'Banko' : mx >= 0.55 ? 'Güçlü favori' : gap < 0.12 ? 'Çok dengeli' : 'Hafif favori';
@@ -108,67 +182,25 @@ function updateBar(){
   $('lblCost').innerText = (n*10) + ' TL';
 }
 
-function renderStats(){
-  const banko = matchesData.filter((_,i) => topP(i) >= 0.7).length;
-  const dengeli = matchesData.filter((_,i) => topP(i) < 0.5).length;
-  let valueCount = 0;
-  matchesData.forEach((m,i) => {
-    ['1','X','2'].forEach(s => {
-      if(degerVarMi(i,s).var) valueCount++;
-    });
-  });
-  const zorluk = banko >= 5 ? 'Kolay' : dengeli >= 6 ? 'Zor' : 'Orta';
-  $('statBanko').innerText = banko;
-  $('statDengeli').innerText = dengeli;
-  $('statValue').innerText = valueCount;
-  $('statZorluk').innerText = zorluk;
-}
-
-/* ============ MAÇ KARTLARI ============ */
+/* ============ ANA EKRAN (MAÇ KARTLARI) ============ */
 function initApp(){
   $('matchesList').innerHTML = matchesData.map((m,i) => {
     const sel = userPicks[i] || [];
-    const o = ordr(i);
-    let valueInfo = '';
-    ['1','X','2'].forEach(s => {
-      const v = degerVarMi(i, s);
-      if(v.var){
-        valueInfo += `<div class="value-bet-box">💎 <b>${s}</b> değerli bahis! Fark: <b>+%${v.fark}</b> (oran ${m.odds[s]})</div>`;
-      }
-    });
+    const od = oddsData[m.id] || {};
     return `
     <div class="match">
       <div class="match-head">
         <span>${m.date}</span>
         <span class="mid">MAÇ #${m.id}</span>
       </div>
-      <div class="teams">
-        ${m.home} <span class="muted" style="font-weight:400">-</span> ${m.away}
+      <div class="teams">${m.home} <span class="muted" style="font-weight:400">-</span> ${m.away}
         <span class="badge ${levelClass(i)}">${level(i)}</span>
         ${m.league ? '<span class="league-tag">' + m.league + '</span>' : ''}
       </div>
-      <div class="odds-bar">
-        <div class="odds-box ${degerVarMi(i,'1').var ? 'value' : ''}">
-          <div class="lbl">1</div>
-          <div class="val">${m.odds ? m.odds['1'].toFixed(2) : '-'}</div>
-          <div class="pct">%${m.p[0].toFixed(1)}</div>
-        </div>
-        <div class="odds-box ${degerVarMi(i,'X').var ? 'value' : ''}">
-          <div class="lbl">X</div>
-          <div class="val">${m.odds ? m.odds['X'].toFixed(2) : '-'}</div>
-          <div class="pct">%${m.p[1].toFixed(1)}</div>
-        </div>
-        <div class="odds-box ${degerVarMi(i,'2').var ? 'value' : ''}">
-          <div class="lbl">2</div>
-          <div class="val">${m.odds ? m.odds['2'].toFixed(2) : '-'}</div>
-          <div class="pct">%${m.p[2].toFixed(1)}</div>
-        </div>
-      </div>
-      ${valueInfo}
       <div class="pick-grid">
-        <div class="pick-btn ${sel.includes(0)?'active':''}" onclick="togglePick(${i},0)">1<span class="pick-pct">%${m.p[0].toFixed(0)}</span><span class="pick-odd">${m.odds ? m.odds['1'].toFixed(2) : ''}</span></div>
-        <div class="pick-btn ${sel.includes(1)?'active':''}" onclick="togglePick(${i},1)">X<span class="pick-pct">%${m.p[1].toFixed(0)}</span><span class="pick-odd">${m.odds ? m.odds['X'].toFixed(2) : ''}</span></div>
-        <div class="pick-btn ${sel.includes(2)?'active':''}" onclick="togglePick(${i},2)">2<span class="pick-pct">%${m.p[2].toFixed(0)}</span><span class="pick-odd">${m.odds ? m.odds['2'].toFixed(2) : ''}</span></div>
+        <div class="pick-btn ${sel.includes(0)?'active':''}" onclick="togglePick(${i},0)">1</div>
+        <div class="pick-btn ${sel.includes(1)?'active':''}" onclick="togglePick(${i},1)">X</div>
+        <div class="pick-btn ${sel.includes(2)?'active':''}" onclick="togglePick(${i},2)">2</div>
         <div class="pick-btn ${sel.includes(10)?'active':''}" onclick="togglePick(${i},10)" style="font-size:.7rem">1X</div>
         <div class="pick-btn ${sel.includes(12)?'active':''}" onclick="togglePick(${i},12)" style="font-size:.7rem">12</div>
         <div class="pick-btn ${sel.includes(20)?'active':''}" onclick="togglePick(${i},20)" style="font-size:.7rem">X2</div>
@@ -225,20 +257,205 @@ function codeToSym(code){
 }
 
 function codeToProb(matchIdx, code){
-  const m = matchesData[matchIdx];
-  if(code === 0) return m.p[0];
-  if(code === 1) return m.p[1];
-  if(code === 2) return m.p[2];
-  if(code === 10) return m.p[0] + m.p[1];
-  if(code === 12) return m.p[0] + m.p[2];
-  if(code === 20) return m.p[1] + m.p[2];
+  const p = PR[matchIdx];
+  if(code === 0) return p[0]*100;
+  if(code === 1) return p[1]*100;
+  if(code === 2) return p[2]*100;
+  if(code === 10) return (p[0]+p[1])*100;
+  if(code === 12) return (p[0]+p[2])*100;
+  if(code === 20) return (p[1]+p[2])*100;
   return 0;
+}
+
+/* ============ ORAN ANALİZ SEKMESİ ============ */
+function renderOranlar(){
+  const container = $('oranListesi');
+  if(!container) return;
+  container.innerHTML = matchesData.map((m,i) => {
+    const od = oddsData[m.id] || {};
+    let poisson = null;
+    if(PR[i][0] !== 0.33){
+      const xg = xGTahmin(PR[i][0], PR[i][1], PR[i][2]);
+      poisson = poissonBahisler(xg.evXg, xg.depXg);
+    }
+    return `
+    <div class="match" id="oran-${m.id}">
+      <div class="match-head">
+        <span>${m.date} · ${m.league}</span>
+        <span class="mid">#${m.id}</span>
+      </div>
+      <div class="teams" style="margin-bottom:12px">${m.home} - ${m.away}</div>
+      
+      <div class="oran-grid">
+        <div class="oran-item">
+          <label>1</label>
+          <input type="number" step="0.01" placeholder="1.00" value="${od['1']||''}" oninput="oranGuncelle(${m.id},'1',this.value)">
+        </div>
+        <div class="oran-item">
+          <label>X</label>
+          <input type="number" step="0.01" placeholder="1.00" value="${od['X']||''}" oninput="oranGuncelle(${m.id},'X',this.value)">
+        </div>
+        <div class="oran-item">
+          <label>2</label>
+          <input type="number" step="0.01" placeholder="1.00" value="${od['2']||''}" oninput="oranGuncelle(${m.id},'2',this.value)">
+        </div>
+        <div class="oran-item">
+          <label>KG Var</label>
+          <input type="number" step="0.01" placeholder="1.00" value="${od['KG_Var']||''}" oninput="oranGuncelle(${m.id},'KG_Var',this.value)">
+        </div>
+        <div class="oran-item">
+          <label>2.5 Üst</label>
+          <input type="number" step="0.01" placeholder="1.00" value="${od['Ust_25']||''}" oninput="oranGuncelle(${m.id},'Ust_25',this.value)">
+        </div>
+        <div class="oran-item">
+          <label>KG+2.5Ü</label>
+          <input type="number" step="0.01" placeholder="1.00" value="${od['KG_Ust25']||''}" oninput="oranGuncelle(${m.id},'KG_Ust25',this.value)">
+        </div>
+      </div>
+      
+      ${analizHTML(i, od, poisson)}
+    </div>`;
+  }).join('');
+}
+
+function analizHTML(i, od, poisson){
+  if(!od || !od['1'] || !od['X'] || !od['2']){
+    return '<div class="analiz-info muted" style="font-size:.72rem;text-align:center;padding:10px">Oranları gir → analiz gelsin</div>';
+  }
+  const o = oranToOlasilik(parseFloat(od['1']), parseFloat(od['X']), parseFloat(od['2']));
+  const o1 = o.p[0], oX = o.p[1], o2 = o.p[2];
+  const xg = xGTahmin(o1/100, oX/100, o2/100);
+  const poi = poissonBahisler(xg.evXg, xg.depXg);
+  const enYuksek = Math.max(o1, oX, o2);
+  const favori = o1 === enYuksek ? '1' : oX === enYuksek ? 'X' : '2';
+
+  let valueHTML = '';
+  // Değer bahis kontrolü
+  if(od['KG_Var']){
+    const dv = degerVarMi(i, 'KG_Var', parseFloat(od['KG_Var']), poi.kg);
+    if(dv.var) valueHTML += `<div class="value-bet-box">💎 <b>KG Var</b> değerli! Bizim: %${dv.bizimOlas} · Bahisçi: %${dv.bahisciOlas} · Fark: <b>+%${dv.fark}</b></div>`;
+  }
+  if(od['Ust_25']){
+    const dv = degerVarMi(i, 'Ust_25', parseFloat(od['Ust_25']), poi.ust25);
+    if(dv.var) valueHTML += `<div class="value-bet-box">💎 <b>2.5 Üst</b> değerli! Bizim: %${dv.bizimOlas} · Bahisçi: %${dv.bahisciOlas} · Fark: <b>+%${dv.fark}</b></div>`;
+  }
+  if(od['KG_Ust25']){
+    const dv = degerVarMi(i, 'KG_Ust25', parseFloat(od['KG_Ust25']), poi.kgUst25);
+    if(dv.var) valueHTML += `<div class="value-bet-box">💎 <b>KG+2.5Ü</b> değerli! Bizim: %${dv.bizimOlas} · Bahisçi: %${dv.bahisciOlas} · Fark: <b>+%${dv.fark}</b></div>`;
+  }
+
+  return `
+    <div class="analiz-box">
+      <div class="analiz-row">
+        <span class="analiz-lbl">📊 Olasılık (marj temizlenmiş)</span>
+      </div>
+      <div class="analiz-row">
+        <span>1: <b class="green">%${o1.toFixed(1)}</b></span>
+        <span>X: <b class="green">%${oX.toFixed(1)}</b></span>
+        <span>2: <b class="green">%${o2.toFixed(1)}</b></span>
+      </div>
+      <div class="analiz-row">
+        <span class="muted">Marj: %${o.marj}</span>
+      </div>
+    </div>
+
+    <div class="analiz-box">
+      <div class="analiz-row">
+        <span class="analiz-lbl">🎲 Poisson Tahmini (goller)</span>
+      </div>
+      <div class="analiz-row">
+        <span>2.5 Üst: <b>%${poi.ust25.toFixed(1)}</b></span>
+        <span>2.5 Alt: <b>%${poi.alt25.toFixed(1)}</b></span>
+      </div>
+      <div class="analiz-row">
+        <span>KG Var: <b>%${poi.kg.toFixed(1)}</b></span>
+        <span>KG Yok: <b>%${poi.kgYok.toFixed(1)}</b></span>
+      </div>
+      <div class="analiz-row">
+        <span>KG+2.5Ü: <b>%${poi.kgUst25.toFixed(1)}</b></span>
+      </div>
+      <div class="analiz-row">
+        <span class="muted">En olası skor: ${poi.enOlasiSkor} (%${poi.enOlasiSkorP})</span>
+      </div>
+    </div>
+
+    <div class="analiz-box">
+      <div class="analiz-row">
+        <span class="analiz-lbl">💡 Öneri</span>
+      </div>
+      <div class="analiz-row">
+        <span>Favori: <b class="orange">${favori}</b> (%${enYuksek.toFixed(1)})</span>
+      </div>
+      <div class="analiz-row">
+        <span class="muted">${enYuksek >= 70 ? 'Tek oyna (Banko)' : enYuksek >= 55 ? 'Tek + çift şans' : 'Çift şans öner'}</span>
+      </div>
+    </div>
+
+    ${valueHTML}
+  `;
+}
+
+function oranGuncelle(matchId, alan, deger){
+  if(!oddsData[matchId]) oddsData[matchId] = {};
+  if(deger === '' || deger === null) delete oddsData[matchId][alan];
+  else oddsData[matchId][alan] = parseFloat(deger);
+  localStorage.setItem('skorlab_odds', JSON.stringify(oddsData));
+
+  // PR'ı güncelle
+  const idx = matchesData.findIndex(m => m.id === matchId);
+  const od = oddsData[matchId];
+  if(od && od['1'] && od['X'] && od['2']){
+    const o = oranToOlasilik(od['1'], od['X'], od['2']);
+    PR[idx] = o.p.map(x => x/100);
+  } else {
+    PR[idx] = [0.33, 0.33, 0.34];
+  }
+}
+
+/* ============ TOPLU KAYDET / İNDİR ============ */
+function kaydetOranlar(){
+  localStorage.setItem('skorlab_odds', JSON.stringify(oddsData));
+  showToast('success', 'Kaydedildi!', 'Tüm oranlar tarayıcıya kaydedildi.');
+  initApp();
+}
+
+function indirJSON(){
+  const cikti = {
+    week: $('weekTitle').innerText,
+    matches: matchesData.map(m => ({
+      id: m.id,
+      home_team: m.home,
+      away_team: m.away,
+      date: m.date.split(' ')[0],
+      time: m.date.split(' ')[1] || '',
+      league: m.league,
+      odds: oddsData[m.id] || null
+    }))
+  };
+  const blob = new Blob([JSON.stringify(cikti, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'matches-guncel.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('success', 'İndirildi!', 'matches-guncel.json olarak indirildi.');
+}
+
+function temizleOranlar(){
+  if(!confirm('Tüm oranları silmek istediğine emin misin?')) return;
+  oddsData = {};
+  localStorage.removeItem('skorlab_odds');
+  PR = matchesData.map(() => [0.33, 0.33, 0.34]);
+  renderOranlar();
+  initApp();
+  showToast('success', 'Temizlendi!', 'Tüm oranlar silindi.');
 }
 
 /* ============ KUPON OLUŞTURMA ============ */
 function topColumns(n){
   const ord = matchesData.map((_,i) => ordr(i));
-  const lp = s => s.reduce((t,r,i) => t + Math.log(PR[i][ord[i][r]]), 0);
+  const lp = s => s.reduce((t,r,i) => t + Math.log(Math.max(PR[i][ord[i][r]], 0.01)), 0);
   const st = ord.map(() => 0), seen = new Set([st.join('')]);
   const q = [[lp(st), st]], out = [];
   while(out.length < n && q.length){
@@ -444,7 +661,7 @@ function saveCoupon(){
   userPicks = {};
   initApp();
   renderCoupons();
-  switchTab(3, document.querySelectorAll('.tab')[3]);
+  switchTab(4, document.querySelectorAll('.tab')[4]);
 }
 
 function analyzeCoupon(coupon){
@@ -460,6 +677,7 @@ function analyzeCoupon(coupon){
 
 function renderCoupons(){
   const c = $('couponContent');
+  if(!c) return;
   if(!savedCoupons.length){
     c.innerHTML = `<div class="coupon-empty">Henüz kupon yok.<br><br>📌 Bülten sekmesinden seçim yap.</div>`;
     return;
@@ -492,24 +710,27 @@ function deleteCoupon(idx){
 
 /* ============ KELLY ============ */
 function renderKelly(){
-  const bank = parseFloat($('kellyBank').value) || 0;
-  const frac = parseFloat($('kellyFrac').value) || 0.5;
-  let html = '<table class="kelly-table"><thead><tr><th>Maç</th><th>Seçim</th><th>Oran</th><th>Kelly %</th><th>Öneri</th></tr></thead><tbody>';
+  const bank = parseFloat($('kellyBank')?.value) || 0;
+  const frac = parseFloat($('kellyFrac')?.value) || 0.5;
+  if(!bank) return;
+
+  let html = '<table class="kelly-table"><thead><tr><th>Maç</th><th>Seçim</th><th>Oran</th><th>Kelly %</th><th>Yatır</th></tr></thead><tbody>';
   matchesData.forEach((m,i) => {
     const o = ordr(i)[0];
-    const oran = m.odds ? m.odds[codeToSym(o) === 'X' ? 'X' : codeToSym(o)] : 0;
-    const p = PR[i][o];
+    const od = oddsData[m.id];
+    if(!od) return;
+    const sym = codeToSym(o);
+    const oran = od[sym];
     if(!oran) return;
-    const b = oran - 1;
-    const kelly = (b * p - (1-p)) / b;
-    const kellyFinal = Math.max(0, kelly * frac);
-    const yatir = (bank * kellyFinal).toFixed(0);
-    const cls = kellyFinal > 0.05 ? 'green' : 'muted';
+    const olas = PR[i][o] * 100;
+    const k = kelly(olas, oran, frac);
+    const yatir = (bank * k).toFixed(0);
+    const cls = k > 0.03 ? 'green' : 'muted';
     html += `<tr>
       <td>#${m.id} ${m.home.slice(0,8)}</td>
-      <td><b>${codeToSym(o)}</b></td>
-      <td>${oran.toFixed(2)}</td>
-      <td class="${cls}">%${(kellyFinal*100).toFixed(1)}</td>
+      <td><b>${sym}</b></td>
+      <td>${parseFloat(oran).toFixed(2)}</td>
+      <td class="${cls}">%${(k*100).toFixed(1)}</td>
       <td class="${cls}">${yatir} TL</td>
     </tr>`;
   });
@@ -520,18 +741,18 @@ function renderKelly(){
 /* ============ BACKTEST ============ */
 function renderBacktest(){
   const c = $('backtestOutput');
+  if(!c) return;
   if(!archiveData.weeks || !archiveData.weeks.length){
     c.innerHTML = '<div class="coupon-empty">Henüz geçmiş sonuç yok.<br><br>archive.json dosyasına sonuçları ekleyin.</div>';
     return;
   }
-  let html = '';
-  let totalCorrect = 0, totalMatches = 0;
+  let html = '', totalCorrect = 0, totalMatches = 0;
   archiveData.weeks.forEach(w => {
     let correct = 0;
     w.results.forEach(r => {
-      const m = matchesData.find(x => x.id === r.id);
-      if(!m) return;
-      const o = ordr(matchesData.indexOf(m))[0];
+      const idx = matchesData.findIndex(x => x.id === r.id);
+      if(idx < 0) return;
+      const o = ordr(idx)[0];
       if(codeToSym(o) === r.result) correct++;
       totalMatches++;
     });
@@ -547,7 +768,9 @@ function renderBacktest(){
 
 /* ============ ISI HARİTASI ============ */
 function renderHeatmap(){
-  $('heatmap').innerHTML = matchesData.map((m,i) => {
+  const hm = $('heatmap');
+  if(!hm) return;
+  hm.innerHTML = matchesData.map((m,i) => {
     const mx = topP(i), cls = mx >= 0.65 ? 'green' : mx >= 0.5 ? 'yellow' : 'red';
     return `<div class="hm ${cls}" onclick="ask('maç ${m.id}')">${m.id}</div>`;
   }).join('');
@@ -563,15 +786,18 @@ function setMode(mode, el){
     dengeli: '<b>⚖️ DENGELİ</b><br>Favoriler + hafif sürprizler. Hedef: 12-13/15.',
     agresif: '<b>🚀 AGRESİF</b><br>Sürprizlere ağırlık. Hedef: 14-15/15.'
   };
-  $('modeInfo').innerHTML = info[mode];
+  const el2 = $('modeInfo');
+  if(el2) el2.innerHTML = info[mode];
 }
 
 /* ============ BANKOBOT ============ */
 function say(html, who){
+  const chat = $('chat');
+  if(!chat) return;
   const d = document.createElement('div');
   d.className = 'b ' + who;
   d.innerHTML = html;
-  $('chat').appendChild(d);
+  chat.appendChild(d);
   d.scrollIntoView({block:'end',behavior:'smooth'});
 }
 function outName(m,o){ return o === 0 ? m.home + ' (1)' : o === 1 ? 'Beraberlik (X)' : m.away + ' (2)'; }
@@ -592,23 +818,8 @@ function summary(){
 
 function listBanko(){
   const b = matchesData.map((m,i) => [m,i]).filter(x => topP(x[1]) >= 0.7);
-  if(!b.length) return 'Banko yok.';
+  if(!b.length) return 'Banko yok (oranları girmemiş olabilirsin).';
   return `<b style="color:#00e07a">🏦 BANKOLAR:</b><br>` + b.map(([m,i]) => `#${m.id} ${m.home} - ${m.away}: <b>${outName(m,ordr(i)[0])}</b> %${pc(topP(i))}`).join('<br>');
-}
-
-function listValue(){
-  let html = '<b style="color:#a855f7">💎 DEĞERLİ BAHİSLER:</b><br><br>';
-  let found = false;
-  matchesData.forEach((m,i) => {
-    ['1','X','2'].forEach(s => {
-      const v = degerVarMi(i,s);
-      if(v.var){
-        found = true;
-        html += `#${m.id} ${m.home}-${m.away}: <b>${s}</b> (oran ${m.odds[s]}, fark +%${v.fark})<br>`;
-      }
-    });
-  });
-  return found ? html : 'Değerli bahis bulunamadı.';
 }
 
 function listRisk(){
@@ -629,16 +840,19 @@ function difficulty(){
 
 function analyze(i){
   const m = matchesData[i], p = PR[i], o = ordr(i);
+  const od = oddsData[m.id] || {};
+  const xg = xGTahmin(p[0], p[1], p[2]);
+  const poi = poissonBahisler(xg.evXg, xg.depXg);
   return `<b>📊 MAÇ #${m.id}: ${m.home} - ${m.away}</b><br>
-    ${m.odds ? `Oranlar: <b>${m.odds['1']}</b> / <b>${m.odds['X']}</b> / <b>${m.odds['2']}</b> (marj %${m.marj})<br>` : ''}
+    ${od['1'] ? `Oranlar: <b>${od['1']}</b> / <b>${od['X']}</b> / <b>${od['2']}</b><br>` : ''}
     Olasılık: 1: %${pc(p[0])} · X: %${pc(p[1])} · 2: %${pc(p[2])}<br>
     🎯 En olası: <b>${outName(m,o[0])}</b><br>
+    ⚽ Poisson: 2.5Ü %${poi.ust25.toFixed(1)} · KG %${poi.kg.toFixed(1)} · KG+2.5Ü %${poi.kgUst25.toFixed(1)}<br>
     💡 Öneri: ${topP(i) >= 0.7 ? 'Tek oyna.' : topP(i) >= 0.55 ? 'Tek + çift şans.' : 'Çift şans.'}`;
 }
 
 function reply(t){
   const q = t.toLocaleLowerCase('tr');
-  if(/değerli|value|💎/.test(q)) return listValue();
   if(/banko/.test(q)) return listBanko();
   if(/risk/.test(q)) return listRisk();
   if(/zor|kolay|zorluk/.test(q)) return difficulty();
@@ -647,7 +861,7 @@ function reply(t){
   if(nm){ const i = parseInt(nm[1]) - 1; if(matchesData[i]) return analyze(i); }
   const hits = matchesData.map((m,i) => i).filter(i => q.includes(matchesData[i].home.toLocaleLowerCase('tr')) || q.includes(matchesData[i].away.toLocaleLowerCase('tr')));
   if(hits.length) return hits.map(analyze).join('<br><br>');
-  return '🤖 Sor:<br>• Bülten özeti<br>• Değerli bahisler<br>• Bankolar<br>• Riskli maçlar<br>• Zorluk<br>• Maç 5';
+  return '🤖 Sor:<br>• Bülten özeti<br>• Bankolar<br>• Riskli maçlar<br>• Zorluk<br>• Maç 5';
 }
 
 function ask(t){ say(t,'usr'); setTimeout(() => say(reply(t),'bot'), 250); }
@@ -658,6 +872,8 @@ function switchTab(i, el){
   document.querySelectorAll('.tab,.page').forEach(e => e.classList.remove('active'));
   el.classList.add('active');
   $('page-' + i).classList.add('active');
+  if(i === 3) renderOranlar();
+  if(i === 5) renderKelly();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -674,7 +890,7 @@ function showToast(type, title, msg){
 }
 
 function shareApp(){
-  const text = '🎯 SkorLab - Akıllı Spor Toto Analiz\n\nOran okuma, Monte Carlo, Değer Bahis, Kelly\n\n👉 https://emrahmeltem90-ux.github.io/bilyonvip';
+  const text = '🎯 SkorLab - Akıllı Spor Toto Analiz\n\nOran okuma, Poisson, Değer Bahis, Kelly\n\n👉 https://emrahmeltem90-ux.github.io/bilyonvip';
   if(navigator.share){
     navigator.share({title:'SkorLab', text: text}).catch(() => {});
   } else {
