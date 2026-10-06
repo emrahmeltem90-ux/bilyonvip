@@ -18,9 +18,10 @@
   <div class="tab active" onclick="switchTab(0,this)"><span class="tab-num">01</span>Bülten</div>
   <div class="tab" onclick="switchTab(1,this)"><span class="tab-num">02</span>Bankobot</div>
   <div class="tab" onclick="switchTab(2,this)"><span class="tab-num">03</span>Monte Carlo</div>
-  <div class="tab" onclick="switchTab(3,this)"><span class="tab-num">04</span>Kuponum</div>
-  <div class="tab" onclick="switchTab(4,this)"><span class="tab-num">05</span>Kelly</div>
-  <div class="tab" onclick="switchTab(5,this)"><span class="tab-num">06</span>Backtest</div>
+  <div class="tab" onclick="switchTab(3,this)"><span class="tab-num">04</span>Oran</div>
+  <div class="tab" onclick="switchTab(4,this)"><span class="tab-num">05</span>Kuponum</div>
+  <div class="tab" onclick="switchTab(5,this)"><span class="tab-num">06</span>Kelly</div>
+  <div class="tab" onclick="switchTab(6,this)"><span class="tab-num">07</span>Backtest</div>
 </nav>
 
 <div class="container">
@@ -29,12 +30,6 @@
   <div class="page active" id="page-0">
     <div class="card" id="weekCard">
       <div class="result-title">📅 <span id="weekTitle">Yükleniyor...</span></div>
-      <div class="stat-grid c4">
-        <div class="stat-box"><div class="num" id="statBanko">-</div><div class="lbl">Banko</div></div>
-        <div class="stat-box"><div class="num" id="statDengeli">-</div><div class="lbl">Dengeli</div></div>
-        <div class="stat-box"><div class="num" id="statValue">-</div><div class="lbl">Değerli</div></div>
-        <div class="stat-box"><div class="num" id="statZorluk">-</div><div class="lbl">Zorluk</div></div>
-      </div>
     </div>
 
     <div class="card">
@@ -83,11 +78,9 @@
     <div id="chat"></div>
     <div class="chips">
       <span class="chip" onclick="ask('Bülten özeti')">Bülten özeti</span>
-      <span class="chip" onclick="ask('Değerli bahisler')">💎 Değerli</span>
       <span class="chip" onclick="ask('Bankolar')">Bankolar</span>
       <span class="chip" onclick="ask('Riskli maçlar')">Riskli</span>
       <span class="chip" onclick="ask('Zorluk')">Zorluk</span>
-      <span class="chip" onclick="ask('Sürpriz adayları')">Sürpriz</span>
     </div>
     <div class="askrow">
       <input id="q" placeholder="Bankobot'a sor..." onkeydown="if(event.key==='Enter')send()">
@@ -106,18 +99,32 @@
     <div id="res-full" class="card" style="display:none"></div>
   </div>
 
-  <!-- SAYFA 3: KUPONUM -->
+  <!-- SAYFA 3: ORAN ANALİZ -->
   <div class="page" id="page-3">
+    <div class="card">
+      <div class="result-title">🎯 ORAN ANALİZ</div>
+      <p class="muted" style="font-size:.76rem;margin-bottom:14px;line-height:1.6">
+        1, X, 2, KG Var, 2.5 Üst, Kombo oranlarını gir. Sistem anında analiz eder. Boş bıraktığın oranları Poisson ile hesaplar.
+      </p>
+      <button onclick="kaydetOranlar()">💾 Oranları Kaydet</button>
+      <button onclick="indirJSON()" class="blue" style="margin-top:8px">⬇️ JSON İndir</button>
+      <button onclick="temizleOranlar()" style="margin-top:8px;background:var(--bg2);color:var(--red);border:1px solid var(--border)">🗑️ Tümünü Temizle</button>
+    </div>
+    <div id="oranListesi"></div>
+  </div>
+
+  <!-- SAYFA 4: KUPONUM -->
+  <div class="page" id="page-4">
     <div class="card">
       <div class="result-title">📋 KUPONUM</div>
       <div id="couponContent">
-        <div class="coupon-empty">Henüz kupon oluşturmadın.<br><br>📌 Bülten sekmesinden seçim yap, sonra alttaki "Kaydet" butonuna bas.</div>
+        <div class="coupon-empty">Henüz kupon oluşturmadın.<br><br>📌 Bülten sekmesinden seçim yap.</div>
       </div>
     </div>
   </div>
 
-  <!-- SAYFA 4: KELLY -->
-  <div class="page" id="page-4">
+  <!-- SAYFA 5: KELLY -->
+  <div class="page" id="page-5">
     <div class="card">
       <div class="result-title">💼 KELLY CRITERION</div>
       <p class="muted" style="font-size:.76rem;margin-bottom:14px;line-height:1.6">Kelly, her maça ne kadar yatırman gerektiğini matematiksel olarak söyler.</p>
@@ -133,8 +140,8 @@
     </div>
   </div>
 
-  <!-- SAYFA 5: BACKTEST -->
-  <div class="page" id="page-5">
+  <!-- SAYFA 6: BACKTEST -->
+  <div class="page" id="page-6">
     <div class="card">
       <div class="result-title">📊 BACKTEST</div>
       <p class="muted" style="font-size:.76rem;margin-bottom:14px;line-height:1.6">Geçmiş haftaların sonuçlarına göre sistemin ne kadar tuttuğunu ölçer.</p>
@@ -189,11 +196,10 @@
   <div class="toast-box" style="max-width:440px;text-align:left;max-height:85vh;overflow-y:auto">
     <div class="modal-title" style="color:var(--orange);margin-bottom:14px;font-size:1rem">⚠️ Yasal Uyarı</div>
     <div style="font-size:.76rem;line-height:1.8;color:var(--text)">
-      <p style="margin-bottom:12px"><b style="color:var(--green)">📌 Amaç</b><br>SkorLab istatistiksel analiz aracıdır. Bilgilendirme amaçlıdır.</p>
+      <p style="margin-bottom:12px"><b style="color:var(--green)">📌 Amaç</b><br>SkorLab istatistiksel analiz aracıdır.</p>
       <p style="margin-bottom:12px"><b style="color:var(--green)">🚫 Garanti Yoktur</b><br>Tahminler kesin sonuç garantisi vermez.</p>
-      <p style="margin-bottom:12px"><b style="color:var(--green)">⚖️ Sorumluluk</b><br>SkorLab yasal bahis hizmeti sunmaz. Kullanıcı sorumludur.</p>
+      <p style="margin-bottom:12px"><b style="color:var(--green)">⚖️ Sorumluluk</b><br>Yasal bahis hizmeti sunmaz.</p>
       <p style="margin-bottom:12px"><b style="color:var(--green)">🔞 Yaş Sınırı</b><br>18 yaşından büyükler içindir.</p>
-      <p style="margin-bottom:12px"><b style="color:var(--green)">💰 Bağımlılık</b><br>Bahis bağımlılık yapabilir. Dikkatli oynayın.</p>
       <p style="border-top:1px solid var(--border);padding-top:12px;font-size:.7rem;color:var(--muted)">Uygulamayı kullanarak şartları kabul etmiş sayılırsınız.</p>
     </div>
     <button onclick="closeModal('legalModal')" style="margin-top:16px">Anladım</button>
