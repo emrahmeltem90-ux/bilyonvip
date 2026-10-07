@@ -1,5 +1,5 @@
 /* ============================================================
-   SKORLAB v11 · TOTO=SADE, SERBEST=DETAYLI
+   SKORLAB v12 · KUPON ANALİZ
    ============================================================ */
 
 let matchesData = [];
@@ -123,7 +123,6 @@ function degerVarMi(bahisAdi, gercekOran, bizimOlas){
   return { var: fark > 5, fark: fark.toFixed(1), bahisciOlas: bahisciOlas.toFixed(1), bizimOlas: bizimOlas.toFixed(1) };
 }
 
-/* ============ EN İYİ BAHİS MOTORU ============ */
 function enIyiBahisBul(m, poi, o, s){
   const o1 = o.p[0], oX = o.p[1], o2 = o.p[2];
   const favori = o1 === Math.max(o1,oX,o2) ? '1' : oX === Math.max(o1,oX,o2) ? 'X' : '2';
@@ -280,7 +279,6 @@ function neYapmaliyimHTML(m, poi, o, s){
   else if(s.puan > 50) oneriCumle = '⚠️ Yüksek risk. Banko yazma, çift şans yap.';
   else if(s.puan > 25) oneriCumle = '⚡ Orta risk. Tek oyna ama dikkatli ol.';
   else oneriCumle = '✅ Güvenli. Banko yazabilirsin.';
-  if(enYuksek >= 70 && s.puan <= 25) oneriCumle = `✅ Banko! Tek ${favori} oyna.`;
   return `
     <div class="ne-yapmaliyim">
       <div class="baslik">🎯 NE YAPMALIYIM?</div>
@@ -290,44 +288,34 @@ function neYapmaliyimHTML(m, poi, o, s){
     </div>`;
 }
 
-/* ============ TOTO ANALİZ (SADE) ============ */
 function totoAnalizHTML(o, s){
   const o1 = o.p[0], oX = o.p[1], o2 = o.p[2];
   const enYuksek = Math.max(o1, oX, o2);
   const favori = o1 === enYuksek ? '1' : oX === enYuksek ? 'X' : '2';
   const favoriIsim = favori === '1' ? 'Ev Sahibi' : favori === '2' ? 'Deplasman' : 'Beraberlik';
   const renk = s.renk === 'yellow' ? 'orange' : s.renk;
-  
   const bankoMu = enYuksek >= 65;
-  
   let ciftSans = '', alternatif = '', nedenCift = '';
-  
   if(!bankoMu){
     if(s.xOran > 4.5){
-      // Beraberlik riski çok yüksek
       if(favori === '1'){ ciftSans = '1X'; alternatif = '12'; nedenCift = 'Beraberlik riski yüksek → 1X'; }
       else if(favori === '2'){ ciftSans = 'X2'; alternatif = '12'; nedenCift = 'Beraberlik riski yüksek → X2'; }
       else { ciftSans = '1X'; alternatif = 'X2'; nedenCift = 'Beraberlik favori'; }
     } else if(s.xOran > 3.5){
-      // Beraberlik riski var
       if(favori === '1'){ ciftSans = '1X'; alternatif = '12'; nedenCift = 'Favori ev sahibi → 1X'; }
       else if(favori === '2'){ ciftSans = 'X2'; alternatif = '12'; nedenCift = 'Favori deplasman → X2'; }
       else { ciftSans = '1X'; alternatif = 'X2'; nedenCift = 'Beraberlik favori'; }
     } else {
-      // Beraberlik düşük → 12
       ciftSans = '12';
       alternatif = favori === '1' ? '1X' : 'X2';
       nedenCift = 'Beraberlik düşük → 12';
     }
-    
-    // Çok dengeli maç → 12
     if(s.puan >= 70 && enYuksek < 45){
       ciftSans = '12';
       alternatif = 'X2';
       nedenCift = 'Çok dengeli → 12';
     }
   }
-  
   let oneriHTML = '';
   if(bankoMu){
     oneriHTML = `
@@ -345,7 +333,6 @@ function totoAnalizHTML(o, s){
         <div style="font-size:.7rem;color:var(--orange);margin-top:6px">💡 ${nedenCift}</div>
       </div>`;
   }
-  
   return `
     <div class="analiz-box">
       <div class="analiz-row"><span class="analiz-lbl">📊 TOTO TAHLİLİ</span></div>
@@ -364,7 +351,6 @@ function totoAnalizHTML(o, s){
   `;
 }
 
-/* ============ KELLY ============ */
 function kelly(olasilik, oran, frac = 0.5){
   const p = olasilik / 100;
   const b = oran - 1;
@@ -373,7 +359,6 @@ function kelly(olasilik, oran, frac = 0.5){
   return Math.max(0, k * frac);
 }
 
-/* ============ VERİ YÜKLE ============ */
 async function loadMatches(){
   try{
     const res = await fetch('matches.json');
@@ -400,7 +385,7 @@ async function loadMatches(){
     renderOranlar();
     renderSürprizRadar();
     renderSerbest();
-    say('🤖 <b>SkorLab v11 hazır!</b><br><br>Toto=Toto tahmini, Serbest=İddaa analizi.', 'bot');
+    say('🤖 <b>SkorLab v12 hazır!</b><br><br>Kupon analizi eklendi. Kuponum sekmesinde "Analiz Et" bas.', 'bot');
   }catch(e){
     document.body.innerHTML = '<div style="padding:20px;color:#ff4d5e">⚠️ matches.json yüklenemedi: ' + e.message + '</div>';
   }
@@ -527,9 +512,9 @@ function codeToProb(matchIdx, code){
   if(code === 12) return (p[0]+p[2])*100;
   if(code === 20) return (p[1]+p[2])*100;
   return 0;
- }
+}
 
-/* ============ ORAN SEKMESİ (TOTO - SADE) ============ */
+/* ============ ORAN SEKMESİ (TOTO) ============ */
 function renderOranlar(){
   const container = $('oranListesi');
   if(!container) return;
@@ -680,7 +665,6 @@ function renderSerbest(){
     const renk = s.renk === 'yellow' ? 'orange' : s.renk;
     const xg = xGTahmin(o.p[0]/100, o.p[1]/100, o.p[2]/100);
     const poi = poissonBahisler(xg.evXg, xg.depXg);
-    
     let html = `
     <div class="serbest-card">
       <div class="head">
@@ -692,7 +676,6 @@ function renderSerbest(){
         <div class="odds-box"><div class="lbl">X</div><div class="val">${m.oX.toFixed(2)}</div><div class="pct">%${o.p[1].toFixed(1)}</div></div>
         <div class="odds-box"><div class="lbl">2</div><div class="val">${m.o2.toFixed(2)}</div><div class="pct">%${o.p[2].toFixed(1)}</div></div>
       </div>`;
-    
     html += enIyiBahisHTML(m, poi, o, s);
     html += tumBahislerHTML(poi, o);
     html += golAnalizHTML(m.ev05, m.ev15, m.dep05, m.dep15);
@@ -799,58 +782,7 @@ function renderSürprizRadar(){
   }).join('');
 }
 
-/* ============ KUPON (BÜLTEN) ============ */
-function topColumns(n){
-  const ord = matchesData.map((_,i) => ordr(i));
-  const lp = s => s.reduce((t,r,i) => t + Math.log(Math.max(PR[i][ord[i][r]], 0.01)), 0);
-  const st = ord.map(() => 0), seen = new Set([st.join('')]);
-  const q = [[lp(st), st]], out = [];
-  while(out.length < n && q.length){
-    let b = 0;
-    for(let i = 1; i < q.length; i++) if(q[i][0] > q[b][0]) b = i;
-    const [sc, s] = q.splice(b,1)[0];
-    out.push({ pick: s.map((r,i) => ord[i][r]), p: Math.exp(sc) });
-    for(let i = 0; i < s.length; i++){
-      if(s[i] < 2){
-        const t = s.slice(); t[i]++;
-        const k = t.join('');
-        if(!seen.has(k)){ seen.add(k); q.push([lp(t), t]); }
-      }
-    }
-  }
-  return out;
-}
-
-function generate(){
-  const n = nCols();
-  if(n < 1){ alert('En az 10 TL gir.'); return; }
-  const r = topColumns(n);
-  cols = r.map(x => x.pick);
-  const cov = r.reduce((t,x) => t + x.p, 0);
-  $('outputCard').style.display = 'block';
-  $('outputSummary').innerHTML = '<b>' + (n*10) + ' TL · ' + n + ' KOLON</b><br><br>15/15: <b class="green">%' + (cov*100).toFixed(3) + '</b>';
-  $('outputContainer').innerHTML = r.slice(0,10).map((x,i) => `<div class="coupon"><b>KOLON #${String(i+1).padStart(2,'0')}</b><br>${x.pick.map((o,k) => codeToSym(o)).join(' ')}</div>`).join('');
-  $('outputCard').scrollIntoView({behavior:'smooth'});
-}
-
-function openSuggestModal(){
-  suggestMode = 'guvenli';
-  $('suggestModal').classList.add('active');
-}
-
-function selectSuggestMode(mode, el){
-  suggestMode = mode;
-  document.querySelectorAll('#suggestModal .mode').forEach(e => e.classList.remove('active'));
-  el.classList.add('active');
-}
-
-function updateSuggestEstimate(){}
-
-function applySuggest(){
-  closeModal('suggestModal');
-  showToast('success', 'Tamam', 'Kupon oluşturuldu.');
-}
-
+/* ============ KUPON KAYDET ============ */
 function saveCoupon(){
   const keys = Object.keys(userPicks);
   if(keys.length === 0){ showToast('error', 'Maç Seçilmedi', 'En az bir maça tahmin yap.'); return; }
@@ -866,6 +798,7 @@ function saveCoupon(){
   initApp();
   renderCoupons();
   switchTab(5, document.querySelectorAll('.tab')[5]);
+  showToast('success', 'Kupon Kaydedildi!', keys.length + ' maçlık kupon Kuponum sekmesine eklendi.');
 }
 
 function kuponOlusturModal(){
@@ -878,23 +811,22 @@ function kuponOlusturModal(){
     showToast('error', 'Eksik Oran', 'Şu maçların oranları eksik: ' + eksik.join(', '));
     return;
   }
-  openSuggestModal();
+  showToast('success', 'Tamam', 'Oranlar girili. Bülten sekmesinden seçim yapıp kaydet.');
 }
 
+/* ============ KUPONUM + ANALİZ ============ */
 function renderCoupons(){
   const c = $('couponContent');
   if(!c) return;
   if(!savedCoupons.length){
-    c.innerHTML = '<div class="coupon-empty">Henüz kupon yok.</div>';
+    c.innerHTML = '<div class="coupon-empty">Henüz kupon yok.<br><br>📌 Bülten sekmesinden maç seç, sonra "Kaydet" bas.</div>';
     return;
   }
   c.innerHTML = '<div class="coupon-list">' + savedCoupons.map((coupon, idx) => {
     let html = '';
-    let prob = 1;
     if(coupon.serbest){
       coupon.maclar.forEach(m => {
         html += '<div><b>' + m.mac + '</b>: ' + m.favori + ' (' + m.oran.toFixed(2) + ')</div>';
-        prob *= (100 / m.oran) / 100;
       });
     } else {
       for(let mIdx in coupon.picks){
@@ -908,15 +840,118 @@ function renderCoupons(){
         <button onclick="deleteCoupon(${idx})" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:.8rem;width:auto;padding:2px 6px">🗑️</button>
       </div>
       <div class="picks">${html}</div>
-      <div style="margin-top:10px;font-size:.75rem;color:var(--green);font-weight:700">Tahmini: %${(prob*100).toFixed(2)}</div>
+      <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <button onclick="kuponAnalizEt(${idx})" style="background:linear-gradient(135deg,#3d8bff,#2563eb);color:#fff;font-size:.8rem;padding:10px;box-shadow:0 4px 12px rgba(61,139,255,.25)">🔍 Analiz Et</button>
+        <button onclick="kuponPaylas(${idx})" style="background:var(--bg2);color:var(--green);border:1px solid var(--green);font-size:.8rem;padding:10px;box-shadow:none">📤 Paylaş</button>
+      </div>
     </div>`;
   }).join('') + '</div>';
 }
 
 function deleteCoupon(idx){
+  if(!confirm('Bu kuponu silmek istediğine emin misin?')) return;
   savedCoupons.splice(idx,1);
   localStorage.setItem('skorlab_coupons', JSON.stringify(savedCoupons));
   renderCoupons();
+}
+
+function kuponAnalizEt(idx){
+  const coupon = savedCoupons[idx];
+  if(!coupon){ showToast('error', 'Hata', 'Kupon bulunamadı.'); return; }
+  
+  let html = '<div style="font-size:.8rem;line-height:1.8">';
+  let ayni = 0, farkli = 0;
+  
+  if(coupon.serbest){
+    html += '<div style="text-align:center;padding:20px;color:var(--muted)">Serbest kupon analizi yakında.</div>';
+  } else {
+    html += '<div style="font-size:.72rem;color:var(--muted);margin-bottom:12px;text-align:center">Senin seçimin ile sistemin seçimini karşılaştırıyorum</div>';
+    
+    for(let mIdx in coupon.picks){
+      const m = matchesData[parseInt(mIdx)];
+      if(!m) continue;
+      const od = oddsData[m.id];
+      if(!od || !od['1'] || !od['X'] || !od['2']) continue;
+      
+      const seninSecim = coupon.picks[mIdx].map(x => codeToSym(x)).join(', ');
+      const o = oranToOlasilik(parseFloat(od['1']), parseFloat(od['X']), parseFloat(od['2']));
+      const s = sürprizHesapla(od['1'], od['X'], od['2']);
+      const o1 = o.p[0], oX = o.p[1], o2 = o.p[2];
+      const favori = o1 === Math.max(o1,oX,o2) ? '1' : oX === Math.max(o1,oX,o2) ? 'X' : '2';
+      const favoriOlas = Math.max(o1, oX, o2);
+      
+      // Sistem seçimi
+      let sistemSecim = '';
+      if(favoriOlas >= 65) sistemSecim = favori;
+      else if(favoriOlas >= 50) sistemSecim = favori === '1' ? '1X' : favori === '2' ? 'X2' : '12';
+      else if(s.xOran < 3.5) sistemSecim = '12';
+      else sistemSecim = favori === '1' ? '1X' : favori === '2' ? 'X2' : '12';
+      
+      // Karşılaştır
+      const seninArray = coupon.picks[mIdx].map(x => codeToSym(x));
+      let ayniMi = false;
+      seninArray.forEach(sym => {
+        if(sistemSecim === sym || sistemSecim.includes(sym)) ayniMi = true;
+      });
+      
+      if(ayniMi) ayni++; else farkli++;
+      
+      const renk = ayniMi ? 'green' : 'orange';
+      const ikon = ayniMi ? '✅' : '⚠️';
+      
+      html += `
+        <div style="background:var(--bg2);border-left:3px solid var(--${renk});border-radius:8px;padding:10px 12px;margin-bottom:10px">
+          <div style="font-weight:800;font-size:.85rem;color:var(--text);margin-bottom:6px">#${parseInt(mIdx)+1} ${m.home} - ${m.away}</div>
+          <div style="display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:4px">
+            <span style="color:var(--muted)">Senin:</span>
+            <span style="font-weight:900;color:#3d8bff">${seninSecim}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:6px">
+            <span style="color:var(--muted)">Sistem:</span>
+            <span style="font-weight:900;color:var(--${renk})">${sistemSecim}</span>
+          </div>
+          <div style="font-size:.72rem;color:var(--${renk});font-weight:700">${ikon} ${ayniMi ? 'AYNI' : 'FARKLI'}</div>
+          ${!ayniMi ? `<div style="font-size:.7rem;color:var(--muted);margin-top:4px;line-height:1.5">💡 Neden: ${favoriOlas >= 65 ? 'Banko maç, favori güçlü' : s.xOran < 3.5 ? 'Beraberlik düşük, 12 mantıklı' : 'Favori orta, çift şans daha güvenli'}</div>` : ''}
+        </div>`;
+    }
+    
+    html += `<div style="background:linear-gradient(135deg,rgba(0,224,122,.15),rgba(0,224,122,.05));border:1px solid rgba(0,224,122,.3);border-radius:10px;padding:12px;margin-top:12px;text-align:center">
+      <div style="font-size:.75rem;color:var(--muted);font-weight:700">ÖZET</div>
+      <div style="font-size:1.1rem;font-weight:900;color:var(--green);margin-top:4px">${ayni} AYNI · ${farkli} FARKLI</div>
+      <div style="font-size:.7rem;color:var(--muted);margin-top:6px">${farkli > ayni ? 'Sistemle çoğu maçta farklısın, dikkatli ol' : 'Sistemle çoğu maçta aynısın, güvenli'}</div>
+    </div>`;
+  }
+  html += '</div>';
+  
+  $('resultModalTitle').innerText = '🔍 KUPON ANALİZİ';
+  $('resultModalBody').innerHTML = html;
+  $('resultModal').classList.add('active');
+}
+
+function closeResultModal(){
+  $('resultModal').classList.remove('active');
+}
+
+function kuponPaylas(idx){
+  const coupon = savedCoupons[idx];
+  let text = '🎯 SKORLAB · KUPONUM\n━━━━━━━━━━━━━━━\n\n';
+  if(coupon.serbest){
+    coupon.maclar.forEach(m => {
+      text += m.mac + ': ' + m.favori + ' (' + m.oran.toFixed(2) + ')\n';
+    });
+  } else {
+    for(let mIdx in coupon.picks){
+      const m = matchesData[parseInt(mIdx)] || {home:'?',away:'?'};
+      text += '#' + (parseInt(mIdx)+1) + ' ' + m.home + ' - ' + m.away + ': ' + coupon.picks[mIdx].map(x => codeToSym(x)).join(', ') + '\n';
+    }
+  }
+  text += '\n━━━━━━━━━━━━━━━\n🤖 SkorLab\n👉 https://emrahmeltem90-ux.github.io/bilyonvip';
+  
+  if(navigator.share){
+    navigator.share({title:'SkorLab Kuponum', text: text}).catch(() => {});
+  } else {
+    navigator.clipboard.writeText(text).then(() => showToast('success','Kopyalandı','Kupon kopyalandı.'));
+  }
 }
 
 /* ============ KELLY ============ */
@@ -1059,6 +1094,7 @@ function switchTab(i, el){
   if(i === 1) renderHeatmap();
   if(i === 3) renderOranlar();
   if(i === 4) renderSerbest();
+  if(i === 5) renderCoupons();
   if(i === 6) renderKelly();
   if(i === 7) renderBacktest();
   if(i === 8) renderSürprizRadar();
@@ -1093,3 +1129,6 @@ window.onload = function(){
     setTimeout(() => openLegal(), 800);
   }
 };
+
+
+                                                  
