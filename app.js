@@ -1,5 +1,5 @@
 /* ============================================================
-   SKORLAB v10 · ORAN=TOTO, SERBEST=İDDAA
+   SKORLAB v11 · TOTO=SADE, SERBEST=DETAYLI
    ============================================================ */
 
 let matchesData = [];
@@ -290,22 +290,61 @@ function neYapmaliyimHTML(m, poi, o, s){
     </div>`;
 }
 
-/* ============ ORAN SEKME ANALİZ (TOTO) ============ */
-function totoAnalizHTML(o, s, i){
+/* ============ TOTO ANALİZ (SADE) ============ */
+function totoAnalizHTML(o, s){
   const o1 = o.p[0], oX = o.p[1], o2 = o.p[2];
   const enYuksek = Math.max(o1, oX, o2);
   const favori = o1 === enYuksek ? '1' : oX === enYuksek ? 'X' : '2';
+  const favoriIsim = favori === '1' ? 'Ev Sahibi' : favori === '2' ? 'Deplasman' : 'Beraberlik';
   const renk = s.renk === 'yellow' ? 'orange' : s.renk;
-  let yorum = '';
-  if(s.puan > 75) yorum = '🚨 Sürpriz riski çok yüksek! Banko yazma.';
-  else if(s.puan > 50) yorum = '⚠️ Sürpriz olabilir. Dikkatli ol.';
-  else if(s.puan > 25) yorum = '⚡ Orta risk.';
-  else yorum = '✅ Güvenli maç.';
   
-  let oneri = '';
-  if(enYuksek >= 70 && s.puan <= 25) oneri = `Banko: <b>${favori}</b>`;
-  else if(enYuksek >= 55) oneri = `Favori: <b>${favori}</b> ama dikkatli`;
-  else oneri = `Çok dengeli. Banko yazma.`;
+  const bankoMu = enYuksek >= 65;
+  
+  let ciftSans = '', alternatif = '', nedenCift = '';
+  
+  if(!bankoMu){
+    if(s.xOran > 4.5){
+      // Beraberlik riski çok yüksek
+      if(favori === '1'){ ciftSans = '1X'; alternatif = '12'; nedenCift = 'Beraberlik riski yüksek → 1X'; }
+      else if(favori === '2'){ ciftSans = 'X2'; alternatif = '12'; nedenCift = 'Beraberlik riski yüksek → X2'; }
+      else { ciftSans = '1X'; alternatif = 'X2'; nedenCift = 'Beraberlik favori'; }
+    } else if(s.xOran > 3.5){
+      // Beraberlik riski var
+      if(favori === '1'){ ciftSans = '1X'; alternatif = '12'; nedenCift = 'Favori ev sahibi → 1X'; }
+      else if(favori === '2'){ ciftSans = 'X2'; alternatif = '12'; nedenCift = 'Favori deplasman → X2'; }
+      else { ciftSans = '1X'; alternatif = 'X2'; nedenCift = 'Beraberlik favori'; }
+    } else {
+      // Beraberlik düşük → 12
+      ciftSans = '12';
+      alternatif = favori === '1' ? '1X' : 'X2';
+      nedenCift = 'Beraberlik düşük → 12';
+    }
+    
+    // Çok dengeli maç → 12
+    if(s.puan >= 70 && enYuksek < 45){
+      ciftSans = '12';
+      alternatif = 'X2';
+      nedenCift = 'Çok dengeli → 12';
+    }
+  }
+  
+  let oneriHTML = '';
+  if(bankoMu){
+    oneriHTML = `
+      <div style="background:linear-gradient(135deg,rgba(0,224,122,.15),rgba(0,224,122,.05));border:2px solid rgba(0,224,122,.5);border-radius:10px;padding:14px;margin-top:10px;text-align:center">
+        <div style="color:var(--green);font-weight:900;font-size:.85rem;letter-spacing:.5px">✅ BANKO</div>
+        <div style="font-size:1.6rem;font-weight:900;color:var(--green);margin-top:8px">${favori} OYNA</div>
+        <div style="font-size:.78rem;color:var(--muted);margin-top:6px">${favoriIsim} · İhtimal: %${enYuksek.toFixed(0)}</div>
+      </div>`;
+  } else {
+    oneriHTML = `
+      <div style="background:linear-gradient(135deg,rgba(255,176,32,.15),rgba(255,176,32,.05));border:2px solid rgba(255,176,32,.5);border-radius:10px;padding:14px;margin-top:10px;text-align:center">
+        <div style="color:var(--orange);font-weight:900;font-size:.85rem;letter-spacing:.5px">⭐ ÇİFT ŞANS ÖNERİSİ</div>
+        <div style="font-size:1.8rem;font-weight:900;color:var(--orange);margin-top:8px">${ciftSans}</div>
+        <div style="font-size:.78rem;color:var(--muted);margin-top:6px">Alternatif: ${alternatif}</div>
+        <div style="font-size:.7rem;color:var(--orange);margin-top:6px">💡 ${nedenCift}</div>
+      </div>`;
+  }
   
   return `
     <div class="analiz-box">
@@ -315,18 +354,14 @@ function totoAnalizHTML(o, s, i){
         <span>X: <b class="green">%${oX.toFixed(1)}</b></span>
         <span>2: <b class="green">%${o2.toFixed(1)}</b></span>
       </div>
-      <div class="analiz-row"><span class="muted">Marj: %${o.marj}</span></div>
+      <div class="analiz-row"><span class="muted">Favori: <b>${favoriIsim}</b> · Marj: %${o.marj}</span></div>
     </div>
     <div class="sürpriz-alert" style="border-color:var(--${renk})">
-      <div class="baslik" style="color:var(--${renk})">🚨 SÜRPRİZ SKORU: ${s.puan}/100 · ${s.etiket}</div>
+      <div class="baslik" style="color:var(--${renk})">🚨 SÜRPRİZ: ${s.puan}/100 · ${s.etiket}</div>
       ${s.nedenler.length ? `<div class="neden">${s.nedenler.join(' · ')}</div>` : ''}
-      <div class="oneri">💡 ${yorum}</div>
     </div>
-    <div class="analiz-box">
-      <div class="analiz-row"><span class="analiz-lbl">💡 TAHMİN</span></div>
-      <div class="analiz-row"><span>${oneri}</span></div>
-      <div class="analiz-row"><span class="muted">${enYuksek >= 70 ? 'Banko maç' : enYuksek >= 55 ? 'Tek + çift şans' : 'Çift şans öner'}</span></div>
-    </div>`;
+    ${oneriHTML}
+  `;
 }
 
 /* ============ KELLY ============ */
@@ -365,7 +400,7 @@ async function loadMatches(){
     renderOranlar();
     renderSürprizRadar();
     renderSerbest();
-    say('🤖 <b>SkorLab v10 hazır!</b><br><br>Oran=Toto, Serbest=İddaa.', 'bot');
+    say('🤖 <b>SkorLab v11 hazır!</b><br><br>Toto=Toto tahmini, Serbest=İddaa analizi.', 'bot');
   }catch(e){
     document.body.innerHTML = '<div style="padding:20px;color:#ff4d5e">⚠️ matches.json yüklenemedi: ' + e.message + '</div>';
   }
@@ -492,9 +527,9 @@ function codeToProb(matchIdx, code){
   if(code === 12) return (p[0]+p[2])*100;
   if(code === 20) return (p[1]+p[2])*100;
   return 0;
-}
+ }
 
-/* ============ ORAN SEKMESİ (TOTO) ============ */
+/* ============ ORAN SEKMESİ (TOTO - SADE) ============ */
 function renderOranlar(){
   const container = $('oranListesi');
   if(!container) return;
@@ -505,7 +540,7 @@ function renderOranlar(){
     if(hasAnaliz){
       const o = oranToOlasilik(parseFloat(od['1']), parseFloat(od['X']), parseFloat(od['2']));
       const s = sürprizHesapla(od['1'], od['X'], od['2']);
-      analizCikti = totoAnalizHTML(o, s, i);
+      analizCikti = totoAnalizHTML(o, s);
     } else {
       analizCikti = '<div class="analiz-info muted" style="font-size:.72rem;text-align:center;padding:10px">Oranları gir → Analiz Et butonuna bas</div>';
     }
@@ -535,7 +570,7 @@ function analizEt(matchId){
   PR[idx] = o.p.map(x => x/100);
   const s = sürprizHesapla(od['1'], od['X'], od['2']);
   const cikti = $('analiz-cikti-' + matchId);
-  if(cikti) cikti.innerHTML = totoAnalizHTML(o, s, idx);
+  if(cikti) cikti.innerHTML = totoAnalizHTML(o, s);
   initApp();
   renderStats();
   renderSürprizRadar();
@@ -786,17 +821,12 @@ function topColumns(n){
   return out;
 }
 
-function closedList(cl){
-  const u = matchesData.map((_,i) => [...new Set(cl.map(c => c[i]))].sort());
-  return { u, list: u.map((x,i) => [x,i]).filter(x => x[0].length > 1) };
-}
-
 function generate(){
   const n = nCols();
   if(n < 1){ alert('En az 10 TL gir.'); return; }
   const r = topColumns(n);
   cols = r.map(x => x.pick);
-  const cov = r.reduce((t,x) => t + x.p, 0), single = r[0].p;
+  const cov = r.reduce((t,x) => t + x.p, 0);
   $('outputCard').style.display = 'block';
   $('outputSummary').innerHTML = '<b>' + (n*10) + ' TL · ' + n + ' KOLON</b><br><br>15/15: <b class="green">%' + (cov*100).toFixed(3) + '</b>';
   $('outputContainer').innerHTML = r.slice(0,10).map((x,i) => `<div class="coupon"><b>KOLON #${String(i+1).padStart(2,'0')}</b><br>${x.pick.map((o,k) => codeToSym(o)).join(' ')}</div>`).join('');
