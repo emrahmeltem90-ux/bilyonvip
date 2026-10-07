@@ -1280,7 +1280,176 @@ function shareApp(){
   } else {
     navigator.clipboard.writeText(text).then(() => showToast('success','Kopyalandı','Link kopyalandı.'));
   }
+/* ============ EN İYİ BAHİS MOTORU ============ */
+function enIyiBahisBul(m, poi, o, s){
+  const o1 = o.p[0], oX = o.p[1], o2 = o.p[2];
+  const favori = o1 === Math.max(o1,oX,o2) ? '1' : oX === Math.max(o1,oX,o2) ? 'X' : '2';
+  const favoriOlas = Math.max(o1, oX, o2);
+  
+  let adaylar = [];
+  
+  // 1. Taraf bahisleri (1/X/2)
+  if(m.o1 && favoriOlas >= 50 && s.puan <= 60){
+    adaylar.push({
+      bahis: favori,
+      oran: favori === '1' ? m.o1 : favori === '2' ? m.o2 : m.oX,
+      olas: favoriOlas,
+      tip: 'taraf',
+      neden: `Favori %${favoriOlas.toFixed(0)} · Sürpriz: ${s.puan}`
+    });
+  }
+  
+  // 2. KG Var
+  if(m.kg){
+    const dv = degerVarMi('KG Var', m.kg, poi.kg);
+    if(poi.kg >= 55){
+      adaylar.push({
+        bahis: 'KG Var',
+        oran: m.kg,
+        olas: poi.kg,
+        tip: 'kg',
+        neden: `KG Var %${poi.kg.toFixed(0)}${dv.var ? ' · 💎 Değerli (+%' + dv.fark + ')' : ''}`
+      });
+    }
+  }
+  
+  // 3. KG Yok
+  if(m.kg){
+    const dv = degerVarMi('KG Yok', m.kg, poi.kgYok);
+    if(poi.kgYok >= 55){
+      adaylar.push({
+        bahis: 'KG Yok',
+        oran: 1 / (100 / m.kg - 1) || null,
+        olas: poi.kgYok,
+        tip: 'kgyok',
+        neden: `KG Yok %${poi.kgYok.toFixed(0)}`
+      });
+    }
+  }
+  
+  // 4. 2.5 Üst
+  if(m.u25){
+    const dv = degerVarMi('2.5 Üst', m.u25, poi.ust25);
+    if(poi.ust25 >= 55){
+      adaylar.push({
+        bahis: '2.5 Üst',
+        oran: m.u25,
+        olas: poi.ust25,
+        tip: 'ust25',
+        neden: `2.5 Üst %${poi.ust25.toFixed(0)}${dv.var ? ' · 💎 Değerli (+%' + dv.fark + ')' : ''}`
+      });
+    }
+  }
+  
+  // 5. 1.5 Üst
+  if(m.u15){
+    const dv = degerVarMi('1.5 Üst', m.u15, poi.ust15);
+    if(poi.ust15 >= 60){
+      adaylar.push({
+        bahis: '1.5 Üst',
+        oran: m.u15,
+        olas: poi.ust15,
+        tip: 'ust15',
+        neden: `1.5 Üst %${poi.ust15.toFixed(0)}${dv.var ? ' · 💎 Değerli (+%' + dv.fark + ')' : ''}`
+      });
+    }
+  }
+  
+  // 6. 3.5 Üst
+  if(m.u35){
+    const dv = degerVarMi('3.5 Üst', m.u35, poi.ust35);
+    if(poi.ust35 >= 45){
+      adaylar.push({
+        bahis: '3.5 Üst',
+        oran: m.u35,
+        olas: poi.ust35,
+        tip: 'ust35',
+        neden: `3.5 Üst %${poi.ust35.toFixed(0)}${dv.var ? ' · 💎 Değerli (+%' + dv.fark + ')' : ''}`
+      });
+    }
+  }
+  
+  // 7. 4.5 Üst
+  if(m.u45){
+    const dv = degerVarMi('4.5 Üst', m.u45, poi.ust45);
+    if(poi.ust45 >= 30){
+      adaylar.push({
+        bahis: '4.5 Üst',
+        oran: m.u45,
+        olas: poi.ust45,
+        tip: 'ust45',
+        neden: `4.5 Üst %${poi.ust45.toFixed(0)}${dv.var ? ' · 💎 Değerli (+%' + dv.fark + ')' : ''}`
+      });
+    }
+  }
+  
+  // 8. KG+2.5Ü
+  if(m.kgu){
+    const dv = degerVarMi('KG+2.5Ü', m.kgu, poi.kgUst25);
+    if(poi.kgUst25 >= 50){
+      adaylar.push({
+        bahis: 'KG+2.5Ü',
+        oran: m.kgu,
+        olas: poi.kgUst25,
+        tip: 'kgu',
+        neden: `KG+2.5Ü %${poi.kgUst25.toFixed(0)}${dv.var ? ' · 💎 Değerli (+%' + dv.fark + ')' : ''}`
+      });
+    }
+  }
+  
+  // En iyi adayı seç (olasılık × oran — beklenen değer)
+  if(!adaylar.length) return null;
+  
+  adaylar.forEach(a => {
+    a.skor = (a.olas / 100) * a.oran;
+  });
+  adaylar.sort((a, b) => b.skor - a.skor);
+  
+  return adaylar[0];
 }
+
+function enIyiBahisHTML(m, poi, o, s){
+  const en = enIyiBahisBul(m, poi, o, s);
+  if(!en) return '';
+  
+  return `
+    <div class="en-iyi-bahis">
+      <div class="baslik">🎯 BU MAÇTA EN İYİ BAHİS</div>
+      <div class="secim">
+        <div class="bahis-adi">${en.bahis}</div>
+        <div class="oran">Oran: ${en.oran ? parseFloat(en.oran).toFixed(2) : '—'} · İhtimal: %${en.olas.toFixed(0)}</div>
+      </div>
+      <div class="neden">💡 ${en.neden}</div>
+    </div>`;
+}
+
+function tumBahislerHTML(m, poi, o){
+  const o1 = o.p[0], oX = o.p[1], o2 = o.p[2];
+  let satirlar = [];
+  
+  function ekle(ad, olas){
+    const cls = olas >= 60 ? 'iyi' : olas >= 45 ? 'orta' : 'kotu';
+    satirlar.push(`<div class="satir"><span>${ad}</span><span class="${cls}">%${olas.toFixed(0)}</span></div>`);
+  }
+  
+  ekle('1 (Ev Sahibi)', o1);
+  ekle('X (Beraberlik)', oX);
+  ekle('2 (Deplasman)', o2);
+  ekle('KG Var', poi.kg);
+  ekle('KG Yok', poi.kgYok);
+  ekle('1.5 Üst', poi.ust15);
+  ekle('2.5 Üst', poi.ust25);
+  ekle('3.5 Üst', poi.ust35);
+  ekle('4.5 Üst', poi.ust45);
+  ekle('KG+2.5Ü', poi.kgUst25);
+  
+  return `
+    <div class="en-iyi-bahis">
+      <div class="baslik">📊 TÜM BAHİSLERİN İHTİMALLERİ</div>
+      <div class="alt-bahisler">${satirlar.join('')}</div>
+    </div>`;
+}
+
 
 window.onload = function(){
   loadMatches();
