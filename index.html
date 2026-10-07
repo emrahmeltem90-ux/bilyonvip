@@ -102,7 +102,7 @@
   <div class="page" id="page-3">
     <div class="card">
       <div class="result-title">🎯 ORAN ANALİZ</div>
-      <p class="muted" style="font-size:.76rem;margin-bottom:14px;line-height:1.6">1, X, 2, KG Var, 2.5 Üst, Kombo oranlarını gir. Sonra "Analiz Et" butonuna bas.</p>
+      <p class="muted" style="font-size:.76rem;margin-bottom:14px;line-height:1.6">1, X, 2 oranlarını gir. Sonra "Analiz Et" butonuna bas.</p>
       <button onclick="kuponOlusturModal()">⚡ Kupon Oluştur (Oranlarımdan)</button>
       <button onclick="indirJSON()" class="blue" style="margin-top:8px">⬇️ JSON İndir</button>
       <button onclick="temizleOranlar()" class="danger" style="margin-top:8px">🗑️ Tümünü Temizle</button>
@@ -127,7 +127,7 @@
     <div class="card">
       <div class="result-title">📋 KUPONUM</div>
       <div id="couponContent">
-        <div class="coupon-empty">Henüz kupon oluşturmadın.<br><br>📌 Oran veya Serbest sekmesinden kupon oluştur.</div>
+        <div class="coupon-empty">Henüz kupon oluşturmadın.<br><br>📌 Bülten sekmesinden maç seç, sonra "Kaydet" bas.</div>
       </div>
     </div>
   </div>
@@ -247,6 +247,14 @@
     <div class="toast-title" id="toastTitle">Başarılı</div>
     <div class="toast-msg" id="toastMsg"></div>
     <button onclick="closeModal('toastModal')">Tamam</button>
+  </div>
+</div>
+
+<div class="toast-overlay" id="resultModal" onclick="if(event.target===this)closeResultModal()">
+  <div class="toast-box" style="max-width:440px;text-align:left;max-height:85vh;overflow-y:auto">
+    <div class="modal-title" id="resultModalTitle" style="margin-bottom:14px">📊 KUPON ANALİZİ</div>
+    <div id="resultModalBody" style="font-size:.78rem;line-height:1.7;color:var(--text)"></div>
+    <button onclick="closeResultModal()" style="margin-top:16px">Tamam</button>
   </div>
 </div>
 
