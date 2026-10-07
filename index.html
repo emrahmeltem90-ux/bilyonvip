@@ -29,7 +29,6 @@
 
 <div class="container">
 
-  <!-- SAYFA 0: BÜLTEN -->
   <div class="page active" id="page-0">
     <div class="card">
       <div class="result-title">📅 <span id="weekTitle">Yükleniyor...</span></div>
@@ -58,7 +57,6 @@
     <div class="legal-link"><a href="#" onclick="openLegal();return false">⚠️ Yasal Uyarı</a></div>
   </div>
 
-  <!-- SAYFA 1: BANKOBOT -->
   <div class="page" id="page-1">
     <div class="card">
       <div class="result-title">🔥 ISI HARİTASI</div>
@@ -92,7 +90,6 @@
     </div>
   </div>
 
-  <!-- SAYFA 2: MONTE CARLO -->
   <div class="page" id="page-2">
     <div class="card">
       <div class="result-title">🎲 MONTE CARLO LAB <span class="badge">10.000 deneme</span></div>
@@ -103,7 +100,6 @@
     <div id="res-full" class="card" style="display:none"></div>
   </div>
 
-  <!-- SAYFA 3: ORAN -->
   <div class="page" id="page-3">
     <div class="card">
       <div class="result-title">🎯 ORAN ANALİZ</div>
@@ -115,21 +111,19 @@
     <div id="oranListesi"></div>
   </div>
 
-  <!-- SAYFA 4: SERBEST -->
   <div class="page" id="page-4">
     <div class="card">
       <div class="result-title">🎯 SERBEST ANALİZ</div>
       <p class="muted" style="font-size:.76rem;margin-bottom:14px;line-height:1.6">İstediğin maçı ekle, oranları gir. Bülten dışı maçlar için!</p>
       <div class="serbest-actions">
         <button onclick="openSerbestModal()">➕ Maç Ekle</button>
-        <button onclick="kuponSerbestModal()" class="purple">⚡ Kupon Oluştur</button>
+        <button onclick="otomatikKuponModal()" class="purple">🤖 Otomatik Kupon</button>
       </div>
       <button onclick="temizleSerbest()" class="danger" style="margin-top:8px">🗑️ Tümünü Temizle</button>
     </div>
     <div id="serbestListesi"></div>
   </div>
 
-  <!-- SAYFA 5: KUPONUM -->
   <div class="page" id="page-5">
     <div class="card">
       <div class="result-title">📋 KUPONUM</div>
@@ -139,7 +133,6 @@
     </div>
   </div>
 
-  <!-- SAYFA 6: KELLY -->
   <div class="page" id="page-6">
     <div class="card">
       <div class="result-title">💼 KELLY CRITERION</div>
@@ -156,7 +149,6 @@
     </div>
   </div>
 
-  <!-- SAYFA 7: BACKTEST -->
   <div class="page" id="page-7">
     <div class="card">
       <div class="result-title">📊 BACKTEST</div>
@@ -165,7 +157,6 @@
     </div>
   </div>
 
-  <!-- SAYFA 8: SÜRPRİZ -->
   <div class="page" id="page-8">
     <div class="card">
       <div class="result-title">🚨 SÜRPRİZ RADARI</div>
@@ -174,7 +165,6 @@
     </div>
   </div>
 
-  <!-- SAYFA 9: GOL ANALİZİ -->
   <div class="page" id="page-9">
     <div class="card">
       <div class="result-title">🎯 MOD SEÇİMİ</div>
@@ -193,7 +183,6 @@
 
 </div>
 
-<!-- SAVE BAR -->
 <div class="save-bar" id="saveBar" style="display:none">
   <div class="info">Seçilen: <b id="pickCount">0</b>/15 | Kolon: <b id="colCount">1</b><br>Tutar: <b id="colPrice">10 TL</b></div>
   <button onclick="saveCoupon()">💾 Kaydet</button>
@@ -249,6 +238,35 @@
     <div class="modal-buttons">
       <button class="cancel" onclick="closeModal('serbestModal')">İptal</button>
       <button onclick="addSerbest()">Ekle</button>
+    </div>
+  </div>
+</div>
+
+<!-- OTOMATİK KUPON MODAL -->
+<div class="modal-overlay" id="otomatikModal">
+  <div class="modal-box">
+    <div class="modal-title">🤖 Otomatik Kupon</div>
+    <div class="modal-sub">Sistem senin için en iyi kuponu oluştursun.</div>
+    <label>📊 Kaç Maçlık Kupon?</label>
+    <select id="otoKacMac">
+      <option value="3">3 Maç (Güvenli)</option>
+      <option value="4" selected>4 Maç (Önerilen)</option>
+      <option value="5">5 Maç (Orta Risk)</option>
+      <option value="6">6 Maç (Yüksek Risk)</option>
+      <option value="7">7 Maç (Çok Yüksek)</option>
+    </select>
+    <label>⚠️ Risk Seviyesi</label>
+    <select id="otoRisk">
+      <option value="dusuk">Düşük Risk (Sadece Bankolar)</option>
+      <option value="orta" selected>Orta Risk (Banko + Değerli)</option>
+      <option value="yuksek">Yüksek Risk (Sürprizli)</option>
+    </select>
+    <div class="suggest-info-box">
+      <div id="otoInfo">Sistem en iyi maçları seçip kupon oluşturacak.</div>
+    </div>
+    <div class="modal-buttons">
+      <button class="cancel" onclick="closeModal('otomatikModal')">İptal</button>
+      <button onclick="otomatikKuponYap()">Kuponu Oluştur</button>
     </div>
   </div>
 </div>
