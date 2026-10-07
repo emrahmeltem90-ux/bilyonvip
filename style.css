@@ -228,3 +228,28 @@ button.purple{background:linear-gradient(135deg,#a855f7,#7c3aed);box-shadow:0 6p
   .oran-item input{padding:8px 4px;font-size:.85rem}
   .analiz-row{font-size:.7rem}
                     }
+/* ===== EN İYİ BAHİS ===== */
+.en-iyi-bahis{background:linear-gradient(135deg,rgba(0,224,122,.12),rgba(0,224,122,.03));border:2px solid rgba(0,224,122,.5);border-radius:12px;padding:14px;margin-top:10px}
+.en-iyi-bahis .baslik{color:var(--green);font-weight:900;font-size:.9rem;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.en-iyi-bahis .secim{background:rgba(0,224,122,.15);border-radius:8px;padding:10px;text-align:center;margin:8px 0}
+.en-iyi-bahis .secim .bahis-adi{font-size:1.1rem;font-weight:900;color:var(--green);letter-spacing:.5px}
+.en-iyi-bahis .secim .oran{font-size:1rem;font-weight:900;color:var(--text);margin-top:4px}
+.en-iyi-bahis .neden{font-size:.72rem;color:var(--muted);line-height:1.6;margin-top:8px}
+.en-iyi-bahis .alt-bahisler{font-size:.72rem;line-height:1.8;color:var(--text);margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,224,122,.2)}
+.en-iyi-bahis .alt-bahisler .satir{display:flex;justify-content:space-between;padding:3px 0}
+.en-iyi-bahis .alt-bahisler .iyi{color:var(--green);font-weight:800}
+.en-iyi-bahis .alt-bahisler .orta{color:var(--orange);font-weight:800}
+.en-iyi-bahis .alt-bahisler .kotu{color:var(--red);font-weight:800}
+
+/* ===== KUPON RAPOR ===== */
+.kupon-rapor{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px;margin-top:12px}
+.kupon-rapor .baslik{color:var(--green);font-weight:900;font-size:.95rem;margin-bottom:12px}
+.kupon-rapor .mac{background:rgba(255,255,255,.03);border-left:3px solid var(--green);border-radius:8px;padding:10px 12px;margin-bottom:8px}
+.kupon-rapor .mac .isim{font-weight:800;font-size:.82rem;color:var(--text);margin-bottom:6px}
+.kupon-rapor .mac .bahis{display:flex;justify-content:space-between;align-items:center;font-size:.78rem}
+.kupon-rapor .mac .bahis .secim{color:var(--green);font-weight:900;font-size:.9rem}
+.kupon-rapor .mac .bahis .oran{color:var(--orange);font-weight:900}
+.kupon-rapor .mac .neden{font-size:.68rem;color:var(--muted);margin-top:4px;line-height:1.5}
+.kupon-rapor .toplam{background:linear-gradient(135deg,rgba(0,224,122,.15),rgba(0,224,122,.05));border:1px solid rgba(0,224,122,.3);border-radius:10px;padding:12px;margin-top:12px;text-align:center}
+.kupon-rapor .toplam .buyuk{font-size:1.4rem;font-weight:900;color:var(--green)}
+.kupon-rapor .toplam .lbl{font-size:.7rem;color:var(--muted);font-weight:700;letter-spacing:.3px}
