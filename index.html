@@ -3,31 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SkorLab · Akıllı Analiz</title>
+<title>SkorLab v2 · Akıllı Analiz</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
-  <div class="logo-badge">● CANLI ANALİZ</div>
+  <div class="logo-badge">● SKORLAB v2</div>
   <h1>SKORLAB</h1>
   <p>Akıllı Spor Toto Analiz Sistemi</p>
 </header>
 
 <nav class="tabs">
   <div class="tab active" onclick="switchTab(0,this)"><span class="tab-num">01</span>Bülten</div>
-  <div class="tab" onclick="switchTab(1,this)"><span class="tab-num">02</span>Bankobot</div>
-  <div class="tab" onclick="switchTab(2,this)"><span class="tab-num">03</span>Monte</div>
-  <div class="tab" onclick="switchTab(3,this)"><span class="tab-num">04</span>Oran</div>
-  <div class="tab" onclick="switchTab(4,this)"><span class="tab-num">05</span>Serbest</div>
-  <div class="tab" onclick="switchTab(5,this)"><span class="tab-num">06</span>Kupon</div>
-  <div class="tab" onclick="switchTab(6,this)"><span class="tab-num">07</span>Kelly</div>
-  <div class="tab" onclick="switchTab(7,this)"><span class="tab-num">08</span>Backtest</div>
-  <div class="tab" onclick="switchTab(8,this)"><span class="tab-num">09</span>Sürpriz</div>
+  <div class="tab" onclick="switchTab(1,this)"><span class="tab-num">02</span>Analiz</div>
+  <div class="tab" onclick="switchTab(2,this)"><span class="tab-num">03</span>Kupon</div>
+  <div class="tab" onclick="switchTab(3,this)"><span class="tab-num">04</span>Geçmiş</div>
 </nav>
 
 <div class="container">
 
+  <!-- ==================== SEKME 1: BÜLTEN ==================== -->
   <div class="page active" id="page-0">
     <div class="card">
       <div class="result-title">📅 <span id="weekTitle">Yükleniyor...</span></div>
@@ -35,212 +31,103 @@
         <div class="stat-box"><div class="num" id="statBanko">-</div><div class="lbl">Banko</div></div>
         <div class="stat-box"><div class="num" id="statDengeli">-</div><div class="lbl">Dengeli</div></div>
         <div class="stat-box"><div class="num" id="statValue">-</div><div class="lbl">Değerli</div></div>
-        <div class="stat-box"><div class="num" id="statZorluk">-</div><div class="lbl">Zorluk</div></div>
+        <div class="stat-box"><div class="num" id="statKolon">-</div><div class="lbl">Kolon</div></div>
       </div>
     </div>
-    <div class="card">
-      <label>💰 Bütçen (TL)</label>
-      <input type="number" id="budget" value="200" min="10" step="10" inputmode="numeric" oninput="updateBar()">
-      <div class="bar-info"><div>Toplam: <b id="lblCost">200 TL</b></div><div>Kolon: <b id="lblCount">20</b></div></div>
-      <button onclick="generate()">⚡ Kupon Oluştur</button>
-      <button class="suggest-btn" onclick="openSuggestModal()">🎲 Bana Kupon Öner</button>
-      <button class="share-app-btn" onclick="shareApp()">📤 Arkadaşına Öner</button>
-    </div>
-    <div class="card" id="outputCard" style="display:none">
-      <div class="result-title">📋 KUPON RAPORU</div>
-      <div id="outputSummary" class="muted" style="font-size:.82rem;line-height:1.7;margin-bottom:10px"></div>
-      <div id="outputContainer"></div>
-    </div>
-    <div id="matchesList"></div>
-    <p class="note">Olasılıklar oranlardan hesaplanır, bahisçi marjı temizlenmiştir.</p>
-    <div class="legal-link"><a href="#" onclick="openLegal();return false">⚠️ Yasal Uyarı</a></div>
-  </div>
 
-  <div class="page" id="page-1">
     <div class="card">
-      <div class="result-title">🔥 ISI HARİTASI</div>
-      <div id="heatmap" class="heatmap"></div>
-      <div class="heatmap-legend">
-        <span><span class="dot green"></span>Banko ≥70%</span>
-        <span><span class="dot yellow"></span>Orta 50-70%</span>
-        <span><span class="dot red"></span>Riskli <50%</span>
-      </div>
-    </div>
-    <div class="card">
-      <div class="result-title">🎯 STRATEJİ MODU</div>
-      <div class="modes">
-        <div class="mode active" onclick="setMode('guvenli',this)"><b>🛡️</b><span>GÜVENLİ</span></div>
-        <div class="mode" onclick="setMode('dengeli',this)"><b>⚖️</b><span>DENGELİ</span></div>
-        <div class="mode" onclick="setMode('agresif',this)"><b>🚀</b><span>AGRESİF</span></div>
-      </div>
-      <div id="modeInfo" class="mode-info"></div>
-    </div>
-    <div id="chat"></div>
-    <div class="chips">
-      <span class="chip" onclick="ask('Bülten özeti')">Bülten özeti</span>
-      <span class="chip" onclick="ask('Bankolar')">Bankolar</span>
-      <span class="chip" onclick="ask('Riskli maçlar')">Riskli</span>
-      <span class="chip" onclick="ask('Sürpriz radarı')">Sürpriz</span>
-      <span class="chip" onclick="ask('Zorluk')">Zorluk</span>
-    </div>
-    <div class="askrow">
-      <input id="q" placeholder="Bankobot'a sor..." onkeydown="if(event.key==='Enter')send()">
-      <button onclick="send()">Sor</button>
-    </div>
-  </div>
-
-  <div class="page" id="page-2">
-    <div class="card">
-      <div class="result-title">🎲 MONTE CARLO LAB <span class="badge">10.000 deneme</span></div>
-      <p class="muted" style="font-size:.8rem;margin-bottom:12px;line-height:1.6">Son ürettiğin kuponu bülten olasılıklarına karşı yeniden dener.</p>
-      <button id="runBtn" onclick="runLab()">▶ Simülasyonu Başlat</button>
-      <div class="progress"><div id="bar-full"></div></div>
-    </div>
-    <div id="res-full" class="card" style="display:none"></div>
-  </div>
-
-  <div class="page" id="page-3">
-    <div class="card">
-      <div class="result-title">🎯 ORAN ANALİZ</div>
-      <p class="muted" style="font-size:.76rem;margin-bottom:14px;line-height:1.6">1, X, 2 oranlarını gir. Sonra "Analiz Et" butonuna bas.</p>
-      <button onclick="kuponOlusturModal()">⚡ Kupon Oluştur (Oranlarımdan)</button>
-      <button onclick="indirJSON()" class="blue" style="margin-top:8px">⬇️ JSON İndir</button>
+      <div class="result-title">📝 HIZLI VERİ GİRİŞİ</div>
+      <button onclick="openTopluYapistir()" class="purple">📋 Toplu Yapıştır</button>
       <button onclick="temizleOranlar()" class="danger" style="margin-top:8px">🗑️ Tümünü Temizle</button>
     </div>
-    <div id="oranListesi"></div>
+
+    <div id="matchesList"></div>
   </div>
 
-  <div class="page" id="page-4">
+  <!-- ==================== SEKME 2: ANALİZ ==================== -->
+  <div class="page" id="page-1">
     <div class="card">
-      <div class="result-title">🎯 SERBEST ANALİZ</div>
-      <p class="muted" style="font-size:.76rem;margin-bottom:14px;line-height:1.6">İstediğin maçı ekle, oranları gir. Bülten dışı maçlar için!</p>
-      <div class="serbest-actions">
-        <button onclick="openSerbestModal()">➕ Maç Ekle</button>
-        <button onclick="kuponSerbestModal()" class="purple">⚡ Kupon Oluştur</button>
-      </div>
-      <button onclick="temizleSerbest()" class="danger" style="margin-top:8px">🗑️ Tümünü Temizle</button>
-    </div>
-    <div id="serbestListesi"></div>
-  </div>
-
-  <div class="page" id="page-5">
-    <div class="card">
-      <div class="result-title">📋 KUPONUM</div>
-      <div id="couponContent">
-        <div class="coupon-empty">Henüz kupon oluşturmadın.<br><br>📌 Bülten sekmesinden maç seç, sonra "Kaydet" bas.</div>
+      <div class="result-title">📊 ÖZET</div>
+      <div class="stat-grid c4" style="margin-top:12px">
+        <div class="stat-box"><div class="num" id="statBanko2">-</div><div class="lbl">Banko</div></div>
+        <div class="stat-box"><div class="num" id="statDengeli2">-</div><div class="lbl">Dengeli</div></div>
+        <div class="stat-box"><div class="num" id="statValue2">-</div><div class="lbl">Değerli</div></div>
+        <div class="stat-box"><div class="num" id="statRisk">-</div><div class="lbl">Risk</div></div>
       </div>
     </div>
+
+    <div class="card">
+      <div class="result-title">🤖 MODEL AYARLARI</div>
+      <label>Banko Min / Max</label>
+      <div class="oran-grid">
+        <div class="oran-item"><input type="number" id="bankoMin" value="2" min="0" max="15"></div>
+        <div class="oran-item"><input type="number" id="bankoMax" value="8" min="0" max="15"></div>
+      </div>
+      <label>Beraberlik Min / Max</label>
+      <div class="oran-grid">
+        <div class="oran-item"><input type="number" id="beraberlikMin" value="0" min="0" max="15"></div>
+        <div class="oran-item"><input type="number" id="beraberlikMax" value="4" min="0" max="15"></div>
+      </div>
+      <label>Ardışık Max</label>
+      <input type="number" id="ardisikMax" value="3" min="1" max="15">
+    </div>
+
+    <div id="analizListesi"></div>
   </div>
 
-  <div class="page" id="page-6">
+  <!-- ==================== SEKME 3: KUPON ==================== -->
+  <div class="page" id="page-2">
     <div class="card">
-      <div class="result-title">💼 KELLY CRITERION</div>
-      <p class="muted" style="font-size:.76rem;margin-bottom:14px;line-height:1.6">Kelly, her maça ne kadar yatırman gerektiğini matematiksel olarak söyler.</p>
-      <label>💼 Toplam Banka (TL)</label>
-      <input type="number" id="kellyBank" value="1000" min="100" step="100" inputmode="numeric" oninput="renderKelly()">
-      <label>Kelly Kesri</label>
-      <select id="kellyFrac" onchange="renderKelly()">
-        <option value="1">Tam Kelly (agresif)</option>
-        <option value="0.5" selected>Yarım Kelly (önerilen)</option>
-        <option value="0.25">Çeyrek Kelly (güvenli)</option>
-      </select>
-      <div id="kellyOutput"></div>
+      <div class="result-title">💰 BÜTÇE</div>
+      <label>Bütçen (TL)</label>
+      <input type="number" id="budget" value="200" min="10" step="10" inputmode="numeric" oninput="updateKolon()">
+      <div class="bar-info"><div>Toplam: <b id="lblCost">200 TL</b></div><div>Kolon: <b id="lblKolon">20</b></div></div>
     </div>
+
+    <div class="card">
+      <div class="result-title">🎛️ FİLTRELER</div>
+      <p class="muted" style="font-size:.75rem;margin-bottom:12px">Analiz sekmesindeki ayarlar kullanılır.</p>
+      <div id="filtreOzeti" class="muted" style="font-size:.78rem;line-height:1.8"></div>
+    </div>
+
+    <div class="card">
+      <button onclick="kuponOlustur()">⚡ KUPON OLUŞTUR</button>
+    </div>
+
+    <div id="kuponSonuc"></div>
   </div>
 
-  <div class="page" id="page-7">
+  <!-- ==================== SEKME 4: GEÇMİŞ ==================== -->
+  <div class="page" id="page-3">
     <div class="card">
-      <div class="result-title">📊 BACKTEST</div>
-      <p class="muted" style="font-size:.76rem;margin-bottom:14px;line-height:1.6">Geçmiş haftaların sonuçlarına göre sistemin ne kadar tuttuğunu ölçer.</p>
-      <div id="backtestOutput"><div class="coupon-empty">Henüz geçmiş sonuç yok.</div></div>
+      <div class="result-title">📊 GENEL İSTATİSTİK</div>
+      <div class="stat-grid c4" style="margin-top:12px">
+        <div class="stat-box"><div class="num" id="gToplamHafta">-</div><div class="lbl">Hafta</div></div>
+        <div class="stat-box"><div class="num" id="gOrtalama">-</div><div class="lbl">Ortalama</div></div>
+        <div class="stat-box"><div class="num" id="gEnIyi">-</div><div class="lbl">En İyi</div></div>
+        <div class="stat-box"><div class="num" id="gEnKotu">-</div><div class="lbl">En Kötü</div></div>
+      </div>
     </div>
-  </div>
 
-  <div class="page" id="page-8">
-    <div class="card">
-      <div class="result-title">🚨 SÜRPRİZ RADARI</div>
-      <p class="muted" style="font-size:.76rem;margin-bottom:14px;line-height:1.6">Bu sekme haftanın <b>sürprize açık</b> maçlarını listeler.</p>
-      <div id="sürprizRadar"></div>
-    </div>
+    <div id="arsivListesi"></div>
   </div>
 
 </div>
 
-<div class="save-bar" id="saveBar" style="display:none">
-  <div class="info">Seçilen: <b id="pickCount">0</b>/15 | Kolon: <b id="colCount">1</b><br>Tutar: <b id="colPrice">10 TL</b></div>
-  <button onclick="saveCoupon()">💾 Kaydet</button>
-  <button onclick="clearPicks()" style="background:var(--bg2);color:var(--red);border:1px solid var(--border);width:44px;padding:12px 0">🗑️</button>
-</div>
-
-<div class="modal-overlay" id="serbestModal">
+<!-- ==================== MODAL: TOPLU YAPIŞTIR ==================== -->
+<div class="modal-overlay" id="topluModal">
   <div class="modal-box">
-    <div class="modal-title">➕ Maç Ekle</div>
-    <div class="modal-sub">Maç adını ve oranları gir.</div>
-    <label>⚽ Müsabaka</label>
-    <input type="text" id="sm-match" placeholder="Örn: Recife - Sao Bernardo">
-    <label>1 / X / 2 (Zorunlu)</label>
-    <div class="oran-grid">
-      <div class="oran-item"><label>1</label><input type="number" step="0.01" placeholder="1.00" id="sm-o1"></div>
-      <div class="oran-item"><label>X</label><input type="number" step="0.01" placeholder="1.00" id="sm-oX"></div>
-      <div class="oran-item"><label>2</label><input type="number" step="0.01" placeholder="1.00" id="sm-o2"></div>
-    </div>
-    <div class="detail-toggle" onclick="toggleDetail('sm-detail')">▼ Diğer Bahisler (isteğe bağlı)</div>
-    <div class="detail-panel" id="sm-detail">
-      <label>Gol Bahisleri</label>
-      <div class="oran-grid">
-        <div class="oran-item"><label>KG Var</label><input type="number" step="0.01" placeholder="1.00" id="sm-kg"></div>
-        <div class="oran-item"><label>2.5 Üst</label><input type="number" step="0.01" placeholder="1.00" id="sm-u25"></div>
-        <div class="oran-item"><label>KG+2.5Ü</label><input type="number" step="0.01" placeholder="1.00" id="sm-kgu"></div>
-      </div>
-      <label>Alt/Üst Bahisleri</label>
-      <div class="oran-grid">
-        <div class="oran-item"><label>1.5 Üst</label><input type="number" step="0.01" placeholder="1.00" id="sm-u15"></div>
-        <div class="oran-item"><label>3.5 Üst</label><input type="number" step="0.01" placeholder="1.00" id="sm-u35"></div>
-        <div class="oran-item"><label>4.5 Üst</label><input type="number" step="0.01" placeholder="1.00" id="sm-u45"></div>
-      </div>
-      <label>Ev/Dep Gol Bahisleri</label>
-      <div class="oran-grid">
-        <div class="oran-item"><label>Ev 0.5Ü</label><input type="number" step="0.01" placeholder="1.00" id="sm-ev05"></div>
-        <div class="oran-item"><label>Ev 1.5Ü</label><input type="number" step="0.01" placeholder="1.00" id="sm-ev15"></div>
-        <div class="oran-item"><label>Dep 0.5Ü</label><input type="number" step="0.01" placeholder="1.00" id="sm-dep05"></div>
-        <div class="oran-item"><label>Dep 1.5Ü</label><input type="number" step="0.01" placeholder="1.00" id="sm-dep15"></div>
-      </div>
-      <label>İlk Yarı</label>
-      <div class="oran-grid">
-        <div class="oran-item"><label>İY 1</label><input type="number" step="0.01" placeholder="1.00" id="sm-iy1"></div>
-        <div class="oran-item"><label>İY X</label><input type="number" step="0.01" placeholder="1.00" id="sm-iyX"></div>
-        <div class="oran-item"><label>İY 2</label><input type="number" step="0.01" placeholder="1.00" id="sm-iy2"></div>
-      </div>
-    </div>
+    <div class="modal-title">📋 ORANLARI YAPIŞTIR</div>
+    <div class="modal-sub">Her satıra bir maç. Format: 1.12 5.65 9.10</div>
+    <textarea id="topluTextarea" rows="15" style="width:100%;padding:12px;border-radius:10px;border:1px solid var(--border2);background:var(--bg2);color:#fff;font-size:.85rem;font-family:monospace;line-height:1.8" placeholder="1.12 5.65 9.10&#10;2.41 3.18 2.24&#10;1.82 2.97 3.46&#10;..."></textarea>
     <div class="modal-buttons">
-      <button class="cancel" onclick="closeModal('serbestModal')">İptal</button>
-      <button onclick="addSerbest()">Ekle</button>
+      <button class="cancel" onclick="closeModal('topluModal')">İptal</button>
+      <button onclick="topluAyrıştır()">Ayrıştır</button>
     </div>
   </div>
 </div>
 
-<div class="modal-overlay" id="suggestModal">
-  <div class="modal-box">
-    <div class="modal-title">🎲 Kupon Oluştur</div>
-    <div class="modal-sub">Strateji seç, bütçe gir.</div>
-    <div class="modes" style="margin-bottom:16px">
-      <div class="mode active" id="sm-guvenli" onclick="selectSuggestMode('guvenli',this)"><b>🛡️</b><span>GÜVENLİ</span></div>
-      <div class="mode" id="sm-dengeli" onclick="selectSuggestMode('dengeli',this)"><b>⚖️</b><span>DENGELİ</span></div>
-      <div class="mode" id="sm-agresif" onclick="selectSuggestMode('agresif',this)"><b>🚀</b><span>AGRESİF</span></div>
-    </div>
-    <label>💰 Bütçen (TL)</label>
-    <input type="number" id="suggestBudget" value="200" min="10" step="10" inputmode="numeric" oninput="updateSuggestEstimate()">
-    <div class="suggest-info-box">
-      <span id="suggestModeInfo"></span>
-      <div class="big" id="suggestEstimate">≈ 200 TL · 20 kolon</div>
-    </div>
-    <div class="modal-buttons">
-      <button class="cancel" onclick="closeModal('suggestModal')">İptal</button>
-      <button onclick="applySuggest()">Kuponu Üret</button>
-    </div>
-  </div>
-</div>
-
+<!-- ==================== TOAST ==================== -->
 <div class="toast-overlay" id="toastModal">
   <div class="toast-box">
     <span class="toast-icon" id="toastIcon">✅</span>
@@ -250,14 +137,16 @@
   </div>
 </div>
 
+<!-- ==================== RESULT MODAL ==================== -->
 <div class="toast-overlay" id="resultModal" onclick="if(event.target===this)closeResultModal()">
-  <div class="toast-box" style="max-width:440px;text-align:left;max-height:85vh;overflow-y:auto">
-    <div class="modal-title" id="resultModalTitle" style="margin-bottom:14px">📊 KUPON ANALİZİ</div>
-    <div id="resultModalBody" style="font-size:.78rem;line-height:1.7;color:var(--text)"></div>
+  <div class="toast-box" style="max-width:480px;text-align:left;max-height:85vh;overflow-y:auto">
+    <div class="modal-title" id="resultModalTitle" style="margin-bottom:14px">📊 KUPON</div>
+    <div id="resultModalBody" style="font-size:.78rem;line-height:1.7"></div>
     <button onclick="closeResultModal()" style="margin-top:16px">Tamam</button>
   </div>
 </div>
 
+<!-- ==================== LEGAL ==================== -->
 <div class="toast-overlay" id="legalModal" onclick="if(event.target===this)closeModal('legalModal')">
   <div class="toast-box" style="max-width:440px;text-align:left;max-height:85vh;overflow-y:auto">
     <div class="modal-title" style="color:var(--orange);margin-bottom:14px;font-size:1rem">⚠️ Yasal Uyarı</div>
@@ -266,7 +155,6 @@
       <p style="margin-bottom:12px"><b style="color:var(--green)">🚫 Garanti Yoktur</b><br>Tahminler kesin sonuç garantisi vermez.</p>
       <p style="margin-bottom:12px"><b style="color:var(--green)">⚖️ Sorumluluk</b><br>Yasal bahis hizmeti sunmaz.</p>
       <p style="margin-bottom:12px"><b style="color:var(--green)">🔞 Yaş Sınırı</b><br>18 yaşından büyükler içindir.</p>
-      <p style="border-top:1px solid var(--border);padding-top:12px;font-size:.7rem;color:var(--muted)">Uygulamayı kullanarak şartları kabul etmiş sayılırsınız.</p>
     </div>
     <button onclick="closeModal('legalModal')" style="margin-top:16px">Anladım</button>
   </div>
