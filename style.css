@@ -6,7 +6,7 @@
   --radius:16px;
 }
 *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
-body{background:var(--bg);color:var(--text);padding-bottom:100px;min-height:100vh;background-image:radial-gradient(circle at 50% 0%,rgba(0,224,122,.08) 0%,transparent 50%)}
+body{background:var(--bg);color:var(--text);padding-bottom:80px;min-height:100vh;background-image:radial-gradient(circle at 50% 0%,rgba(0,224,122,.08) 0%,transparent 50%)}
 
 /* HEADER */
 header{padding:24px 20px 20px;text-align:center}
@@ -43,13 +43,14 @@ button.gray{background:var(--bg2);color:var(--text);border:1px solid var(--borde
 /* STATS */
 .stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px}
 .stat-grid.c4{grid-template-columns:repeat(4,1fr)}
-.stat-box{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:12px 8px;text-align:center;position:relative;overflow:hidden}
+.stat-box{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:12px 6px;text-align:center;position:relative;overflow:hidden}
 .stat-box::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),transparent)}
-.stat-box .num{font-size:1.4rem;font-weight:900;color:var(--green);letter-spacing:-1px}
-.stat-box .lbl{font-size:.58rem;color:var(--muted);margin-top:3px;font-weight:700;letter-spacing:.3px;text-transform:uppercase}
+.stat-box .num{font-size:1.3rem;font-weight:900;color:var(--green);letter-spacing:-1px}
+.stat-box .lbl{font-size:.55rem;color:var(--muted);margin-top:3px;font-weight:700;letter-spacing:.3px;text-transform:uppercase}
 
-/* MATCH (BÜLTEN) */
-.match{background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:10px;position:relative;overflow:hidden}
+/* MATCH */
+.match{background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:10px;position:relative;overflow:hidden;cursor:pointer;transition:border-color .2s}
+.match:hover{border-color:var(--border2)}
 .match::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),transparent)}
 .match-head{display:flex;justify-content:space-between;align-items:center;font-size:.65rem;font-weight:700;color:var(--muted);margin-bottom:8px;letter-spacing:.3px}
 .match-head .mid{color:var(--orange);background:rgba(255,176,32,.1);padding:2px 8px;border-radius:6px;border:1px solid rgba(255,176,32,.2)}
@@ -62,38 +63,28 @@ button.gray{background:var(--bg2);color:var(--text);border:1px solid var(--borde
 .badge.blue{background:rgba(61,139,255,.1);color:var(--blue);border-color:rgba(61,139,255,.2)}
 .league-tag{display:inline-block;padding:2px 8px;border-radius:5px;background:rgba(61,139,255,.12);color:var(--blue);font-size:.58rem;font-weight:800;letter-spacing:.3px;margin-left:6px;border:1px solid rgba(61,139,255,.2)}
 
-/* ORAN GRID (BÜLTEN) */
-.oran-grid-bulten{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px}
-.oran-box-bulten{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:10px 6px;text-align:center;position:relative}
-.oran-box-bulten .lbl{font-size:.6rem;font-weight:800;color:var(--muted);margin-bottom:3px;letter-spacing:.5px}
-.oran-box-bulten .val{font-size:1rem;font-weight:900;color:var(--text);letter-spacing:-.5px}
-.oran-box-bulten .pct{font-size:.58rem;color:var(--green);font-weight:700;margin-top:2px}
-.oran-box-bulten.value{border-color:#a855f7;background:rgba(168,85,247,.08)}
-.oran-box-bulten.value .val{color:#a855f7}
-
-/* ORAN INPUT (BÜLTEN) */
+/* ORAN INPUT */
 .oran-input-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px}
 .oran-input-item{display:flex;flex-direction:column}
 .oran-input-item label{font-size:.6rem;font-weight:800;color:var(--muted);margin-bottom:4px;text-align:center}
 .oran-input-item input{margin:0;padding:8px 6px;font-size:.85rem;text-align:center;font-weight:900}
 
-/* PICK GRID */
-.pick-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-top:8px}
-.pick-btn{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 3px;text-align:center;font-weight:800;font-size:.8rem;cursor:pointer;user-select:none;transition:all .2s;color:var(--text);font-family:inherit}
-.pick-btn:active{transform:scale(.95)}
-.pick-btn.active{background:linear-gradient(135deg,var(--green),var(--green2));color:#04140c;border-color:var(--green);box-shadow:0 4px 12px rgba(0,224,122,.3)}
-.pick-btn .pick-pct{display:block;font-size:.55rem;color:var(--muted);margin-top:2px;font-weight:600}
-.pick-btn.active .pick-pct{color:rgba(4,20,12,.7)}
+/* ORAN BOX */
+.oran-grid-bulten{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px}
+.oran-box-bulten{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:10px 6px;text-align:center}
+.oran-box-bulten .lbl{font-size:.6rem;font-weight:800;color:var(--muted);margin-bottom:3px;letter-spacing:.5px}
+.oran-box-bulten .val{font-size:1rem;font-weight:900;color:var(--text);letter-spacing:-.5px}
+.oran-box-bulten .pct{font-size:.58rem;color:var(--green);font-weight:700;margin-top:2px}
 
-/* PICK SELECT (ANALIZ) */
-.pick-select{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-top:8px}
-.pick-select .ps{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 2px;text-align:center;font-weight:800;font-size:.72rem;cursor:pointer;transition:all .2s;color:var(--text);font-family:inherit}
-.pick-select .ps:active{transform:scale(.95)}
-.pick-select .ps.active{background:linear-gradient(135deg,var(--green),var(--green2));color:#04140c;border-color:var(--green)}
-.pick-select .ps.sistem{border-color:var(--blue);background:rgba(61,139,255,.1);color:var(--blue)}
-.pick-select .ps .ps-pct{display:block;font-size:.55rem;color:var(--muted);margin-top:2px;font-weight:600}
-.pick-select .ps.active .ps-pct{color:rgba(4,20,12,.7)}
-.pick-select .ps.sistem .ps-pct{color:var(--blue)}
+/* MODES */
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.mode{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:12px 8px;text-align:center;cursor:pointer;font-size:.72rem;transition:all .2s}
+.mode b{display:block;margin-bottom:4px;font-size:.95rem;font-weight:900}
+.mode span{font-size:.6rem;color:var(--muted);font-weight:600}
+.mode.active{background:linear-gradient(135deg,var(--green),var(--green2));border-color:var(--green);color:#04140c;box-shadow:0 4px 14px rgba(0,224,122,.3)}
+.mode.active span{color:rgba(4,20,12,.7)}
+.mode-info{margin-top:10px;padding:12px;background:var(--bg2);border-radius:10px;font-size:.72rem;line-height:1.6;border-left:3px solid var(--green)}
+.mode-info b{color:var(--green)}
 
 /* ANALİZ BOX */
 .analiz-box{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-top:8px}
@@ -101,32 +92,26 @@ button.gray{background:var(--bg2);color:var(--text);border:1px solid var(--borde
 .analiz-row span{color:var(--text)}
 .analiz-lbl{color:var(--green);font-weight:800;font-size:.7rem;letter-spacing:.3px}
 
-/* EN İYİ BAHİS */
-.en-iyi-bahis{background:linear-gradient(135deg,rgba(0,224,122,.12),rgba(0,224,122,.03));border:2px solid rgba(0,224,122,.5);border-radius:12px;padding:12px;margin-top:10px}
-.en-iyi-bahis .baslik{color:var(--green);font-weight:900;font-size:.82rem;margin-bottom:8px}
-.en-iyi-bahis .secim{background:rgba(0,224,122,.15);border-radius:8px;padding:10px;text-align:center;margin:8px 0}
-.en-iyi-bahis .secim .bahis-adi{font-size:1rem;font-weight:900;color:var(--green);letter-spacing:.5px}
-.en-iyi-bahis .secim .oran{font-size:.85rem;font-weight:900;color:var(--text);margin-top:4px}
-.en-iyi-bahis .neden{font-size:.7rem;color:var(--muted);line-height:1.6;margin-top:6px}
-
-/* SÜRPRİZ ALERT */
-.sürpriz-alert{background:linear-gradient(135deg,rgba(255,77,94,.15),rgba(255,77,94,.05));border:1px solid rgba(255,77,94,.4);border-radius:10px;padding:10px 12px;margin-top:8px}
-.sürpriz-alert .baslik{color:var(--red);font-weight:900;font-size:.78rem;margin-bottom:4px}
-.sürpriz-alert .neden{color:#ff8c98;font-size:.68rem;line-height:1.5;margin-top:4px}
-.sürpriz-alert .oneri{color:var(--orange);font-weight:800;font-size:.72rem;margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,77,94,.2)}
-
-/* TOTO ÖNERİ */
-.toto-oneri{background:linear-gradient(135deg,rgba(255,176,32,.15),rgba(255,176,32,.05));border:2px solid rgba(255,176,32,.5);border-radius:12px;padding:14px;margin-top:10px;text-align:center}
-.toto-oneri.banko{background:linear-gradient(135deg,rgba(0,224,122,.15),rgba(0,224,122,.05));border-color:rgba(0,224,122,.5)}
-.toto-oneri .baslik{color:var(--orange);font-weight:900;font-size:.78rem;letter-spacing:.5px}
-.toto-oneri.banko .baslik{color:var(--green)}
-.toto-oneri .secim{font-size:1.6rem;font-weight:900;color:var(--orange);margin-top:8px}
-.toto-oneri.banko .secim{color:var(--green)}
-.toto-oneri .alt{font-size:.72rem;color:var(--muted);margin-top:6px}
-
-/* DEĞERLİ BAHİS */
-.value-bet-box{background:linear-gradient(135deg,rgba(168,85,247,.15),rgba(168,85,247,.05));border:1px solid rgba(168,85,247,.3);border-radius:10px;padding:10px 12px;font-size:.7rem;line-height:1.6;margin-top:8px;color:#c4a3f5}
-.value-bet-box b{color:#a855f7;font-weight:900}
+/* TAHMİN KARTI */
+.tahmin-kart{background:linear-gradient(135deg,rgba(0,224,122,.1),rgba(0,224,122,.02));border:2px solid rgba(0,224,122,.4);border-radius:14px;padding:14px;margin-bottom:10px;position:relative}
+.tahmin-kart.banko{background:linear-gradient(135deg,rgba(0,224,122,.15),rgba(0,224,122,.05));border-color:rgba(0,224,122,.6)}
+.tahmin-kart.cift{background:linear-gradient(135deg,rgba(255,176,32,.12),rgba(255,176,32,.03));border-color:rgba(255,176,32,.5)}
+.tahmin-kart.uclu{background:linear-gradient(135deg,rgba(255,77,94,.12),rgba(255,77,94,.03));border-color:rgba(255,77,94,.5)}
+.tahmin-kart.surpriz{background:linear-gradient(135deg,rgba(168,85,247,.12),rgba(168,85,247,.03));border-color:rgba(168,85,247,.5)}
+.tahmin-kart .tk-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:.72rem;font-weight:700;color:var(--muted)}
+.tahmin-kart .tk-teams{font-weight:900;font-size:.9rem;margin-bottom:10px}
+.tahmin-kart .tk-ana{text-align:center;padding:12px;background:rgba(0,0,0,.2);border-radius:10px;margin-bottom:8px}
+.tahmin-kart .tk-ana .lbl{font-size:.65rem;color:var(--muted);font-weight:700;letter-spacing:.5px;margin-bottom:6px}
+.tahmin-kart .tk-ana .val{font-size:2rem;font-weight:900;color:var(--green);letter-spacing:-1px;line-height:1}
+.tahmin-kart.cift .tk-ana .val{color:var(--orange)}
+.tahmin-kart.uclu .tk-ana .val{color:var(--red)}
+.tahmin-kart.surpriz .tk-ana .val{color:#a855f7}
+.tahmin-kart .tk-info{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;font-size:.72rem}
+.tahmin-kart .tk-info .tk-item{background:rgba(0,0,0,.15);padding:8px;border-radius:8px;display:flex;justify-content:space-between;align-items:center}
+.tahmin-kart .tk-info .tk-item .lbl{color:var(--muted);font-size:.65rem;font-weight:700}
+.tahmin-kart .tk-info .tk-item .val{font-weight:900;color:var(--text)}
+.tahmin-kart .tk-alt{margin-top:8px;padding:8px 10px;background:rgba(61,139,255,.08);border-left:3px solid var(--blue);border-radius:6px;font-size:.72rem;line-height:1.5}
+.tahmin-kart .tk-alt b{color:var(--blue)}
 
 /* KUPON */
 .bar-info{display:flex;justify-content:space-between;background:var(--bg2);border:1px solid var(--border);padding:12px 14px;border-radius:10px;margin-bottom:12px;font-size:.85rem;font-weight:600}
@@ -135,8 +120,12 @@ button.gray{background:var(--bg2);color:var(--text);border:1px solid var(--borde
 .kupon-sonuc .baslik{color:var(--green);font-weight:900;font-size:.85rem;margin-bottom:10px}
 .kolon{background:rgba(255,255,255,.03);border-left:3px solid var(--green);border-radius:8px;padding:8px 10px;margin-bottom:6px;font-size:.72rem;line-height:1.6}
 .kolon .kolon-baslik{font-weight:800;color:var(--green);font-size:.7rem;margin-bottom:4px}
-.kolon .kolon-picks{color:var(--text);font-family:monospace;font-size:.78rem;letter-spacing:.5px;word-break:break-all}
+.kolon .kolon-picks{color:var(--text);font-family:monospace;font-size:.8rem;letter-spacing:1px;word-break:break-all}
 .kolon .kolon-info{color:var(--muted);font-size:.65rem;margin-top:4px}
+.dagilim-tablo{width:100%;font-size:.72rem;border-collapse:collapse;margin-top:8px}
+.dagilim-tablo td{padding:6px 4px;border-bottom:1px solid var(--border);color:var(--text)}
+.dagilim-tablo td:first-child{color:var(--muted);font-weight:700}
+.dagilim-tablo td:last-child{text-align:right;font-weight:800;color:var(--green)}
 
 /* ARŞİV */
 .arsiv-hafta{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px}
@@ -174,7 +163,7 @@ button.gray{background:var(--bg2);color:var(--text);border:1px solid var(--borde
 /* RESPONSIVE */
 @media(max-width:400px){
   .stat-grid.c4{grid-template-columns:repeat(2,1fr)}
-  .pick-grid, .pick-select{grid-template-columns:repeat(3,1fr)}
   .tab{font-size:.62rem;padding:14px 4px}
   .tab .tab-num{font-size:.55rem}
-}
+  .tahmin-kart .tk-ana .val{font-size:1.6rem}
+           }
