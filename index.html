@@ -24,7 +24,6 @@
   <div class="tab" onclick="switchTab(6,this)"><span class="tab-num">07</span>Kelly</div>
   <div class="tab" onclick="switchTab(7,this)"><span class="tab-num">08</span>Backtest</div>
   <div class="tab" onclick="switchTab(8,this)"><span class="tab-num">09</span>Sürpriz</div>
-  <div class="tab" onclick="switchTab(9,this)"><span class="tab-num">10</span>Gol</div>
 </nav>
 
 <div class="container">
@@ -117,7 +116,7 @@
       <p class="muted" style="font-size:.76rem;margin-bottom:14px;line-height:1.6">İstediğin maçı ekle, oranları gir. Bülten dışı maçlar için!</p>
       <div class="serbest-actions">
         <button onclick="openSerbestModal()">➕ Maç Ekle</button>
-        <button onclick="otomatikKuponModal()" class="purple">🤖 Otomatik Kupon</button>
+        <button onclick="kuponSerbestModal()" class="purple">⚡ Kupon Oluştur</button>
       </div>
       <button onclick="temizleSerbest()" class="danger" style="margin-top:8px">🗑️ Tümünü Temizle</button>
     </div>
@@ -165,22 +164,6 @@
     </div>
   </div>
 
-  <div class="page" id="page-9">
-    <div class="card">
-      <div class="result-title">🎯 MOD SEÇİMİ</div>
-      <div class="mod-secim">
-        <div class="mod-btn iddaa active" id="mod-iddaa" onclick="setMod('iddaa')">🎲 İDDAA MODU</div>
-        <div class="mod-btn toto" id="mod-toto" onclick="setMod('toto')">⚽ TOTO MODU</div>
-      </div>
-      <div id="modAciklama" class="muted" style="font-size:.75rem;line-height:1.6;padding:10px;background:var(--bg2);border-radius:10px"></div>
-    </div>
-    <div class="card">
-      <div class="result-title">⚽ GOL ANALİZİ</div>
-      <p class="muted" style="font-size:.76rem;margin-bottom:14px;line-height:1.6">Serbest sekmesinden maç ekle. Oranları girdiysen burada gol analizi çıkar.</p>
-      <div id="golAnalizListesi"></div>
-    </div>
-  </div>
-
 </div>
 
 <div class="save-bar" id="saveBar" style="display:none">
@@ -189,11 +172,10 @@
   <button onclick="clearPicks()" style="background:var(--bg2);color:var(--red);border:1px solid var(--border);width:44px;padding:12px 0">🗑️</button>
 </div>
 
-<!-- SERBEST MAÇ EKLE MODAL -->
 <div class="modal-overlay" id="serbestModal">
   <div class="modal-box">
     <div class="modal-title">➕ Maç Ekle</div>
-    <div class="modal-sub">Maç adını ve oranları gir. İstediğin bahsi girebilirsin.</div>
+    <div class="modal-sub">Maç adını ve oranları gir.</div>
     <label>⚽ Müsabaka</label>
     <input type="text" id="sm-match" placeholder="Örn: Recife - Sao Bernardo">
     <label>1 / X / 2 (Zorunlu)</label>
@@ -217,22 +199,11 @@
         <div class="oran-item"><label>Dep 0.5Ü</label><input type="number" step="0.01" placeholder="1.00" id="sm-dep05"></div>
         <div class="oran-item"><label>Dep 1.5Ü</label><input type="number" step="0.01" placeholder="1.00" id="sm-dep15"></div>
       </div>
-      <label>Toplam Gol</label>
-      <div class="oran-grid">
-        <div class="oran-item"><label>0-1</label><input type="number" step="0.01" placeholder="1.00" id="sm-tg01"></div>
-        <div class="oran-item"><label>2-3</label><input type="number" step="0.01" placeholder="1.00" id="sm-tg23"></div>
-        <div class="oran-item"><label>4-5</label><input type="number" step="0.01" placeholder="1.00" id="sm-tg45"></div>
-      </div>
       <label>İlk Yarı</label>
       <div class="oran-grid">
         <div class="oran-item"><label>İY 1</label><input type="number" step="0.01" placeholder="1.00" id="sm-iy1"></div>
         <div class="oran-item"><label>İY X</label><input type="number" step="0.01" placeholder="1.00" id="sm-iyX"></div>
         <div class="oran-item"><label>İY 2</label><input type="number" step="0.01" placeholder="1.00" id="sm-iy2"></div>
-      </div>
-      <label>İlk Yarı Alt/Üst 1.5</label>
-      <div class="oran-grid">
-        <div class="oran-item"><label>Alt 1.5</label><input type="number" step="0.01" placeholder="1.00" id="sm-iyalt15"></div>
-        <div class="oran-item"><label>Üst 1.5</label><input type="number" step="0.01" placeholder="1.00" id="sm-iyust15"></div>
       </div>
     </div>
     <div class="modal-buttons">
@@ -242,40 +213,10 @@
   </div>
 </div>
 
-<!-- OTOMATİK KUPON MODAL -->
-<div class="modal-overlay" id="otomatikModal">
-  <div class="modal-box">
-    <div class="modal-title">🤖 Otomatik Kupon</div>
-    <div class="modal-sub">Sistem senin için en iyi kuponu oluştursun.</div>
-    <label>📊 Kaç Maçlık Kupon?</label>
-    <select id="otoKacMac">
-      <option value="3">3 Maç (Güvenli)</option>
-      <option value="4" selected>4 Maç (Önerilen)</option>
-      <option value="5">5 Maç (Orta Risk)</option>
-      <option value="6">6 Maç (Yüksek Risk)</option>
-      <option value="7">7 Maç (Çok Yüksek)</option>
-    </select>
-    <label>⚠️ Risk Seviyesi</label>
-    <select id="otoRisk">
-      <option value="dusuk">Düşük Risk (Sadece Bankolar)</option>
-      <option value="orta" selected>Orta Risk (Banko + Değerli)</option>
-      <option value="yuksek">Yüksek Risk (Sürprizli)</option>
-    </select>
-    <div class="suggest-info-box">
-      <div id="otoInfo">Sistem en iyi maçları seçip kupon oluşturacak.</div>
-    </div>
-    <div class="modal-buttons">
-      <button class="cancel" onclick="closeModal('otomatikModal')">İptal</button>
-      <button onclick="otomatikKuponYap()">Kuponu Oluştur</button>
-    </div>
-  </div>
-</div>
-
-<!-- SUGGEST MODAL -->
 <div class="modal-overlay" id="suggestModal">
   <div class="modal-box">
     <div class="modal-title">🎲 Kupon Oluştur</div>
-    <div class="modal-sub">Strateji seç, bütçe gir, sistem senin oranlarınla üretsin.</div>
+    <div class="modal-sub">Strateji seç, bütçe gir.</div>
     <div class="modes" style="margin-bottom:16px">
       <div class="mode active" id="sm-guvenli" onclick="selectSuggestMode('guvenli',this)"><b>🛡️</b><span>GÜVENLİ</span></div>
       <div class="mode" id="sm-dengeli" onclick="selectSuggestMode('dengeli',this)"><b>⚖️</b><span>DENGELİ</span></div>
@@ -294,7 +235,6 @@
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast-overlay" id="toastModal">
   <div class="toast-box">
     <span class="toast-icon" id="toastIcon">✅</span>
@@ -304,7 +244,6 @@
   </div>
 </div>
 
-<!-- LEGAL -->
 <div class="toast-overlay" id="legalModal" onclick="if(event.target===this)closeModal('legalModal')">
   <div class="toast-box" style="max-width:440px;text-align:left;max-height:85vh;overflow-y:auto">
     <div class="modal-title" style="color:var(--orange);margin-bottom:14px;font-size:1rem">⚠️ Yasal Uyarı</div>
