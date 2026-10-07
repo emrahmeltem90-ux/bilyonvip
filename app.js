@@ -7,14 +7,15 @@
 let matchesData = [];
 let PR = [];
 let oddsData = {};
-let analizler = {}; // matchId → analiz sonucu
+let analizler = {};
 let archiveData = { weeks: [] };
 let riskMode = 'dengeli';
+let manuelSecimler = {};
 
 const $ = id => document.getElementById(id);
 
 /* ============================================================
-   MODÜL 1: oddsCalculator — Oran → Olasılık
+   MODÜL 1: oddsCalculator
    ============================================================ */
 function oranToOlasilik(o1, oX, o2){
   const r1 = 1/o1, rX = 1/oX, r2 = 1/o2;
@@ -26,27 +27,22 @@ function oranToOlasilik(o1, oX, o2){
 }
 
 /* ============================================================
-   MODÜL 2: matchAnalyzer — Maç Analiz Motoru
+   MODÜL 2: matchAnalyzer
    ============================================================ */
 function macAnalizEt(matchId){
   const od = oddsData[matchId];
   if(!od || !od['1'] || !od['X'] || !od['2']) return null;
-  
   const o = oranToOlasilik(parseFloat(od['1']), parseFloat(od['X']), parseFloat(od['2']));
   const p1 = o.p[0], pX = o.p[1], p2 = o.p[2];
-  
-  // Sırala
   const sirali = [
     {kod:'1', olas:p1},
     {kod:'X', olas:pX},
     {kod:'2', olas:p2}
   ].sort((a,b) => b.olas - a.olas);
-  
   const enYuksek = sirali[0];
   const ikinci = sirali[1];
   const ucuncu = sirali[2];
   const fark = enYuksek.olas - ikinci.olas;
-  
   return {
     matchId: matchId,
     p1: p1, pX: pX, p2: p2,
@@ -60,41 +56,42 @@ function macAnalizEt(matchId){
 }
 
 /* ============================================================
-   MODÜL 3: predictionEngine — Tahmin Motoru
+   MODÜL 3: predictionEngine
    ============================================================ */
 function tahminUret(analiz){
   if(!analiz) return null;
-  
   const { enYuksek, ikinci, ucuncu, fark } = analiz;
   let karar = '', guven = 0, risk = '', alternatif = '', surpriz = '';
   
-  // KARAR MOTORU
-  if(enYuksek.olas >= 75 && fark >= 40){
-    // Çok güçlü banko
+  if(enYuksek.olas >= 70 && fark >= 35){
     karar = 'BANKO ' + enYuksek.kod;
     guven = Math.min(100, enYuksek.olas + 6);
     risk = 'Çok Düşük';
     alternatif = siraliAlternatif(enYuksek.kod, ikinci.kod);
     surpriz = ucuncu.kod;
   }
-  else if(enYuksek.olas >= 65 && fark >= 25){
-    // Güçlü banko
+  else if(enYuksek.olas >= 60 && fark >= 20){
     karar = 'BANKO ' + enYuksek.kod;
     guven = Math.min(100, enYuksek.olas + 3);
     risk = 'Düşük';
     alternatif = siraliAlternatif(enYuksek.kod, ikinci.kod);
     surpriz = ucuncu.kod;
   }
-  else if(enYuksek.olas >= 55 && fark >= 15){
-    // Çift şans
+  else if(enYuksek.olas >= 50 && fark >= 10){
     karar = 'ÇİFT ' + siraliAlternatif(enYuksek.kod, ikinci.kod);
     guven = enYuksek.olas;
     risk = 'Orta';
     alternatif = siraliAlternatif(enYuksek.kod, ikinci.kod);
     surpriz = ucuncu.kod;
   }
-  else if(enYuksek.olas >= 45 && fark >= 8){
-    // Riskli çift
+  else if(enYuksek.olas >= 42 && fark >= 5){
+    karar = 'ÇİFT ' + siraliAlternatif(enYuksek.kod, ikinci.kod);
+    guven = enYuksek.olas - 3;
+    risk = 'Yüksek';
+    alternatif = siraliAlternatif(enYuksek.kod, ikinci.kod);
+    surpriz = ucuncu.kod;
+  }
+  else if(enYuksek.olas >= 38 && fark >= 3){
     karar = 'ÇİFT ' + siraliAlternatif(enYuksek.kod, ikinci.kod);
     guven = enYuksek.olas - 5;
     risk = 'Yüksek';
@@ -102,19 +99,11 @@ function tahminUret(analiz){
     surpriz = ucuncu.kod;
   }
   else{
-    // Üçlü
     karar = 'ÜÇLÜ 1X2';
-    guven = Math.max(30, enYuksek.olas - 10);
+    guven = Math.max(30, enYuksek.olas - 8);
     risk = 'Çok Yüksek';
     alternatif = '1X2';
     surpriz = ucuncu.kod;
-  }
-  
-  // Özel durum: en yüksek %51 ama fark düşük → "Favori fakat riskli"
-  if(enYuksek.olas >= 50 && enYuksek.olas < 60 && fark < 12){
-    karar = 'ÇİFT ' + siraliAlternatif(enYuksek.kod, ikinci.kod);
-    guven = enYuksek.olas - 3;
-    risk = 'Orta-Yüksek';
   }
   
   return {
@@ -130,11 +119,7 @@ function tahminUret(analiz){
 
 function siraliAlternatif(a, b){
   const sıra = {'1':1, 'X':2, '2':3};
-  return sıralıKod(sıra[a] < sıra[b] ? a : b) + sıralıKod(sıra[a] < sıra[b] ? b : a);
-}
-
-function sıralıKod(k){
-  return k;
+  return (sıra[a] < sıra[b] ? a : b) + (sıra[a] < sıra[b] ? b : a);
 }
 
 /* ============================================================
@@ -158,7 +143,6 @@ async function loadData(){
       if(m.odds) oddsData[m.id] = {...m.odds};
     });
     
-    // localStorage'dan kayıtlı oranları al
     const kayitli = JSON.parse(localStorage.getItem('skorlab_odds') || '{}');
     Object.keys(kayitli).forEach(id => {
       oddsData[id] = {...(oddsData[id] || {}), ...kayitli[id]};
@@ -167,11 +151,10 @@ async function loadData(){
     $('weekTitle').innerText = raw.week || 'Bu Hafta';
     hesaplaPR();
     renderBulten();
-    renderTahminListesi();
     updateStats();
     updateKolon();
   }catch(e){
-    document.body.innerHTML = '<div style="padding:20px;color:#ff4d5e">⚠️ matches.json yüklenemedi: ' + e.message + '</div>';
+    console.error('loadData hatası:', e);
   }
   loadArchive();
 }
@@ -207,8 +190,10 @@ function renderBulten(){
     
     let badgeHTML = '';
     if(tahmin){
-      const kararClass = tahmin.karar.includes('BANKO') ? 'green' : tahmin.karar.includes('ÇİFT') ? 'yellow' : tahmin.karar.includes('ÜÇLÜ') ? 'red' : 'purple';
-      badgeHTML = `<span class="badge ${kararClass}">${tahmin.karar}</span>`;
+      const manuel = manuelSecimler[m.id];
+      const karar = manuel ? 'MANUEL ' + manuel : tahmin.karar;
+      const kararClass = karar.includes('BANKO') ? 'green' : karar.includes('ÇİFT') ? 'yellow' : karar.includes('ÜÇLÜ') ? 'red' : 'purple';
+      badgeHTML = `<span class="badge ${kararClass}">${karar}</span>`;
     }
     
     return `
@@ -227,9 +212,9 @@ function renderBulten(){
       </div>
       ${hasOdds ? `
       <div class="oran-grid-bulten">
-        <div class="oran-box-bulten"><div class="lbl">1</div><div class="val">${parseFloat(od['1']).toFixed(2)}</div><div class="pct">%${PR[i][0]*100 ? (PR[i][0]*100).toFixed(1) : '0'}</div></div>
-        <div class="oran-box-bulten"><div class="lbl">X</div><div class="val">${parseFloat(od['X']).toFixed(2)}</div><div class="pct">%${PR[i][1]*100 ? (PR[i][1]*100).toFixed(1) : '0'}</div></div>
-        <div class="oran-box-bulten"><div class="lbl">2</div><div class="val">${parseFloat(od['2']).toFixed(2)}</div><div class="pct">%${PR[i][2]*100 ? (PR[i][2]*100).toFixed(1) : '0'}</div></div>
+        <div class="oran-box-bulten"><div class="lbl">1</div><div class="val">${parseFloat(od['1']).toFixed(2)}</div><div class="pct">%${(PR[i][0]*100).toFixed(1)}</div></div>
+        <div class="oran-box-bulten"><div class="lbl">X</div><div class="val">${parseFloat(od['X']).toFixed(2)}</div><div class="pct">%${(PR[i][1]*100).toFixed(1)}</div></div>
+        <div class="oran-box-bulten"><div class="lbl">2</div><div class="val">${parseFloat(od['2']).toFixed(2)}</div><div class="pct">%${(PR[i][2]*100).toFixed(1)}</div></div>
       </div>` : ''}
     </div>`;
   }).join('');
@@ -252,12 +237,12 @@ function oranGuncelle(matchId, alan, deger){
 function renderTahminListesi(){
   const container = $('tahminListesi');
   if(!container) return;
-  
   const analizli = matchesData.map(m => {
     const analiz = macAnalizEt(m.id);
     if(!analiz) return null;
     const tahmin = tahminUret(analiz);
-    return { m, analiz, tahmin };
+    const manuel = manuelSecimler[m.id];
+    return { m, analiz, tahmin, manuel };
   }).filter(x => x !== null);
   
   if(!analizli.length){
@@ -265,30 +250,29 @@ function renderTahminListesi(){
     return;
   }
   
-  container.innerHTML = analizli.map(({m, analiz, tahmin}) => {
-    const kararClass = tahmin.karar.includes('BANKO') ? 'banko' : tahmin.karar.includes('ÇİFT') ? 'cift' : tahmin.karar.includes('ÜÇLÜ') ? 'uclu' : 'surpriz';
-    const ikon = tahmin.karar.includes('BANKO') ? '🔒' : tahmin.karar.includes('ÇİFT') ? '⚠️' : tahmin.karar.includes('ÜÇLÜ') ? '🔥' : '🎲';
+  container.innerHTML = analizli.map(({m, analiz, tahmin, manuel}) => {
+    const karar = manuel ? 'MANUEL ' + manuel : tahmin.karar;
+    const ana = manuel || tahmin.ana_tahmin;
+    const kararClass = karar.includes('BANKO') ? 'banko' : karar.includes('ÇİFT') ? 'cift' : karar.includes('ÜÇLÜ') ? 'uclu' : 'surpriz';
+    const ikon = karar.includes('BANKO') ? '🔒' : karar.includes('ÇİFT') ? '⚠️' : karar.includes('ÜÇLÜ') ? '🔥' : '🎲';
     
     return `
-    <div class="tahmin-kart ${kararClass}">
+    <div class="tahmin-kart ${kararClass}" onclick="macDetayGoster(${m.id})" style="cursor:pointer">
       <div class="tk-head">
         <span>${m.date} · ${m.league}</span>
-        <span>${ikon} MAÇ #${m.id}</span>
+        <span>${ikon} MAÇ #${m.id}${manuel ? ' <span style="color:var(--orange);font-size:.65rem">[M]</span>' : ''}</span>
       </div>
       <div class="tk-teams">${m.home} - ${m.away}</div>
-      
       <div class="tk-ana">
-        <div class="lbl">${tahmin.karar}</div>
-        <div class="val">${tahmin.ana_tahmin}</div>
+        <div class="lbl">${karar}</div>
+        <div class="val">${ana}</div>
       </div>
-      
       <div class="tk-info">
         <div class="tk-item"><span class="lbl">Güven</span><span class="val">%${tahmin.guven}</span></div>
         <div class="tk-item"><span class="lbl">Risk</span><span class="val">${tahmin.risk}</span></div>
         <div class="tk-item"><span class="lbl">Olasılık</span><span class="val">%${analiz.enYuksek.olas.toFixed(0)}</span></div>
         <div class="tk-item"><span class="lbl">Fark</span><span class="val">%${tahmin.favori_farki}</span></div>
       </div>
-      
       <div class="tk-alt">
         <b>Alternatif:</b> ${tahmin.alternatif} · <b>Sürpriz:</b> ${tahmin.surpriz}
       </div>
@@ -303,7 +287,9 @@ function updateStats(){
   const analizli = matchesData.map(m => {
     const analiz = macAnalizEt(m.id);
     if(!analiz) return null;
-    return tahminUret(analiz);
+    const tahmin = tahminUret(analiz);
+    const manuel = manuelSecimler[m.id];
+    return manuel ? {...tahmin, karar: 'MANUEL ' + manuel} : tahmin;
   }).filter(x => x !== null);
   
   const banko = analizli.filter(t => t.karar.includes('BANKO')).length;
@@ -368,7 +354,9 @@ function tahminVer(){
   const analizli = matchesData.map(m => {
     const analiz = macAnalizEt(m.id);
     if(!analiz) return null;
-    return { m, analiz, tahmin: tahminUret(analiz) };
+    const tahmin = tahminUret(analiz);
+    const manuel = manuelSecimler[m.id];
+    return { m, analiz, tahmin, manuel };
   }).filter(x => x !== null);
   
   if(analizli.length === 0){
@@ -376,12 +364,11 @@ function tahminVer(){
     return;
   }
   
-  const banko = analizli.filter(x => x.tahmin.karar.includes('BANKO')).length;
-  const cift = analizli.filter(x => x.tahmin.karar.includes('ÇİFT')).length;
-  const uclu = analizli.filter(x => x.tahmin.karar.includes('ÜÇLÜ')).length;
+  const banko = analizli.filter(x => (x.manuel ? x.manuel : x.tahmin.karar).includes('BANKO')).length;
+  const cift = analizli.filter(x => (x.manuel ? x.manuel : x.tahmin.karar).includes('ÇİFT')).length;
+  const uclu = analizli.filter(x => (x.manuel ? x.manuel : x.tahmin.karar).includes('ÜÇLÜ')).length;
   const ortalamaGuven = Math.round(analizli.reduce((t,x) => t + x.tahmin.guven, 0) / analizli.length);
   
-  // Modal aç
   $('tahminModalBody').innerHTML = `
     <div style="font-size:.8rem;line-height:1.8">
       <div style="background:var(--bg2);border-radius:10px;padding:12px;margin-bottom:12px">
@@ -392,14 +379,16 @@ function tahminVer(){
           <div><div style="color:var(--blue);font-weight:900;font-size:1.2rem">%${ortalamaGuven}</div><div style="color:var(--muted);font-size:.6rem">ORT. GÜVEN</div></div>
         </div>
       </div>
-      ${analizli.map(({m, tahmin}) => {
-        const ikon = tahmin.karar.includes('BANKO') ? '🔒' : tahmin.karar.includes('ÇİFT') ? '⚠️' : tahmin.karar.includes('ÜÇLÜ') ? '🔥' : '🎲';
-        const renk = tahmin.karar.includes('BANKO') ? 'green' : tahmin.karar.includes('ÇİFT') ? 'orange' : tahmin.karar.includes('ÜÇLÜ') ? 'red' : 'purple';
+      ${analizli.map(({m, tahmin, manuel}) => {
+        const karar = manuel ? 'MANUEL ' + manuel : tahmin.karar;
+        const ana = manuel || tahmin.ana_tahmin;
+        const ikon = karar.includes('BANKO') ? '🔒' : karar.includes('ÇİFT') ? '⚠️' : karar.includes('ÜÇLÜ') ? '🔥' : '🎲';
+        const renk = karar.includes('BANKO') ? 'green' : karar.includes('ÇİFT') ? 'orange' : karar.includes('ÜÇLÜ') ? 'red' : 'purple';
         return `
           <div style="background:var(--bg2);border-left:3px solid var(--${renk});border-radius:8px;padding:8px 10px;margin-bottom:6px">
             <div style="font-weight:800;font-size:.78rem">${ikon} #${m.id} ${m.home} - ${m.away}</div>
             <div style="font-size:.7rem;color:var(--muted);margin-top:4px">
-              <b style="color:var(--${renk})">${tahmin.ana_tahmin}</b> · ${tahmin.karar} · Güven %${tahmin.guven} · Risk: ${tahmin.risk}
+              <b style="color:var(--${renk})">${ana}</b> · ${karar} · Güven %${tahmin.guven} · Risk: ${tahmin.risk}
             </div>
           </div>`;
       }).join('')}
@@ -409,7 +398,7 @@ function tahminVer(){
 }
 
 /* ============================================================
-   MAÇ DETAY
+   MAÇ DETAY + MANUEL
    ============================================================ */
 function macDetayGoster(matchId){
   const m = matchesData.find(x => x.id === matchId);
@@ -423,6 +412,7 @@ function macDetayGoster(matchId){
   const analiz = macAnalizEt(matchId);
   const tahmin = tahminUret(analiz);
   const o = oranToOlasilik(parseFloat(od['1']), parseFloat(od['X']), parseFloat(od['2']));
+  const manuel = manuelSecimler[matchId];
   
   $('macDetayTitle').innerText = '📊 MAÇ #' + matchId;
   $('macDetayBody').innerHTML = `
@@ -440,11 +430,10 @@ function macDetayGoster(matchId){
       <div class="analiz-box">
         <div class="analiz-row"><span class="analiz-lbl">📈 OLASILIKLAR</span></div>
         <div class="analiz-row"><span>1: <b class="green">%${o.p[0].toFixed(1)}</b></span><span>X: <b class="green">%${o.p[1].toFixed(1)}</b></span><span>2: <b class="green">%${o.p[2].toFixed(1)}</b></span></div>
-        <div class="analiz-row"><span class="muted">Marj: %${o.marj}</span></div>
       </div>
       
       <div class="tahmin-kart ${tahmin.karar.includes('BANKO') ? 'banko' : tahmin.karar.includes('ÇİFT') ? 'cift' : 'uclu'}">
-        <div class="tk-head"><span>İDDAA TAHMİNİ</span><span>GÜVEN %${tahmin.guven}</span></div>
+        <div class="tk-head"><span>SİSTEM TAHMİNİ</span><span>GÜVEN %${tahmin.guven}</span></div>
         <div class="tk-ana">
           <div class="lbl">${tahmin.karar}</div>
           <div class="val">${tahmin.ana_tahmin}</div>
@@ -456,186 +445,39 @@ function macDetayGoster(matchId){
           <div class="tk-item"><span class="lbl">Fark</span><span class="val">%${tahmin.favori_farki}</span></div>
         </div>
       </div>
+      
+      <div style="margin-top:12px">
+        <div style="font-weight:800;color:var(--orange);font-size:.78rem;margin-bottom:8px">🎯 MANUEL MÜDAHALE</div>
+        <div style="font-size:.7rem;color:var(--muted);margin-bottom:8px">Sistem kararını beğenmediysen kendi seçimini yap:</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">
+          <button onclick="manuelSecim(${matchId},'1')" class="${manuel === '1' ? 'blue' : 'gray'}" style="padding:10px;font-size:.85rem">1</button>
+          <button onclick="manuelSecim(${matchId},'X')" class="${manuel === 'X' ? 'blue' : 'gray'}" style="padding:10px;font-size:.85rem">X</button>
+          <button onclick="manuelSecim(${matchId},'2')" class="${manuel === '2' ? 'blue' : 'gray'}" style="padding:10px;font-size:.85rem">2</button>
+        </div>
+        ${manuel ? `<div style="margin-top:8px;padding:8px;background:rgba(255,176,32,.1);border-left:3px solid var(--orange);border-radius:6px;font-size:.72rem;color:var(--orange)"><b>Manuel seçim: ${manuel}</b> · Sistem: ${tahmin.ana_tahmin}</div>` : ''}
+      </div>
     </div>
   `;
   $('macDetayModal').classList.add('active');
 }
 
-/* ============================================================
-   MODÜL 4: couponPlanner — Kupon Planlama Motoru
-   ============================================================ */
-function kolonDagilimHesapla(kolonSayisi){
-  const analizli = matchesData.map(m => {
-    const analiz = macAnalizEt(m.id);
-    if(!analiz) return null;
-    return { matchId: m.id, m, analiz, tahmin: tahminUret(analiz) };
-  }).filter(x => x !== null);
-  
-  const dagilim = {};
-  
-  analizli.forEach(({matchId, analiz, tahmin}) => {
-    const karar = tahmin.karar;
-    const ana = tahmin.ana_tahmin;
-    const alt = tahmin.alternatif;
-    const sur = tahmin.surpriz;
-    
-    if(karar.includes('BANKO')){
-      // Banko: tüm kolonlarda aynı
-      dagilim[matchId] = { [ana]: kolonSayisi };
-    }
-    else if(karar.includes('ÇİFT')){
-      // Çift: güven oranına göre dağıt
-      const anaOran = tahmin.guven / 100;
-      const altOran = 1 - anaOran;
-      
-      // İkinci tahmini bul
-      let ikinci = '';
-      if(alt.includes('1X')) ikinci = ana === '1' ? 'X' : '1';
-      else if(alt.includes('X2')) ikinci = ana === 'X' ? '2' : 'X';
-      else if(alt.includes('12')) ikinci = ana === '1' ? '2' : '1';
-      
-      const anaKolon = Math.round(kolonSayisi * anaOran);
-      const altKolon = kolonSayisi - anaKolon;
-      
-      dagilim[matchId] = {
-        [ana]: anaKolon,
-        [ikinci]: altKolon
-      };
-    }
-    else if(karar.includes('ÜÇLÜ')){
-      // Üçlü: eşit dağıt
-      const pay = Math.floor(kolonSayisi / 3);
-      const kalan = kolonSayisi - (pay * 3);
-      dagilim[matchId] = {
-        '1': pay + (kalan > 0 ? 1 : 0),
-        'X': pay + (kalan > 1 ? 1 : 0),
-        '2': pay
-      };
-    }
-    else if(karar.includes('SÜRPRİZ')){
-      dagilim[matchId] = {
-        [ana]: Math.round(kolonSayisi * 0.6),
-        [sur]: Math.round(kolonSayisi * 0.4)
-      };
-    }
-    else{
-      // Varsayılan: ana tahmine hepsi
-      dagilim[matchId] = { [ana]: kolonSayisi };
-    }
-  });
-  
-  return { dagilim, analizli };
-}
-
-/* ============================================================
-   MODÜL 5: couponGenerator — Kupon Üretme Motoru
-   ============================================================ */
-function kuponUret(kolonSayisi, dagilim){
-  const kolonlar = [];
-  const matchIds = Object.keys(dagilim).map(Number).sort((a,b) => a - b);
-  
-  for(let i = 0; i < kolonSayisi; i++){
-    const kolon = [];
-    let oran = 1;
-    let bankoSayisi = 0;
-    let ciftSayisi = 0;
-    
-    matchIds.forEach((matchId, idx) => {
-      const dagilimBu = dagilim[matchId];
-      const secenekler = Object.keys(dagilimBu);
-      
-      // Bu kolonda hangi seçenek olacak?
-      let secim = '';
-      const oranIdx = i / kolonSayisi;
-      
-      // Kümülatif dağılım
-      let kumulatif = 0;
-      for(const s of secenekler){
-        kumulatif += dagilimBu[s] / kolonSayisi;
-        if(oranIdx < kumulatif){
-          secim = s;
-          break;
-        }
-      }
-      if(!secim) secim = secenekler[0];
-      
-      kolon.push(secim);
-      
-      const od = oddsData[matchId];
-      if(od && od[secim]) oran *= parseFloat(od[secim]);
-    });
-    
-    // Banko ve çift sayısı
-    matchIds.forEach((matchId, idx) => {
-      const analiz = macAnalizEt(matchId);
-      const tahmin = tahminUret(analiz);
-      if(tahmin.karar.includes('BANKO')) bankoSayisi++;
-      if(tahmin.karar.includes('ÇİFT')) ciftSayisi++;
-    });
-    
-    kolonlar.push({
-      picks: kolon,
-      oran: oran,
-      banko: bankoSayisi,
-      cift: ciftSayisi
-    });
+function manuelSecim(matchId, secim){
+  if(manuelSecimler[matchId] === secim){
+    delete manuelSecimler[matchId];
+  } else {
+    manuelSecimler[matchId] = secim;
   }
-  
-  return kolonlar;
-}
-
-/* ============================================================
-   MODÜL 6: couponValidator — Kupon Doğrulama
-   ============================================================ */
-function kuponDogrula(kolonlar){
-  const benzersiz = [];
-  const gorulen = new Set();
-  
-  kolonlar.forEach(k => {
-    const key = k.picks.join('-');
-    if(!gorulen.has(key)){
-      gorulen.add(key);
-      benzersiz.push(k);
-    }
-  });
-  
-  return benzersiz;
-}
-
-/* ============================================================
-   MODÜL 7: couponStats — Kupon İstatistikleri
-   ============================================================ */
-function kuponIstatistik(kolonlar, dagilim){
-  const matchIds = Object.keys(dagilim).map(Number).sort((a,b) => a - b);
-  
-  let banko = 0, cift = 0, uclu = 0;
-  const matchStats = {};
-  
-  matchIds.forEach(matchId => {
-    const d = dagilim[matchId];
-    const toplam = Object.values(d).reduce((t,x) => t + x, 0);
-    const secenekSayisi = Object.keys(d).length;
-    
-    if(secenekSayisi === 1) banko++;
-    else if(secenekSayisi === 2) cift++;
-    else if(secenekSayisi === 3) uclu++;
-    
-    matchStats[matchId] = d;
-  });
-  
-  return {
-    banko, cift, uclu,
-    matchStats,
-    toplamKolon: kolonlar.length,
-    ortalamaOran: kolonlar.reduce((t,k) => t + k.oran, 0) / kolonlar.length
-  };
+  macDetayGoster(matchId);
+  renderBulten();
+  renderTahminListesi();
+  updateStats();
+  showToast('success', 'Manuel Seçim', secim + ' olarak ayarlandı.');
 }
 
 /* ============================================================
    KUPON OLUŞTUR
    ============================================================ */
 function kuponOlustur(){
-  // Önce tüm oranlar girilmiş mi?
   let eksik = [];
   matchesData.forEach(m => {
     const od = oddsData[m.id];
@@ -649,38 +491,119 @@ function kuponOlustur(){
   const butce = parseFloat($('budget').value) || 200;
   const kolonSayisi = Math.floor(butce / 10);
   
-  // Planlama
-  const { dagilim } = kolonDagilimHesapla(kolonSayisi);
+  const analizli = matchesData.map(m => {
+    const analiz = macAnalizEt(m.id);
+    if(!analiz) return null;
+    const tahmin = tahminUret(analiz);
+    const manuel = manuelSecimler[m.id];
+    return {
+      matchId: m.id,
+      m: m,
+      analiz: analiz,
+      tahmin: tahmin,
+      karar: manuel ? 'MANUEL ' + manuel : tahmin.karar,
+      ana: manuel || tahmin.ana_tahmin,
+      manuel: manuel ? true : false
+    };
+  }).filter(x => x !== null);
   
-  // Üretim
-  let kolonlar = kuponUret(kolonSayisi, dagilim);
+  const dagilim = {};
+  analizli.forEach(({matchId, karar, ana, tahmin, manuel}) => {
+    if(karar.includes('BANKO') || manuel){
+      dagilim[matchId] = { [ana]: kolonSayisi };
+    }
+    else if(karar.includes('ÇİFT')){
+      const guven = tahmin.guven;
+      const anaOran = guven / 100;
+      const anaKolon = Math.max(1, Math.round(kolonSayisi * anaOran));
+      const altKolon = kolonSayisi - anaKolon;
+      
+      let ikinci = '';
+      const kararStr = karar.replace('ÇİFT ', '');
+      if(kararStr === '1X'){ ikinci = ana === '1' ? 'X' : '1'; }
+      else if(kararStr === 'X2'){ ikinci = ana === 'X' ? '2' : 'X'; }
+      else if(kararStr === '12'){ ikinci = ana === '1' ? '2' : '1'; }
+      else { ikinci = ana === '1' ? 'X' : '2'; }
+      
+      dagilim[matchId] = { [ana]: anaKolon, [ikinci]: altKolon };
+    }
+    else if(karar.includes('ÜÇLÜ')){
+      const pay = Math.floor(kolonSayisi / 3);
+      const kalan = kolonSayisi - (pay * 3);
+      dagilim[matchId] = {
+        '1': pay + (kalan > 0 ? 1 : 0),
+        'X': pay + (kalan > 1 ? 1 : 0),
+        '2': pay
+      };
+    }
+    else{
+      dagilim[matchId] = { [ana]: kolonSayisi };
+    }
+  });
   
-  // Doğrulama
-  kolonlar = kuponDogrula(kolonlar);
+  const kolonlar = [];
+  const gorulen = new Set();
+  let deneme = 0;
+  const maxDeneme = 5000;
   
-  // İstatistik
-  const stats = kuponIstatistik(kolonlar, dagilim);
+  while(kolonlar.length < kolonSayisi && deneme < maxDeneme){
+    deneme++;
+    const kolon = [];
+    let oran = 1;
+    let bankoSayisi = 0;
+    let ciftSayisi = 0;
+    
+    analizli.forEach(({matchId, karar, m}) => {
+      const d = dagilim[matchId];
+      const secenekler = Object.keys(d);
+      const toplam = secenekler.reduce((t,s) => t + d[s], 0);
+      let secim = '';
+      const r = Math.random();
+      let kumulatif = 0;
+      
+      for(const s of secenekler){
+        kumulatif += d[s] / toplam;
+        if(r < kumulatif){ secim = s; break; }
+      }
+      if(!secim) secim = secenekler[0];
+      
+      kolon.push(secim);
+      
+      const od = oddsData[matchId];
+      if(od && od[secim]) oran *= parseFloat(od[secim]);
+      
+      if(karar.includes('BANKO')) bankoSayisi++;
+      if(karar.includes('ÇİFT')) ciftSayisi++;
+    });
+    
+    const key = kolon.join('-');
+    if(!gorulen.has(key)){
+      gorulen.add(key);
+      kolonlar.push({ picks: kolon, oran: oran, banko: bankoSayisi, cift: ciftSayisi });
+    }
+  }
   
-  // Sonuç
   let html = `
     <div class="kupon-sonuc">
       <div class="baslik">⚡ KUPON (${kolonlar.length} Kolon)</div>
       
-      <div class="stat-grid c4" style="margin-bottom:14px">
-        <div class="stat-box"><div class="num">${stats.banko}</div><div class="lbl">Banko</div></div>
-        <div class="stat-box"><div class="num">${stats.cift}</div><div class="lbl">Çift</div></div>
-        <div class="stat-box"><div class="num">${stats.uclu}</div><div class="lbl">Üçlü</div></div>
-        <div class="stat-box"><div class="num">${stats.ortalamaOran.toFixed(1)}</div><div class="lbl">Ort. Oran</div></div>
+      <div style="background:var(--bg2);border-radius:10px;padding:12px;margin-bottom:14px">
+        <div style="font-weight:800;color:var(--green);font-size:.78rem;margin-bottom:8px">📊 GENEL BİLGİ</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:.72rem">
+          <div><b>Bütçe:</b> ${butce} TL</div>
+          <div><b>Kolon:</b> ${kolonlar.length}</div>
+          <div><b>Ort. Oran:</b> ${(kolonlar.reduce((t,k)=>t+k.oran,0)/kolonlar.length).toFixed(1)}</div>
+        </div>
       </div>
       
       <div style="background:var(--bg2);border-radius:10px;padding:12px;margin-bottom:14px">
-        <div style="font-weight:800;color:var(--green);font-size:.78rem;margin-bottom:8px">MAÇ BAZLI DAĞILIM</div>
-        ${Object.keys(stats.matchStats).map(matchId => {
-          const m = matchesData.find(x => x.id === parseInt(matchId));
-          const d = stats.matchStats[matchId];
-          const secenekStr = Object.keys(d).map(k => `${k}: ${d[k]}`).join(' · ');
+        <div style="font-weight:800;color:var(--green);font-size:.78rem;margin-bottom:8px">📋 MAÇ BAZLI DAĞILIM</div>
+        ${analizli.map(({matchId, m, karar, ana, manuel}) => {
+          const d = dagilim[matchId];
+          const secenekStr = Object.keys(d).sort().map(k => `<b>${k}</b>: ${d[k]}`).join(' · ');
+          const manuelTag = manuel ? ' <span style="color:var(--orange);font-size:.6rem">[M]</span>' : '';
           return `<div style="font-size:.72rem;padding:4px 0;border-bottom:1px solid var(--border)">
-            <b>#${matchId}</b> ${m?.home.slice(0,10) || '?'}: ${secenekStr}
+            <b>#${matchId}</b> ${m.home.slice(0,10)}: ${secenekStr}${manuelTag}
           </div>`;
         }).join('')}
       </div>
@@ -696,21 +619,24 @@ function kuponOlustur(){
       </div>
       
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <button onclick="kuponKopyala(${JSON.stringify(kolonlar).replace(/"/g, '&quot;')})" class="blue">📋 Kopyala</button>
-        <button onclick="kuponIndir(${JSON.stringify(kolonlar).replace(/"/g, '&quot;')})" class="gray">💾 İndir</button>
+        <button onclick="kuponKopyala()" class="blue">📋 Kopyala</button>
+        <button onclick="kuponIndir()" class="gray">💾 İndir (.txt)</button>
       </div>
     </div>
   `;
   
   $('kuponSonuc').innerHTML = html;
   window.sonKolonlar = kolonlar;
-  
   showToast('success', 'Kupon Hazır!', kolonlar.length + ' kolon oluşturuldu.');
 }
 
-function kuponKopyala(kolonlar){
+function kuponKopyala(){
+  if(!window.sonKolonlar || !window.sonKolonlar.length){
+    showToast('error', 'Kupon Yok', 'Önce kupon oluştur.');
+    return;
+  }
   let text = '🎯 SKORLAB KUPONU\n━━━━━━━━━━━━━━━\n\n';
-  kolonlar.forEach((k, idx) => {
+  window.sonKolonlar.forEach((k, idx) => {
     text += 'KOLON #' + String(idx+1).padStart(2,'0') + ': ' + k.picks.join('-') + '\n';
   });
   navigator.clipboard.writeText(text).then(() => {
@@ -720,9 +646,13 @@ function kuponKopyala(kolonlar){
   });
 }
 
-function kuponIndir(kolonlar){
+function kuponIndir(){
+  if(!window.sonKolonlar || !window.sonKolonlar.length){
+    showToast('error', 'Kupon Yok', 'Önce kupon oluştur.');
+    return;
+  }
   let text = '🎯 SKORLAB KUPONU\n━━━━━━━━━━━━━━━\n\n';
-  kolonlar.forEach((k, idx) => {
+  window.sonKolonlar.forEach((k, idx) => {
     text += 'KOLON #' + String(idx+1).padStart(2,'0') + ': ' + k.picks.join('-') + ' (Oran: ' + k.oran.toFixed(2) + ')\n';
   });
   const blob = new Blob([text], {type:'text/plain'});
@@ -741,10 +671,8 @@ function kuponIndir(kolonlar){
 function updateKolon(){
   const b = parseFloat($('budget').value) || 0;
   const k = Math.floor(b / 10);
-  const lbl = $('lblCost');
-  const klbl = $('lblKolon');
-  if(lbl) lbl.innerText = b + ' TL';
-  if(klbl) klbl.innerText = k;
+  const lbl = $('lblCost'); if(lbl) lbl.innerText = b + ' TL';
+  const klbl = $('lblKolon'); if(klbl) klbl.innerText = k;
 }
 
 function setRiskMode(mode, el){
@@ -754,10 +682,9 @@ function setRiskMode(mode, el){
   const info = {
     guvenli: '<b>🛡️ GÜVENLİ</b><br>Banko maçlara öncelik, çift şans ağırlıklı.',
     dengeli: '<b>⚖️ DENGELİ</b><br>Banko + çift şans karışık, sürprizlere kontrollü yer.',
-    agresif: '<b>🚀 AGRESİF</b><br>Sürprizlere daha fazla kolon, yüksek kazanç potansiyeli.'
+    agresif: '<b>🚀 AGRESİF</b><br>Sürprizlere daha fazla kolon.'
   };
-  const el2 = $('modeInfo');
-  if(el2) el2.innerHTML = info[mode];
+  const el2 = $('modeInfo'); if(el2) el2.innerHTML = info[mode];
 }
 
 /* ============================================================
@@ -766,16 +693,12 @@ function setRiskMode(mode, el){
 function renderArsiv(){
   const container = $('arsivListesi');
   if(!container) return;
-  
   if(!archiveData.weeks || !archiveData.weeks.length){
-    container.innerHTML = '<div class="card"><div class="muted" style="text-align:center;padding:20px">Henüz arşiv verisi yok.<br><br>archive.json dosyasına geçmiş sonuçları ekle.</div></div>';
+    container.innerHTML = '<div class="card"><div class="muted" style="text-align:center;padding:20px">Henüz arşiv verisi yok.</div></div>';
     ['gToplamHafta','gOrtalama','gEnIyi','gEnKotu'].forEach(id => { const el = $(id); if(el) el.innerText = '-'; });
     return;
   }
-  
-  let toplamDogru = 0, toplamMac = 0;
-  let enIyi = 0, enKotu = 100;
-  
+  let toplamDogru = 0, toplamMac = 0, enIyi = 0, enKotu = 100;
   container.innerHTML = archiveData.weeks.map(w => {
     const sonuclar = w.results || [];
     let dogru = 0;
@@ -787,24 +710,20 @@ function renderArsiv(){
       if(analiz.enYuksek.kod === r) dogru++;
     });
     const yuzde = sonuclar.length ? (dogru / sonuclar.length * 100) : 0;
-    toplamDogru += dogru;
-    toplamMac += sonuclar.length;
+    toplamDogru += dogru; toplamMac += sonuclar.length;
     if(yuzde > enIyi) enIyi = yuzde;
     if(yuzde < enKotu) enKotu = yuzde;
-    
     const renk = yuzde >= 70 ? 'green' : yuzde >= 50 ? 'orange' : 'red';
-    
     return `
       <div class="arsiv-hafta">
         <div class="hafta-baslik">📅 ${w.week}</div>
         <div class="hafta-info">
           Toplam: <b>${sonuclar.length}</b> maç<br>
           Model Tutma: <b style="color:var(--${renk})">${dogru}/${sonuclar.length} (%${yuzde.toFixed(0)})</b><br>
-          Sonuçlar: <span style="font-family:monospace;color:var(--text)">${sonuclar.join('-')}</span>
+          Sonuçlar: <span style="font-family:monospace">${sonuclar.join('-')}</span>
         </div>
       </div>`;
   }).join('');
-  
   const genelYuzde = toplamMac ? (toplamDogru / toplamMac * 100) : 0;
   const g1 = $('gToplamHafta'); if(g1) g1.innerText = archiveData.weeks.length;
   const g2 = $('gOrtalama'); if(g2) g2.innerText = '%' + genelYuzde.toFixed(0);
@@ -841,7 +760,7 @@ function showToast(type, title, msg){
    BAŞLAT
    ============================================================ */
 window.onload = function(){
-  loadData();
-  updateKolon();
+  try { loadData(); } catch(e) { console.error(e); }
+  try { updateKolon(); } catch(e) { console.error(e); }
   setTimeout(() => openModal('legalModal'), 800);
 };
