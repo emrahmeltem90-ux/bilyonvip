@@ -177,3 +177,40 @@ body{
 
 input:focus,select:focus{outline:none;border-color:var(--green)}
 button:active{opacity:.8}
+
+/* === YENİ EKLENTİLER === */
+
+/* Filtre barı */
+.filtre-bar{
+  display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:4px;
+}
+.filtre-btn{
+  padding:8px 12px;background:var(--bg3);border:1px solid var(--border);
+  border-radius:20px;color:var(--muted);font-weight:800;font-size:.68rem;
+  cursor:pointer;white-space:nowrap;
+}
+.filtre-btn.active{background:rgba(0,230,118,.15);border-color:var(--green);color:var(--green)}
+
+/* Sonuç butonları */
+.sonuc-butonlar{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.sonuc-btn{
+  padding:10px;border-radius:8px;border:1px solid var(--border);
+  background:var(--bg3);color:var(--text);font-weight:800;font-size:.8rem;cursor:pointer;
+}
+.sonuc-btn.dogru{background:var(--green);color:#000;border-color:var(--green)}
+.sonuc-btn.yanlis{background:var(--red);color:#fff;border-color:var(--red)}
+
+/* Kupon geçmiş kartları */
+.kupon-gecmis{
+  background:var(--bg3);border-radius:10px;padding:10px;margin-bottom:8px;
+  border-left:3px solid var(--blue);
+}
+.kupon-gecmis.kazandi{border-left-color:var(--green)}
+.kupon-gecmis.kaybetti{border-left-color:var(--red)}
+.kupon-gecmis.bekliyor{border-left-color:var(--orange)}
+
+/* Performans box */
+.perf-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.perf-item{background:var(--bg3);border-radius:8px;padding:10px;text-align:center}
+.perf-item .v{font-weight:900;font-size:1.1rem;color:var(--green)}
+.perf-item .l{font-size:.62rem;color:var(--muted);margin-top:2px}
