@@ -1,8 +1,5 @@
 /* ============================================================
-   SKORLAB v8 PRO · Full Stack + Süper Lig API
-   M1 Poisson | M2 Kelly | M3 Telegram/JSON/API | M4 PWA
-   M5 Radar | M6 Canvas QR | M7 Covering
-   + Sonuç Takip · Kupon Kaydetme · Filtre · Paylaşım Metni · Arşiv
+   SKORLAB v8 PRO · Full Stack + Süper Lig API (2026/27)
    ============================================================ */
 
 let matchesData = [];
@@ -342,15 +339,15 @@ function bulteniSifirla(){
 }
 
 /* ============================================================
-   SÜPER LİG API (YENİ)
+   SÜPER LİG API — 2026/27 SEZONU
    ============================================================ */
 async function süperLigCek(){
   const API_KEY = '4b7109b6760cf29b78701c45406dbd9a';
   const SÜPER_LİG_ID = 203;
-  const SEZON = 2025;
+  const SEZON = 2026;  // 2026/27 sezonu
 
   const bugun = new Date();
-  const haftaSonu = new Date(bugun.getTime() + 7 * 24 * 60 * 60 * 1000);
+  const haftaSonu = new Date(bugun.getTime() + 10 * 24 * 60 * 60 * 1000);
   const from = bugun.toISOString().split('T')[0];
   const to = haftaSonu.toISOString().split('T')[0];
 
@@ -363,11 +360,19 @@ async function süperLigCek(){
       method: 'GET',
       headers: { 'x-apisports-key': API_KEY }
     });
-    if(!res.ok) throw new Error('HTTP ' + res.status);
+
     const data = await res.json();
 
+    // Hata kontrolü
+    if(data.errors && Object.keys(data.errors).length > 0){
+      const hata = Object.values(data.errors).join(', ');
+      showToast('error', 'API Hatası', hata);
+      console.error('API Hata:', data.errors);
+      return;
+    }
+
     if(!data.response || !data.response.length){
-      showToast('error', 'Maç Yok', 'Bu tarihlerde Süper Lig maçı bulunamadı.');
+      showToast('error', 'Maç Yok', `Sezon: ${SEZON}, Tarih: ${from} → ${to}. Bu aralıkta maç bulunamadı.`);
       return;
     }
 
@@ -382,11 +387,9 @@ async function süperLigCek(){
       odds: null
     }));
 
-    // Mevcut yabancı maçları koru
     const mevcutYabanci = matchesData.filter(m => m.league !== 'TR1');
     matchesData = [...apiMatches, ...mevcutYabanci];
 
-    // Oranları temizle (API oran vermiyor)
     apiMatches.forEach(m => { if(!oddsData[m.id]) oddsData[m.id] = {}; });
 
     localStorage.setItem('skorlab_import', JSON.stringify({
@@ -399,7 +402,7 @@ async function süperLigCek(){
     showToast('success', 'Başarılı!', apiMatches.length + ' Süper Lig maçı çekildi.');
   }catch(e){
     console.error('Süper Lig API hatası:', e);
-    showToast('error', 'API Hatası', 'Bağlantı kurulamadı. İnternet kontrolü yap.');
+    showToast('error', 'Bağlantı Hatası', e.message || 'API çağrısı başarısız.');
   }
 }
 
