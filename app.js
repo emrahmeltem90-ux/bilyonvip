@@ -1517,4 +1517,69 @@ window.onload = function(){
   loadData();
   setRiskMode('dengeli', $('mode-dengeli'));
   setCoveringMode('tam', $('cover-tam'));
-};
+}
+
+/* ============================================================
+   API-FOOTBALL: SÜPER LİG OTOMATİK ÇEKME
+   ============================================================ */
+
+async function süperLigCek(){
+  const API_KEY = '4b7109b6760cf29b78701c45406dbd9a';
+  const SÜPER_LİG_ID = 203;
+  const SEZON = 2025;
+
+  // Bugünden itibaren 7 günlük pencere
+  const bugun = new Date();
+  const haftaSonu = new Date(bugun.getTime() + 7 * 24 * 60 * 60 * 1000);
+  const from = bugun.toISOString().split('T')[0];
+  const to = haftaSonu.toISOString().split('T')[0];
+
+  const url = `https://v3.football.api-sports.io/fixtures?league=${SÜPER_LİG_ID}&season=${SEZON}&from=${from}&to=${to}`;
+
+  showToast('success', 'Çekiliyor...', 'Süper Lig maçları getiriliyor.');
+
+  try{
+    const res = await fetch(url, {
+      method: 'GET',
+      headers: { 'x-apisports-key': API_KEY }
+    });
+
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+
+    if(!data.response || !data.response.length){
+      showToast('error', 'Maç Yok', 'Bu tarih aralığında Süper Lig maçı bulunamadı.');
+      return;
+    }
+
+    // API formatını uygulamanın formatına çevir
+    const apiMatches = data.response.map(match => ({
+      id: match.fixture.id,
+      home: match.teams.home.name,
+      away: match.teams.away.name,
+      date: new Date(match.fixture.date).toLocaleString('tr-TR', {
+        day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit'
+      }),
+      league: 'TR1',
+      odds: null
+    }));
+
+    // Mevcut maçlarla birleştir (yabancı maçları koru)
+    const mevcutYabanci = matchesData.filter(m => m.league !== 'TR1');
+    matchesData = [...apiMatches, ...mevcutYabanci];
+
+    // localStorage'a kaydet
+    localStorage.setItem('skorlab_import', JSON.stringify({
+      weekKey: 'süper_lig_otomatik',
+      matchesData: matchesData
+    }));
+
+    $('weekTitle').innerText = 'Süper Lig + Yabancı Maçlar';
+    renderBulten(); updateStats();
+    showToast('success', 'Başarılı!', apiMatches.length + ' Süper Lig maçı çekildi.');
+
+  }catch(e){
+    console.error('Süper Lig API hatası:', e);
+    showToast('error', 'API Hatası', 'Bağlantı kurulamadı. İnternet kontrolü yap.');
+  }
+}
