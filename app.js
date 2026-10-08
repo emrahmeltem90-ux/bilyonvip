@@ -1,5 +1,5 @@
 /* ============================================================
-   SKORLAB v8 PRO · Temiz Sürüm
+   SKORLAB v8 PRO · Temiz Sürüm (Telegram Alarm Kapalı)
    ============================================================ */
 
 let matchesData = [];
@@ -17,7 +17,6 @@ let weekKey = 'default';
 let kasa = parseFloat(localStorage.getItem('skorlab_kasa') || '1000');
 let kasaBaslangic = parseFloat(localStorage.getItem('skorlab_kasa_bas') || '1000');
 let kellyFraction = parseFloat(localStorage.getItem('skorlab_kelly_frac') || '0.5');
-let ayarlar = JSON.parse(localStorage.getItem('skorlab_ayarlar') || '{}');
 let radarChart = null;
 let sonKuponPNG = null;
 
@@ -237,69 +236,10 @@ function kasaGuncelle(val){
 }
 
 /* ============================================================
-   M3: ALARM
+   AYARLAR (Basitleştirildi - Telegram yok)
    ============================================================ */
-async function telegramAlert(msg){
-  if(!ayarlar.tgToken || !ayarlar.tgChatId) return false;
-  try{
-    await fetch(`https://api.telegram.org/bot${ayarlar.tgToken}/sendMessage`, {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ chat_id: ayarlar.tgChatId, text: msg, parse_mode:'HTML' })
-    });
-    return true;
-  }catch(e){ return false; }
-}
-
-async function ntfyAlert(msg){
-  if(!ayarlar.ntfyTopic) return false;
-  try{
-    await fetch(`https://ntfy.sh/${ayarlar.ntfyTopic}`, {
-      method:'POST', body: msg, headers:{ 'Title':'SkorLab Value Alert', 'Priority':'high' }
-    });
-    return true;
-  }catch(e){ return false; }
-}
-
-async function degerAlarmGonder(macAdi, secenek, oran, olasilik){
-  const ev = (olasilik/100)*oran;
-  const esik = ayarlar.evEsik || 1.12;
-  if(ev < esik) return false;
-  const msg = `💎 <b>Değer Bahis</b>\n${macAdi}\n<b>${secenek}</b> @ ${oran} (EV: ${ev.toFixed(2)})`;
-  await telegramAlert(msg);
-  await ntfyAlert(msg.replace(/<[^>]+>/g,''));
-  return true;
-}
-
 function openAyarlar(){
-  $('tgToken').value = ayarlar.tgToken || '';
-  $('tgChatId').value = ayarlar.tgChatId || '';
-  $('ntfyTopic').value = ayarlar.ntfyTopic || 'skorlab_alerts';
-  $('evEsik').value = ayarlar.evEsik || 1.12;
-  $('ayarlarModal').classList.add('active');
-}
-
-function ayarlarKaydet(){
-  ayarlar = {
-    tgToken: $('tgToken').value.trim(),
-    tgChatId: $('tgChatId').value.trim(),
-    ntfyTopic: $('ntfyTopic').value.trim(),
-    evEsik: parseFloat($('evEsik').value) || 1.12
-  };
-  localStorage.setItem('skorlab_ayarlar', JSON.stringify(ayarlar));
   closeModal('ayarlarModal');
-  showToast('success','Kaydedildi','Ayarlar güncellendi.');
-}
-
-async function testAlarm(){
-  ayarlar = {
-    tgToken:$('tgToken').value.trim(), tgChatId:$('tgChatId').value.trim(),
-    ntfyTopic:$('ntfyTopic').value.trim(), evEsik:parseFloat($('evEsik').value)||1.12
-  };
-  localStorage.setItem('skorlab_ayarlar', JSON.stringify(ayarlar));
-  const ok1 = await telegramAlert('✅ SkorLab test (Telegram)');
-  const ok2 = await ntfyAlert('✅ SkorLab test (Ntfy)');
-  if(ok1||ok2) showToast('success','Test OK','Mesaj gönderildi.');
-  else showToast('error','Başarısız','Token/chat_id kontrol et.');
 }
 
 /* ============================================================
@@ -414,16 +354,19 @@ function renderBulten(){
     }
 
     return `
-    <div class="match" onclick="macDetayGoster('toto',${m.id})">
-      <div class="match-head"><span>${m.date}</span><span class="mid">MAÇ #${m.id}</span></div>
-      <div class="teams">${m.home} - ${m.away}${badge}${sonucBadge}${m.league?'<span class="league-tag">'+m.league+'</span>':''}</div>
-      <div class="oran-input-grid" onclick="event.stopPropagation()">
+    <div class="match">
+      <div class="match-head" onclick="macDetayGoster('toto',${m.id})" style="cursor:pointer">
+        <span>${m.date}</span>
+        <span class="mid">MAÇ #${m.id}</span>
+      </div>
+      <div class="teams" onclick="macDetayGoster('toto',${m.id})" style="cursor:pointer">${m.home} - ${m.away}${badge}${sonucBadge}${m.league?'<span class="league-tag">'+m.league+'</span>':''}</div>
+      <div class="oran-input-grid">
         <div class="oran-input-item"><label>1</label><input type="number" step="0.01" placeholder="1.00" value="${od['1']||''}" oninput="oranGuncelle(${m.id},'1',this.value)"></div>
         <div class="oran-input-item"><label>X</label><input type="number" step="0.01" placeholder="1.00" value="${od['X']||''}" oninput="oranGuncelle(${m.id},'X',this.value)"></div>
         <div class="oran-input-item"><label>2</label><input type="number" step="0.01" placeholder="1.00" value="${od['2']||''}" oninput="oranGuncelle(${m.id},'2',this.value)"></div>
       </div>
       ${has ? `
-      <div class="oran-grid-bulten">
+      <div class="oran-grid-bulten" onclick="macDetayGoster('toto',${m.id})" style="cursor:pointer">
         <div class="oran-box-bulten"><div class="lbl">1</div><div class="val">${parseFloat(od['1']).toFixed(2)}</div><div class="pct">%${a.p1.toFixed(1)}</div></div>
         <div class="oran-box-bulten"><div class="lbl">X</div><div class="val">${parseFloat(od['X']).toFixed(2)}</div><div class="pct">%${a.pX.toFixed(1)}</div></div>
         <div class="oran-box-bulten"><div class="lbl">2</div><div class="val">${parseFloat(od['2']).toFixed(2)}</div><div class="pct">%${a.p2.toFixed(1)}</div></div>
@@ -434,22 +377,13 @@ function renderBulten(){
         <span style="background:rgba(255,77,94,.1);color:var(--red);padding:3px 8px;border-radius:6px;font-weight:800">TUZAK: ${t.favoriTuzagi}%</span>
         <span style="background:rgba(168,85,247,.1);color:var(--purple);padding:3px 8px;border-radius:6px;font-weight:800">xG: ${a.xgEv.toFixed(2)}-${a.xgDep.toFixed(2)}</span>
       </div>
-      <div style="margin-top:8px" onclick="event.stopPropagation()">
+      <div style="margin-top:8px">
         <button class="btn btn-gray" style="width:100%;padding:8px;font-size:.72rem" onclick="sonucAc('toto',${m.id})">
           ${sonuc ? '✏️ Sonucu Değiştir' : '✅ Sonuç Gir'}
         </button>
       </div>` : ''}
     </div>`;
   }).join('');
-
-  matchesData.forEach(m => {
-    const od = oddsData[m.id];
-    if(!od || !od['1'] || !od['X'] || !od['2']) return;
-    const a = macAnalizEt(m.id, od['1'], od['X'], od['2']);
-    const fav = a.enYuksek.kod;
-    const favOran = parseFloat(od[fav]);
-    degerAlarmGonder(m.home+' - '+m.away, fav, favOran, a.enYuksek.olas);
-  });
 }
 
 function oranGuncelle(id, alan, deger){
@@ -457,7 +391,7 @@ function oranGuncelle(id, alan, deger){
   if(deger==='' || deger===null) delete oddsData[id][alan];
   else oddsData[id][alan] = parseFloat(deger);
   localStorage.setItem('skorlab_odds_'+weekKey, JSON.stringify(oddsData));
-  renderBulten(); updateStats();
+  updateStats();
 }
 
 /* ============================================================
@@ -863,7 +797,7 @@ function macDetayGoster(tip, id){
       </div>
       <div class="sürpriz-alert">
         <div class="baslik">⚠️ TUZAK: %${t.favoriTuzagi} · ${a.tuzakSinif}</div>
-        <div class="neden">Kazanamama: <b>%${t.kazanamaRiski}</b></div>
+        <div class="neden">Kazanama: <b>%${t.kazanamaRiski}</b></div>
       </div>
       ${kelly.degerli ? `
       <div class="kelly-box">
