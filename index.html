@@ -4,22 +4,34 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#070b14">
-<title>SkorLab v9 PRO</title>
+<title>SkorLab v8 PRO</title>
 <link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="style.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
 </head>
 <body>
 
 <header class="app-header">
-  <div class="logo">⚽ SKORLAB <span class="v">v9</span></div>
+  <div class="logo">⚽ SKORLAB <span class="v">v8</span></div>
   <div id="weekTitle" class="week">Yükleniyor...</div>
-  <div class="kasa-box">
-    <span>💰 Kasa:</span>
-    <input type="number" id="kasaInput" value="1000" step="50" oninput="kasaGuncelle(this.value)">
-    <span>TL</span>
+  <div class="header-actions">
+    <button class="icon-btn" onclick="openAyarlar()" title="Ayarlar">⚙️</button>
   </div>
 </header>
+
+<div class="kasa-bar">
+  <span>💰 Kasa:</span>
+  <input type="number" id="kasaInput" value="1000" step="50" oninput="kasaGuncelle(this.value)">
+  <span>TL</span>
+  <span class="kasa-sep">·</span>
+  <span>Kelly:</span>
+  <select id="kellySelect" onchange="kellyFracGuncelle(this.value)">
+    <option value="1">Tam</option>
+    <option value="0.5" selected>½ Kelly</option>
+    <option value="0.25">¼ Kelly</option>
+  </select>
+</div>
 
 <nav class="tabs">
   <button class="tab active" onclick="switchTab(1,this)">📋 Bülten</button>
@@ -39,6 +51,11 @@
     <div class="stat-card"><div class="stat-val orange" id="statCift">0</div><div class="stat-lbl">ÇİFT/ÜÇLÜ</div></div>
     <div class="stat-card"><div class="stat-val blue" id="statGuven">%0</div><div class="stat-lbl">ORT GÜVEN</div></div>
   </div>
+  <div class="page-actions">
+    <button class="btn btn-blue" onclick="jsonImportAc()">📥 Bülten JSON İçe Aktar</button>
+    <button class="btn btn-gray" onclick="bulteniSifirla()">🔄 Sıfırla</button>
+  </div>
+  <input type="file" id="jsonFileInput" accept=".json" style="display:none" onchange="jsonImportEt(event)">
   <div id="matchesList"></div>
 </section>
 
@@ -60,18 +77,27 @@
       <span id="lblCost">200 TL</span> → <b id="lblKolon">20</b> kolon
     </div>
 
+    <label class="lbl-lg">Kupon Kaynağı</label>
     <div class="mode-selector">
       <div class="mode active" id="kuponKaynak-toto" onclick="setKuponKaynak('toto',this)">Toto</div>
       <div class="mode" id="kuponKaynak-iddaa" onclick="setKuponKaynak('iddaa',this)">İddaa</div>
       <div class="mode" id="kuponKaynak-karisik" onclick="setKuponKaynak('karisik',this)">Karışık</div>
     </div>
 
+    <label class="lbl-lg">Risk Modu</label>
     <div class="mode-selector">
       <div class="mode" id="mode-guvenli" onclick="setRiskMode('guvenli',this)">🛡️ Güvenli</div>
       <div class="mode active" id="mode-dengeli" onclick="setRiskMode('dengeli',this)">⚖️ Dengeli</div>
       <div class="mode" id="mode-agresif" onclick="setRiskMode('agresif',this)">🚀 Agresif</div>
     </div>
     <div id="modeInfo" class="mode-info"><b>⚖️ DENGELİ</b><br>Banko + çift karışık.</div>
+
+    <label class="lbl-lg">İndirgeme Modu</label>
+    <div class="mode-selector">
+      <div class="mode active" id="cover-tam" onclick="setCoveringMode('tam',this)">🎯 Tam Kapsama</div>
+      <div class="mode" id="cover-13" onclick="setCoveringMode('13',this)">🧬 13 Teminatlı</div>
+    </div>
+    <div id="coverInfo" class="mode-info"><b>🎯 TAM KAPSAMA</b><br>Her kolon bütçeye oranlı üretilir.</div>
 
     <button class="btn btn-blue btn-lg" onclick="kuponOlustur()" style="margin-top:14px">⚡ KUPON OLUŞTUR</button>
   </div>
@@ -143,6 +169,26 @@
   </div>
 </div>
 
+<!-- MODAL: AYARLAR -->
+<div class="modal" id="ayarlarModal">
+  <div class="modal-content">
+    <div class="modal-head"><span>⚙️ AYARLAR</span><button onclick="closeModal('ayarlarModal')">✖</button></div>
+    <div class="modal-body">
+      <div class="acc-head">💎 Değer Alarm (Telegram / Ntfy)</div>
+      <label>Telegram Bot Token</label>
+      <input type="text" id="tgToken" placeholder="123456:ABC-DEF...">
+      <label>Telegram Chat ID</label>
+      <input type="text" id="tgChatId" placeholder="123456789">
+      <label>Ntfy Topic (opsiyonel)</label>
+      <input type="text" id="ntfyTopic" placeholder="skorlab_alerts">
+      <label>EV Eşiği (Değer Alarm)</label>
+      <input type="number" step="0.01" id="evEsik" value="1.12">
+      <button class="btn btn-blue btn-lg" onclick="ayarlarKaydet()" style="margin-top:12px">💾 KAYDET</button>
+      <button class="btn btn-green btn-lg" onclick="testAlarm()" style="margin-top:8px">📨 TEST MESAJI</button>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL: TOAST -->
 <div class="modal" id="toastModal">
   <div class="modal-content small">
@@ -151,6 +197,20 @@
       <div id="toastTitle" style="font-weight:900;margin:8px 0"></div>
       <div id="toastMsg" class="muted"></div>
       <button class="btn btn-blue" onclick="closeModal('toastModal')" style="margin-top:12px">TAMAM</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: KUPON GÖRSEL -->
+<div class="modal" id="kuponGorselModal">
+  <div class="modal-content">
+    <div class="modal-head"><span>🖼️ KUPON GÖRSELİ</span><button onclick="closeModal('kuponGorselModal')">✖</button></div>
+    <div class="modal-body" style="text-align:center">
+      <img id="kuponGorselImg" style="max-width:100%;border-radius:12px;border:1px solid var(--border)">
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="btn btn-green" style="flex:1" onclick="kuponIndir()">⬇️ İndir</button>
+        <button class="btn btn-blue" style="flex:1" onclick="kuponPaylas()">📤 Paylaş</button>
+      </div>
     </div>
   </div>
 </div>
