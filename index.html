@@ -24,7 +24,7 @@
 
 <div class="container">
 
-  <!-- ==================== SEKME 1: BÜLTEN ==================== -->
+  <!-- SEKME 1: BÜLTEN -->
   <div class="page active" id="page-0">
     <div class="card">
       <div class="result-title">📅 <span id="weekTitle">Yükleniyor...</span></div>
@@ -35,29 +35,26 @@
         <div class="stat-box"><div class="num" id="statGuven">-</div><div class="lbl">Ort. Güven</div></div>
       </div>
     </div>
-
     <div class="card">
       <button onclick="tahminVer()" style="background:linear-gradient(135deg,#00e07a,#00b863);padding:18px;font-size:1rem">🎯 BANA TAHMİN VER</button>
     </div>
-
     <div id="matchesList"></div>
   </div>
 
-  <!-- ==================== SEKME 2: SERBEST (İDDAA) ==================== -->
+  <!-- SEKME 2: SERBEST -->
   <div class="page" id="page-1">
     <div class="card">
       <div class="result-title">🎯 SERBEST MAÇLAR (İddaa)</div>
       <p class="muted" style="font-size:.75rem;margin-bottom:14px;line-height:1.6">
-        İstediğin maçı ekle. Bilyoner/İddaa/Nesine'den oranları gir. Sınırsız.
+        İstediğin maçı ekle. Bilyoner/İddaa/Nesine'den tüm oranları gir. Sınırsız.
       </p>
       <button onclick="openSerbestModal()" class="purple">➕ Maç Ekle</button>
       <button onclick="temizleSerbest()" class="danger" style="margin-top:8px">🗑️ Tümünü Temizle</button>
     </div>
-
     <div id="serbestListesi"></div>
   </div>
 
-  <!-- ==================== SEKME 3: TAHMİN ==================== -->
+  <!-- SEKME 3: TAHMİN -->
   <div class="page" id="page-2">
     <div class="card">
       <div class="result-title">📊 TAHMİN RAPORU</div>
@@ -68,21 +65,19 @@
     <div id="tahminListesi"></div>
   </div>
 
-  <!-- ==================== SEKME 4: KUPON ==================== -->
+  <!-- SEKME 4: KUPON -->
   <div class="page" id="page-3">
     <div class="card">
       <div class="result-title">💰 BÜTÇE & STRATEJİ</div>
       <label>Bütçen (TL)</label>
       <input type="number" id="budget" value="200" min="10" step="10" inputmode="numeric" oninput="updateKolon()">
       <div class="bar-info"><div>Toplam: <b id="lblCost">200 TL</b></div><div>Kolon: <b id="lblKolon">20</b></div></div>
-
       <label style="margin-top:14px">Hangi Maçlar?</label>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px">
         <div class="mode active" id="kuponKaynak-toto" onclick="setKuponKaynak('toto',this)"><b>📋</b><span>TOTO</span></div>
         <div class="mode" id="kuponKaynak-iddaa" onclick="setKuponKaynak('iddaa',this)"><b>🎯</b><span>İDDAA</span></div>
         <div class="mode" id="kuponKaynak-karisik" onclick="setKuponKaynak('karisik',this)"><b>🔀</b><span>KARIŞIK</span></div>
       </div>
-
       <label>Risk Modu</label>
       <div class="modes">
         <div class="mode active" id="mode-guvenli" onclick="setRiskMode('guvenli',this)"><b>🛡️</b><span>GÜVENLİ</span></div>
@@ -91,15 +86,13 @@
       </div>
       <div id="modeInfo" class="mode-info" style="margin-top:10px"></div>
     </div>
-
     <div class="card">
       <button onclick="kuponOlustur()" style="background:linear-gradient(135deg,#3d8bff,#2563eb);padding:18px;font-size:1rem">⚡ KUPON OLUŞTUR</button>
     </div>
-
     <div id="kuponSonuc"></div>
   </div>
 
-  <!-- ==================== SEKME 5: GEÇMİŞ ==================== -->
+  <!-- SEKME 5: GEÇMİŞ -->
   <div class="page" id="page-4">
     <div class="card">
       <div class="result-title">📊 GENEL İSTATİSTİK</div>
@@ -115,19 +108,46 @@
 
 </div>
 
-<!-- ==================== MODAL: SERBEST MAÇ EKLE ==================== -->
+<!-- SERBEST MAÇ EKLE MODAL -->
 <div class="modal-overlay" id="serbestModal">
-  <div class="modal-box">
-    <div class="modal-title">➕ Maç Ekle</div>
-    <div class="modal-sub">Maç adı + 1/X/2 oranlarını gir.</div>
+  <div class="modal-box" style="max-width:520px">
+    <div class="modal-title">➕ Maç Ekle (İddaa)</div>
+    <div class="modal-sub">Tüm bahis oranlarını gir. Sadece 1/X/2 zorunlu.</div>
     <label>⚽ Maç Adı</label>
     <input type="text" id="sm-match" placeholder="Örn: Galatasaray - Kasımpaşa">
-    <label>1 / X / 2</label>
+    
+    <label style="margin-top:14px;color:var(--green);font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);padding-bottom:4px;margin-bottom:8px">📊 TARAF (Zorunlu)</label>
     <div class="oran-grid">
       <div class="oran-item"><label>1</label><input type="number" step="0.01" placeholder="1.00" id="sm-o1"></div>
       <div class="oran-item"><label>X</label><input type="number" step="0.01" placeholder="1.00" id="sm-oX"></div>
       <div class="oran-item"><label>2</label><input type="number" step="0.01" placeholder="1.00" id="sm-o2"></div>
     </div>
+    
+    <label style="margin-top:14px;color:var(--blue);font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);padding-bottom:4px;margin-bottom:8px">⚽ KARŞILIKLI GOL</label>
+    <div class="oran-grid">
+      <div class="oran-item"><label>KG Var</label><input type="number" step="0.01" placeholder="1.00" id="sm-kgvar"></div>
+      <div class="oran-item"><label>KG Yok</label><input type="number" step="0.01" placeholder="1.00" id="sm-kgyok"></div>
+    </div>
+    
+    <label style="margin-top:14px;color:var(--orange);font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);padding-bottom:4px;margin-bottom:8px">📈 ALT/ÜST</label>
+    <div class="oran-grid">
+      <div class="oran-item"><label>1.5 Alt</label><input type="number" step="0.01" placeholder="1.00" id="sm-u15alt"></div>
+      <div class="oran-item"><label>1.5 Üst</label><input type="number" step="0.01" placeholder="1.00" id="sm-u15ust"></div>
+    </div>
+    <div class="oran-grid">
+      <div class="oran-item"><label>2.5 Alt</label><input type="number" step="0.01" placeholder="1.00" id="sm-u25alt"></div>
+      <div class="oran-item"><label>2.5 Üst</label><input type="number" step="0.01" placeholder="1.00" id="sm-u25ust"></div>
+    </div>
+    <div class="oran-grid">
+      <div class="oran-item"><label>3.5 Alt</label><input type="number" step="0.01" placeholder="1.00" id="sm-u35alt"></div>
+      <div class="oran-item"><label>3.5 Üst</label><input type="number" step="0.01" placeholder="1.00" id="sm-u35ust"></div>
+    </div>
+    
+    <label style="margin-top:14px;color:var(--purple);font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);padding-bottom:4px;margin-bottom:8px">🎯 KOMBO</label>
+    <div class="oran-grid">
+      <div class="oran-item"><label>KG+2.5Ü</label><input type="number" step="0.01" placeholder="1.00" id="sm-kgu"></div>
+    </div>
+    
     <div class="modal-buttons">
       <button class="cancel" onclick="closeModal('serbestModal')">İptal</button>
       <button onclick="serbestEkle()">Ekle</button>
@@ -135,7 +155,7 @@
   </div>
 </div>
 
-<!-- ==================== MODAL: TAHMİN RAPORU ==================== -->
+<!-- TAHMİN MODAL -->
 <div class="modal-overlay" id="tahminModal" onclick="if(event.target===this)closeModal('tahminModal')">
   <div class="modal-box" style="max-width:500px">
     <div class="modal-title" style="margin-bottom:14px">🎯 TAHMİN RAPORU</div>
@@ -144,7 +164,7 @@
   </div>
 </div>
 
-<!-- ==================== MODAL: MAÇ DETAY ==================== -->
+<!-- MAÇ DETAY MODAL -->
 <div class="modal-overlay" id="macDetayModal" onclick="if(event.target===this)closeModal('macDetayModal')">
   <div class="modal-box" style="max-width:500px">
     <div class="modal-title" id="macDetayTitle" style="margin-bottom:14px">📊 MAÇ DETAYI</div>
@@ -153,7 +173,7 @@
   </div>
 </div>
 
-<!-- ==================== TOAST ==================== -->
+<!-- TOAST -->
 <div class="toast-overlay" id="toastModal">
   <div class="toast-box">
     <span class="toast-icon" id="toastIcon">✅</span>
@@ -163,7 +183,7 @@
   </div>
 </div>
 
-<!-- ==================== LEGAL ==================== -->
+<!-- LEGAL -->
 <div class="toast-overlay" id="legalModal" onclick="if(event.target===this)closeModal('legalModal')">
   <div class="toast-box" style="max-width:440px;text-align:left;max-height:85vh;overflow-y:auto">
     <div class="modal-title" style="color:var(--orange);margin-bottom:14px;font-size:1rem">⚠️ Yasal Uyarı</div>
