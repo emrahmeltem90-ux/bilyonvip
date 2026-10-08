@@ -1,5 +1,6 @@
 /* ============================================================
-   SKORLAB v6 · TOTO + İDDAA + ENTROPY + KALİTE + KAPSAMA
+   SKORLAB v7 · TOTO + İDDAA + ANALİZ MOTORU v2
+   Favori tuzağı + Beraberlik riski + Sınıflandırma
    ============================================================ */
 
 let matchesData = [];
@@ -37,19 +38,35 @@ function macAnalizEt(id, o1, oX, o2){
   const ikinci = sirali[1];
   const ucuncu = sirali[2];
   const fark = enYuksek.olas - ikinci.olas;
+  
+  const favoriTuzagi = 100 - enYuksek.olas;
+  let kazanamaRiski = 0;
+  if(enYuksek.kod === '1') kazanamaRiski = pX + p2;
+  else if(enYuksek.kod === '2') kazanamaRiski = p1 + pX;
+  else kazanamaRiski = p1 + p2;
+  const surprizOlas = ucuncu.olas;
+  const rakipOlas = ikinci.olas;
+  
   return {
     id: id, p1: p1, pX: pX, p2: p2,
     marj: parseFloat(o.marj),
-    sirali: sirali, enYuksek: enYuksek, ikinci: ikinci, ucuncu: ucuncu, fark: fark
+    sirali: sirali, enYuksek: enYuksek, ikinci: ikinci, ucuncu: ucuncu, fark: fark,
+    favoriTuzagi: favoriTuzagi,
+    kazanamaRiski: kazanamaRiski,
+    surprizOlas: surprizOlas,
+    rakipOlas: rakipOlas,
+    favSinif: favGuvenSinifi(enYuksek.olas),
+    beraberlikSinif: beraberlikSinifi(pX),
+    tuzakSinif: favoriTuzagiSinifi(enYuksek.olas),
+    surprizSinif: surprizSinifi(rakipOlas),
+    macSinif: '' // tahminUret'te belirlenecek
   };
 }
 
 /* ============ ENTROPY ============ */
 function entropyHesapla(analiz){
   if(!analiz) return 0;
-  const p1 = analiz.p1 / 100;
-  const pX = analiz.pX / 100;
-  const p2 = analiz.p2 / 100;
+  const p1 = analiz.p1 / 100, pX = analiz.pX / 100, p2 = analiz.p2 / 100;
   let H = 0;
   if(p1 > 0) H -= p1 * Math.log2(p1);
   if(pX > 0) H -= pX * Math.log2(pX);
@@ -57,44 +74,123 @@ function entropyHesapla(analiz){
   return H / 1.585;
 }
 
-/* ============ BANKO KALİTE PUANI ============ */
+/* ============ BANKO KALİTE ============ */
 function bankoKalite(analiz){
   if(!analiz) return 0;
-  const fav = analiz.enYuksek.olas;
-  const fark = analiz.fark;
-  const ent = entropyHesapla(analiz);
+  const fav = analiz.enYuksek.olas, fark = analiz.fark, ent = entropyHesapla(analiz);
   let favPuan = Math.max(0, Math.min(50, (fav - 40) * (50 / 45)));
   let farkPuan = Math.max(0, Math.min(30, fark * (30 / 40)));
   let entPuan = Math.max(0, (1 - ent) * 20);
   return Math.round(favPuan + farkPuan + entPuan);
 }
 
-/* ============ KAPSAMA ============ */
+/* ============ SINIFLANDIRMA FONKSİYONLARI ============ */
+function favGuvenSinifi(favOlas){
+  if(favOlas >= 70) return 'ÇOK GÜÇLÜ FAVORİ';
+  if(favOlas >= 60) return 'GÜÇLÜ FAVORİ';
+  if(favOlas >= 52) return 'ORTA FAVORİ';
+  if(favOlas >= 45) return 'RİSKLİ FAVORİ';
+  return 'NET FAVORİ DEĞİL';
+}
+
+function beraberlikSinifi(px){
+  if(px >= 30) return 'ÇOK YÜKSEK';
+  if(px >= 25) return 'YÜKSEK';
+  if(px >= 20) return 'ORTA';
+  if(px >= 15) return 'DÜŞÜK';
+  return 'ÇOK DÜŞÜK';
+}
+
+function favoriTuzagiSinifi(favOlas){
+  const risk = 100 - favOlas;
+  if(risk >= 50) return 'ÇOK YÜKSEK';
+  if(risk >= 40) return 'YÜKSEK';
+  if(risk >= 30) return 'ORTA';
+  if(risk >= 20) return 'DÜŞÜK';
+  return 'ÇOK DÜŞÜK';
+}
+
+function surprizSinifi(rakipOlas){
+  if(rakipOlas >= 25) return 'GÜÇLÜ SÜRPRİZ ADAYI';
+  if(rakipOlas >= 20) return 'ORTA SÜRPRİZ ADAYI';
+  if(rakipOlas >= 15) return 'DÜŞÜK SÜRPRİZ';
+  return 'ZAYIF SÜRPRİZ';
+}
+
+function macSinifi(analiz){
+  if(!analiz) return 'BELİRSİZ';
+  const fav = analiz.enYuksek.olas;
+  const tuzak = 100 - fav;
+  const px = analiz.pX;
+  
+  if(fav >= 65 && tuzak <= 35 && px <= 25) return 'BANKO ADAYI';
+  if(fav >= 52 && fav < 65) return 'RİSKLİ FAVORİ';
+  if(tuzak > 35 && fav >= 45) return 'RİSKLİ FAVORİ';
+  if(px >= 25 && Math.abs(analiz.p1 - analiz.pX) < 10) return 'BERABERLİK ADAYI';
+  const rakip = analiz.ucuncu.olas;
+  if(rakip >= 18 && analiz.fark < 15) return 'SÜRPRİZ ADAYI';
+  if(fav < 45) return 'DENGELİ MAÇ';
+  return 'NORMAL';
+}
+
+/* ============ KAPSAMA (OLASILIK AĞIRLIKLI) ============ */
 function kapsamaHesapla(analiz, kolonSayisi){
   if(!analiz) return { '1': 0, 'X': 0, '2': 0 };
+  const sinif = macSinifi(analiz);
   const p1 = analiz.p1, pX = analiz.pX, p2 = analiz.p2;
-  const kalite = bankoKalite(analiz);
   let dagilim = {};
-  if(kalite >= 75){
+  
+  if(sinif === 'BANKO ADAYI'){
     dagilim = { [analiz.enYuksek.kod]: kolonSayisi };
   }
-  else if(kalite >= 55){
-    const ana = Math.round(kolonSayisi * 0.8);
-    dagilim = { [analiz.enYuksek.kod]: ana, [analiz.ikinci.kod]: kolonSayisi - ana };
+  else if(sinif === 'RİSKLİ FAVORİ'){
+    const ana = Math.round(kolonSayisi * 0.7);
+    dagilim = { [analiz.enYuksek.kod]: ana };
+    dagilim[analiz.ikinci.kod] = kolonSayisi - ana;
   }
-  else if(kalite >= 35){
-    const oran1 = p1 / 100, oranX = pX / 100, oran2 = p2 / 100;
-    const sirali = [{kod:'1', w:oran1}, {kod:'X', w:oranX}, {kod:'2', w:oran2}].sort((a,b) => b.w - a.w);
-    const ilkIki = sirali[0].w + sirali[1].w;
-    const k1 = Math.round(kolonSayisi * (sirali[0].w / ilkIki));
-    dagilim = { [sirali[0].kod]: k1, [sirali[1].kod]: kolonSayisi - k1 };
+  else if(sinif === 'BERABERLİK ADAYI'){
+    const ana = Math.round(kolonSayisi * 0.5);
+    const xK = Math.round(kolonSayisi * 0.35);
+    dagilim = { [analiz.enYuksek.kod]: ana, 'X': xK };
+    const kalan = kolonSayisi - ana - xK;
+    if(kalan > 0) dagilim[analiz.ucuncu.kod] = kalan;
   }
-  else {
+  else if(sinif === 'SÜRPRİZ ADAYI'){
+    const ana = Math.round(kolonSayisi * 0.45);
+    const ik = Math.round(kolonSayisi * 0.35);
+    dagilim = { [analiz.enYuksek.kod]: ana, [analiz.ikinci.kod]: ik };
+    dagilim[analiz.ucuncu.kod] = kolonSayisi - ana - ik;
+  }
+  else if(sinif === 'DENGELİ MAÇ'){
     const toplam = p1 + pX + p2;
     const k1 = Math.round(kolonSayisi * (p1 / toplam));
     const kX = Math.round(kolonSayisi * (pX / toplam));
     dagilim = { '1': k1, 'X': kX, '2': kolonSayisi - k1 - kX };
   }
+  else {
+    const kalite = bankoKalite(analiz);
+    if(kalite >= 75){
+      dagilim = { [analiz.enYuksek.kod]: kolonSayisi };
+    }
+    else if(kalite >= 55){
+      const ana = Math.round(kolonSayisi * 0.8);
+      dagilim = { [analiz.enYuksek.kod]: ana, [analiz.ikinci.kod]: kolonSayisi - ana };
+    }
+    else if(kalite >= 35){
+      const oran1 = p1 / 100, oranX = pX / 100, oran2 = p2 / 100;
+      const s = [{kod:'1', w:oran1}, {kod:'X', w:oranX}, {kod:'2', w:oran2}].sort((a,b) => b.w - a.w);
+      const ilkIki = s[0].w + s[1].w;
+      const k1 = Math.round(kolonSayisi * (s[0].w / ilkIki));
+      dagilim = { [s[0].kod]: k1, [s[1].kod]: kolonSayisi - k1 };
+    }
+    else {
+      const toplam = p1 + pX + p2;
+      const k1 = Math.round(kolonSayisi * (p1 / toplam));
+      const kX = Math.round(kolonSayisi * (pX / toplam));
+      dagilim = { '1': k1, 'X': kX, '2': kolonSayisi - k1 - kX };
+    }
+  }
+  
   return dagilim;
 }
 
@@ -129,34 +225,61 @@ function tahminUret(analiz){
   const { enYuksek, ikinci, ucuncu, fark } = analiz;
   const ent = entropyHesapla(analiz);
   const kalite = bankoKalite(analiz);
+  const sinif = macSinifi(analiz);
+  
   let karar = '', guven = 0, risk = '';
-  if(kalite >= 75 && enYuksek.olas >= 65){
+  
+  if(sinif === 'BANKO ADAYI'){
     karar = 'BANKO ' + enYuksek.kod;
-    guven = Math.min(100, enYuksek.olas + 6);
+    guven = Math.min(100, Math.round(enYuksek.olas + 8));
     risk = 'Çok Düşük';
   }
-  else if(kalite >= 55 && enYuksek.olas >= 55){
+  else if(sinif === 'RİSKLİ FAVORİ'){
     karar = 'BANKO ' + enYuksek.kod;
-    guven = Math.min(100, enYuksek.olas + 3);
-    risk = 'Düşük';
-  }
-  else if(kalite >= 35 && enYuksek.olas >= 42){
-    karar = 'ÇİFT ' + siraliAlternatif(enYuksek.kod, ikinci.kod);
-    guven = enYuksek.olas;
+    guven = Math.round(enYuksek.olas);
     risk = 'Orta';
   }
-  else if(kalite >= 20){
+  else if(sinif === 'BERABERLİK ADAYI'){
+    karar = 'ÇİFT ' + siraliAlternatif(enYuksek.kod, 'X');
+    guven = Math.round(enYuksek.olas);
+    risk = 'Orta-Yüksek';
+  }
+  else if(sinif === 'SÜRPRİZ ADAYI'){
     karar = 'ÇİFT ' + siraliAlternatif(enYuksek.kod, ikinci.kod);
-    guven = enYuksek.olas - 3;
+    guven = Math.round(enYuksek.olas);
     risk = 'Yüksek';
   }
-  else{
+  else if(sinif === 'DENGELİ MAÇ'){
     karar = 'ÜÇLÜ 1X2';
-    guven = Math.max(30, enYuksek.olas - 8);
+    guven = Math.max(30, Math.round(enYuksek.olas - 5));
     risk = 'Çok Yüksek';
   }
+  else {
+    if(kalite >= 75 && enYuksek.olas >= 65){
+      karar = 'BANKO ' + enYuksek.kod;
+      guven = Math.min(100, enYuksek.olas + 6);
+      risk = 'Çok Düşük';
+    }
+    else if(kalite >= 55 && enYuksek.olas >= 55){
+      karar = 'BANKO ' + enYuksek.kod;
+      guven = Math.min(100, enYuksek.olas + 3);
+      risk = 'Düşük';
+    }
+    else if(kalite >= 35 && enYuksek.olas >= 42){
+      karar = 'ÇİFT ' + siraliAlternatif(enYuksek.kod, ikinci.kod);
+      guven = enYuksek.olas;
+      risk = 'Orta';
+    }
+    else{
+      karar = 'ÇİFT ' + siraliAlternatif(enYuksek.kod, ikinci.kod);
+      guven = enYuksek.olas - 3;
+      risk = 'Yüksek';
+    }
+  }
+  
   const alternatif = karar.includes('BANKO') ? siraliAlternatif(enYuksek.kod, ikinci.kod) : karar.replace('ÇİFT ', '');
   const surpriz = ucuncu.kod;
+  
   return {
     ana_tahmin: enYuksek.kod,
     alternatif: alternatif,
@@ -166,7 +289,15 @@ function tahminUret(analiz){
     karar: karar,
     favori_farki: Math.round(fark),
     entropy: Math.round(ent * 100),
-    kalite: kalite
+    kalite: kalite,
+    macSinif: sinif,
+    favSinif: analiz.favSinif,
+    beraberlikSinif: analiz.beraberlikSinif,
+    tuzakSinif: analiz.tuzakSinif,
+    surprizSinif: analiz.surprizSinif,
+    favoriTuzagi: Math.round(analiz.favoriTuzagi),
+    kazanamaRiski: Math.round(analiz.kazanamaRiski),
+    surprizOlas: analiz.surprizOlas
   };
 }
 
@@ -254,6 +385,7 @@ function renderBulten(){
       <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;font-size:.62rem">
         <span style="background:rgba(255,176,32,.1);color:var(--orange);padding:3px 8px;border-radius:6px;font-weight:800">ENT: ${tahmin.entropy}/100</span>
         <span style="background:rgba(61,139,255,.1);color:var(--blue);padding:3px 8px;border-radius:6px;font-weight:800">KAL: ${tahmin.kalite}/100</span>
+        <span style="background:rgba(255,77,94,.1);color:var(--red);padding:3px 8px;border-radius:6px;font-weight:800">TUZAK: ${tahmin.favoriTuzagi}%</span>
       </div>` : ''}
     </div>`;
   }).join('');
@@ -346,7 +478,7 @@ function renderSerbest(){
     return `
     <div class="tahmin-kart ${cls}" style="margin-bottom:10px">
       <div class="tk-head">
-        <span>${ikon} İDDAA #${idx+1}</span>
+        <span>${ikon} İDDAA #${idx+1} · ${tahmin.macSinif}</span>
         <button onclick="serbestSil(${idx})" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:1rem;width:auto;padding:2px 6px">🗑️</button>
       </div>
       <div class="tk-teams">${m.mac}</div>
@@ -361,8 +493,8 @@ function renderSerbest(){
       </div>
       <div class="tk-info">
         <div class="tk-item"><span class="lbl">Güven</span><span class="val">%${tahmin.guven}</span></div>
-        <div class="tk-item"><span class="lbl">Ent</span><span class="val">${tahmin.entropy}</span></div>
-        <div class="tk-item"><span class="lbl">Kalite</span><span class="val">${tahmin.kalite}</span></div>
+        <div class="tk-item"><span class="lbl">TuZak</span><span class="val">%${tahmin.favoriTuzagi}</span></div>
+        <div class="tk-item"><span class="lbl">Beraberlik</span><span class="val">${tahmin.beraberlikSinif}</span></div>
         <div class="tk-item"><span class="lbl">Marj</span><span class="val">%${analiz.marj.toFixed(1)}</span></div>
       </div>
       ${ekBahisHTML ? `<div class="analiz-box" style="margin-top:8px"><div class="analiz-lbl" style="font-size:.7rem;margin-bottom:6px">🎯 GİRDİĞİN BAHİSLER</div>${ekBahisHTML}</div>` : ''}
@@ -450,18 +582,18 @@ function tahminKartHTML({tip, m, analiz, tahmin, manuel, id, isim, tarih}){
   return `
     <div class="tahmin-kart ${cls}" onclick="macDetayGoster('${tip}',${id})" style="cursor:pointer">
       <div class="tk-head">
-        <span>${tarih} · ${tip === 'toto' ? 'TOTO' : 'İDDAA'}</span>
+        <span>${tarih} · ${tip === 'toto' ? 'TOTO' : 'İDDAA'} · ${tahmin.macSinif}</span>
         <span>${ikon} #${tip === 'toto' ? id : ''}${manuel ? ' <span style="color:var(--orange);font-size:.65rem">[M]</span>' : ''}</span>
       </div>
       <div class="tk-teams">${isim}</div>
       <div class="tk-ana"><div class="lbl">${karar}</div><div class="val">${ana}</div></div>
       <div class="tk-info">
         <div class="tk-item"><span class="lbl">Güven</span><span class="val">%${tahmin.guven}</span></div>
-        <div class="tk-item"><span class="lbl">Risk</span><span class="val">${tahmin.risk}</span></div>
-        <div class="tk-item"><span class="lbl">Ent</span><span class="val">${tahmin.entropy}</span></div>
-        <div class="tk-item"><span class="lbl">Kalite</span><span class="val">${tahmin.kalite}</span></div>
+        <div class="tk-item"><span class="lbl">Tuzak</span><span class="val">%${tahmin.favoriTuzagi}</span></div>
+        <div class="tk-item"><span class="lbl">Berab</span><span class="val">${tahmin.beraberlikSinif}</span></div>
+        <div class="tk-item"><span class="lbl">Rakip</span><span class="val">%${tahmin.surprizOlas.toFixed(0)}</span></div>
       </div>
-      <div class="tk-alt"><b>Alt:</b> ${tahmin.alternatif} · <b>Sür:</b> ${tahmin.surpriz}</div>
+      <div class="tk-alt"><b>Alt:</b> ${tahmin.alternatif} · <b>Sür:</b> ${tahmin.surpriz} · <b>Sınıf:</b> ${tahmin.favSinif}</div>
     </div>`;
 }
 
@@ -526,7 +658,6 @@ function macDetayGoster(tip, id){
     </div>`;
   }).join('');
   const entSeviye = ent < 0.4 ? 'Düşük' : ent < 0.7 ? 'Orta' : ent < 0.9 ? 'Yüksek' : 'Çok Yüksek';
-  const kalSeviye = tahmin.kalite >= 75 ? 'Çok İyi' : tahmin.kalite >= 55 ? 'İyi' : tahmin.kalite >= 35 ? 'Orta' : 'Düşük';
   
   $('macDetayTitle').innerText = '📊 ' + (tip === 'toto' ? 'MAÇ #' + id : 'İDDAA');
   $('macDetayBody').innerHTML = `
@@ -534,20 +665,48 @@ function macDetayGoster(tip, id){
       <div style="text-align:center;margin-bottom:14px">
         <div style="font-weight:900;font-size:1rem">${isim}</div>
         <div style="color:var(--muted);font-size:.7rem;margin-top:4px">${tarih}${league ? ' · '+league : ''}</div>
+        <div style="margin-top:8px;padding:6px 12px;background:var(--bg2);border-radius:8px;display:inline-block;font-size:.72rem;font-weight:800;color:var(--green)">${tahmin.macSinif}</div>
       </div>
+      
       <div class="analiz-box">
         <div class="analiz-row"><span class="analiz-lbl">📊 ORANLAR</span></div>
         <div class="analiz-row"><span>1: <b>${o1}</b></span><span>X: <b>${oX}</b></span><span>2: <b>${o2}</b></span></div>
       </div>
+      
       <div class="analiz-box">
-        <div class="analiz-row"><span class="analiz-lbl">📈 OLASILIKLAR</span></div>
+        <div class="analiz-row"><span class="analiz-lbl">📈 OLASILIKLAR (Marj Temizlenmiş)</span></div>
         <div class="analiz-row"><span>1: <b class="green">%${o.p[0].toFixed(1)}</b></span><span>X: <b class="green">%${o.p[1].toFixed(1)}</b></span><span>2: <b class="green">%${o.p[2].toFixed(1)}</b></span></div>
-        <div class="analiz-row"><span class="muted">Marj: %${o.marj}</span></div>
+        <div class="analiz-row"><span class="muted">Bahis Şirketi Marjı: %${o.marj}</span></div>
       </div>
+      
       <div class="analiz-box">
-        <div class="analiz-row"><span class="analiz-lbl">📉 BELİRSİZLİK</span></div>
+        <div class="analiz-row"><span class="analiz-lbl">🎯 FAVORİ ANALİZİ</span></div>
+        <div class="analiz-row"><span>Favori: <b class="green">${tahmin.ana_tahmin}</b> (%${analiz.enYuksek.olas.toFixed(1)})</span></div>
+        <div class="analiz-row"><span>Sınıf: <b>${analiz.favSinif}</b></span></div>
+        <div class="analiz-row"><span>Fark: <b>%${tahmin.favori_farki}</b></span></div>
+      </div>
+      
+      <div class="sürpriz-alert">
+        <div class="baslik">⚠️ FAVORİ TUZAĞI: %${tahmin.favoriTuzagi} · ${analiz.tuzakSinif}</div>
+        <div class="neden">Favorinin kazanamama riski: <b>%${tahmin.kazanamaRiski}</b></div>
+      </div>
+      
+      <div class="analiz-box">
+        <div class="analiz-row"><span class="analiz-lbl">⚖️ BERABERLİK RİSKİ</span></div>
+        <div class="analiz-row"><span>Beraberlik: <b>%${analiz.pX.toFixed(1)}</b></span><span>Risk: <b>${analiz.beraberlikSinif}</b></span></div>
+      </div>
+      
+      <div class="analiz-box">
+        <div class="analiz-row"><span class="analiz-lbl">🎲 SÜRPRİZ POTANSİYELİ</span></div>
+        <div class="analiz-row"><span>En zayıf sonuç: <b>%${tahmin.surprizOlas.toFixed(1)}</b></span></div>
+        <div class="analiz-row"><span>Sınıf: <b>${analiz.surprizSinif}</b></span></div>
+      </div>
+      
+      <div class="analiz-box">
+        <div class="analiz-row"><span class="analiz-lbl">📉 BELİRSİZLİK (Entropy)</span></div>
         <div class="analiz-row"><span>Entropy: <b>${Math.round(ent*100)}/100</b></span><span>Seviye: <b>${entSeviye}</b></span></div>
       </div>
+      
       <div class="tahmin-kart ${tahmin.karar.includes('BANKO') ? 'banko' : tahmin.karar.includes('ÇİFT') ? 'cift' : 'uclu'}">
         <div class="tk-head"><span>SİSTEM TAHMİNİ</span><span>GÜVEN %${tahmin.guven}</span></div>
         <div class="tk-ana"><div class="lbl">${tahmin.karar}</div><div class="val">${tahmin.ana_tahmin}</div></div>
@@ -558,14 +717,17 @@ function macDetayGoster(tip, id){
           <div class="tk-item"><span class="lbl">Fark</span><span class="val">%${tahmin.favori_farki}</span></div>
         </div>
       </div>
+      
       <div class="analiz-box">
-        <div class="analiz-row"><span class="analiz-lbl">⭐ BANKO KALİTE</span></div>
-        <div class="analiz-row"><span><b style="font-size:1.3rem;color:var(--green)">${tahmin.kalite}</b> / 100 · ${kalSeviye}</span></div>
+        <div class="analiz-row"><span class="analiz-lbl">⭐ BANKO KALİTE PUANI</span></div>
+        <div class="analiz-row"><span><b style="font-size:1.3rem;color:var(--green)">${tahmin.kalite}</b> / 100</span></div>
       </div>
+      
       <div class="analiz-box">
-        <div class="analiz-row"><span class="analiz-lbl">🎯 KUPON KAPSAMASI (20)</span></div>
+        <div class="analiz-row"><span class="analiz-lbl">🎯 KUPON KAPSAMASI (20 Kolon)</span></div>
         ${kapsamaHTML}
       </div>
+      
       <div style="margin-top:12px">
         <div style="font-weight:800;color:var(--orange);font-size:.78rem;margin-bottom:8px">🎯 MANUEL MÜDAHALE</div>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">
@@ -612,8 +774,6 @@ function tahminVer(){
   const cift = hepsi.filter(x => (x.manuel || x.tahmin.karar).includes('ÇİFT')).length;
   const uclu = hepsi.filter(x => (x.manuel || x.tahmin.karar).includes('ÜÇLÜ')).length;
   const ortG = Math.round(hepsi.reduce((t,x) => t + x.tahmin.guven, 0) / hepsi.length);
-  const ortEnt = Math.round(hepsi.reduce((t,x) => t + x.tahmin.entropy, 0) / hepsi.length);
-  const ortKal = Math.round(hepsi.reduce((t,x) => t + x.tahmin.kalite, 0) / hepsi.length);
   const kritik = [...hepsi].sort((a,b) => b.tahmin.entropy - a.tahmin.entropy).slice(0, 3);
   
   $('tahminModalBody').innerHTML = `
@@ -625,15 +785,13 @@ function tahminVer(){
           <div><div style="color:var(--red);font-weight:900;font-size:1.2rem">${uclu}</div><div style="color:var(--muted);font-size:.6rem">ÜÇLÜ</div></div>
           <div><div style="color:var(--blue);font-weight:900;font-size:1.2rem">%${ortG}</div><div style="color:var(--muted);font-size:.6rem">GÜVEN</div></div>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px;text-align:center;border-top:1px solid var(--border);padding-top:10px">
-          <div><div style="color:var(--orange);font-weight:900;font-size:1rem">${ortEnt}/100</div><div style="color:var(--muted);font-size:.6rem">ORT. ENTROPY</div></div>
-          <div><div style="color:var(--green);font-weight:900;font-size:1rem">${ortKal}/100</div><div style="color:var(--muted);font-size:.6rem">ORT. KALİTE</div></div>
-        </div>
       </div>
+      
       <div style="background:linear-gradient(135deg,rgba(255,77,94,.15),rgba(255,77,94,.05));border:1px solid rgba(255,77,94,.4);border-radius:10px;padding:10px 12px;margin-bottom:12px">
         <div style="color:var(--red);font-weight:900;font-size:.78rem;margin-bottom:6px">🚨 KRİTİK MAÇLAR</div>
         ${kritik.map(x => `<div style="font-size:.72rem;color:var(--muted);padding:3px 0"><b style="color:var(--orange)">${x.tip === 'toto' ? '#' + x.m.id : 'İ'}</b> ${x.isim} · Ent: ${x.tahmin.entropy}/100</div>`).join('')}
       </div>
+      
       ${hepsi.map(x => {
         const karar = x.manuel ? 'MANUEL ' + x.manuel : x.tahmin.karar;
         const ana = x.manuel || x.tahmin.ana_tahmin;
@@ -641,7 +799,7 @@ function tahminVer(){
         const renk = karar.includes('BANKO') ? 'green' : karar.includes('ÇİFT') ? 'orange' : karar.includes('ÜÇLÜ') ? 'red' : 'purple';
         return `<div style="background:var(--bg2);border-left:3px solid var(--${renk});border-radius:8px;padding:8px 10px;margin-bottom:6px">
           <div style="font-weight:800;font-size:.78rem">${ikon} ${x.tip === 'toto' ? '#' + x.m.id : ''} ${x.isim}</div>
-          <div style="font-size:.7rem;color:var(--muted);margin-top:4px"><b style="color:var(--${renk})">${ana}</b> · ${karar} · Güven %${x.tahmin.guven} · Ent: ${x.tahmin.entropy}/100 · Kalite: ${x.tahmin.kalite}/100</div>
+          <div style="font-size:.7rem;color:var(--muted);margin-top:4px"><b style="color:var(--${renk})">${ana}</b> · ${karar} · Güven %${x.tahmin.guven} · Tuzak %${x.tahmin.favoriTuzagi}</div>
         </div>`;
       }).join('')}
     </div>
@@ -783,8 +941,8 @@ function kuponOlustur(){
           const key = m.tip + '-' + m.id;
           const d = dagilim[key];
           const str = Object.keys(d).sort().filter(k => d[k] > 0).map(k => `<b>${k}</b>: ${d[k]}`).join(' · ');
-          const entTag = m.manuel ? ' <span style="color:var(--orange);font-size:.6rem">[M]</span>' : ` <span style="color:var(--muted);font-size:.6rem">[Ent ${m.tahmin.entropy}]</span>`;
-          return `<div style="font-size:.72rem;padding:4px 0;border-bottom:1px solid var(--border)"><b>${m.tip === 'toto' ? '#'+m.id : 'İ'}</b> ${m.isim.slice(0,16)}: ${str}${entTag}</div>`;
+          const sinifTag = m.manuel ? ' <span style="color:var(--orange);font-size:.6rem">[M]</span>' : ` <span style="color:var(--muted);font-size:.6rem">[${m.tahmin.macSinif}]</span>`;
+          return `<div style="font-size:.72rem;padding:4px 0;border-bottom:1px solid var(--border)"><b>${m.tip === 'toto' ? '#'+m.id : 'İ'}</b> ${m.isim.slice(0,16)}: ${str}${sinifTag}</div>`;
         }).join('')}
       </div>
       <div style="max-height:350px;overflow-y:auto;margin-bottom:14px">
