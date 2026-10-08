@@ -6,7 +6,6 @@
 <meta name="theme-color" content="#070b14">
 <title>SkorLab v8 PRO</title>
 
-<!-- İkonlar -->
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -45,6 +44,7 @@
   <button class="tab" onclick="switchTab(3,this)">⚡ Kupon</button>
   <button class="tab" onclick="switchTab(4,this)">📊 Analiz</button>
   <button class="tab" onclick="switchTab(5,this)">🗂️ Arşiv</button>
+  <button class="tab" onclick="switchTab(6,this)">✅ Sonuçlar</button>
 </nav>
 
 <main>
@@ -57,11 +57,22 @@
     <div class="stat-card"><div class="stat-val orange" id="statCift">0</div><div class="stat-lbl">ÇİFT/ÜÇLÜ</div></div>
     <div class="stat-card"><div class="stat-val blue" id="statGuven">%0</div><div class="stat-lbl">ORT GÜVEN</div></div>
   </div>
+
   <div class="page-actions">
-    <button class="btn btn-blue" onclick="jsonImportAc()">📥 Bülten JSON İçe Aktar</button>
+    <button class="btn btn-blue" onclick="jsonImportAc()">📥 Bülten İçe Aktar</button>
     <button class="btn btn-gray" onclick="bulteniSifirla()">🔄 Sıfırla</button>
   </div>
   <input type="file" id="jsonFileInput" accept=".json" style="display:none" onchange="jsonImportEt(event)">
+
+  <!-- Filtre -->
+  <div class="filtre-bar">
+    <button class="filtre-btn active" id="filtre-hepsi" onclick="setFiltre('hepsi',this)">Tümü</button>
+    <button class="filtre-btn" id="filtre-banko" onclick="setFiltre('banko',this)">🔒 Banko</button>
+    <button class="filtre-btn" id="filtre-cift" onclick="setFiltre('cift',this)">⚠️ Çift</button>
+    <button class="filtre-btn" id="filtre-riskli" onclick="setFiltre('riskli',this)">🔥 Riskli</button>
+    <button class="filtre-btn" id="filtre-bos" onclick="setFiltre('bos',this)">⬜ Boş</button>
+  </div>
+
   <div id="matchesList"></div>
 </section>
 
@@ -108,6 +119,11 @@
     <button class="btn btn-blue btn-lg" onclick="kuponOlustur()" style="margin-top:14px">⚡ KUPON OLUŞTUR</button>
   </div>
   <div id="kuponSonuc"></div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="result-title">💾 KAYITLI KUPONLARIM</div>
+    <div id="kayitliKuponlar"></div>
+  </div>
 </section>
 
 <!-- SAYFA 4: ANALİZ -->
@@ -123,6 +139,21 @@
   <div class="card">
     <div class="result-title">🗂️ GEÇMİŞ HAFTALAR</div>
     <div id="arsivListesi"><div class="muted">Yükleniyor...</div></div>
+  </div>
+  <div class="card">
+    <div class="result-title">📊 KASA & PERFORMANS</div>
+    <div id="performansBox"></div>
+  </div>
+</section>
+
+<!-- SAYFA 6: SONUÇLAR -->
+<section id="page-6" class="page">
+  <div class="card">
+    <div class="result-title">✅ MAÇ SONUÇLARI</div>
+    <div class="muted" style="font-size:.72rem;margin-bottom:10px">
+      Maç bittikten sonra sonucu işaretle → sistem başarı oranını hesaplar.
+    </div>
+    <div id="sonucListesi"></div>
   </div>
 </section>
 
@@ -217,7 +248,24 @@
         <button class="btn btn-green" style="flex:1" onclick="kuponIndir()">⬇️ İndir</button>
         <button class="btn btn-blue" style="flex:1" onclick="kuponPaylas()">📤 Paylaş</button>
       </div>
+      <button class="btn btn-orange btn-lg" onclick="kuponMetniKopyala()" style="margin-top:8px">📋 Metin Olarak Kopyala</button>
     </div>
+  </div>
+</div>
+
+<!-- MODAL: SONUÇ GİR -->
+<div class="modal" id="sonucModal">
+  <div class="modal-content">
+    <div class="modal-head"><span>✅ SONUÇ GİR</span><button onclick="closeModal('sonucModal')">✖</button></div>
+    <div class="modal-body" id="sonucModalBody"></div>
+  </div>
+</div>
+
+<!-- MODAL: KUPON DETAY -->
+<div class="modal" id="kuponDetayModal">
+  <div class="modal-content">
+    <div class="modal-head"><span>💾 KUPON DETAY</span><button onclick="closeModal('kuponDetayModal')">✖</button></div>
+    <div class="modal-body" id="kuponDetayBody"></div>
   </div>
 </div>
 
