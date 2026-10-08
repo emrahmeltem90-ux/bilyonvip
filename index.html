@@ -1,199 +1,225 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SkorLab · Akıllı Tahmin</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#070b14">
+  <title>SkorLab v8 Pro Analytics</title>
+  <link rel="manifest" href="manifest.json">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --bg1: #070b14; --bg2: #0f172a; --card: #1e293b; --border: #334155;
+      --text: #f8fafc; --muted: #94a3b8; --green: #00e676; --orange: #ffb020;
+      --red: #ff4d5e; --blue: #3d8bff; --purple: #a855f7;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    body { background: var(--bg1); color: var(--text); padding-bottom: 70px; -webkit-tap-highlight-color: transparent; }
+    header { background: var(--bg2); padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+    header h1 { font-size: 1.1rem; color: var(--green); display: flex; align-items: center; gap: 8px; }
+    .badge-v8 { background: rgba(0,230,118,0.15); color: var(--green); padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; border: 1px solid var(--green); }
+    
+    nav.tabs { display: flex; background: var(--bg2); border-bottom: 1px solid var(--border); position: sticky; top: 53px; z-index: 99; overflow-x: auto; }
+    .tab { flex: 1; min-width: 75px; text-align: center; padding: 12px 6px; font-size: 0.72rem; font-weight: 700; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; }
+    .tab.active { color: var(--green); border-bottom-color: var(--green); background: rgba(0,230,118,0.05); }
+
+    .container { padding: 12px; max-width: 800px; margin: 0 auto; }
+    .page { display: none; }
+    .page.active { display: block; }
+
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+    .match { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 10px; margin-bottom: 8px; cursor: pointer; }
+    .match-head { display: flex; justify-content: space-between; font-size: 0.68rem; color: var(--muted); margin-bottom: 6px; }
+    .teams { font-weight: 800; font-size: 0.88rem; display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+    .badge { padding: 3px 8px; border-radius: 6px; font-size: 0.65rem; font-weight: 800; }
+    .badge.green { background: rgba(0,230,118,0.15); color: var(--green); }
+    .badge.yellow { background: rgba(255,176,32,0.15); color: var(--orange); }
+    .badge.red { background: rgba(255,77,94,0.15); color: var(--red); }
+    .badge.purple { background: rgba(168,85,247,0.15); color: var(--purple); }
+
+    .oran-input-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px; }
+    .oran-input-item { background: var(--bg1); padding: 4px 6px; border-radius: 6px; border: 1px solid var(--border); text-align: center; }
+    .oran-input-item label { display: block; font-size: 0.6rem; color: var(--muted); }
+    .oran-input-item input { width: 100%; background: none; border: none; color: var(--text); font-weight: 800; text-align: center; font-size: 0.85rem; outline: none; }
+
+    .oran-grid-bulten { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px; text-align: center; }
+    .oran-box-bulten { background: var(--bg1); padding: 6px; border-radius: 6px; border: 1px solid var(--border); }
+    .oran-box-bulten .lbl { font-size: 0.6rem; color: var(--muted); }
+    .oran-box-bulten .val { font-weight: 800; font-size: 0.82rem; color: var(--green); }
+    .oran-box-bulten .pct { font-size: 0.62rem; color: var(--orange); }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 12px; border-radius: 8px; border: none; font-weight: 800; font-size: 0.85rem; cursor: pointer; transition: 0.2s; }
+    .btn-green { background: var(--green); color: #000; }
+    .btn-blue { background: var(--blue); color: #fff; }
+    .btn-gray { background: var(--border); color: var(--text); }
+    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+
+    .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 200; backdrop-filter: blur(4px); align-items: center; justify-content: center; padding: 12px; }
+    .modal.active { display: flex; }
+    .modal-content { background: var(--card); border: 1px solid var(--border); border-radius: 14px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; padding: 16px; }
+    .modal-head { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 12px; }
+
+    .mode-selector { display: flex; background: var(--bg1); padding: 3px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 10px; }
+    .mode-selector .mode { flex: 1; text-align: center; padding: 8px 4px; font-size: 0.7rem; font-weight: 800; color: var(--muted); border-radius: 6px; cursor: pointer; }
+    .mode-selector .mode.active { background: var(--card); color: var(--green); border: 1px solid var(--border); }
+
+    .kolon { background: var(--bg1); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; }
+    .kolon-picks { font-family: monospace; font-weight: 800; color: var(--green); letter-spacing: 1px; }
+
+    .analiz-box { background: var(--bg1); border-radius: 8px; padding: 8px; margin-top: 8px; border: 1px solid var(--border); }
+    .analiz-row { display: flex; justify-content: space-between; font-size: 0.72rem; padding: 2px 0; }
+    .analiz-lbl { color: var(--muted); font-weight: 700; }
+
+    .chart-container { position: relative; width: 100%; height: 220px; margin: 10px 0; }
+  </style>
 </head>
 <body>
 
 <header>
-  <div class="logo-badge">● CANLI ANALİZ</div>
-  <h1>SKORLAB</h1>
-  <p>Akıllı Spor Toto Tahmin Sistemi</p>
+  <h1>⚡ SKORLAB <span class="badge-v8">v8 PRO</span></h1>
+  <div style="font-size:0.7rem;color:var(--muted)" id="weekTitle">Yükleniyor...</div>
 </header>
 
 <nav class="tabs">
-  <div class="tab active" onclick="switchTab(0,this)"><span class="tab-num">01</span>Bülten</div>
-  <div class="tab" onclick="switchTab(1,this)"><span class="tab-num">02</span>Serbest</div>
-  <div class="tab" onclick="switchTab(2,this)"><span class="tab-num">03</span>Tahmin</div>
-  <div class="tab" onclick="switchTab(3,this)"><span class="tab-num">04</span>Kupon</div>
-  <div class="tab" onclick="switchTab(4,this)"><span class="tab-num">05</span>Geçmiş</div>
+  <div class="tab active" onclick="switchTab(0, this)">⚽ Toto</div>
+  <div class="tab" onclick="switchTab(1, this)">🎯 İddaa</div>
+  <div class="tab" onclick="switchTab(2, this)">📋 Tahminler</div>
+  <div class="tab" onclick="switchTab(3, this)">🎰 Kupon</div>
+  <div class="tab" onclick="switchTab(4, this)">📂 Arşiv</div>
 </nav>
 
 <div class="container">
-
-  <!-- SEKME 1: BÜLTEN -->
-  <div class="page active" id="page-0">
+  <!-- PAGE 0: SPOR TOTO -->
+  <div id="page-0" class="page active">
     <div class="card">
-      <div class="result-title">📅 <span id="weekTitle">Yükleniyor...</span></div>
-      <div class="stat-grid c4" style="margin-top:12px">
-        <div class="stat-box"><div class="num" id="statMac">15</div><div class="lbl">Maç</div></div>
-        <div class="stat-box"><div class="num" id="statBanko">-</div><div class="lbl">Banko</div></div>
-        <div class="stat-box"><div class="num" id="statCift">-</div><div class="lbl">Çift</div></div>
-        <div class="stat-box"><div class="num" id="statGuven">-</div><div class="lbl">Ort. Güven</div></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <b style="font-size:0.85rem">SPOR TOTO BÜLTENİ</b>
+        <button class="btn btn-outline" style="width:auto;padding:4px 8px;font-size:0.7rem" onclick="tahminVer()">🤖 Sistem Analizi</button>
       </div>
+      <div id="matchesList"></div>
     </div>
-    <div class="card">
-      <button onclick="tahminVer()" style="background:linear-gradient(135deg,#00e07a,#00b863);padding:18px;font-size:1rem">🎯 BANA TAHMİN VER</button>
-    </div>
-    <div id="matchesList"></div>
   </div>
 
-  <!-- SEKME 2: SERBEST -->
-  <div class="page" id="page-1">
-    <div class="card">
-      <div class="result-title">🎯 SERBEST MAÇLAR (İddaa)</div>
-      <p class="muted" style="font-size:.75rem;margin-bottom:14px;line-height:1.6">
-        İstediğin maçı ekle. Bilyoner/İddaa/Nesine'den tüm oranları gir. Sınırsız.
-      </p>
-      <button onclick="openSerbestModal()" class="purple">➕ Maç Ekle</button>
-      <button onclick="temizleSerbest()" class="danger" style="margin-top:8px">🗑️ Tümünü Temizle</button>
+  <!-- PAGE 1: İDDAA (SERBEST) -->
+  <div id="page-1" class="page">
+    <div style="display:flex;gap:8px;margin-bottom:10px">
+      <button class="btn btn-green" onclick="openSerbestModal()">➕ Maç Ekle</button>
+      <button class="btn btn-gray" onclick="temizleSerbest()">🗑️ Temizle</button>
     </div>
     <div id="serbestListesi"></div>
   </div>
 
-  <!-- SEKME 3: TAHMİN -->
-  <div class="page" id="page-2">
-    <div class="card">
-      <div class="result-title">📊 TAHMİN RAPORU</div>
-      <div id="tahminOzet" class="muted" style="font-size:.8rem;line-height:1.8;padding:10px;background:var(--bg2);border-radius:10px">
-        Bülten veya Serbest sekmesinden maç ekle. Sonra "🎯 BANA TAHMİN VER" butonuna bas.
-      </div>
-    </div>
+  <!-- PAGE 2: TAHMİN LİSTESİ -->
+  <div id="page-2" class="page">
     <div id="tahminListesi"></div>
   </div>
 
-  <!-- SEKME 4: KUPON -->
-  <div class="page" id="page-3">
+  <!-- PAGE 3: KUPON MOTORU -->
+  <div id="page-3" class="page">
     <div class="card">
-      <div class="result-title">💰 BÜTÇE & STRATEJİ</div>
-      <label>Bütçen (TL)</label>
-      <input type="number" id="budget" value="200" min="10" step="10" inputmode="numeric" oninput="updateKolon()">
-      <div class="bar-info"><div>Toplam: <b id="lblCost">200 TL</b></div><div>Kolon: <b id="lblKolon">20</b></div></div>
-      <label style="margin-top:14px">Hangi Maçlar?</label>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px">
-        <div class="mode active" id="kuponKaynak-toto" onclick="setKuponKaynak('toto',this)"><b>📋</b><span>TOTO</span></div>
-        <div class="mode" id="kuponKaynak-iddaa" onclick="setKuponKaynak('iddaa',this)"><b>🎯</b><span>İDDAA</span></div>
-        <div class="mode" id="kuponKaynak-karisik" onclick="setKuponKaynak('karisik',this)"><b>🔀</b><span>KARIŞIK</span></div>
+      <b style="font-size:0.85rem;display:block;margin-bottom:8px">KUPON AYARLARI</b>
+      
+      <div class="mode-selector">
+        <div id="kuponKaynak-toto" class="mode active" onclick="setKuponKaynak('toto', this)">Spor Toto</div>
+        <div id="kuponKaynak-iddaa" class="mode" onclick="setKuponKaynak('iddaa', this)">İddaa</div>
+        <div id="kuponKaynak-karisik" class="mode" onclick="setKuponKaynak('karisik', this)">Karma</div>
       </div>
-      <label>Risk Modu</label>
-      <div class="modes">
-        <div class="mode active" id="mode-guvenli" onclick="setRiskMode('guvenli',this)"><b>🛡️</b><span>GÜVENLİ</span></div>
-        <div class="mode" id="mode-dengeli" onclick="setRiskMode('dengeli',this)"><b>⚖️</b><span>DENGELİ</span></div>
-        <div class="mode" id="mode-agresif" onclick="setRiskMode('agresif',this)"><b>🚀</b><span>AGRESİF</span></div>
+
+      <div class="mode-selector">
+        <div id="mode-guvenli" class="mode" onclick="setRiskMode('guvenli', this)">Güvenli</div>
+        <div id="mode-dengeli" class="mode active" onclick="setRiskMode('dengeli', this)">Dengeli</div>
+        <div id="mode-agresif" class="mode" onclick="setRiskMode('agresif', this)">Agresif</div>
       </div>
-      <div id="modeInfo" class="mode-info" style="margin-top:10px"></div>
+
+      <div class="mode-selector">
+        <div id="covering-tam" class="mode active" onclick="setCoveringMode('tam', this)">Tam Kapsama</div>
+        <div id="covering-13" class="mode" onclick="setCoveringMode('13', this)">13 Teminatı</div>
+      </div>
+
+      <div style="background:var(--bg1);padding:10px;border-radius:8px;border:1px solid var(--border);margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;font-size:0.75rem;margin-bottom:4px">
+          <span>Bütçe / Toplam Kasa (TL):</span>
+          <b id="lblCost" style="color:var(--green)">200 TL</b>
+        </div>
+        <input type="number" id="budget" value="200" step="10" oninput="updateKolon()" style="width:100%;padding:8px;background:var(--card);border:1px solid var(--border);color:#fff;border-radius:6px">
+        <div style="font-size:0.65rem;color:var(--muted);margin-top:4px">Üretilecek Kolon: <b id="lblKolon" style="color:#fff">20</b></div>
+      </div>
+
+      <button class="btn btn-green" onclick="kuponOlustur()">⚡ Kupon Üret</button>
     </div>
-    <div class="card">
-      <button onclick="kuponOlustur()" style="background:linear-gradient(135deg,#3d8bff,#2563eb);padding:18px;font-size:1rem">⚡ KUPON OLUŞTUR</button>
-    </div>
+
     <div id="kuponSonuc"></div>
   </div>
 
-  <!-- SEKME 5: GEÇMİŞ -->
-  <div class="page" id="page-4">
+  <!-- PAGE 4: ARŞİV -->
+  <div id="page-4" class="page">
     <div class="card">
-      <div class="result-title">📊 GENEL İSTATİSTİK</div>
-      <div class="stat-grid c4" style="margin-top:12px">
-        <div class="stat-box"><div class="num" id="gToplamHafta">-</div><div class="lbl">Hafta</div></div>
-        <div class="stat-box"><div class="num" id="gOrtalama">-</div><div class="lbl">Ortalama</div></div>
-        <div class="stat-box"><div class="num" id="gEnIyi">-</div><div class="lbl">En İyi</div></div>
-        <div class="stat-box"><div class="num" id="gEnKotu">-</div><div class="lbl">En Kötü</div></div>
+      <b style="font-size:0.85rem">📊 MODEL PERFORMANSI</b>
+      <div class="grid-2" style="margin-top:8px;text-align:center">
+        <div style="background:var(--bg1);padding:8px;border-radius:6px"><div style="font-size:0.6rem;color:var(--muted)">TOPLAM HAFTA</div><b id="gToplamHafta">-</b></div>
+        <div style="background:var(--bg1);padding:8px;border-radius:6px"><div style="font-size:0.6rem;color:var(--muted)">ORT. TUTMA</div><b id="gOrtalama" style="color:var(--green)">-</b></div>
       </div>
     </div>
     <div id="arsivListesi"></div>
   </div>
-
 </div>
 
-<!-- SERBEST MAÇ EKLE MODAL -->
-<div class="modal-overlay" id="serbestModal">
-  <div class="modal-box" style="max-width:520px">
-    <div class="modal-title">➕ Maç Ekle (İddaa)</div>
-    <div class="modal-sub">Tüm bahis oranlarını gir. Sadece 1/X/2 zorunlu.</div>
-    <label>⚽ Maç Adı</label>
-    <input type="text" id="sm-match" placeholder="Örn: Galatasaray - Kasımpaşa">
-    
-    <label style="margin-top:14px;color:var(--green);font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);padding-bottom:4px;margin-bottom:8px">📊 TARAF (Zorunlu)</label>
-    <div class="oran-grid">
-      <div class="oran-item"><label>1</label><input type="number" step="0.01" placeholder="1.00" id="sm-o1"></div>
-      <div class="oran-item"><label>X</label><input type="number" step="0.01" placeholder="1.00" id="sm-oX"></div>
-      <div class="oran-item"><label>2</label><input type="number" step="0.01" placeholder="1.00" id="sm-o2"></div>
+<!-- MODALS -->
+<div id="macDetayModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-head">
+      <b id="macDetayTitle">Maç Detayı</b>
+      <button onclick="closeModal('macDetayModal')" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer">✕</button>
     </div>
-    
-    <label style="margin-top:14px;color:var(--blue);font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);padding-bottom:4px;margin-bottom:8px">⚽ KARŞILIKLI GOL</label>
-    <div class="oran-grid">
-      <div class="oran-item"><label>KG Var</label><input type="number" step="0.01" placeholder="1.00" id="sm-kgvar"></div>
-      <div class="oran-item"><label>KG Yok</label><input type="number" step="0.01" placeholder="1.00" id="sm-kgyok"></div>
+    <div class="chart-container">
+      <canvas id="radarChartCanvas"></canvas>
     </div>
-    
-    <label style="margin-top:14px;color:var(--orange);font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);padding-bottom:4px;margin-bottom:8px">📈 ALT/ÜST</label>
-    <div class="oran-grid">
-      <div class="oran-item"><label>1.5 Alt</label><input type="number" step="0.01" placeholder="1.00" id="sm-u15alt"></div>
-      <div class="oran-item"><label>1.5 Üst</label><input type="number" step="0.01" placeholder="1.00" id="sm-u15ust"></div>
-    </div>
-    <div class="oran-grid">
-      <div class="oran-item"><label>2.5 Alt</label><input type="number" step="0.01" placeholder="1.00" id="sm-u25alt"></div>
-      <div class="oran-item"><label>2.5 Üst</label><input type="number" step="0.01" placeholder="1.00" id="sm-u25ust"></div>
-    </div>
-    <div class="oran-grid">
-      <div class="oran-item"><label>3.5 Alt</label><input type="number" step="0.01" placeholder="1.00" id="sm-u35alt"></div>
-      <div class="oran-item"><label>3.5 Üst</label><input type="number" step="0.01" placeholder="1.00" id="sm-u35ust"></div>
-    </div>
-    
-    <label style="margin-top:14px;color:var(--purple);font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);padding-bottom:4px;margin-bottom:8px">🎯 KOMBO</label>
-    <div class="oran-grid">
-      <div class="oran-item"><label>KG+2.5Ü</label><input type="number" step="0.01" placeholder="1.00" id="sm-kgu"></div>
-    </div>
-    
-    <div class="modal-buttons">
-      <button class="cancel" onclick="closeModal('serbestModal')">İptal</button>
-      <button onclick="serbestEkle()">Ekle</button>
-    </div>
-  </div>
-</div>
-
-<!-- TAHMİN MODAL -->
-<div class="modal-overlay" id="tahminModal" onclick="if(event.target===this)closeModal('tahminModal')">
-  <div class="modal-box" style="max-width:500px">
-    <div class="modal-title" style="margin-bottom:14px">🎯 TAHMİN RAPORU</div>
-    <div id="tahminModalBody"></div>
-    <button onclick="closeModal('tahminModal')" style="margin-top:14px">Tamam</button>
-  </div>
-</div>
-
-<!-- MAÇ DETAY MODAL -->
-<div class="modal-overlay" id="macDetayModal" onclick="if(event.target===this)closeModal('macDetayModal')">
-  <div class="modal-box" style="max-width:500px">
-    <div class="modal-title" id="macDetayTitle" style="margin-bottom:14px">📊 MAÇ DETAYI</div>
     <div id="macDetayBody"></div>
-    <button onclick="closeModal('macDetayModal')" style="margin-top:14px">Kapat</button>
   </div>
 </div>
 
-<!-- TOAST -->
-<div class="toast-overlay" id="toastModal">
-  <div class="toast-box">
-    <span class="toast-icon" id="toastIcon">✅</span>
-    <div class="toast-title" id="toastTitle">Başarılı</div>
-    <div class="toast-msg" id="toastMsg"></div>
-    <button onclick="closeModal('toastModal')">Tamam</button>
-  </div>
-</div>
-
-<!-- LEGAL -->
-<div class="toast-overlay" id="legalModal" onclick="if(event.target===this)closeModal('legalModal')">
-  <div class="toast-box" style="max-width:440px;text-align:left;max-height:85vh;overflow-y:auto">
-    <div class="modal-title" style="color:var(--orange);margin-bottom:14px;font-size:1rem">⚠️ Yasal Uyarı</div>
-    <div style="font-size:.76rem;line-height:1.8;color:var(--text)">
-      <p style="margin-bottom:12px"><b style="color:var(--green)">📌 Amaç</b><br>SkorLab istatistiksel analiz aracıdır. Kesin sonuç garantisi vermez.</p>
-      <p style="margin-bottom:12px"><b style="color:var(--green)">🚫 Garanti Yoktur</b><br>Tahminler oranlardan türetilmiş olasılıklara dayanır.</p>
-      <p style="margin-bottom:12px"><b style="color:var(--green)">⚖️ Sorumluluk</b><br>Yasal bahis hizmeti sunmaz.</p>
-      <p style="margin-bottom:12px"><b style="color:var(--green)">🔞 Yaş Sınırı</b><br>18 yaşından büyükler içindir.</p>
+<div id="serbestModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-head">
+      <b>➕ Serbest Maç Ekle</b>
+      <button onclick="closeModal('serbestModal')" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer">✕</button>
     </div>
-    <button onclick="closeModal('legalModal')" style="margin-top:16px">Anladım</button>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <input type="text" id="sm-match" placeholder="Maç Adı (Örn: Galatasaray - Fenerbahçe)" style="padding:8px;background:var(--bg1);border:1px solid var(--border);color:#fff;border-radius:6px">
+      <div class="grid-3">
+        <input type="number" step="0.01" id="sm-o1" placeholder="Oran 1" style="padding:8px;background:var(--bg1);border:1px solid var(--border);color:#fff;border-radius:6px">
+        <input type="number" step="0.01" id="sm-oX" placeholder="Oran X" style="padding:8px;background:var(--bg1);border:1px solid var(--border);color:#fff;border-radius:6px">
+        <input type="number" step="0.01" id="sm-o2" placeholder="Oran 2" style="padding:8px;background:var(--bg1);border:1px solid var(--border);color:#fff;border-radius:6px">
+      </div>
+      <div class="grid-2">
+        <input type="number" step="0.1" id="sm-xG-home" placeholder="xG Ev (Örn: 1.6)" style="padding:8px;background:var(--bg1);border:1px solid var(--border);color:#fff;border-radius:6px">
+        <input type="number" step="0.1" id="sm-xG-away" placeholder="xG Dep (Örn: 1.1)" style="padding:8px;background:var(--bg1);border:1px solid var(--border);color:#fff;border-radius:6px">
+      </div>
+      <button class="btn btn-green" onclick="serbestEkle()">Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<div id="tahminModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-head">
+      <b>🤖 SİSTEM TAHMİN BÜLTENİ</b>
+      <button onclick="closeModal('tahminModal')" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer">✕</button>
+    </div>
+    <div id="tahminModalBody"></div>
+  </div>
+</div>
+
+<div id="toastModal" class="modal">
+  <div class="modal-content" style="text-align:center">
+    <div id="toastIcon" style="font-size:2rem;margin-bottom:6px">✅</div>
+    <b id="toastTitle" style="display:block;margin-bottom:4px">Bildirim</b>
+    <div id="toastMsg" style="font-size:0.78rem;color:var(--muted);margin-bottom:12px"></div>
+    <button class="btn btn-gray" onclick="closeModal('toastModal')">Tamam</button>
   </div>
 </div>
 
