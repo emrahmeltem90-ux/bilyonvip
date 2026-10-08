@@ -1,5 +1,5 @@
 /* ============================================================
-   SKORLAB v8 PRO · Full Stack + Süper Lig API (2026/27)
+   SKORLAB v8 PRO · Temiz Sürüm
    ============================================================ */
 
 let matchesData = [];
@@ -302,135 +302,23 @@ async function testAlarm(){
   else showToast('error','Başarısız','Token/chat_id kontrol et.');
 }
 
-/* JSON Import */
-function jsonImportAc(){ $('jsonFileInput').click(); }
-
-function jsonImportEt(event){
-  const file = event.target.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    try{
-      const raw = JSON.parse(e.target.result);
-      weekKey = (raw.week || 'import').replace(/\s+/g,'_').toLowerCase();
-      const yeniMatches = (raw.matches || raw).map(m => ({
-        id:m.id, home:m.home, away:m.away, date:m.date||'', league:m.league||'', odds:m.odds||null
-      }));
-      const mevcutTr = matchesData.filter(x => x.league === 'TR1');
-      matchesData = [...mevcutTr, ...yeniMatches];
-      yeniMatches.forEach(m => { if(m.odds) oddsData[m.id] = {...m.odds}; });
-      localStorage.setItem('skorlab_odds_'+weekKey, JSON.stringify(oddsData));
-      localStorage.setItem('skorlab_import', JSON.stringify({ weekKey, matchesData }));
-      $('weekTitle').innerText = raw.week || 'İçe Aktarıldı';
-      renderBulten(); updateStats();
-      showToast('success','İçe Aktarıldı', yeniMatches.length + ' maç yüklendi.');
-    }catch(err){
-      showToast('error','Hata','JSON okunamadı: '+err.message);
-    }
-  };
-  reader.readAsText(file);
-  event.target.value = '';
-}
-
-function bulteniSifirla(){
-  if(!confirm('Bülteni sıfırlamak istediğine emin misin?')) return;
-  localStorage.removeItem('skorlab_import');
-  loadData();
-}
-
-/* ============================================================
-   SÜPER LİG API — 2026/27 SEZONU
-   ============================================================ */
-async function süperLigCek(){
-  const API_KEY = '4b7109b6760cf29b78701c45406dbd9a';
-  const SÜPER_LİG_ID = 203;
-  const SEZON = 2026;  // 2026/27 sezonu
-
-  const bugun = new Date();
-  const haftaSonu = new Date(bugun.getTime() + 10 * 24 * 60 * 60 * 1000);
-  const from = bugun.toISOString().split('T')[0];
-  const to = haftaSonu.toISOString().split('T')[0];
-
-  const url = `https://v3.football.api-sports.io/fixtures?league=${SÜPER_LİG_ID}&season=${SEZON}&from=${from}&to=${to}`;
-
-  showToast('success', 'Çekiliyor...', 'Süper Lig maçları getiriliyor.');
-
-  try{
-    const res = await fetch(url, {
-      method: 'GET',
-      headers: { 'x-apisports-key': API_KEY }
-    });
-
-    const data = await res.json();
-
-    // Hata kontrolü
-    if(data.errors && Object.keys(data.errors).length > 0){
-      const hata = Object.values(data.errors).join(', ');
-      showToast('error', 'API Hatası', hata);
-      console.error('API Hata:', data.errors);
-      return;
-    }
-
-    if(!data.response || !data.response.length){
-      showToast('error', 'Maç Yok', `Sezon: ${SEZON}, Tarih: ${from} → ${to}. Bu aralıkta maç bulunamadı.`);
-      return;
-    }
-
-    const apiMatches = data.response.map(match => ({
-      id: match.fixture.id,
-      home: match.teams.home.name,
-      away: match.teams.away.name,
-      date: new Date(match.fixture.date).toLocaleString('tr-TR', {
-        day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit'
-      }),
-      league: 'TR1',
-      odds: null
-    }));
-
-    const mevcutYabanci = matchesData.filter(m => m.league !== 'TR1');
-    matchesData = [...apiMatches, ...mevcutYabanci];
-
-    apiMatches.forEach(m => { if(!oddsData[m.id]) oddsData[m.id] = {}; });
-
-    localStorage.setItem('skorlab_import', JSON.stringify({
-      weekKey: 'süper_lig_otomatik',
-      matchesData: matchesData
-    }));
-
-    $('weekTitle').innerText = 'Süper Lig + Yabancı Maçlar';
-    renderBulten(); updateStats();
-    showToast('success', 'Başarılı!', apiMatches.length + ' Süper Lig maçı çekildi.');
-  }catch(e){
-    console.error('Süper Lig API hatası:', e);
-    showToast('error', 'Bağlantı Hatası', e.message || 'API çağrısı başarısız.');
-  }
-}
-
 /* ============================================================
    VERİ YÜKLE
    ============================================================ */
 async function loadData(){
   try{
-    const imp = localStorage.getItem('skorlab_import');
-    if(imp){
-      const p = JSON.parse(imp);
-      weekKey = p.weekKey; matchesData = p.matchesData;
-      oddsData = JSON.parse(localStorage.getItem('skorlab_odds_'+weekKey)||'{}');
-      $('weekTitle').innerText = 'Kaydedilmiş Bülten';
-    } else {
-      const res = await fetch('matches.json');
-      if(!res.ok) throw new Error('HTTP '+res.status);
-      const raw = await res.json();
-      weekKey = (raw.week||'hafta').replace(/\s+/g,'_').toLowerCase();
-      matchesData = (raw.matches||raw).map(m => ({
-        id:m.id, home:m.home, away:m.away, date:m.date||'', league:m.league||'', odds:m.odds||null
-      }));
-      oddsData = {};
-      matchesData.forEach(m => { if(m.odds) oddsData[m.id] = {...m.odds}; });
-      const kayitli = JSON.parse(localStorage.getItem('skorlab_odds_'+weekKey)||'{}');
-      Object.keys(kayitli).forEach(id => { oddsData[id] = {...(oddsData[id]||{}), ...kayitli[id]}; });
-      $('weekTitle').innerText = raw.week || 'Bu Hafta';
-    }
+    const res = await fetch('matches.json');
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const raw = await res.json();
+    weekKey = (raw.week||'hafta').replace(/\s+/g,'_').toLowerCase();
+    matchesData = (raw.matches||raw).map(m => ({
+      id:m.id, home:m.home, away:m.away, date:m.date||'', league:m.league||'', odds:m.odds||null
+    }));
+    oddsData = {};
+    matchesData.forEach(m => { if(m.odds) oddsData[m.id] = {...m.odds}; });
+    const kayitli = JSON.parse(localStorage.getItem('skorlab_odds_'+weekKey)||'{}');
+    Object.keys(kayitli).forEach(id => { oddsData[id] = {...(oddsData[id]||{}), ...kayitli[id]}; });
+    $('weekTitle').innerText = raw.week || 'Bu Hafta';
     renderBulten(); renderSerbest(); updateStats(); updateKolon();
   }catch(e){
     console.error(e);
@@ -554,7 +442,6 @@ function renderBulten(){
     </div>`;
   }).join('');
 
-  // Değer alarm taraması
   matchesData.forEach(m => {
     const od = oddsData[m.id];
     if(!od || !od['1'] || !od['X'] || !od['2']) return;
