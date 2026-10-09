@@ -1,5 +1,6 @@
 /* ============================================================
    SKORLAB v21 PRO · ValueBet + Monte Carlo + Toto + İddaa + Analiz
+   (1X2'de value ARANMAZ — sadece yan marketlerde)
    ============================================================ */
 
 /* ============================================================
@@ -107,9 +108,9 @@ class ValueBetEngine {
     const m25 = this.ikiliMarjArindir(veri.oU25, veri.oA25);
     const mKg = this.ikiliMarjArindir(veri.oKgV, veri.oKgY);
 
-    kontrol('1X2 - 1', veri.o1, null, shin.p1);
-    kontrol('1X2 - X', veri.oX, null, shin.pX);
-    kontrol('1X2 - 2', veri.o2, null, shin.p2);
+    /* ⚠️ 1X2'DE VALUE ARANMAZ — matematiksel kısır döngü olur.
+       Sadece yan marketlerde (2.5, KG) aranır. */
+
     kontrol('2.5 Üst', veri.oU25, m25?.oA_temiz, poi.pUst25);
     kontrol('2.5 Alt', veri.oA25, m25?.oB_temiz, poi.pAlt25);
     kontrol('KG Var', veri.oKgV, mKg?.oA_temiz, poi.pKgVar);
@@ -223,31 +224,26 @@ function oranGuncelleToto(mac_id, alan, val){
   if(!val || isNaN(num)) delete oranlarToto[mac_id][alan];
   else oranlarToto[mac_id][alan] = num;
   localStorage.setItem('skorlab_oranlar_toto', JSON.stringify(oranlarToto));
-  // Otomatik güncelle: o maçın önerisini kart altında yenile
   renderToto();
   renderAnaliz();
 }
 
 /* ============================================================
-   6. ÖNERİ ÜRET (her maç için)
+   6. ÖNERİ ÜRET
    ============================================================ */
 function oneriUret(analiz, oranlar){
-  // Shin olasılıkları
   const p1 = parseFloat(analiz.shin.p1);
   const pX = parseFloat(analiz.shin.pX);
   const p2 = parseFloat(analiz.shin.p2);
 
-  // Favori
   let favoriKod = '1', favoriOlas = p1;
   if(pX > favoriOlas){ favoriKod = 'X'; favoriOlas = pX; }
   if(p2 > favoriOlas){ favoriKod = '2'; favoriOlas = p2; }
 
-  // İkinci
   const sirali = [
     { kod:'1', olas:p1 }, { kod:'X', olas:pX }, { kod:'2', olas:p2 }
   ].sort((a,b)=>b.olas-a.olas);
 
-  // Sınıf
   let tip = '', renk = '';
   if(favoriOlas >= 65){
     tip = 'BANKO ' + favoriKod;
@@ -263,7 +259,6 @@ function oneriUret(analiz, oranlar){
     renk = 'red';
   }
 
-  // Değer
   const degerVar = analiz.values.length > 0 ? analiz.values[0] : null;
 
   return {
@@ -327,7 +322,11 @@ function renderToto(){
           <div style="margin-top:4px;color:var(--purple);font-weight:800">
             💎 ${oneri.deger.market} @ ${oneri.deger.oran} (EV: ${oneri.deger.ev})
           </div>
-        ` : ''}
+        ` : `
+          <div style="margin-top:4px;color:var(--muted);font-size:.7rem">
+            Yan marketlerde value yok
+          </div>
+        `}
       </div>
       ` : ''}
 
@@ -347,6 +346,7 @@ function renderToto(){
    ============================================================ */
 function renderIddaa(){
   const c = $('iddaaListesi');
+  if(!c) return;
   if(!maclarIddaa.length){
     c.innerHTML = '<div class="card"><div class="muted" style="text-align:center;padding:20px">Henüz maç eklemedin. "➕ Maç Ekle" ile başla.</div></div>';
     return;
@@ -406,7 +406,7 @@ function renderIddaa(){
 }
 
 /* ============================================================
-   9. ANALİZ SEKMESİ (TOPLU FİKİRLER)
+   9. ANALİZ SEKMESİ
    ============================================================ */
 function renderAnaliz(){
   const c = $('analizListesi');
@@ -414,7 +414,6 @@ function renderAnaliz(){
 
   const satirlar = [];
 
-  // Toto maçları
   maclarToto.forEach(m => {
     const o = oranlarToto[m.mac_id];
     if(!o || !o['1'] || !o['X'] || !o['2']) return;
@@ -424,16 +423,9 @@ function renderAnaliz(){
       oKgV:o['KgV'], oKgY:o['KgY']
     });
     const oneri = oneriUret(a, o);
-    satirlar.push({
-      tip:'toto',
-      id:m.mac_id,
-      isim:m.ev_sahibi + ' - ' + m.deplasman,
-      oneri,
-      analiz:a
-    });
+    satirlar.push({ tip:'toto', id:m.mac_id, isim:m.ev_sahibi + ' - ' + m.deplasman, oneri, analiz:a });
   });
 
-  // İddaa maçları
   maclarIddaa.forEach(m => {
     const o = m.oranlar;
     if(!o.o1 || !o.oX || !o.o2) return;
@@ -443,13 +435,7 @@ function renderAnaliz(){
       oKgV:o.oKgV, oKgY:o.oKgY
     });
     const oneri = oneriUret(a, o);
-    satirlar.push({
-      tip:'iddaa',
-      id:m.id,
-      isim:m.mac,
-      oneri,
-      analiz:a
-    });
+    satirlar.push({ tip:'iddaa', id:m.id, isim:m.mac, oneri, analiz:a });
   });
 
   if(!satirlar.length){
@@ -457,7 +443,6 @@ function renderAnaliz(){
     return;
   }
 
-  // Özet: kaç banko, kaç çift, kaç üçlü
   const banko = satirlar.filter(s => s.oneri.tip.includes('BANKO')).length;
   const tek = satirlar.filter(s => s.oneri.tip.startsWith('TEK')).length;
   const cift = satirlar.filter(s => s.oneri.tip.includes('ÇİFT')).length;
@@ -650,7 +635,7 @@ function updateKuponCubugu(){
 }
 
 /* ============================================================
-   13. KUPON OLUŞTUR — TOTO
+   13. TOTO KUPONU
    ============================================================ */
 function kuponOlusturToto(){
   if(!maclarToto.length){ showToast('error','Maç Yok','Toto boş.'); return; }
@@ -671,7 +656,6 @@ function kuponOlusturToto(){
       tip: oneri.tip,
       favoriKod: oneri.favoriKod,
       favoriOlas: oneri.favoriOlas,
-      oran: o[oneri.favoriKod],
       deger: oneri.deger
     });
   });
@@ -701,7 +685,6 @@ function kuponOlusturToto(){
     `;
   });
 
-  // Kolon hesabı: her "BANKO/TEK" = 1, her "ÇİFT" = 2, her "ÜÇLÜ" = 3
   let kolon = 1;
   oneriler.forEach(o => {
     if(o.tip.includes('BANKO') || o.tip.startsWith('TEK')) kolon *= 1;
@@ -723,7 +706,7 @@ function kuponOlusturToto(){
 }
 
 /* ============================================================
-   14. KUPON OLUŞTUR — İDDAA
+   14. İDDAA KUPONU
    ============================================================ */
 function kuponOlusturIddaa(){
   if(!maclarIddaa.length){ showToast('error','Maç Yok','İddaa boş.'); return; }
@@ -744,7 +727,6 @@ function kuponOlusturIddaa(){
       tip: oneri.tip,
       favoriKod: oneri.favoriKod,
       favoriOlas: oneri.favoriOlas,
-      oran: o['o' + oneri.favoriKod] || o['o' + oneri.favoriKod.toUpperCase()],
       deger: oneri.deger
     });
   });
@@ -896,15 +878,17 @@ function analizGosterOrtak(isim, o){
   );
 
   const oneri = oneriUret(rapor, o);
+  const renkMap = { green: 'var(--green)', yellow: 'var(--orange)', orange: 'var(--orange)', red: 'var(--red)' };
+  const aktifRenk = renkMap[oneri.renk] || 'var(--green)';
 
   $('analizTitle').innerText = '📊 ' + isim;
 
   $('analizBody').innerHTML = `
     <div style="font-size:.85rem;line-height:1.8">
 
-      <div class="analiz-box" style="border:1px solid var(--${oneri.renk === 'green' ? 'green' : oneri.renk === 'yellow' ? 'orange' : 'red'})">
+      <div class="analiz-box" style="border:1px solid ${aktifRenk}">
         <span class="analiz-lbl">🎯 SİSTEM ÖNERİSİ</span>
-        <div style="text-align:center;font-weight:900;font-size:1.2rem;color:var(--${oneri.renk === 'green' ? 'green' : oneri.renk === 'yellow' ? 'orange' : 'red'});padding:8px 0">
+        <div style="text-align:center;font-weight:900;font-size:1.2rem;color:${aktifRenk};padding:8px 0">
           ${oneri.tip}
         </div>
         <div class="analiz-row"><span>Favori Olasılık:</span><b>%${oneri.favoriOlas}</b></div>
@@ -941,7 +925,7 @@ function analizGosterOrtak(isim, o){
 
       ${rapor.values.length > 0 ? `
       <div class="analiz-box" style="border:1px solid var(--green)">
-        <span class="analiz-lbl">💎 VALUE BET</span>
+        <span class="analiz-lbl">💎 VALUE BET (Yan Marketler)</span>
         ${rapor.values.slice(0,5).map(v => `
           <div style="padding:6px 0;border-bottom:1px solid var(--border)">
             <div style="display:flex;justify-content:space-between">
@@ -952,7 +936,15 @@ function analizGosterOrtak(isim, o){
           </div>
         `).join('')}
       </div>
-      ` : ''}
+      ` : `
+      <div class="analiz-box" style="border:1px solid var(--red)">
+        <span class="analiz-lbl">❌ VALUE BET YOK</span>
+        <div class="muted" style="font-size:.75rem">
+          Yan marketlerde (2.5, KG) değerli bahis bulunamadı.<br>
+          <span style="font-size:.68rem">Not: 1X2'de value aranmaz (matematiksel kısır döngü).</span>
+        </div>
+      </div>
+      `}
 
     </div>`;
 
