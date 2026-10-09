@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#070b14">
-<title>SkorLab v9 PRO</title>
+<title>SkorLab v10 PRO · Value Bet + ROI</title>
 
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
@@ -18,7 +18,7 @@
 <body>
 
 <header class="app-header">
-  <div class="logo">⚽ SKORLAB <span class="v">v9</span></div>
+  <div class="logo">⚽ SKORLAB <span class="v">v10</span></div>
   <div id="weekTitle" class="week">Yükleniyor...</div>
 </header>
 
@@ -40,7 +40,7 @@
   <button class="tab" onclick="switchTab(2,this)">🎯 Serbest</button>
   <button class="tab" onclick="switchTab(3,this)">⚡ Kupon</button>
   <button class="tab" onclick="switchTab(4,this)">📊 Analiz</button>
-  <button class="tab" onclick="switchTab(5,this)">🗂️ Arşiv</button>
+  <button class="tab" onclick="switchTab(5,this)">💼 Kasa</button>
   <button class="tab" onclick="switchTab(6,this)">✅ Sonuçlar</button>
 </nav>
 
@@ -52,11 +52,12 @@
     <div class="stat-card"><div class="stat-val" id="statMac">0</div><div class="stat-lbl">MAÇ</div></div>
     <div class="stat-card"><div class="stat-val green" id="statBanko">0</div><div class="stat-lbl">BANKO</div></div>
     <div class="stat-card"><div class="stat-val orange" id="statCift">0</div><div class="stat-lbl">ÇİFT/ÜÇLÜ</div></div>
-    <div class="stat-card"><div class="stat-val blue" id="statGuven">%0</div><div class="stat-lbl">ORT GÜVEN</div></div>
+    <div class="stat-card"><div class="stat-val purple" id="statDeger">0</div><div class="stat-lbl">💎 DEĞER</div></div>
   </div>
 
   <div class="filtre-bar">
     <button class="filtre-btn active" id="filtre-hepsi" onclick="setFiltre('hepsi',this)">Tümü</button>
+    <button class="filtre-btn" id="filtre-deger" onclick="setFiltre('deger',this)">💎 Değer</button>
     <button class="filtre-btn" id="filtre-banko" onclick="setFiltre('banko',this)">🔒 Banko</button>
     <button class="filtre-btn" id="filtre-riskli" onclick="setFiltre('riskli',this)">⚠️ Riskli</button>
     <button class="filtre-btn" id="filtre-cift" onclick="setFiltre('cift',this)">🔥 Çift/Üçlü</button>
@@ -124,15 +125,27 @@
   <div id="tahminListesi"></div>
 </section>
 
-<!-- SAYFA 5: ARŞİV -->
+<!-- SAYFA 5: KASA (YENİ) -->
 <section id="page-5" class="page">
   <div class="card">
-    <div class="result-title">🗂️ GEÇMİŞ HAFTALAR</div>
-    <div id="arsivListesi"><div class="muted">Yükleniyor...</div></div>
+    <div class="result-title">💰 KASA ÖZETİ</div>
+    <div id="kasaOzet"></div>
   </div>
+
   <div class="card">
-    <div class="result-title">📊 KASA & PERFORMANS</div>
-    <div id="performansBox"></div>
+    <div class="result-title">📈 KASA GRAFİĞİ (Son 30 Gün)</div>
+    <div style="position:relative;height:220px"><canvas id="kasaChart"></canvas></div>
+  </div>
+
+  <div class="card">
+    <div class="result-title">📊 ROI & PERFORMANS</div>
+    <div id="roiOzet"></div>
+  </div>
+
+  <div class="card">
+    <div class="result-title">🎯 DEĞERLİ BAHİSLER (Value Bet)</div>
+    <div class="muted" style="font-size:.72rem;margin-bottom:10px">EV > 1.12 olan maçlar — sistem bunları "değerli" buluyor</div>
+    <div id="degerListesi"></div>
   </div>
 </section>
 
@@ -141,7 +154,7 @@
   <div class="card">
     <div class="result-title">✅ MAÇ SONUÇLARI</div>
     <div class="muted" style="font-size:.72rem;margin-bottom:10px">
-      Maç bittikten sonra sonucu işaretle → sistem başarı oranını hesaplar.
+      Maç bittikten sonra sonucu işaretle → kasa otomatik güncellenir.
     </div>
     <div id="sonucListesi"></div>
   </div>
@@ -166,13 +179,8 @@
         <div class="oran-grid-3">
           <div><label>KG Var</label><input type="number" step="0.01" id="sm-kgvar"></div>
           <div><label>KG Yok</label><input type="number" step="0.01" id="sm-kgyok"></div>
-          <div><label>KGÜ</label><input type="number" step="0.01" id="sm-kgu"></div>
-          <div><label>1.5 Alt</label><input type="number" step="0.01" id="sm-u15alt"></div>
-          <div><label>1.5 Üst</label><input type="number" step="0.01" id="sm-u15ust"></div>
           <div><label>2.5 Alt</label><input type="number" step="0.01" id="sm-u25alt"></div>
           <div><label>2.5 Üst</label><input type="number" step="0.01" id="sm-u25ust"></div>
-          <div><label>3.5 Alt</label><input type="number" step="0.01" id="sm-u35alt"></div>
-          <div><label>3.5 Üst</label><input type="number" step="0.01" id="sm-u35ust"></div>
         </div>
       </div>
       <button class="btn btn-green btn-lg" onclick="serbestEkle()" style="margin-top:12px">✅ EKLE</button>
