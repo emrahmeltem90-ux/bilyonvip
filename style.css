@@ -1,7 +1,3 @@
-/* ============================================================
-   SKORLAB v17 · STYLE.CSS
-   ============================================================ */
-
 :root{
   --bg:#070b14; --bg2:#0f1523; --bg3:#161e2f;
   --border:#1e2940; --muted:#7a8ba8;
@@ -29,29 +25,15 @@ button:active{opacity:.8}
 .logo .v{color:var(--orange);font-size:.75rem}
 .week{font-size:.7rem;color:var(--muted);flex:1;text-align:center}
 
-/* BÜTÇE BAR */
-.kasa-bar{
-  display:flex;align-items:center;gap:8px;padding:8px 16px;
-  background:var(--bg2);border-bottom:1px solid var(--border);
-  font-size:.72rem;color:var(--muted);position:sticky;top:56px;z-index:99;
-  overflow-x:auto;
-}
-.kasa-bar input,.kasa-bar select{
-  background:var(--bg3);border:1px solid var(--border);color:var(--text);
-  border-radius:6px;padding:4px 8px;font-size:.75rem;font-weight:700;
-}
-.kasa-bar input{width:70px}
-.kasa-sep{color:var(--border)}
-
 /* SEKMELER */
 .tabs{
-  display:flex;overflow-x:auto;background:var(--bg2);
-  border-bottom:1px solid var(--border);position:sticky;top:94px;z-index:98;
+  display:flex;background:var(--bg2);
+  border-bottom:1px solid var(--border);position:sticky;top:56px;z-index:99;
 }
 .tab{
-  flex:1;min-width:70px;padding:12px 8px;background:none;border:none;
-  color:var(--muted);font-weight:800;font-size:.7rem;cursor:pointer;
-  border-bottom:2px solid transparent;white-space:nowrap;
+  flex:1;padding:12px 8px;background:none;border:none;
+  color:var(--muted);font-weight:800;font-size:.72rem;cursor:pointer;
+  border-bottom:2px solid transparent;
 }
 .tab.active{color:var(--green);border-bottom-color:var(--green)}
 
@@ -67,71 +49,74 @@ button:active{opacity:.8}
 }
 .stat-val{font-weight:900;font-size:1.1rem}
 .stat-val.green{color:var(--green)}
-.stat-val.orange{color:var(--orange)}
 .stat-val.blue{color:var(--blue)}
-.stat-val.red{color:var(--red)}
-.stat-val.purple{color:var(--purple)}
+.stat-val.orange{color:var(--orange)}
 .stat-lbl{font-size:.58rem;color:var(--muted);margin-top:2px}
 
-/* SADE MAÇ KARTI */
-.sade-mac{
+/* MAÇ KARTI */
+.mac-kart{
   background:var(--bg2);border:1px solid var(--border);border-radius:12px;
   padding:12px;margin-bottom:10px;
 }
-.sade-mac-head{
+.mac-head{
   display:flex;justify-content:space-between;align-items:center;
   margin-bottom:10px;
 }
-.sade-mac-no{
+.mac-no{
   font-weight:900;color:var(--orange);font-size:.85rem;
   background:var(--bg3);padding:4px 10px;border-radius:6px;
 }
-.sade-mac-tarih{font-size:.65rem;color:var(--muted)}
-.sade-mac-teams{
-  font-weight:900;font-size:.9rem;margin-bottom:10px;cursor:pointer;
-  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+.mac-form{font-size:.72rem;display:flex;gap:4px;align-items:center}
+.form-dot{
+  display:inline-block;width:20px;height:20px;line-height:20px;
+  text-align:center;border-radius:50%;font-weight:900;font-size:.65rem;
+  color:#000;
 }
-.sade-mac-tahminler{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
-}
+.form-G{background:#00e676}    /* Galibiyet */
+.form-B{background:#ffb020}    /* Beraberlik */
+.form-M{background:#ff4d5e;color:#fff}  /* Mağlubiyet */
 
-/* SEÇİM BUTONU */
-.sade-btn{
+.mac-teams{
+  font-weight:900;font-size:.92rem;margin-bottom:12px;
+  cursor:pointer;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.mac-yuzde{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;
+}
+.yuzde-box{
+  background:var(--bg3);border-radius:8px;padding:8px;text-align:center;
+}
+.yuzde-box .lbl{font-size:.6rem;color:var(--muted);font-weight:800}
+.yuzde-box .val{font-weight:900;font-size:.9rem;margin-top:2px}
+
+/* SEÇİM BUTONLARI */
+.secim-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.secim-btn{
   padding:14px 10px;border-radius:10px;border:2px solid var(--border);
   background:var(--bg3);color:var(--text);font-weight:900;font-size:1rem;
-  cursor:pointer;transition:.15s;position:relative;
+  cursor:pointer;transition:.15s;
 }
-.sade-btn .kod{display:block;font-size:1.1rem}
-.sade-btn .yuzde{display:block;font-size:.62rem;color:var(--muted);margin-top:3px;font-weight:700}
-.sade-btn:active{transform:scale(.97)}
-.sade-btn.secili{
+.secim-btn .kod{display:block;font-size:1.1rem}
+.secim-btn:active{transform:scale(.97)}
+.secim-btn.secili{
   background:linear-gradient(135deg,#00c853,#00e676);
   border-color:#00e676;color:#000;
   box-shadow:0 0 15px rgba(0,230,118,.5);
 }
-.sade-btn.secili .yuzde{color:rgba(0,0,0,.7)}
 
-/* BADGE */
-.badge{font-size:.6rem;padding:3px 8px;border-radius:6px;font-weight:900;letter-spacing:.3px}
-.badge.green{background:rgba(0,230,118,.15);color:var(--green)}
-.badge.yellow{background:rgba(255,176,32,.15);color:var(--orange)}
-.badge.red{background:rgba(255,77,94,.15);color:var(--red)}
-.badge.purple{background:rgba(168,85,247,.15);color:var(--purple)}
-.badge.blue{background:rgba(61,139,255,.15);color:var(--blue)}
-.league-tag{font-size:.55rem;color:var(--muted);background:var(--bg3);padding:2px 6px;border-radius:4px}
-
-/* ORAN GİRİŞ */
-.oran-input-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.oran-input-item label{font-size:.6rem;color:var(--muted);display:block;margin-bottom:2px;font-weight:700}
-.oran-input-item input{
-  width:100%;background:var(--bg3);border:1px solid var(--border);
-  color:var(--text);border-radius:6px;padding:8px;font-size:.8rem;font-weight:800;text-align:center;
+/* ALT KUPON ÇUBUĞU */
+.kupon-cubugu{
+  position:fixed;bottom:0;left:0;right:0;
+  background:linear-gradient(180deg,#0f1523,#070b14);
+  border-top:2px solid var(--green);
+  padding:10px 12px;z-index:500;
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+  box-shadow:0 -4px 20px rgba(0,0,0,.5);
 }
-.oran-grid-bulten{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
-.oran-box-bulten{background:var(--bg3);border-radius:8px;padding:8px;text-align:center}
-.oran-box-bulten .lbl{font-size:.6rem;color:var(--muted);font-weight:800}
-.oran-box-bulten .val{font-weight:900;font-size:.9rem;margin:2px 0}
-.oran-box-bulten .pct{font-size:.6rem;color:var(--green);font-weight:800}
+.kc-info{display:flex;gap:12px;align-items:center}
+.kc-satir{display:flex;flex-direction:column;font-size:.6rem;color:var(--muted);min-width:40px}
+.kc-satir b{font-size:1rem;color:var(--green);margin-top:2px}
+.kc-butonlar{display:flex;gap:6px}
 
 /* BUTONLAR */
 .btn{padding:10px 14px;border:none;border-radius:8px;font-weight:900;font-size:.8rem;cursor:pointer;color:#fff}
@@ -140,66 +125,41 @@ button:active{opacity:.8}
 .btn-blue{background:var(--blue)}
 .btn-orange{background:var(--orange);color:#000}
 .btn-gray{background:var(--bg3);color:var(--text)}
-.btn-lg{width:100%;padding:14px;font-size:.9rem}
 .btn-sm{padding:8px 10px;font-size:.7rem}
-.btn-mini{padding:5px 10px;font-size:.65rem;border-radius:6px}
-.page-actions{display:flex;gap:8px;margin-bottom:12px}
+.btn-lg{width:100%;padding:14px;font-size:.9rem}
 
 /* CARD */
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px}
-.lbl-lg{font-size:.75rem;color:var(--muted);font-weight:800;display:block;margin:12px 0 6px}
-.input-big{
-  width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);
-  border-radius:10px;padding:14px;font-size:1.1rem;font-weight:900;text-align:center;
-}
-.kolon-info{text-align:center;margin:10px 0;font-size:.85rem;color:var(--muted)}
-.kolon-info b{color:var(--green);font-size:1.1rem}
-
-/* MOD SEÇİCİ */
-.mode-selector{display:flex;gap:6px;margin:6px 0}
-.mode{
-  flex:1;padding:10px;background:var(--bg3);border:1px solid var(--border);
-  border-radius:8px;text-align:center;font-size:.7rem;font-weight:800;
-  cursor:pointer;color:var(--muted);
-}
-.mode.active{background:rgba(0,230,118,.15);border-color:var(--green);color:var(--green)}
-.mode-info{font-size:.7rem;color:var(--muted);padding:8px;background:var(--bg3);border-radius:8px;line-height:1.6}
-
-/* TAHMİN KARTI */
-.tahmin-kart{
-  border-radius:12px;padding:10px;margin-bottom:8px;
-  border-left:4px solid var(--muted);background:var(--bg2);
-}
-.tahmin-kart.banko{border-left-color:var(--green);background:linear-gradient(90deg,rgba(0,230,118,.08),var(--bg2))}
-.tahmin-kart.cift{border-left-color:var(--orange);background:linear-gradient(90deg,rgba(255,176,32,.08),var(--bg2))}
-.tahmin-kart.uclu{border-left-color:var(--red);background:linear-gradient(90deg,rgba(255,77,94,.08),var(--bg2))}
-.tahmin-kart.surpriz{border-left-color:var(--purple);background:linear-gradient(90deg,rgba(168,85,247,.08),var(--bg2))}
-.tk-head{display:flex;justify-content:space-between;font-size:.62rem;color:var(--muted);font-weight:800;margin-bottom:6px}
-.tk-teams{font-weight:900;font-size:.82rem;margin-bottom:8px}
-.tk-ana{background:var(--bg3);border-radius:8px;padding:8px;text-align:center;margin-bottom:8px}
-.tk-ana .lbl{font-size:.6rem;color:var(--muted);font-weight:800}
-.tk-ana .val{font-weight:900;font-size:1.3rem;color:var(--green)}
-.tk-info{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.tk-item{text-align:center;background:var(--bg3);border-radius:6px;padding:6px}
-.tk-item .lbl{font-size:.55rem;color:var(--muted);font-weight:800;display:block}
-.tk-item .val{font-weight:900;font-size:.72rem;margin-top:2px}
-.tk-alt{font-size:.65rem;color:var(--muted);margin-top:6px;padding-top:6px;border-top:1px solid var(--border)}
+.result-title{font-weight:900;color:var(--green);font-size:.85rem;margin-bottom:10px}
 
 /* ANALİZ KUTULARI */
 .analiz-box{background:var(--bg3);border-radius:10px;padding:10px;margin:10px 0}
-.analiz-lbl{color:var(--orange);font-weight:900;font-size:.7rem}
+.analiz-lbl{color:var(--orange);font-weight:900;font-size:.72rem;display:block;margin-bottom:6px}
 .analiz-row{display:flex;justify-content:space-between;font-size:.75rem;padding:4px 0;gap:8px;flex-wrap:wrap}
 .analiz-row .green{color:var(--green)}
+.analiz-row .red{color:var(--red)}
 .muted{color:var(--muted);font-size:.7rem}
 
-.uyari-alert{
-  background:rgba(255,176,32,.08);border:1px solid rgba(255,176,32,.4);
-  border-radius:10px;padding:10px;margin:10px 0;font-size:.72rem;color:var(--orange);line-height:1.6;
+/* YORUM KUTUSU */
+.yorum-box{
+  background:linear-gradient(135deg,rgba(0,230,118,.08),rgba(61,139,255,.05));
+  border-left:3px solid #00e676;
+  border-radius:8px;padding:12px;margin-top:10px;
+  font-size:.75rem;line-height:1.7;
 }
-.kelly-box{
-  background:rgba(0,230,118,.08);border:1px solid rgba(0,230,118,.4);
-  border-radius:10px;padding:10px;margin:10px 0;font-size:.75rem;line-height:1.7;
+.yorum-box.riskli{border-left-color:#ffb020;background:linear-gradient(135deg,rgba(255,176,32,.1),rgba(255,176,32,.03))}
+.yorum-box.tehlike{border-left-color:#ff4d5e;background:linear-gradient(135deg,rgba(255,77,94,.1),rgba(255,77,94,.03))}
+.yorum-box .baslik{font-weight:900;font-size:.8rem;margin-bottom:6px}
+.yorum-box p{margin:4px 0}
+
+/* KUPON GEÇMİŞİ */
+.kupon-gecmis{
+  background:var(--bg3);border-radius:10px;padding:12px;margin-bottom:8px;
+  border-left:3px solid var(--blue);cursor:pointer;
 }
+.kupon-gecmis.kazandi{border-left-color:var(--green)}
+.kupon-gecmis.kaybetti{border-left-color:var(--red)}
+.kupon-gecmis.bekliyor{border-left-color:var(--orange)}
 
 /* MODAL */
 .modal{
@@ -223,84 +183,11 @@ button:active{opacity:.8}
 .modal-head button{background:none;border:none;color:var(--red);font-size:1.2rem;cursor:pointer;padding:4px 8px}
 .modal-body{padding:16px}
 .modal-body.center{text-align:center;padding:30px 20px}
-.modal-body label{font-size:.7rem;color:var(--muted);font-weight:800;display:block;margin:10px 0 4px}
-.modal-body input{
-  width:100%;background:var(--bg3);border:1px solid var(--border);
-  color:var(--text);border-radius:8px;padding:10px;font-size:.85rem;font-weight:700;
-}
-.oran-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
-.oran-grid-3 label{font-size:.65rem;color:var(--muted);font-weight:800;display:block;margin-bottom:3px}
-
-/* KUPON GEÇMİŞİ */
-.result-title{font-weight:900;color:var(--green);font-size:.85rem;margin-bottom:10px}
-.kupon-gecmis{
-  background:var(--bg3);border-radius:10px;padding:10px;margin-bottom:8px;
-  border-left:3px solid var(--blue);
-}
-.kupon-gecmis.kazandi{border-left-color:var(--green)}
-.kupon-gecmis.kaybetti{border-left-color:var(--red)}
-.kupon-gecmis.bekliyor{border-left-color:var(--orange)}
-
-/* ALT KUPON ÇUBUĞU */
-.kupon-cubugu{
-  position:fixed;bottom:0;left:0;right:0;
-  background:linear-gradient(180deg,#0f1523,#070b14);
-  border-top:2px solid var(--green);
-  padding:10px 12px;z-index:500;
-  display:flex;justify-content:space-between;align-items:center;gap:8px;
-  box-shadow:0 -4px 20px rgba(0,0,0,.5);
-}
-.kc-info{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.kc-satir{display:flex;flex-direction:column;font-size:.58rem;color:var(--muted);min-width:36px}
-.kc-satir b{font-size:.95rem;color:var(--green);margin-top:2px}
-.kc-butonlar{display:flex;gap:6px;flex-shrink:0}
-
-/* KARŞILAŞTIRMA */
-.karsilastirma-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.karsilastirma-taraf{background:var(--bg3);border-radius:10px;padding:10px;text-align:center}
-.karsilastirma-taraf.kazanan{
-  background:linear-gradient(135deg,rgba(0,230,118,.15),rgba(0,230,118,.05));
-  border:1px solid rgba(0,230,118,.4);
-}
-.karsilastirma-taraf .lbl{font-size:.6rem;color:var(--muted);font-weight:800;margin-bottom:6px}
-.karsilastirma-taraf .skor{font-weight:900;font-size:1.4rem;margin:4px 0}
-.karsilastirma-mesaj{
-  margin-top:10px;padding:10px;border-radius:8px;
-  font-size:.75rem;text-align:center;font-weight:800;
-}
-.karsilastirma-mesaj.sistem-kazandi{background:rgba(61,139,255,.15);color:var(--blue)}
-.karsilastirma-mesaj.sen-kazandin{background:rgba(0,230,118,.15);color:var(--green)}
-
-/* OTOMATİK KUPON SEÇİM BUTONU */
-.secim-btn{
-  width:100%;padding:14px;margin-bottom:10px;
-  background:var(--bg3);border:2px solid;border-radius:10px;
-  cursor:pointer;text-align:left;color:var(--text);
-}
-.secim-btn.teklı{border-color:var(--blue)}
-.secim-btn.sistem{border-color:var(--green)}
-.secim-btn .baslik{font-weight:900;font-size:.9rem}
-.secim-btn .aciklama{font-size:.68rem;color:var(--muted);margin-top:4px}
-
-/* PRO ANALİZ MODAL */
-#serbestModal .modal-body input{font-size:16px !important}
-#serbestModal .modal-body{padding-bottom:30px}
-#sm-canli-analiz .analiz-box{margin-top:10px}
-#serbestModal input:focus{border-color:var(--green);box-shadow:0 0 0 2px rgba(0,230,118,.15)}
-#serbestModal input.hata{border-color:var(--red) !important;box-shadow:0 0 0 2px rgba(255,77,94,.15)}
-#serbestModal.duzenleme .modal-head span{color:var(--orange)}
-.sm-duzenle-btn{background:none;border:none;color:var(--blue);cursor:pointer;font-size:1rem;padding:4px 8px}
-.sm-duzenle-btn:active{opacity:.7}
-#sm-dc-skorlar .dc-satir{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--border)}
-#sm-dc-skorlar .dc-satir:last-child{border-bottom:none}
-#sm-dc-skorlar b{color:var(--green)}
 
 /* MOBİL */
 @media(max-width:420px){
   .stats-grid{grid-template-columns:repeat(2,1fr)}
-  .tk-info{grid-template-columns:repeat(2,1fr)}
   .kc-info{gap:8px}
   .kc-satir{min-width:32px;font-size:.52rem}
   .kc-satir b{font-size:.85rem}
-  .btn-sm{padding:7px 9px;font-size:.65rem}
 }
