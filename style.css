@@ -248,3 +248,58 @@ button:active{opacity:.8}
   display:inline-block;font-size:.58rem;font-weight:800;
   padding:2px 6px;border-radius:4px;margin-left:4px;
 }
+/* === v10: VALUE BET + ROI === */
+
+/* Değer etiketi */
+.value-tag{
+  display:inline-block;padding:3px 10px;border-radius:6px;
+  font-size:.62rem;font-weight:900;letter-spacing:.3px;
+}
+.value-yes{background:rgba(168,85,247,.2);color:#a855f7;border:1px solid rgba(168,85,247,.5);
+  animation:pulse 2s infinite;}
+.value-no{background:rgba(122,139,168,.1);color:#7a8ba8;border:1px solid rgba(122,139,168,.3)}
+.value-close{background:rgba(255,176,32,.1);color:#ffb020;border:1px solid rgba(255,176,32,.4)}
+
+@keyframes pulse{
+  0%,100%{opacity:1}
+  50%{opacity:.6}
+}
+
+/* İhtimal matrisi */
+.matris-box{
+  background:var(--bg3);border-radius:10px;padding:10px;margin:10px 0;
+}
+.matris-satir{
+  display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;
+  padding:6px 0;border-bottom:1px solid var(--border);
+  font-size:.72rem;align-items:center;
+}
+.matris-satir.head{
+  font-weight:900;color:var(--muted);font-size:.62rem;
+  text-transform:uppercase;letter-spacing:.5px;
+}
+.matris-hucre{text-align:center;padding:4px;border-radius:6px}
+.matris-hucre.poz{background:rgba(0,230,118,.1);color:#00e676;font-weight:900}
+.matris-hucre.neg{background:rgba(255,77,94,.1);color:#ff4d5e;font-weight:900}
+.matris-hucre.notr{background:var(--bg2);color:var(--text);font-weight:800}
+
+/* Kasa özet kartları */
+.kasa-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px;
+}
+.kasa-item{
+  background:var(--bg3);border-radius:10px;padding:12px;text-align:center;
+}
+.kasa-item .v{font-weight:900;font-size:1.3rem;margin:4px 0}
+.kasa-item .l{font-size:.62rem;color:var(--muted);font-weight:800}
+
+/* ROI kartları */
+.roi-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px;
+}
+.roi-item{
+  background:var(--bg3);border-radius:10px;padding:10px;text-align:center;
+}
+.roi-item .v{font-weight:900;font-size:1.1rem;margin:2px 0}
+.roi-item .l{font-size:.6rem;color:var(--muted);font-weight:800}
+.roi-item .s{font-size:.58rem;color:var(--muted);margin-top:2px}
