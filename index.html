@@ -4,24 +4,28 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#070b14">
-<title>SkorLab</title>
+<title>SkorLab v20 PRO</title>
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header class="app-header">
-  <div class="logo">⚽ SKORLAB</div>
+  <div class="logo">⚽ SKORLAB <span class="v">PRO</span></div>
   <div id="weekTitle" class="week">Yükleniyor...</div>
 </header>
 
 <nav class="tabs">
-  <button class="tab active" onclick="switchTab(1,this)">📋 Bülten</button>
-  <button class="tab" onclick="switchTab(2,this)">💾 Kuponlarım</button>
+  <button class="tab active" onclick="switchTab(1,this)">📋 Toto</button>
+  <button class="tab" onclick="switchTab(2,this)">🎯 İddaa</button>
+  <button class="tab" onclick="switchTab(3,this)">💾 Kuponlarım</button>
 </nav>
 
 <main>
 
+<!-- SAYFA 1: TOTO -->
 <section id="page-1" class="page active">
   <div class="stats-grid">
     <div class="stat-card"><div class="stat-val" id="statMac">0</div><div class="stat-lbl">MAÇ</div></div>
@@ -29,10 +33,22 @@
     <div class="stat-card"><div class="stat-val green" id="statKolon">0</div><div class="stat-lbl">KOLON</div></div>
     <div class="stat-card"><div class="stat-val orange" id="statTutar">0</div><div class="stat-lbl">TL</div></div>
   </div>
-  <div id="matchesList"></div>
+  <div id="totoListesi"></div>
 </section>
 
+<!-- SAYFA 2: İDDAA -->
 <section id="page-2" class="page">
+  <div class="page-actions">
+    <button class="btn btn-green" onclick="openIddaaModal()">➕ Maç Ekle</button>
+    <button class="btn btn-red" onclick="temizleIddaa()">🗑️ Temizle</button>
+    <button class="btn btn-blue" onclick="kuponOlustur()">⚡ KUPON OLUŞTUR</button>
+  </div>
+  <div id="iddaaListesi"></div>
+  <div id="kuponSonuc"></div>
+</section>
+
+<!-- SAYFA 3: KUPONLARIM -->
+<section id="page-3" class="page">
   <div class="card">
     <div class="result-title">💾 KAYITLI KUPONLARIM</div>
     <div id="kayitliKuponlar"></div>
@@ -41,39 +57,89 @@
 
 </main>
 
+<!-- ALT KUPON ÇUBUĞU -->
 <div class="kupon-cubugu" id="kuponCubugu">
   <div class="kc-info">
-    <div class="kc-satir"><span>Maç</span><b id="kcMac">0</b></div>
-    <div class="kc-satir"><span>Kolon</span><b id="kcKolon">0</b></div>
-    <div class="kc-satir"><span>Tutar</span><b id="kcTutar">0 TL</b></div>
+    <div class="kc-satir"><span>Toto</span><b id="kcToto">0</b></div>
+    <div class="kc-satir"><span>İddaa</span><b id="kcIddaa">0</b></div>
+    <div class="kc-satir"><span>Toplam</span><b id="kcToplam">0 TL</b></div>
   </div>
   <div class="kc-butonlar">
-    <button class="btn btn-red btn-sm" onclick="tumSecimleriSil()">🗑️</button>
-    <button class="btn btn-green" onclick="kuponuKaydet()">💾 KAYDET</button>
+    <button type="button" class="btn btn-red btn-sm" onclick="tumSecimleriSil()">🗑️</button>
+    <button type="button" class="btn btn-green" onclick="hizliKaydet()">💾 KAYDET</button>
   </div>
 </div>
 
+<!-- MODAL: İDDAA MAÇ EKLE -->
+<div class="modal" id="iddaaModal">
+  <div class="modal-content">
+    <div class="modal-head">
+      <span>➕ İDDAA MAÇ EKLE</span>
+      <button type="button" onclick="closeModal('iddaaModal')">✖</button>
+    </div>
+    <div class="modal-body">
+      <label>Maç Adı</label>
+      <input type="text" id="im-mac" placeholder="Örn: Galatasaray - Fenerbahçe">
+
+      <label style="margin-top:12px">1X2 Oranları</label>
+      <div class="oran-grid-3">
+        <div><label>1</label><input type="number" step="0.01" id="im-o1"></div>
+        <div><label>X</label><input type="number" step="0.01" id="im-oX"></div>
+        <div><label>2</label><input type="number" step="0.01" id="im-o2"></div>
+      </div>
+
+      <label style="margin-top:12px">Gol Alt/Üst</label>
+      <div class="oran-grid-3">
+        <div><label>1.5 Alt</label><input type="number" step="0.01" id="im-u15alt"></div>
+        <div><label>2.5 Alt</label><input type="number" step="0.01" id="im-u25alt"></div>
+        <div><label>2.5 Üst</label><input type="number" step="0.01" id="im-u25ust"></div>
+        <div><label>3.5 Alt</label><input type="number" step="0.01" id="im-u35alt"></div>
+        <div><label>3.5 Üst</label><input type="number" step="0.01" id="im-u35ust"></div>
+        <div><label>4.5 Üst</label><input type="number" step="0.01" id="im-u45ust"></div>
+      </div>
+
+      <label style="margin-top:12px">Karşılıklı Gol</label>
+      <div class="oran-grid-3">
+        <div><label>KG Var</label><input type="number" step="0.01" id="im-kgvar"></div>
+        <div><label>KG Yok</label><input type="number" step="0.01" id="im-kgyok"></div>
+        <div><label>KG + 2.5 Üst</label><input type="number" step="0.01" id="im-kg25"></div>
+      </div>
+
+      <button type="button" class="btn btn-green btn-lg" onclick="iddaaEkle()" style="margin-top:16px">✅ EKLE</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: ANALİZ -->
 <div class="modal" id="analizModal">
   <div class="modal-content">
-    <div class="modal-head"><span id="analizTitle">Analiz</span><button onclick="closeModal('analizModal')">✖</button></div>
+    <div class="modal-head">
+      <span id="analizTitle">📊 Analiz</span>
+      <button type="button" onclick="closeModal('analizModal')">✖</button>
+    </div>
     <div class="modal-body" id="analizBody"></div>
   </div>
 </div>
 
+<!-- MODAL: KUPON DETAY -->
 <div class="modal" id="kuponDetayModal">
   <div class="modal-content">
-    <div class="modal-head"><span>💾 KUPON DETAY</span><button onclick="closeModal('kuponDetayModal')">✖</button></div>
+    <div class="modal-head">
+      <span>💾 KUPON DETAY</span>
+      <button type="button" onclick="closeModal('kuponDetayModal')">✖</button>
+    </div>
     <div class="modal-body" id="kuponDetayBody"></div>
   </div>
 </div>
 
+<!-- MODAL: TOAST -->
 <div class="modal" id="toastModal">
   <div class="modal-content small">
     <div class="modal-body center">
       <div id="toastIcon" style="font-size:2.5rem">✅</div>
       <div id="toastTitle" style="font-weight:900;margin:8px 0"></div>
       <div id="toastMsg" class="muted"></div>
-      <button class="btn btn-blue" onclick="closeModal('toastModal')" style="margin-top:12px">TAMAM</button>
+      <button type="button" class="btn btn-blue" onclick="closeModal('toastModal')" style="margin-top:12px">TAMAM</button>
     </div>
   </div>
 </div>
