@@ -126,7 +126,7 @@ function butceGuncelle(val){
   butce = parseFloat(val) || 100;
   localStorage.setItem('skorlab_butce', butce);
   updateKuponCubugu();
-  if($('kcMacS')) updateKuponCubuguSerbest();
+  updateKuponCubuguSerbest();
 }
 
 /* ==================== SERBEST MAÇ DEĞER ANALİZ MOTORU ==================== */
@@ -137,24 +137,19 @@ function serbestOneriEngine(o1, oX, o2, oA25, oU25, oA35, oU35, oKgV, oKgY){
 
   const adaylar = [];
 
-  // Taraf Bahisleri
   if(o1) adaylar.push({ etiket: 'Maç Sonucu 1', kod: '1', olaslik: poi.p1, oran: o1 });
   if(oX) adaylar.push({ etiket: 'Maç Sonucu X', kod: 'X', olaslik: poi.pX, oran: oX });
   if(o2) adaylar.push({ etiket: 'Maç Sonucu 2', kod: '2', olaslik: poi.p2, oran: o2 });
 
-  // 2.5 Gol Bahisleri
   if(oU25) adaylar.push({ etiket: '2.5 Üst', kod: '2.5 ÜST', olaslik: poi.ust25, oran: oU25 });
   if(oA25) adaylar.push({ etiket: '2.5 Alt', kod: '2.5 ALT', olaslik: 100 - poi.ust25, oran: oA25 });
 
-  // 3.5 Gol Bahisleri
   if(oU35) adaylar.push({ etiket: '3.5 Üst', kod: '3.5 ÜST', olaslik: poi.ust35, oran: oU35 });
   if(oA35) adaylar.push({ etiket: '3.5 Alt', kod: '3.5 ALT', olaslik: 100 - poi.ust35, oran: oA35 });
 
-  // KG Bahisleri
   if(oKgV) adaylar.push({ etiket: 'KG Var', kod: 'KG VAR', olaslik: poi.kg, oran: oKgV });
   if(oKgY) adaylar.push({ etiket: 'KG Yok', kod: 'KG YOK', olaslik: 100 - poi.kg, oran: oKgY });
 
-  // Beklenen Değer (Expected Value = EV) Hesabı
   adaylar.forEach(a => {
     a.ev = (a.olaslik / 100) * a.oran;
   });
@@ -285,7 +280,28 @@ function secimToggle(id, secim){
   updateKuponCubugu();
 }
 
-/* ==================== SERBEST MÜKEMMEL SEKMESİ ==================== */
+function serbestSecimToggle(id, secim){
+  let sec = serbestSecimlerim[id] || [];
+  if(sec.includes(secim)) sec = sec.filter(s => s !== secim);
+  else sec.push(secim);
+  if(sec.length === 0) delete serbestSecimlerim[id];
+  else serbestSecimlerim[id] = sec;
+  localStorage.setItem('skorlab_serbest_secimlerim', JSON.stringify(serbestSecimlerim));
+  renderSerbest();
+  updateKuponCubuguSerbest();
+}
+
+function tumSecimleriSil(){
+  if(!confirm('Tüm seçimler silinsin mi?')) return;
+  secimlerim = {};
+  otomatikKolonlar = null;
+  localStorage.setItem('skorlab_secimlerim', '{}');
+  localStorage.removeItem('skorlab_otomatik_kolonlar');
+  renderBulten();
+  updateKuponCubugu();
+}
+
+/* ==================== SERBEST SEKMESİ ==================== */
 function renderSerbest(){
   const c = $('serbestListesi');
   if(!c) return;
@@ -305,8 +321,8 @@ function renderSerbest(){
 
   html += serbestData.map((m, idx) => {
     const oneri = m.oneri;
-    const evYuzde = ((oneri.ev - 1) * 100).toFixed(1);
-    const durumRenk = oneri.ev > 1.05 ? 'var(--green)' : 'var(--orange)';
+    const evYuzde = oneri ? ((oneri.ev - 1) * 100).toFixed(1) : '0';
+    const durumRenk = oneri && oneri.ev > 1.05 ? 'var(--green)' : 'var(--orange)';
 
     return `
     <div class="sade-mac" style="margin-bottom:10px">
@@ -319,7 +335,7 @@ function renderSerbest(){
       </div>
       <div class="sade-mac-teams" style="font-weight:800;font-size:.95rem;margin:4px 0">${m.mac}</div>
       
-      <!-- SİSTEM ÖNERİ BARI -->
+      ${oneri ? `
       <div style="background:var(--bg3);border-left:4px solid ${durumRenk};padding:8px 10px;margin-top:8px;border-radius:6px;display:flex;justify-content:space-between;align-items:center">
         <div>
           <span style="font-size:.65rem;color:var(--muted);display:block">🎯 SİSTEM ÖNERİSİ</span>
@@ -327,9 +343,9 @@ function renderSerbest(){
         </div>
         <div style="text-align:right">
           <b style="font-size:1rem;color:#fff">@ ${oneri.oran}</b>
-          <span style="font-size:.65rem;color:var(--muted);display:block">%${oneri.olaslik.toFixed(1)} Şans · Değer: %${evYuzde}</span>
+          <span style="font-size:.65rem;color:var(--muted);display:block">%${oneri.olaslik.toFixed(1)} Şans · Değer: \%${evYuzde}</span>
         </div>
-      </div>
+      </div>` : ''}
     </div>`;
   }).join('');
 
@@ -463,11 +479,13 @@ function serbestOtomatikKuponOlustur(){
   const secilenler = [];
 
   serbestData.forEach(m => {
-    secilenler.push({
-      isim: m.mac,
-      secim: `${m.oneri.kod} (@${m.oneri.oran})`
-    });
-    toplamOran *= m.oneri.oran;
+    if(m.oneri){
+      secilenler.push({
+        isim: m.mac,
+        secim: `${m.oneri.kod} (@${m.oneri.oran})`
+      });
+      toplamOran *= m.oneri.oran;
+    }
   });
 
   const kupon = {
@@ -488,7 +506,7 @@ function serbestOtomatikKuponOlustur(){
   renderKayitliKuponlar();
   
   showToast('success','Kupon Oluşturuldu!', `${secilenler.length} Maç · Toplam Oran: ${toplamOran.toFixed(2)}`);
-  switchTab(3, document.querySelectorAll('.tab')[2]);
+  switchTab(2, document.querySelectorAll('.tab')[2]);
 }
 
 /* ==================== KUPON ÇUBUĞU & HESAPLAMA ==================== */
@@ -512,6 +530,18 @@ function kuponHesapla(){
   return { macSayisi, kolon, tutar, kalan: butce - tutar };
 }
 
+function kuponHesaplaSerbest(){
+  let macSayisi = 0, kolon = 1;
+  Object.keys(serbestSecimlerim).forEach(id => {
+    const sec = serbestSecimlerim[id];
+    if(!sec || !sec.length) return;
+    macSayisi++;
+    kolon *= sec.length;
+  });
+  const tutar = kolon * 10;
+  return { macSayisi, kolon, tutar, kalan: butce - tutar };
+}
+
 function updateKuponCubugu(){
   const h = kuponHesapla();
   const kcM = $('kcMac'); if(kcM) kcM.innerText = h.macSayisi;
@@ -519,6 +549,13 @@ function updateKuponCubugu(){
   const kcT = $('kcTutar'); if(kcT) kcT.innerText = h.tutar + ' TL';
   const kcKalan = $('kcKalan');
   if(kcKalan){ kcKalan.innerText = h.kalan + ' TL'; kcKalan.style.color = h.kalan < 0 ? 'var(--red)' : 'var(--green)'; }
+}
+
+function updateKuponCubuguSerbest(){
+  const h = kuponHesaplaSerbest();
+  const kcM = $('kcMacS'); if(kcM) kcM.innerText = h.macSayisi;
+  const kcK = $('kcKolonS'); if(kcK) kcK.innerText = h.kolon;
+  const kcT = $('kcTutarS'); if(kcT) kcT.innerText = h.tutar + ' TL';
 }
 
 function updateStats(){
@@ -881,7 +918,7 @@ function switchTab(i, el){
   document.querySelectorAll('.tab, .page').forEach(e => e.classList.remove('active'));
   if(el) el.classList.add('active');
   $('page-'+i).classList.add('active');
-  if(i === 4) renderKarsilastirma();
+  if(i === 3) renderKarsilastirma();
 }
 
 function closeModal(id){ $(id).classList.remove('active'); }
