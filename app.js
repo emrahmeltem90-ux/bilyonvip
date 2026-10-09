@@ -387,9 +387,7 @@ function serbestKaydet(){
   }
 }
 
-/* ============================================================
-   CANLI PRO ANALİZ (7 Katman)
-   ============================================================ */
+/* ==================== CANLI PRO ANALİZ ==================== */
 function serbestCanliAnaliz(){
   const o1 = parseFloat($('sm-o1').value);
   const oX = parseFloat($('sm-oX').value);
@@ -513,9 +511,7 @@ function serbestCanliAnaliz(){
   $('sm-konsensus-skor').innerText = `${maxOy}/4 katman aynı yönde`;
 }
 
-/* ============================================================
-   MATEMATİKSEL MODELLER
-   ============================================================ */
+/* ==================== MATEMATİKSEL MODELLER ==================== */
 function shinMarjArindir(o1, oX, o2){
   const p1_raw = 1/o1, pX_raw = 1/oX, p2_raw = 1/o2;
   const z = p1_raw + pX_raw + p2_raw;
@@ -907,6 +903,17 @@ function kuponSistemUret(){
 function kuponuKaydet(tip){
   if(tip === 'toto' && otomatikKolonlar){
     const h = kuponHesapla();
+    const isSistem = otomatikKolonlar.mod === 'SİSTEM';
+
+    let detaylar = [];
+    if(isSistem){
+      otomatikKolonlar.macIdler.forEach((mid, idx) => {
+        const m = matchesData.find(x => x.id === mid);
+        const isim = m ? `${m.home} - ${m.away}` : `#${mid}`;
+        const buMacSecimler = [...new Set(otomatikKolonlar.kolonlar.map(k => k[idx]))].join('');
+        detaylar.push({ id: mid, isim, secim: buMacSecimler });
+      });
+    }
 
     kayitliKuponlar.unshift({
       id: Date.now(),
@@ -917,7 +924,8 @@ function kuponuKaydet(tip){
       kolon: h.kolon,
       tutar: h.tutar,
       macIdler: otomatikKolonlar.macIdler,
-      kolonlar: otomatikKolonlar.kolonlar, // Açık kolon verisi saklanıyor
+      kolonlar: isSistem ? null : otomatikKolonlar.kolonlar,
+      detaylar: isSistem ? detaylar : null,
       durum: 'bekliyor'
     });
 
@@ -1007,9 +1015,9 @@ function kuponDetayAc(id){
   
   let icerikHTML = '';
 
-  // Eğer kuponda açık kolonlar varsa (Otomatik Kupon) kolon kolon döküm ver
   if(k.kolonlar && k.kolonlar.length > 0){
-    icerikHTML = k.kolonlar.map((kolon, kIdx) => {
+    icerikHTML = `<div style="font-weight:800;color:var(--blue);margin-bottom:8px">🖐️ TEKLİ İNDİRGEME (${k.kolon} Bağımsız Kolon)</div>`;
+    icerikHTML += k.kolonlar.map((kolon, kIdx) => {
       const kolonOzet = kolon.map((s, mIdx) => {
         const mid = k.macIdler ? k.macIdler[mIdx] : (mIdx + 1);
         const m = matchesData.find(x => x.id === mid);
@@ -1027,10 +1035,12 @@ function kuponDetayAc(id){
         </div>`;
     }).join('');
   } else if(k.detaylar) {
-    icerikHTML = k.detaylar.map(d => `
-      <div style="padding:8px 0;border-bottom:1px solid var(--border)">
-        <div style="font-weight:800;margin-bottom:4px">${d.isim}</div>
-        <div style="color:var(--green);font-weight:900;text-align:right">${d.secim}</div>
+    const baslik = k.mod === 'SİSTEM' ? '🤖 SİSTEM KUPONU (Tek Kuponda Çifte/Üçlü Şanslar)' : '📝 MANUEL KUPON';
+    icerikHTML = `<div style="font-weight:800;color:var(--green);margin-bottom:8px">${baslik}</div>`;
+    icerikHTML += k.detaylar.map(d => `
+      <div style="padding:8px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+        <div style="font-weight:800;font-size:.75rem">${d.isim}</div>
+        <div style="color:var(--green);font-weight:900;font-size:.85rem;background:var(--bg2);padding:2px 8px;border-radius:4px">${d.secim}</div>
       </div>
     `).join('');
   }
