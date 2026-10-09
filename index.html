@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#070b14">
-<title>SkorLab v18</title>
+<title>SkorLab v19 PRO</title>
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="manifest" href="manifest.json">
@@ -13,7 +13,7 @@
 <body>
 
 <header class="app-header">
-  <div class="logo">⚽ SKORLAB <span class="v">v18</span></div>
+  <div class="logo">⚽ SKORLAB <span class="v">v19</span></div>
   <div id="weekTitle" class="week">Yükleniyor...</div>
 </header>
 
@@ -31,7 +31,7 @@
     <div class="stat-card"><div class="stat-val" id="statMac">0</div><div class="stat-lbl">MAÇ</div></div>
     <div class="stat-card"><div class="stat-val blue" id="statSecilen">0</div><div class="stat-lbl">SEÇİLEN</div></div>
     <div class="stat-card"><div class="stat-val green" id="statKolon">0</div><div class="stat-lbl">KOLON</div></div>
-    <div class="stat-card"><div class="stat-val orange" id="statTutar">0</div><div class="stat-lbl">TUTAR (TL)</div></div>
+    <div class="stat-card"><div class="stat-val orange" id="statDeger">0</div><div class="stat-lbl">💎 DEĞER</div></div>
   </div>
   <div id="matchesList"></div>
 </section>
@@ -74,7 +74,7 @@
 <!-- MODAL: MAÇ DETAY / ANALİZ -->
 <div class="modal" id="macDetayModal">
   <div class="modal-content">
-    <div class="modal-head"><span id="macDetayTitle">Maç Analizi</span><button onclick="closeModal('macDetayModal')">✖</button></div>
+    <div class="modal-head"><span id="macDetayTitle">Analiz</span><button onclick="closeModal('macDetayModal')">✖</button></div>
     <div class="modal-body" id="macDetayBody"></div>
   </div>
 </div>
