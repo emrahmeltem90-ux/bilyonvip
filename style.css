@@ -609,3 +609,94 @@ body{padding-bottom:100px}
 .karsilastirma-mesaj.sistem-kazandi{background:rgba(61,139,255,.15);color:var(--blue)}
 .karsilastirma-mesaj.sen-kazandin{background:rgba(0,230,118,.15);color:var(--green)}
 .karsilastirma-mesaj.berabere{background:rgba(255,176,32,.15);color:var(--orange)}
+}
+/* === v15 === */
+.btn-mini{padding:5px 10px;font-size:.65rem;border-radius:6px}
+
+.sade-mac{
+  background:var(--bg2);border:1px solid var(--border);border-radius:12px;
+  padding:12px;margin-bottom:10px;
+}
+.sade-mac-head{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:10px;
+}
+.sade-mac-no{
+  font-weight:900;color:var(--orange);font-size:.85rem;
+  background:var(--bg3);padding:4px 10px;border-radius:6px;
+}
+.sade-mac-tarih{font-size:.65rem;color:var(--muted)}
+.sade-mac-teams{
+  font-weight:900;font-size:.9rem;margin-bottom:10px;cursor:pointer;
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.sade-mac-tahminler{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+}
+.sade-btn{
+  padding:14px 10px;border-radius:10px;border:2px solid var(--border);
+  background:var(--bg3);color:var(--text);font-weight:900;font-size:1rem;
+  cursor:pointer;transition:.15s;position:relative;
+}
+.sade-btn .kod{display:block;font-size:1.1rem}
+.sade-btn .yuzde{display:block;font-size:.62rem;color:var(--muted);margin-top:3px;font-weight:700}
+.sade-btn:active{transform:scale(.97)}
+.sade-btn.secili{
+  background:linear-gradient(135deg,#00c853,#00e676);
+  border-color:#00e676;color:#000;
+  box-shadow:0 0 15px rgba(0,230,118,.5);
+}
+.sade-btn.secili .yuzde{color:rgba(0,0,0,.7)}
+
+/* Alt kupon çubuğu */
+.kupon-cubugu{
+  position:fixed;bottom:0;left:0;right:0;
+  background:linear-gradient(180deg,#0f1523,#070b14);
+  border-top:2px solid var(--green);
+  padding:10px 12px;z-index:500;
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+  box-shadow:0 -4px 20px rgba(0,0,0,.5);
+}
+.kc-info{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.kc-satir{display:flex;flex-direction:column;font-size:.58rem;color:var(--muted);min-width:36px}
+.kc-satir b{font-size:.95rem;color:var(--green);margin-top:2px}
+.kc-butonlar{display:flex;gap:6px;flex-shrink:0}
+.btn-sm{padding:8px 10px;font-size:.7rem}
+body{padding-bottom:110px}
+
+.kupon-gecmis{
+  background:var(--bg3);border-radius:10px;padding:10px;margin-bottom:8px;
+  border-left:3px solid var(--blue);
+}
+.kupon-gecmis.kazandi{border-left-color:var(--green)}
+.kupon-gecmis.kaybetti{border-left-color:var(--red)}
+.kupon-gecmis.bekliyor{border-left-color:var(--orange)}
+
+.karsilastirma-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.karsilastirma-taraf{
+  background:var(--bg3);border-radius:10px;padding:10px;text-align:center;
+}
+.karsilastirma-taraf.kazanan{
+  background:linear-gradient(135deg,rgba(0,230,118,.15),rgba(0,230,118,.05));
+  border:1px solid rgba(0,230,118,.4);
+}
+.karsilastirma-taraf .lbl{font-size:.6rem;color:var(--muted);font-weight:800;margin-bottom:6px}
+.karsilastirma-taraf .skor{font-weight:900;font-size:1.4rem;margin:4px 0}
+.karsilastirma-taraf .alt{font-size:.65rem;color:var(--muted)}
+.karsilastirma-mesaj{
+  margin-top:10px;padding:10px;border-radius:8px;
+  font-size:.75rem;text-align:center;font-weight:800;
+}
+.karsilastirma-mesaj.sistem-kazandi{background:rgba(61,139,255,.15);color:var(--blue)}
+.karsilastirma-mesaj.sen-kazandin{background:rgba(0,230,118,.15);color:var(--green)}
+.karsilastirma-mesaj.berabere{background:rgba(255,176,32,.15);color:var(--orange)}
+
+.secim-btn{
+  width:100%;padding:14px;margin-bottom:10px;
+  background:var(--bg3);border:2px solid;border-radius:10px;
+  cursor:pointer;text-align:left;color:var(--text);
+}
+.secim-btn.teklı{border-color:var(--blue)}
+.secim-btn.sistem{border-color:var(--green)}
+.secim-btn .baslik{font-weight:900;font-size:.9rem}
+.secim-btn .aciklama{font-size:.68rem;color:var(--muted);margin-top:4px}
