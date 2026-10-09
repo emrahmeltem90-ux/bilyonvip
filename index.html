@@ -4,20 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#070b14">
-<title>SkorLab v15 · Toto + İddaa</title>
-
+<title>SkorLab v16</title>
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="manifest" href="manifest.json">
-
 <link rel="stylesheet" href="style.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
 <header class="app-header">
-  <div class="logo">⚽ SKORLAB <span class="v">v15</span></div>
+  <div class="logo">⚽ SKORLAB <span class="v">v16</span></div>
   <div id="weekTitle" class="week">Yükleniyor...</div>
 </header>
 
@@ -38,7 +35,6 @@
 
 <main>
 
-<!-- SAYFA 1: BÜLTEN -->
 <section id="page-1" class="page active">
   <div class="stats-grid">
     <div class="stat-card"><div class="stat-val" id="statMac">0</div><div class="stat-lbl">MAÇ</div></div>
@@ -46,28 +42,14 @@
     <div class="stat-card"><div class="stat-val green" id="statKolon">0</div><div class="stat-lbl">KOLON</div></div>
     <div class="stat-card"><div class="stat-val purple" id="statDeger">0</div><div class="stat-lbl">💎</div></div>
   </div>
-
   <div id="matchesList"></div>
 
-  <!-- ALT KUPON ÇUBUĞU -->
   <div class="kupon-cubugu" id="kuponCubugu">
     <div class="kc-info">
-      <div class="kc-satir">
-        <span>Maç</span>
-        <b id="kcMac">0</b>
-      </div>
-      <div class="kc-satir">
-        <span>Kolon</span>
-        <b id="kcKolon">0</b>
-      </div>
-      <div class="kc-satir">
-        <span>Tutar</span>
-        <b id="kcTutar">0 TL</b>
-      </div>
-      <div class="kc-satir">
-        <span>Kalan</span>
-        <b id="kcKalan">100 TL</b>
-      </div>
+      <div class="kc-satir"><span>Maç</span><b id="kcMac">0</b></div>
+      <div class="kc-satir"><span>Kolon</span><b id="kcKolon">0</b></div>
+      <div class="kc-satir"><span>Tutar</span><b id="kcTutar">0 TL</b></div>
+      <div class="kc-satir"><span>Kalan</span><b id="kcKalan">100 TL</b></div>
     </div>
     <div class="kc-butonlar">
       <button class="btn btn-red btn-sm" onclick="tumSecimleriSil()">🗑️</button>
@@ -76,29 +58,17 @@
   </div>
 </section>
 
-<!-- SAYFA 2: SERBEST (İDDAA) -->
 <section id="page-2" class="page">
   <div class="page-actions">
     <button class="btn btn-green" onclick="openSerbestModal()">➕ Maç Ekle</button>
     <button class="btn btn-red" onclick="temizleSerbest()">🗑️ Temizle</button>
   </div>
   <div id="serbestListesi"></div>
-
-  <!-- ALT KUPON ÇUBUĞU (SERBEST) -->
   <div class="kupon-cubugu" id="kuponCubuguSerbest" style="display:none">
     <div class="kc-info">
-      <div class="kc-satir">
-        <span>Maç</span>
-        <b id="kcMacS">0</b>
-      </div>
-      <div class="kc-satir">
-        <span>Kolon</span>
-        <b id="kcKolonS">0</b>
-      </div>
-      <div class="kc-satir">
-        <span>Tutar</span>
-        <b id="kcTutarS">0 TL</b>
-      </div>
+      <div class="kc-satir"><span>Maç</span><b id="kcMacS">0</b></div>
+      <div class="kc-satir"><span>Kolon</span><b id="kcKolonS">0</b></div>
+      <div class="kc-satir"><span>Tutar</span><b id="kcTutarS">0 TL</b></div>
     </div>
     <div class="kc-butonlar">
       <button class="btn btn-red btn-sm" onclick="serbestSecimleriSil()">🗑️</button>
@@ -107,7 +77,6 @@
   </div>
 </section>
 
-<!-- SAYFA 3: KUPONLARIM -->
 <section id="page-3" class="page">
   <div class="card">
     <div class="result-title">💾 KAYITLI KUPONLARIM</div>
@@ -115,20 +84,15 @@
   </div>
 </section>
 
-<!-- SAYFA 4: KARŞILAŞTIR -->
 <section id="page-4" class="page">
   <div class="card">
     <div class="result-title">🆚 SİSTEM vs SEN</div>
-    <div class="muted" style="font-size:.72rem;margin-bottom:12px">
-      Kaydettiğin kuponların sonuçlarına göre karşılaştırma
-    </div>
     <div id="karsilastirmaListesi"></div>
   </div>
 </section>
 
 </main>
 
-<!-- MODAL: OTOMATİK KUPON SEÇİMİ -->
 <div class="modal" id="secimModal">
   <div class="modal-content">
     <div class="modal-head"><span>⚡ OTOMATİK KUPON</span><button onclick="closeModal('secimModal')">✖</button></div>
@@ -136,7 +100,6 @@
   </div>
 </div>
 
-<!-- MODAL: SERBEST MAÇ EKLE -->
 <div class="modal" id="serbestModal">
   <div class="modal-content">
     <div class="modal-head"><span>➕ SERBEST MAÇ EKLE</span><button onclick="closeModal('serbestModal')">✖</button></div>
@@ -153,7 +116,6 @@
   </div>
 </div>
 
-<!-- MODAL: MAÇ DETAY -->
 <div class="modal" id="macDetayModal">
   <div class="modal-content">
     <div class="modal-head"><span id="macDetayTitle">Maç Detay</span><button onclick="closeModal('macDetayModal')">✖</button></div>
@@ -161,7 +123,6 @@
   </div>
 </div>
 
-<!-- MODAL: KUPON DETAY -->
 <div class="modal" id="kuponDetayModal">
   <div class="modal-content">
     <div class="modal-head"><span>💾 KUPON DETAY</span><button onclick="closeModal('kuponDetayModal')">✖</button></div>
@@ -169,7 +130,6 @@
   </div>
 </div>
 
-<!-- MODAL: TOAST -->
 <div class="modal" id="toastModal">
   <div class="modal-content small">
     <div class="modal-body center">
