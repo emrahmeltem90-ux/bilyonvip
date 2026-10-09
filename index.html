@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#070b14">
-<title>SkorLab v8 PRO</title>
+<title>SkorLab v9 PRO</title>
 
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
@@ -18,11 +18,8 @@
 <body>
 
 <header class="app-header">
-  <div class="logo">⚽ SKORLAB <span class="v">v8</span></div>
+  <div class="logo">⚽ SKORLAB <span class="v">v9</span></div>
   <div id="weekTitle" class="week">Yükleniyor...</div>
-  <div class="header-actions">
-    <button class="icon-btn" onclick="openAyarlar()" title="Ayarlar">⚙️</button>
-  </div>
 </header>
 
 <div class="kasa-bar">
@@ -61,8 +58,8 @@
   <div class="filtre-bar">
     <button class="filtre-btn active" id="filtre-hepsi" onclick="setFiltre('hepsi',this)">Tümü</button>
     <button class="filtre-btn" id="filtre-banko" onclick="setFiltre('banko',this)">🔒 Banko</button>
-    <button class="filtre-btn" id="filtre-cift" onclick="setFiltre('cift',this)">⚠️ Çift</button>
-    <button class="filtre-btn" id="filtre-riskli" onclick="setFiltre('riskli',this)">🔥 Riskli</button>
+    <button class="filtre-btn" id="filtre-riskli" onclick="setFiltre('riskli',this)">⚠️ Riskli</button>
+    <button class="filtre-btn" id="filtre-cift" onclick="setFiltre('cift',this)">🔥 Çift/Üçlü</button>
     <button class="filtre-btn" id="filtre-bos" onclick="setFiltre('bos',this)">⬜ Boş</button>
   </div>
 
@@ -196,26 +193,6 @@
   <div class="modal-content">
     <div class="modal-head"><span>📊 TAHMİN RAPORU</span><button onclick="closeModal('tahminModal')">✖</button></div>
     <div class="modal-body" id="tahminModalBody"></div>
-  </div>
-</div>
-
-<!-- MODAL: AYARLAR -->
-<div class="modal" id="ayarlarModal">
-  <div class="modal-content">
-    <div class="modal-head"><span>⚙️ AYARLAR</span><button onclick="closeModal('ayarlarModal')">✖</button></div>
-    <div class="modal-body">
-      <div class="acc-head">💎 Değer Alarm (Telegram / Ntfy)</div>
-      <label>Telegram Bot Token</label>
-      <input type="text" id="tgToken" placeholder="123456:ABC-DEF...">
-      <label>Telegram Chat ID</label>
-      <input type="text" id="tgChatId" placeholder="123456789">
-      <label>Ntfy Topic (opsiyonel)</label>
-      <input type="text" id="ntfyTopic" placeholder="skorlab_alerts">
-      <label>EV Eşiği (Değer Alarm)</label>
-      <input type="number" step="0.01" id="evEsik" value="1.12">
-      <button class="btn btn-blue btn-lg" onclick="ayarlarKaydet()" style="margin-top:12px">💾 KAYDET</button>
-      <button class="btn btn-green btn-lg" onclick="testAlarm()" style="margin-top:8px">📨 TEST MESAJI</button>
-    </div>
   </div>
 </div>
 
