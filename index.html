@@ -4,52 +4,35 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#070b14">
-<title>SkorLab v19 PRO</title>
+<title>SkorLab</title>
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
-<link rel="apple-touch-icon" href="icon-192.png">
-<link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header class="app-header">
-  <div class="logo">⚽ SKORLAB <span class="v">v19</span></div>
+  <div class="logo">⚽ SKORLAB</div>
   <div id="weekTitle" class="week">Yükleniyor...</div>
 </header>
 
 <nav class="tabs">
   <button class="tab active" onclick="switchTab(1,this)">📋 Bülten</button>
-  <button class="tab" onclick="switchTab(2,this)">⚡ Kupon</button>
-  <button class="tab" onclick="switchTab(3,this)">💾 Kuponlarım</button>
+  <button class="tab" onclick="switchTab(2,this)">💾 Kuponlarım</button>
 </nav>
 
 <main>
 
-<!-- SAYFA 1: BÜLTEN -->
 <section id="page-1" class="page active">
   <div class="stats-grid">
     <div class="stat-card"><div class="stat-val" id="statMac">0</div><div class="stat-lbl">MAÇ</div></div>
     <div class="stat-card"><div class="stat-val blue" id="statSecilen">0</div><div class="stat-lbl">SEÇİLEN</div></div>
     <div class="stat-card"><div class="stat-val green" id="statKolon">0</div><div class="stat-lbl">KOLON</div></div>
-    <div class="stat-card"><div class="stat-val orange" id="statDeger">0</div><div class="stat-lbl">💎 DEĞER</div></div>
+    <div class="stat-card"><div class="stat-val orange" id="statTutar">0</div><div class="stat-lbl">TL</div></div>
   </div>
   <div id="matchesList"></div>
 </section>
 
-<!-- SAYFA 2: KUPON -->
 <section id="page-2" class="page">
-  <div class="card">
-    <div class="result-title">⚡ KUPON ÖZETİ</div>
-    <div id="kuponOzet"></div>
-  </div>
-  <div class="card">
-    <div class="result-title">📋 SEÇİLEN MAÇLAR</div>
-    <div id="kuponMaclar"></div>
-  </div>
-</section>
-
-<!-- SAYFA 3: KUPONLARIM -->
-<section id="page-3" class="page">
   <div class="card">
     <div class="result-title">💾 KAYITLI KUPONLARIM</div>
     <div id="kayitliKuponlar"></div>
@@ -58,7 +41,6 @@
 
 </main>
 
-<!-- ALT KUPON ÇUBUĞU -->
 <div class="kupon-cubugu" id="kuponCubugu">
   <div class="kc-info">
     <div class="kc-satir"><span>Maç</span><b id="kcMac">0</b></div>
@@ -71,15 +53,13 @@
   </div>
 </div>
 
-<!-- MODAL: MAÇ DETAY / ANALİZ -->
-<div class="modal" id="macDetayModal">
+<div class="modal" id="analizModal">
   <div class="modal-content">
-    <div class="modal-head"><span id="macDetayTitle">Analiz</span><button onclick="closeModal('macDetayModal')">✖</button></div>
-    <div class="modal-body" id="macDetayBody"></div>
+    <div class="modal-head"><span id="analizTitle">Analiz</span><button onclick="closeModal('analizModal')">✖</button></div>
+    <div class="modal-body" id="analizBody"></div>
   </div>
 </div>
 
-<!-- MODAL: KUPON DETAY -->
 <div class="modal" id="kuponDetayModal">
   <div class="modal-content">
     <div class="modal-head"><span>💾 KUPON DETAY</span><button onclick="closeModal('kuponDetayModal')">✖</button></div>
@@ -87,7 +67,6 @@
   </div>
 </div>
 
-<!-- MODAL: TOAST -->
 <div class="modal" id="toastModal">
   <div class="modal-content small">
     <div class="modal-body center">
