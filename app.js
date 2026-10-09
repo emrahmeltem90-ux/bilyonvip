@@ -1,18 +1,17 @@
 /* ============================================================
-   SKORLAB v16.1 · Toto + İddaa + Tekli/Sistem Kolon
+   SKORLAB v17 PRO · Toto + İddaa + Pro Analiz
    ============================================================ */
 
 let matchesData = [];
 let oddsData = {};
 let serbestData = JSON.parse(localStorage.getItem('skorlab_serbest') || '[]');
 let kayitliKuponlar = JSON.parse(localStorage.getItem('skorlab_kuponlar') || '[]');
-
 let secimlerim = JSON.parse(localStorage.getItem('skorlab_secimlerim') || '{}');
 let serbestSecimlerim = JSON.parse(localStorage.getItem('skorlab_serbest_secimlerim') || '{}');
 let otomatikKolonlar = JSON.parse(localStorage.getItem('skorlab_otomatik_kolonlar') || 'null');
-
 let butce = parseFloat(localStorage.getItem('skorlab_butce') || '100');
 let weekKey = 'default';
+let duzenlenenSerbestId = null;
 
 const $ = id => document.getElementById(id);
 
@@ -254,9 +253,11 @@ function serbestSecimleriSil(){
 function renderSerbest(){
   const c = $('serbestListesi');
   if(!c) return;
+
   if(!serbestData.length){
-    c.innerHTML = '<div class="card"><div class="muted" style="text-align:center;padding:20px">Henüz serbest maç eklemedin.</div></div>';
-    const cc = $('kuponCubuguSerbest'); if(cc) cc.style.display = 'none';
+    c.innerHTML = '<div class="card"><div class="muted" style="text-align:center;padding:20px">Henüz serbest maç eklemedin.<br><br>"➕ Maç Ekle" ile başla.</div></div>';
+    const cc = $('kuponCubuguSerbest');
+    if(cc) cc.style.display = 'none';
     return;
   }
 
@@ -271,8 +272,9 @@ function renderSerbest(){
     <div class="sade-mac">
       <div class="sade-mac-head">
         <span class="sade-mac-no">İDDAA ${idx+1}</span>
-        <div>
+        <div style="display:flex;gap:4px;align-items:center">
           <span class="sade-mac-tarih">${secimOzet?'<b style="color:var(--green)">'+secimOzet+'</b>':''}</span>
+          <button class="sm-duzenle-btn" onclick="openSerbestDuzenle(${idx})" title="Düzenle">✏️</button>
           <button onclick="serbestSil(${idx})" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:1rem;padding:4px 8px">🗑️</button>
         </div>
       </div>
@@ -285,36 +287,24 @@ function renderSerbest(){
     </div>`;
   }).join('');
 
-  const cc = $('kuponCubuguSerbest'); if(cc) cc.style.display = 'flex';
+  const cc = $('kuponCubuguSerbest');
+  if(cc) cc.style.display = 'flex';
   updateKuponCubuguSerbest();
 }
 
-function openSerbestModal(){
-  ['sm-match','sm-o1','sm-oX','sm-o2'].forEach(id => { const el = $(id); if(el) el.value=''; });
-  $('serbestModal').classList.add('active');
-}
-
-function serbestEkle(){
-  const mac = $('sm-match').value.trim();
-  const o1 = parseFloat($('sm-o1').value);
-  const oX = parseFloat($('sm-oX').value);
-  const o2 = parseFloat($('sm-o2').value);
-  if(!mac || !o1 || !oX || !o2){ showToast('error','Eksik','Tüm alanları doldur.'); return; }
-  serbestData.unshift({ id: Date.now(), mac, o1, oX, o2 });
-  localStorage.setItem('skorlab_serbest', JSON.stringify(serbestData));
-  closeModal('serbestModal');
-  renderSerbest();
-  showToast('success','Eklendi', mac);
-}
-
 function serbestSil(idx){
-  if(!confirm('Silinsin mi?')) return;
-  const s = serbestData[idx];
-  delete serbestSecimlerim[s.id];
+  const m = serbestData[idx];
+  if(!m) return;
+  if(!confirm(`"${m.mac}" silinsin mi?`)) return;
+
+  delete serbestSecimlerim[m.id];
   localStorage.setItem('skorlab_serbest_secimlerim', JSON.stringify(serbestSecimlerim));
-  serbestData.splice(idx,1);
+
+  serbestData.splice(idx, 1);
   localStorage.setItem('skorlab_serbest', JSON.stringify(serbestData));
+
   renderSerbest();
+  showToast('success','Silindi', m.mac);
 }
 
 function temizleSerbest(){
@@ -323,6 +313,324 @@ function temizleSerbest(){
   localStorage.removeItem('skorlab_serbest');
   localStorage.removeItem('skorlab_serbest_secimlerim');
   renderSerbest();
+}
+
+/* ==================== PRO ANALİZ MODAL ==================== */
+function openSerbestModal(){
+  duzenlenenSerbestId = null;
+  ['sm-match','sm-o1','sm-oX','sm-o2'].forEach(id => {
+    const el = $(id);
+    if(el){ el.value = ''; el.classList.remove('hata'); }
+  });
+  const t = $('serbestModalTitle'); if(t) t.innerText = '➕ SERBEST MAÇ EKLE';
+  const b = $('sm-kaydet-btn'); if(b) b.innerText = '✅ EKLE';
+  const m = $('serbestModal'); if(m) m.classList.remove('duzenleme');
+  const k = $('sm-canli-analiz'); if(k) k.style.display = 'none';
+  if(m) m.classList.add('active');
+}
+
+function openSerbestDuzenle(idx){
+  const m = serbestData[idx];
+  if(!m) return;
+  duzenlenenSerbestId = m.id;
+  $('sm-match').value = m.mac || '';
+  $('sm-o1').value = m.o1 || '';
+  $('sm-oX').value = m.oX || '';
+  $('sm-o2').value = m.o2 || '';
+  const t = $('serbestModalTitle'); if(t) t.innerText = '✏️ SERBEST MAÇ DÜZENLE';
+  const b = $('sm-kaydet-btn'); if(b) b.innerText = '💾 GÜNCELLE';
+  const mo = $('serbestModal'); if(mo){ mo.classList.add('duzenleme'); mo.classList.add('active'); }
+  serbestCanliAnaliz();
+}
+
+function serbestKaydet(){
+  ['sm-match','sm-o1','sm-oX','sm-o2'].forEach(id => {
+    const el = $(id); if(el) el.classList.remove('hata');
+  });
+
+  const mac = $('sm-match').value.trim();
+  const o1 = parseFloat($('sm-o1').value);
+  const oX = parseFloat($('sm-oX').value);
+  const o2 = parseFloat($('sm-o2').value);
+
+  let hata = false;
+  if(!mac || mac.length < 3){ $('sm-match').classList.add('hata'); hata = true; }
+  const ok = (o) => !isNaN(o) && o >= 1.01 && o <= 100;
+  if(!ok(o1)){ $('sm-o1').classList.add('hata'); hata = true; }
+  if(!ok(oX)){ $('sm-oX').classList.add('hata'); hata = true; }
+  if(!ok(o2)){ $('sm-o2').classList.add('hata'); hata = true; }
+
+  if(hata){
+    showToast('error','Geçersiz Veri','Maç adı min 3 karakter, oranlar 1.01 - 100 arası.');
+    return;
+  }
+
+  if(duzenlenenSerbestId){
+    const idx = serbestData.findIndex(x => x.id === duzenlenenSerbestId);
+    if(idx === -1){ showToast('error','Hata','Maç bulunamadı.'); return; }
+    serbestData[idx].mac = mac;
+    serbestData[idx].o1 = o1;
+    serbestData[idx].oX = oX;
+    serbestData[idx].o2 = o2;
+    localStorage.setItem('skorlab_serbest', JSON.stringify(serbestData));
+    duzenlenenSerbestId = null;
+    closeModal('serbestModal');
+    renderSerbest();
+    showToast('success','Güncellendi', mac);
+  } else {
+    const yeni = { id: Date.now(), mac, o1, oX, o2, tarih: new Date().toLocaleString('tr-TR') };
+    serbestData.unshift(yeni);
+    localStorage.setItem('skorlab_serbest', JSON.stringify(serbestData));
+    closeModal('serbestModal');
+    renderSerbest();
+    showToast('success','Maç Eklendi!', mac);
+  }
+}
+
+/* ============================================================
+   CANLI PRO ANALİZ (7 Katman)
+   ============================================================ */
+function serbestCanliAnaliz(){
+  const o1 = parseFloat($('sm-o1').value);
+  const oX = parseFloat($('sm-oX').value);
+  const o2 = parseFloat($('sm-o2').value);
+
+  const kutu = $('sm-canli-analiz');
+  if(!kutu) return;
+
+  const ok = (o) => !isNaN(o) && o >= 1.01 && o <= 100;
+  if(!ok(o1) || !ok(oX) || !ok(o2)){
+    kutu.style.display = 'none';
+    return;
+  }
+
+  kutu.style.display = 'block';
+
+  /* 1. HAM */
+  const r1 = 1/o1, rX = 1/oX, r2 = 1/o2;
+  const toplam = r1 + rX + r2;
+  const ham1 = (r1/toplam)*100;
+  const hamX = (rX/toplam)*100;
+  const ham2 = (r2/toplam)*100;
+  const marj = (toplam - 1) * 100;
+
+  $('sm-ham-1').innerText = '%' + ham1.toFixed(1);
+  $('sm-ham-X').innerText = '%' + hamX.toFixed(1);
+  $('sm-ham-2').innerText = '%' + ham2.toFixed(1);
+  $('sm-marj').innerText = '%' + marj.toFixed(2);
+
+  /* 2. SHIN */
+  const shinSonuc = shinMarjArindir(o1, oX, o2);
+  $('sm-shin-1').innerText = '%' + (shinSonuc.p1*100).toFixed(1);
+  $('sm-shin-X').innerText = '%' + (shinSonuc.pX*100).toFixed(1);
+  $('sm-shin-2').innerText = '%' + (shinSonuc.p2*100).toFixed(1);
+  $('sm-shin-toplam').innerText = '%' + ((shinSonuc.p1+shinSonuc.pX+shinSonuc.p2)*100).toFixed(1);
+
+  /* 3. POISSON */
+  const xg = xgOranlardan(shinSonuc.p1, shinSonuc.pX, shinSonuc.p2);
+  const poi = poissonTamMatris(xg.xgEv, xg.xgDep);
+
+  $('sm-xg').innerText = xg.xgEv.toFixed(2) + ' - ' + xg.xgDep.toFixed(2);
+  $('sm-poi-1').innerText = '%' + poi.p1.toFixed(1);
+  $('sm-poi-X').innerText = '%' + poi.pX.toFixed(1);
+  $('sm-poi-2').innerText = '%' + poi.p2.toFixed(1);
+  $('sm-poi-ust25').innerText = '%' + poi.ust25.toFixed(1);
+  $('sm-poi-kg').innerText = '%' + poi.kg.toFixed(1);
+
+  /* 4. DIXON-COLES */
+  const dc = dixonColes(xg.xgEv, xg.xgDep);
+  const dcSirali = Object.entries(dc.skorlar).sort((a,b) => b[1]-a[1]).slice(0,5);
+  $('sm-dc-skorlar').innerHTML = dcSirali.map(([k,v]) =>
+    `<div class="dc-satir"><span>${k.replace('-',' - ')}</span><b>%${(v*100).toFixed(2)}</b></div>`
+  ).join('');
+
+  /* 5. MONTE CARLO */
+  const mc = monteCarlo(xg.xgEv, xg.xgDep, 10000);
+  $('sm-mc-1').innerText = '%' + (mc.p1*100).toFixed(1);
+  $('sm-mc-X').innerText = '%' + (mc.pX*100).toFixed(1);
+  $('sm-mc-2').innerText = '%' + (mc.p2*100).toFixed(1);
+  $('sm-mc-ci').innerText = '±%' + mc.margin.toFixed(2);
+
+  /* 6. KELLY */
+  const secenekler = [
+    { kod:'1', olas:shinSonuc.p1, oran:o1 },
+    { kod:'X', olas:shinSonuc.pX, oran:oX },
+    { kod:'2', olas:shinSonuc.p2, oran:o2 }
+  ].sort((a,b) => b.olas - a.olas);
+
+  const fav = secenekler[0];
+  const ev = fav.olas * fav.oran;
+  const kellyF = (fav.olas * fav.oran - 1) / (fav.oran - 1);
+  const kellyOneri = Math.max(0, kellyF * 0.5) * 100;
+
+  $('sm-kelly-fav').innerText = `${fav.kod} (%${(fav.olas*100).toFixed(1)}) @ ${fav.oran.toFixed(2)}`;
+  $('sm-kelly-ev').innerText = ev.toFixed(3);
+  $('sm-kelly-ev').style.color = ev > 1.05 ? 'var(--green)' : ev > 1.0 ? 'var(--orange)' : 'var(--red)';
+
+  if(ev > 1.05){
+    $('sm-kelly-oneri').innerText = `💎 DEĞERLİ (Kelly: %${kellyOneri.toFixed(1)})`;
+    $('sm-kelly-oneri').style.color = 'var(--green)';
+  } else if(kellyOneri > 0){
+    $('sm-kelly-oneri').innerText = `Normal (Kelly: %${kellyOneri.toFixed(1)})`;
+    $('sm-kelly-oneri').style.color = 'var(--muted)';
+  } else {
+    $('sm-kelly-oneri').innerText = '❌ Değer Yok';
+    $('sm-kelly-oneri').style.color = 'var(--red)';
+  }
+
+  const hedgeToplam = (1/o1) + (1/oX) + (1/o2);
+  if(hedgeToplam < 0.98){
+    $('sm-hedge').innerText = '💎 ARBITRAJ VAR!';
+    $('sm-hedge').style.color = 'var(--green)';
+  } else {
+    $('sm-hedge').innerText = 'Yok (Marj var)';
+    $('sm-hedge').style.color = 'var(--muted)';
+  }
+
+  /* 7. RİSK */
+  const ent = -(shinSonuc.p1*Math.log2(shinSonuc.p1) + shinSonuc.pX*Math.log2(shinSonuc.pX) + shinSonuc.p2*Math.log2(shinSonuc.p2)) / Math.log2(3);
+  const upset = secenekler[2].olas;
+  const vol = 1 - secenekler[0].olas;
+
+  $('sm-entropy').innerText = ent.toFixed(3) + (ent > 0.9 ? ' (Yüksek)' : ent > 0.7 ? ' (Orta)' : ' (Düşük)');
+  $('sm-upset').innerText = '%' + (upset*100).toFixed(1);
+  $('sm-vol').innerText = '%' + (vol*100).toFixed(1);
+
+  let riskKategori = '';
+  if(ent > 0.85) riskKategori = '🔴 YÜKSEK';
+  else if(ent > 0.6) riskKategori = '🟡 ORTA';
+  else riskKategori = '🟢 DÜŞÜK';
+  $('sm-risk').innerText = riskKategori;
+
+  /* 8. KONSENSÜS */
+  const oy1 = [shinSonuc.p1, poi.p1/100, mc.p1, fav.olas].filter(x => x > 0.45).length;
+  const oyX = [shinSonuc.pX, poi.pX/100, mc.pX].filter(x => x > 0.3).length;
+  const oy2 = [shinSonuc.p2, poi.p2/100, mc.p2].filter(x => x > 0.35).length;
+  const maxOy = Math.max(oy1, oyX, oy2);
+
+  let konsensusYon = '';
+  if(maxOy === oy1 && oy1 >= 3) konsensusYon = `${fav.kod} (Favori)`;
+  else if(maxOy === oyX && oyX >= 2) konsensusYon = 'X (Beraberlik)';
+  else if(maxOy === oy2 && oy2 >= 2) konsensusYon = '2 (Deplasman)';
+  else konsensusYon = 'Belirsiz';
+
+  $('sm-konsensus').innerText = konsensusYon;
+  $('sm-konsensus-skor').innerText = `${maxOy}/4 katman aynı yönde`;
+}
+
+/* ============================================================
+   MATEMATİKSEL MODELLER
+   ============================================================ */
+function shinMarjArindir(o1, oX, o2){
+  const p1_raw = 1/o1, pX_raw = 1/oX, p2_raw = 1/o2;
+  const z = p1_raw + pX_raw + p2_raw;
+  if(z <= 1) return { p1: p1_raw, pX: pX_raw, p2: p2_raw };
+
+  function shinFormul(p){
+    const num = Math.sqrt(z*z + 4*(1-z)*(p/z)*(p/z)) - z;
+    const den = 2*(1-z);
+    return num / den;
+  }
+
+  const p1 = shinFormul(p1_raw);
+  const pX = shinFormul(pX_raw);
+  const p2 = shinFormul(p2_raw);
+  const top = p1 + pX + p2;
+  return { p1: p1/top, pX: pX/top, p2: p2/top };
+}
+
+function xgOranlardan(p1, pX, p2){
+  const hs = p1 / (p1 + p2 || 1);
+  const tg = 2.4 + (1 - pX) * 0.8;
+  const xgEv = Math.max(0.3, tg * hs * 1.15);
+  const xgDep = Math.max(0.3, tg * (1 - hs));
+  return { xgEv, xgDep };
+}
+
+function poissonTamMatris(xgEv, xgDep){
+  const MAX = 8;
+  let p1=0, pX=0, p2=0, kg=0, ust25=0, ust15=0, ust35=0;
+  const skorlar = {};
+
+  function pmf(k, l){
+    let p = Math.exp(-l);
+    for(let i = 1; i <= k; i++) p *= l / i;
+    return p;
+  }
+
+  for(let h = 0; h < MAX; h++){
+    for(let a = 0; a < MAX; a++){
+      const p = pmf(h, xgEv) * pmf(a, xgDep);
+      skorlar[h+'-'+a] = p;
+      if(h > a) p1 += p;
+      else if(h === a) pX += p;
+      else p2 += p;
+      if(h >= 1 && a >= 1) kg += p;
+      if(h + a > 2.5) ust25 += p;
+      if(h + a > 1.5) ust15 += p;
+      if(h + a > 3.5) ust35 += p;
+    }
+  }
+
+  return {
+    p1: p1*100, pX: pX*100, p2: p2*100,
+    kg: kg*100, ust25: ust25*100, ust15: ust15*100, ust35: ust35*100,
+    skorlar
+  };
+}
+
+function dixonColes(xgEv, xgDep, rho){
+  rho = rho || -0.13;
+  const MAX = 6;
+  const skorlar = {};
+  let toplam = 0;
+
+  function pmf(k, l){
+    let p = Math.exp(-l);
+    for(let i = 1; i <= k; i++) p *= l / i;
+    return p;
+  }
+
+  function tau(h, a){
+    if(h === 0 && a === 0) return 1 - xgEv * xgDep * rho;
+    if(h === 0 && a === 1) return 1 + xgEv * rho;
+    if(h === 1 && a === 0) return 1 + xgDep * rho;
+    if(h === 1 && a === 1) return 1 - rho;
+    return 1;
+  }
+
+  for(let h = 0; h < MAX; h++){
+    for(let a = 0; a < MAX; a++){
+      const p = pmf(h, xgEv) * pmf(a, xgDep) * tau(h, a);
+      skorlar[h+'-'+a] = p;
+      toplam += p;
+    }
+  }
+
+  Object.keys(skorlar).forEach(k => { skorlar[k] /= toplam; });
+  return { skorlar };
+}
+
+function monteCarlo(xgEv, xgDep, n){
+  n = n || 10000;
+  function poissonRnd(lambda){
+    let L = Math.exp(-lambda), k = 0, p = 1;
+    do { k++; p *= Math.random(); } while(p > L);
+    return k - 1;
+  }
+
+  let s1 = 0, sX = 0, s2 = 0;
+  for(let i = 0; i < n; i++){
+    const h = poissonRnd(xgEv);
+    const a = poissonRnd(xgDep);
+    if(h > a) s1++;
+    else if(h === a) sX++;
+    else s2++;
+  }
+
+  const p1 = s1 / n, pX = sX / n, p2 = s2 / n;
+  const margin = 1.96 * Math.sqrt(p1 * (1 - p1) / n);
+  return { p1, pX, p2, margin: margin * 100 };
 }
 
 /* ==================== KUPON ÇUBUĞU ==================== */
@@ -393,7 +701,7 @@ function updateStats(){
   const sD = $('statDeger'); if(sD) sD.innerText = deger;
 }
 
-/* ==================== OTOMATİK KUPON MODAL ==================== */
+/* ==================== OTOMATİK KUPON ==================== */
 function otomatikKuponAc(){
   if(!matchesData.length){ showToast('error','Maç Yok','Bülten boş.'); return; }
   const maxKolon = Math.floor(butce / 10);
@@ -423,7 +731,6 @@ function otomatikKuponAc(){
   $('secimModal').classList.add('active');
 }
 
-/* ==================== TEKLİ KOLON (DÜZELTİLDİ) ==================== */
 function kuponTekliUret(){
   const maclar = [];
   matchesData.forEach(m => {
@@ -439,14 +746,11 @@ function kuponTekliUret(){
   const macIdler = maclar.map(mc => mc.m.id);
   const favoriler = maclar.map(mc => mc.a.enYuksek.kod);
 
-  // Her kolonda FARKLI maçlarda sapma yap (dağılımlı)
   const kolonlar = [];
   for(let k = 0; k < maxKolon; k++){
     const kolon = [...favoriler];
-    // k. kolonda, (k * macSayisi / maxKolon) kadar maçta sapma yap
     const sapmaSayisi = Math.floor((k * maclar.length) / maxKolon);
     for(let i = 0; i < sapmaSayisi; i++){
-      // Sapmayı dizinin sonundan başa doğru yay (böylece farklı maçlar sapar)
       const idx = (maclar.length - 1 - i);
       if(idx >= 0) kolon[idx] = maclar[idx].a.sirali[1].kod;
     }
@@ -454,10 +758,8 @@ function kuponTekliUret(){
   }
 
   otomatikKolonlar = {
-    tip: 'toto',
-    mod: 'TEKLİ',
-    macIdler: macIdler,
-    kolonlar: kolonlar,
+    tip: 'toto', mod: 'TEKLİ',
+    macIdler: macIdler, kolonlar: kolonlar,
     tutar: kolonlar.length * 10
   };
   localStorage.setItem('skorlab_otomatik_kolonlar', JSON.stringify(otomatikKolonlar));
@@ -467,7 +769,6 @@ function kuponTekliUret(){
   showToast('success','Tekli Kupon', kolonlar.length + ' kolon · ' + otomatikKolonlar.tutar + ' TL');
 }
 
-/* ==================== SİSTEM KOLONU ==================== */
 function kuponSistemUret(){
   const maclar = [];
   matchesData.forEach(m => {
@@ -507,9 +808,7 @@ function kuponSistemUret(){
       const yeni = [];
       const secenekler = maclar[i].a.sirali.slice(0, sayilar[i]).map(s => s.kod);
       for(const k of sonuc){
-        for(const s of secenekler){
-          yeni.push([...k, s]);
-        }
+        for(const s of secenekler) yeni.push([...k, s]);
       }
       sonuc = yeni;
       if(sonuc.length > 10000) break;
@@ -521,10 +820,8 @@ function kuponSistemUret(){
   const macIdler = maclar.map(mc => mc.m.id);
 
   otomatikKolonlar = {
-    tip: 'toto',
-    mod: 'SİSTEM',
-    macIdler: macIdler,
-    kolonlar: kolonlar,
+    tip: 'toto', mod: 'SİSTEM',
+    macIdler: macIdler, kolonlar: kolonlar,
     tutar: kolonlar.length * 10
   };
   localStorage.setItem('skorlab_otomatik_kolonlar', JSON.stringify(otomatikKolonlar));
@@ -544,21 +841,15 @@ function kuponuKaydet(tip){
       return {
         id: mid,
         isim: m ? (m.home + ' - ' + m.away) : 'Maç #' + mid,
-        secim: secimler.join(''),
-        secimler: secimler
+        secim: secimler.join(''), secimler: secimler
       };
     });
 
     kayitliKuponlar.unshift({
-      id: Date.now(),
-      tip: 'toto',
-      mod: otomatikKolonlar.mod,
+      id: Date.now(), tip: 'toto', mod: otomatikKolonlar.mod,
       tarih: new Date().toLocaleString('tr-TR'),
-      macSayisi: h.macSayisi,
-      kolon: h.kolon,
-      tutar: h.tutar,
-      detaylar: detaylar,
-      durum: 'bekliyor'
+      macSayisi: h.macSayisi, kolon: h.kolon, tutar: h.tutar,
+      detaylar: detaylar, durum: 'bekliyor'
     });
     if(kayitliKuponlar.length > 50) kayitliKuponlar = kayitliKuponlar.slice(0, 50);
     localStorage.setItem('skorlab_kuponlar', JSON.stringify(kayitliKuponlar));
@@ -602,8 +893,17 @@ function kuponuKaydet(tip){
   if(kayitliKuponlar.length > 50) kayitliKuponlar = kayitliKuponlar.slice(0, 50);
   localStorage.setItem('skorlab_kuponlar', JSON.stringify(kayitliKuponlar));
 
-  if(tip === 'iddaa'){ serbestSecimlerim = {}; localStorage.setItem('skorlab_serbest_secimlerim', '{}'); renderSerbest(); updateKuponCubuguSerbest(); }
-  else { secimlerim = {}; localStorage.setItem('skorlab_secimlerim', '{}'); renderBulten(); updateKuponCubugu(); }
+  if(tip === 'iddaa'){
+    serbestSecimlerim = {};
+    localStorage.setItem('skorlab_serbest_secimlerim', '{}');
+    renderSerbest();
+    updateKuponCubuguSerbest();
+  } else {
+    secimlerim = {};
+    localStorage.setItem('skorlab_secimlerim', '{}');
+    renderBulten();
+    updateKuponCubugu();
+  }
 
   renderKayitliKuponlar();
   showToast('success','Kaydedildi', h.kolon + ' kolon · ' + h.tutar + ' TL');
