@@ -1,12 +1,11 @@
 /* ============================================================
-   SKORLAB v19 PRO · Form + Yüzde + Oran + Value Bet
+   SKORLAB · Basit & Kullanışlı
    ============================================================ */
 
 let maclarData = [];
 let oranlarData = JSON.parse(localStorage.getItem('skorlab_oranlar') || '{}');
 let secimlerim = JSON.parse(localStorage.getItem('skorlab_secimlerim') || '{}');
 let kayitliKuponlar = JSON.parse(localStorage.getItem('skorlab_kuponlar') || '[]');
-let haftaAdi = '';
 
 const $ = id => document.getElementById(id);
 
@@ -16,120 +15,119 @@ async function loadData(){
     const res = await fetch('matches.json');
     if(!res.ok) throw new Error('HTTP '+res.status);
     const raw = await res.json();
-    haftaAdi = raw.hafta || 'Bu Hafta';
     maclarData = raw.maclar || [];
-    $('weekTitle').innerText = haftaAdi;
+    $('weekTitle').innerText = raw.hafta || 'Bu Hafta';
   }catch(e){
     console.error(e);
     $('weekTitle').innerText = 'Veri Yüklenemedi';
   }
-  renderBulten(); renderKupon(); renderKayitliKuponlar();
-  updateStats(); updateKuponCubugu();
+  renderBulten();
+  renderKayitliKuponlar();
+  updateStats();
+  updateKuponCubugu();
 }
 
-/* ==================== FORM ==================== */
-function formHTML(form){
-  return (form||[]).map(f => `<span class="form-dot form-${f}">${f}</span>`).join('');
-}
-function formSayim(form){
-  const s = { G:0, B:0, M:0 };
-  (form||[]).forEach(f => { if(s[f]!==undefined) s[f]++; });
-  return s;
-}
-
-/* ==================== ORAN & VALUE BET ==================== */
+/* ==================== ORAN & OLASILIK ==================== */
 function oranGuncelle(mac_id, alan, val){
   if(!oranlarData[mac_id]) oranlarData[mac_id] = {};
   const num = parseFloat(val);
   if(!val || isNaN(num)) delete oranlarData[mac_id][alan];
   else oranlarData[mac_id][alan] = num;
   localStorage.setItem('skorlab_oranlar', JSON.stringify(oranlarData));
-  updateStats();
+  renderBulten();
 }
 
-function marjHesapla(o1, oX, o2){
+function olasilikHesapla(o1, oX, o2){
   if(!o1 || !oX || !o2) return null;
   const r1 = 1/o1, rX = 1/oX, r2 = 1/o2;
-  const t = r1 + rX + r2;
+  const toplam = r1 + rX + r2;
+  const marj = (toplam - 1) * 100;
   return {
-    marj: ((t-1)*100),
-    hamP1: (r1/t)*100,
-    hamPX: (rX/t)*100,
-    hamP2: (r2/t)*100,
-    gercekP1: r1*100,
-    gercekPX: rX*100,
-    gercekP2: r2*100
+    ham1: (r1/toplam)*100,
+    hamX: (rX/toplam)*100,
+    ham2: (r2/toplam)*100,
+    gercek1: r1*100,
+    gercekX: rX*100,
+    gercek2: r2*100,
+    marj
   };
 }
 
-function valueBet(m){
+/* ==================== ANALİZ MOTORU ==================== */
+function analizUret(m){
   const o = oranlarData[m.mac_id];
   if(!o || !o['1'] || !o['X'] || !o['2']) return null;
-  const y = m.tahmini_yuzdeler;
-  const ev1 = (y.ev_galibiyet/100) * o['1'];
-  const evX = (y.beraberlik/100) * o['X'];
-  const ev2 = (y.deplasman_galibiyet/100) * o['2'];
-  const enIyi = [
-    { kod:'1', ev:ev1, oran:o['1'], olas:y.ev_galibiyet },
-    { kod:'X', ev:evX, oran:o['X'], olas:y.beraberlik },
-    { kod:'2', ev:ev2, oran:o['2'], olas:y.deplasman_galibiyet }
-  ].sort((a,b) => b.ev - a.ev)[0];
-  return {
-    ...enIyi,
-    degerli: enIyi.ev > 1.05
-  };
-}
 
-/* ==================== ANALİZ YORUM ==================== */
-function yorumUret(m){
-  const y = m.tahmini_yuzdeler;
-  const ev = y.ev_galibiyet, x = y.beraberlik, dep = y.deplasman_galibiyet;
-  const evForm = formSayim(m.ev_form);
-  const depForm = formSayim(m.deplasman_form);
-  const o = oranlarData[m.mac_id];
-  const vb = valueBet(m);
+  const o1 = o['1'], oX = o['X'], o2 = o['2'];
+  const p = olasilikHesapla(o1, oX, o2);
 
-  let baslik = '';
+  const secenekler = [
+    { kod:'1', oran:o1, olas:p.ham1, ev:p.ham1/100*o1 },
+    { kod:'X', oran:oX, olas:p.hamX, ev:p.hamX/100*oX },
+    { kod:'2', oran:o2, olas:p.ham2, ev:p.ham2/100*o2 }
+  ].sort((a,b) => b.olas - a.olas);
+
+  const fav = secenekler[0];
+  const enYuksek = fav.olas;
+  const enDusuk = secenekler[2].olas;
+  const fark = secenekler[0].olas - secenekler[1].olas;
+
+  // Sınıflandırma
+  let tip = '';
   let className = 'yorum-box';
   let satirlar = [];
 
-  const enYuksek = Math.max(ev, x, dep);
-
-  if(enYuksek === ev){
-    if(ev >= 60){ baslik = '🔒 NET FAVORİ'; satirlar.push(`Ev sahibi <b>%${ev}</b> ile net favori.`); }
-    else if(ev >= 50){ baslik = '✅ GÜÇLÜ FAVORİ'; satirlar.push(`Ev sahibi <b>%${ev}</b> ile favori.`); }
-    else { baslik = '⚠️ RİSKLİ FAVORİ'; className = 'yorum-box riskli'; satirlar.push(`Ev sahibi <b>%${ev}</b> ile hafif favori.`); }
-  } else if(enYuksek === x){
-    baslik = '⚡ BERABERLİK ADAYI';
+  if(enYuksek >= 65){
+    tip = '🔒 NET FAVORİ';
+    satirlar.push(`<b>${fav.kod}</b> %${fav.olas.toFixed(1)} ile net favori.`);
+  } else if(enYuksek >= 55){
+    tip = '✅ GÜÇLÜ FAVORİ';
+    satirlar.push(`<b>${fav.kod}</b> %${fav.olas.toFixed(1)} ile güçlü favori.`);
+  } else if(enYuksek >= 45){
+    tip = '⚠️ RİSKLİ FAVORİ';
     className = 'yorum-box riskli';
-    satirlar.push(`Beraberlik <b>%${x}</b> ile en yüksek ihtimal.`);
+    satirlar.push(`<b>${fav.kod}</b> %${fav.olas.toFixed(1)} ile riskli favori.`);
   } else {
-    if(dep >= 60){ baslik = '🔒 DEPLASMAN NET FAVORİ'; satirlar.push(`Deplasman <b>%${dep}</b> ile net favori.`); }
-    else if(dep >= 50){ baslik = '✅ DEPLASMAN FAVORİ'; satirlar.push(`Deplasman <b>%${dep}</b> ile favori.`); }
-    else { baslik = '⚠️ DEPLASMAN RİSKLİ'; className = 'yorum-box riskli'; satirlar.push(`Deplasman <b>%${dep}</b> ile hafif favori.`); }
+    tip = '⚖️ BELİRSİZ MAÇ';
+    className = 'yorum-box tehlike';
+    satirlar.push(`En yüksek olasılık <b>${fav.kod}</b> ama sadece %${fav.olas.toFixed(1)}.`);
   }
 
-  if(evForm.G >= 3) satirlar.push(`🔥 Ev sahibi <b>formda</b> (${evForm.G}G ${evForm.B}B ${evForm.M}M)`);
-  else if(evForm.M >= 3) satirlar.push(`❄️ Ev sahibi <b>formsuz</b> (${evForm.G}G ${evForm.B}B ${evForm.M}M)`);
-  if(depForm.G >= 3) satirlar.push(`🔥 Deplasman <b>formda</b> (${depForm.G}G ${depForm.B}B ${depForm.M}M)`);
-  else if(depForm.M >= 3) satirlar.push(`❄️ Deplasman <b>formsuz</b> (${depForm.G}G ${depForm.B}B ${depForm.M}M)`);
+  // Marj yorumu
+  if(p.marj > 8){
+    satirlar.push(`📊 Bahisçi marjı <b style="color:var(--red)">%${p.marj.toFixed(2)}</b> → yüksek. Bu maçta oynamak dezavantajlı.`);
+  } else if(p.marj > 5){
+    satirlar.push(`📊 Bahisçi marjı <b style="color:var(--orange)">%${p.marj.toFixed(2)}</b> → ortalama.`);
+  } else {
+    satirlar.push(`📊 Bahisçi marjı <b class="green">%${p.marj.toFixed(2)}</b> → düşük. İyi oran.`);
+  }
 
-  if(enYuksek >= 60 && x >= 25) satirlar.push(`⚠️ <b>Tuzak riski:</b> Beraberlik %${x}. Çift düşün.`);
+  // Tuzak
+  if(enYuksek >= 50 && p.hamX >= 25){
+    satirlar.push(`⚠️ Beraberlik %${p.hamX.toFixed(1)} → <b>tuzak riski var.</b> Çift düşün.`);
+  }
 
-  const enDusuk = Math.min(ev, x, dep);
-  if(enDusuk >= 25) satirlar.push(`🚨 <b>Sürpriz potansiyeli:</b> En düşük %${enDusuk}. Dikkat.`);
+  // Sürpriz
+  if(enDusuk >= 22){
+    satirlar.push(`🚨 En düşük ihtimal %${enDusuk.toFixed(1)} → <b>sürpriz potansiyeli var.</b>`);
+  }
 
-  if(Math.abs(ev - dep) <= 8 && x >= 25) satirlar.push(`⚖️ <b>Dengeli maç:</b> Üçlü düşün.`);
+  // Denge
+  if(fark < 8 && secenekler[1].olas >= 25){
+    satirlar.push(`⚖️ İki taraf yakın. <b>Üçlü kapatmak</b> mantıklı olabilir.`);
+  }
 
-  if(o && o['1'] && o['X'] && o['2']){
-    const marj = marjHesapla(o['1'], o['X'], o['2']);
-    satirlar.push(`📊 Bahisçi marjı: <b>%${marj.marj.toFixed(2)}</b>`);
-    if(vb && vb.degerli){
-      satirlar.push(`💎 <b>VALUE BET:</b> ${vb.kod} @ ${vb.oran} (EV: ${vb.ev.toFixed(2)})`);
+  // Value bet (marj çıkarılmış gerçek olasılık + oran)
+  const gercekOlas = { '1': p.ham1, 'X': p.hamX, '2': p.ham2 };
+  const oranMap = { '1': o1, 'X': oX, '2': o2 };
+  ['1','X','2'].forEach(k => {
+    const ev = (gercekOlas[k]/100) * oranMap[k];
+    if(ev > 1.08){
+      satirlar.push(`💎 <b>Value Bet:</b> ${k} @ ${oranMap[k]} (EV: ${ev.toFixed(2)})`);
     }
-  }
+  });
 
-  return { baslik, className, satirlar };
+  return { tip, className, satirlar, p, secenekler, fav };
 }
 
 /* ==================== BÜLTEN ==================== */
@@ -141,32 +139,34 @@ function renderBulten(){
 
   $('matchesList').innerHTML = maclarData.map(m => {
     const sec = secimlerim[m.mac_id] || [];
-    const y = m.tahmini_yuzdeler;
     const o = oranlarData[m.mac_id] || {};
-    const vb = valueBet(m);
-    const valueTag = (vb && vb.degerli) ? `<div><span class="value-tag value-yes">💎 DEĞER: ${vb.kod} (EV ${vb.ev.toFixed(2)})</span></div>` : '';
+    const p = (o['1'] && o['X'] && o['2']) ? olasilikHesapla(o['1'], o['X'], o['2']) : null;
+
+    let olasGoster = '';
+    if(p){
+      olasGoster = `
+        <div class="olasi-goster">
+          <div><b>%${p.ham1.toFixed(1)}</b></div>
+          <div><b>%${p.hamX.toFixed(1)}</b></div>
+          <div><b>%${p.ham2.toFixed(1)}</b></div>
+        </div>
+      `;
+    }
 
     return `
     <div class="mac-kart">
       <div class="mac-head">
         <span class="mac-no">#${m.mac_id}</span>
-        <span>${formHTML(m.ev_form)}<span style="margin:0 4px;color:var(--muted)">vs</span>${formHTML(m.deplasman_form)}</span>
+        <button class="mac-analiz-btn" onclick="analizGoster(${m.mac_id})">📊 ANALİZ</button>
       </div>
-      <div class="mac-teams" onclick="macDetayGoster(${m.mac_id})">
-        ${m.ev_sahibi} - ${m.deplasman}
-      </div>
-      <div class="mac-yuzde">
-        <div class="yuzde-box"><div class="lbl">1</div><div class="val" style="color:var(--green)">%${y.ev_galibiyet}</div></div>
-        <div class="yuzde-box"><div class="lbl">X</div><div class="val" style="color:var(--orange)">%${y.beraberlik}</div></div>
-        <div class="yuzde-box"><div class="lbl">2</div><div class="val" style="color:var(--blue)">%${y.deplasman_galibiyet}</div></div>
-      </div>
+      <div class="mac-teams">${m.ev_sahibi} - ${m.deplasman}</div>
       <div class="oran-giris">
-        <div class="oran-item"><label>1 Oran</label><input type="number" step="0.01" value="${o['1']||''}" oninput="oranGuncelle(${m.mac_id},'1',this.value)"></div>
-        <div class="oran-item"><label>X Oran</label><input type="number" step="0.01" value="${o['X']||''}" oninput="oranGuncelle(${m.mac_id},'X',this.value)"></div>
-        <div class="oran-item"><label>2 Oran</label><input type="number" step="0.01" value="${o['2']||''}" oninput="oranGuncelle(${m.mac_id},'2',this.value)"></div>
+        <div class="oran-item"><label>1</label><input type="number" step="0.01" value="${o['1']||''}" oninput="oranGuncelle(${m.mac_id},'1',this.value)"></div>
+        <div class="oran-item"><label>X</label><input type="number" step="0.01" value="${o['X']||''}" oninput="oranGuncelle(${m.mac_id},'X',this.value)"></div>
+        <div class="oran-item"><label>2</label><input type="number" step="0.01" value="${o['2']||''}" oninput="oranGuncelle(${m.mac_id},'2',this.value)"></div>
       </div>
-      ${valueTag}
-      <div class="secim-grid" style="margin-top:10px">
+      ${olasGoster}
+      <div class="secim-grid">
         <button class="secim-btn ${sec.includes('1')?'secili':''}" onclick="secimToggle(${m.mac_id},'1')">1</button>
         <button class="secim-btn ${sec.includes('X')?'secili':''}" onclick="secimToggle(${m.mac_id},'X')">X</button>
         <button class="secim-btn ${sec.includes('2')?'secili':''}" onclick="secimToggle(${m.mac_id},'2')">2</button>
@@ -183,30 +183,31 @@ function secimToggle(id, secim){
   if(sec.length === 0) delete secimlerim[id];
   else secimlerim[id] = sec;
   localStorage.setItem('skorlab_secimlerim', JSON.stringify(secimlerim));
-  renderBulten(); renderKupon(); updateStats(); updateKuponCubugu();
+  renderBulten();
+  updateStats();
+  updateKuponCubugu();
 }
 
 function tumSecimleriSil(){
   if(!confirm('Tüm seçimler silinsin mi?')) return;
   secimlerim = {};
   localStorage.setItem('skorlab_secimlerim', '{}');
-  renderBulten(); renderKupon(); updateStats(); updateKuponCubugu();
+  renderBulten();
+  updateStats();
+  updateKuponCubugu();
 }
 
-/* ==================== KUPON ==================== */
+/* ==================== KUPON HESAP ==================== */
 function kuponHesapla(){
   let macSayisi = 0, kolon = 1;
-  const detaylar = [];
   Object.keys(secimlerim).forEach(id => {
     const sec = secimlerim[id];
     if(!sec || !sec.length) return;
     macSayisi++;
     kolon *= sec.length;
-    const m = maclarData.find(x => x.mac_id == id);
-    if(m) detaylar.push({ mac: m, secimler: sec });
   });
   const tutar = kolon * 10;
-  return { macSayisi, kolon, tutar, detaylar };
+  return { macSayisi, kolon, tutar };
 }
 
 function updateStats(){
@@ -214,12 +215,7 @@ function updateStats(){
   const sM = $('statMac'); if(sM) sM.innerText = maclarData.length;
   const sS = $('statSecilen'); if(sS) sS.innerText = h.macSayisi;
   const sK = $('statKolon'); if(sK) sK.innerText = h.kolon;
-  let deger = 0;
-  maclarData.forEach(m => {
-    const vb = valueBet(m);
-    if(vb && vb.degerli) deger++;
-  });
-  const sD = $('statDeger'); if(sD) sD.innerText = deger;
+  const sT = $('statTutar'); if(sT) sT.innerText = h.tutar;
 }
 
 function updateKuponCubugu(){
@@ -229,60 +225,45 @@ function updateKuponCubugu(){
   const kcT = $('kcTutar'); if(kcT) kcT.innerText = h.tutar + ' TL';
 }
 
-function renderKupon(){
-  const h = kuponHesapla();
-  const o = $('kuponOzet');
-  if(o){
-    if(h.macSayisi === 0){
-      o.innerHTML = '<div class="muted" style="text-align:center;padding:20px">Henüz maç seçmedin.<br>Bülten sekmesinden 1-X-2 tıkla.</div>';
-    } else {
-      o.innerHTML = `
-        <div class="analiz-box">
-          <div class="analiz-row"><span>Seçilen Maç:</span><b>${h.macSayisi}</b></div>
-          <div class="analiz-row"><span>Toplam Kolon:</span><b class="green">${h.kolon}</b></div>
-          <div class="analiz-row"><span>Toplam Tutar:</span><b class="green">${h.tutar} TL</b></div>
-        </div>
-        <button class="btn btn-green btn-lg" onclick="kuponuKaydet()" style="margin-top:12px">💾 KUPONU KAYDET</button>
-      `;
-    }
-  }
-  const c = $('kuponMaclar');
-  if(c){
-    if(h.detaylar.length === 0){
-      c.innerHTML = '<div class="muted" style="text-align:center;padding:14px">Seçim yok.</div>';
-    } else {
-      c.innerHTML = h.detaylar.map(d => `
-        <div style="background:var(--bg3);border-radius:8px;padding:10px;margin-bottom:8px">
-          <div style="font-weight:800;font-size:.82rem;margin-bottom:4px">#${d.mac.mac_id} ${d.mac.ev_sahibi} - ${d.mac.deplasman}</div>
-          <div style="color:var(--green);font-weight:900;font-size:.9rem">${d.secimler.join('')}</div>
-        </div>
-      `).join('');
-    }
-  }
-}
-
+/* ==================== KUPON KAYDET ==================== */
 function kuponuKaydet(){
   const h = kuponHesapla();
   if(h.macSayisi === 0){ showToast('error','Seçim Yok','Hiç maç seçmedin.'); return; }
-  const detaylar = h.detaylar.map(d => ({
-    mac_id: d.mac.mac_id,
-    isim: d.mac.ev_sahibi + ' - ' + d.mac.deplasman,
-    secim: d.secimler.join(''),
-    secimler: d.secimler
-  }));
+
+  const detaylar = [];
+  Object.keys(secimlerim).forEach(id => {
+    const sec = secimlerim[id];
+    if(!sec || !sec.length) return;
+    const m = maclarData.find(x => x.mac_id == id);
+    if(!m) return;
+    detaylar.push({
+      mac_id: m.mac_id,
+      isim: m.ev_sahibi + ' - ' + m.deplasman,
+      secim: sec.join(''),
+      secimler: sec
+    });
+  });
+
   const yeni = {
     id: Date.now(),
     tarih: new Date().toLocaleString('tr-TR'),
-    macSayisi: h.macSayisi, kolon: h.kolon, tutar: h.tutar,
-    detaylar: detaylar, durum: 'bekliyor'
+    macSayisi: h.macSayisi,
+    kolon: h.kolon,
+    tutar: h.tutar,
+    detaylar: detaylar,
+    durum: 'bekliyor'
   };
   kayitliKuponlar.unshift(yeni);
   if(kayitliKuponlar.length > 50) kayitliKuponlar = kayitliKuponlar.slice(0, 50);
   localStorage.setItem('skorlab_kuponlar', JSON.stringify(kayitliKuponlar));
+
   secimlerim = {};
   localStorage.setItem('skorlab_secimlerim', '{}');
-  renderBulten(); renderKupon(); renderKayitliKuponlar();
-  updateStats(); updateKuponCubugu();
+
+  renderBulten();
+  renderKayitliKuponlar();
+  updateStats();
+  updateKuponCubugu();
   showToast('success','Kupon Kaydedildi!', h.kolon + ' kolon · ' + h.tutar + ' TL');
 }
 
@@ -299,11 +280,11 @@ function renderKayitliKuponlar(){
     const emoji = k.durum === 'kazandi' ? '✅' : k.durum === 'kaybetti' ? '❌' : '⏳';
     return `
       <div class="kupon-gecmis ${renk}" onclick="kuponDetayAc(${k.id})">
-        <div style="display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:4px">
+        <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:4px">
           <span>${emoji} <b>${k.macSayisi} maç</b> · ${k.kolon} kolon</span>
           <span class="muted">${k.tarih}</span>
         </div>
-        <div style="font-size:.7rem;color:var(--muted)">Tutar: <b style="color:var(--green)">${k.tutar} TL</b></div>
+        <div style="font-size:.72rem;color:var(--muted)">Tutar: <b style="color:var(--green)">${k.tutar} TL</b></div>
       </div>`;
   }).join('');
 }
@@ -324,9 +305,9 @@ function kuponDetayAc(id){
         `).join('')}
       </div>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:12px">
-        <button class="btn ${k.durum==='kazandi'?'btn-green':'btn-gray'}" onclick="kuponDurum(${id},'kazandi')">✅ Kazandı</button>
-        <button class="btn ${k.durum==='bekliyor'?'btn-orange':'btn-gray'}" onclick="kuponDurum(${id},'bekliyor')">⏳ Bekliyor</button>
-        <button class="btn ${k.durum==='kaybetti'?'btn-red':'btn-gray'}" onclick="kuponDurum(${id},'kaybetti')">❌ Kaybetti</button>
+        <button class="btn ${k.durum==='kazandi'?'btn-green':'btn-gray'}" onclick="kuponDurum(${id},'kazandi')">✅</button>
+        <button class="btn ${k.durum==='bekliyor'?'btn-orange':'btn-gray'}" onclick="kuponDurum(${id},'bekliyor')">⏳</button>
+        <button class="btn ${k.durum==='kaybetti'?'btn-red':'btn-gray'}" onclick="kuponDurum(${id},'kaybetti')">❌</button>
       </div>
       <button class="btn btn-red btn-lg" onclick="kuponSil(${id})" style="margin-top:10px">🗑️ Sil</button>
     </div>`;
@@ -350,82 +331,82 @@ function kuponSil(id){
   renderKayitliKuponlar();
 }
 
-/* ==================== MAÇ DETAY / ANALİZ ==================== */
-function macDetayGoster(id){
+/* ==================== ANALİZ MODAL ==================== */
+function analizGoster(id){
   const m = maclarData.find(x => x.mac_id === id);
   if(!m) return;
-  const y = m.tahmini_yuzdeler;
-  const o = oranlarData[m.mac_id] || {};
+  const o = oranlarData[m.mac_id];
   const sec = secimlerim[id] || [];
-  const yorum = yorumUret(m);
-  const evForm = formSayim(m.ev_form);
-  const depForm = formSayim(m.deplasman_form);
-  const vb = valueBet(m);
-  const marj = (o['1'] && o['X'] && o['2']) ? marjHesapla(o['1'], o['X'], o['2']) : null;
 
-  $('macDetayTitle').innerText = '📊 Maç #' + id + ' Analizi';
+  $('analizTitle').innerText = '📊 ' + m.ev_sahibi + ' - ' + m.deplasman;
 
-  $('macDetayBody').innerHTML = `
+  if(!o || !o['1'] || !o['X'] || !o['2']){
+    $('analizBody').innerHTML = `
+      <div style="text-align:center;padding:20px">
+        <div class="muted">Oran girilmedi.</div>
+        <div class="muted" style="margin-top:8px;font-size:.75rem">Bültenden 1/X/2 oranlarını gir, analiz otomatik çıkar.</div>
+      </div>`;
+    $('analizModal').classList.add('active');
+    return;
+  }
+
+  const analiz = analizUret(m);
+
+  $('analizBody').innerHTML = `
     <div style="font-size:.85rem;line-height:1.8">
 
-      <div style="text-align:center;margin-bottom:14px">
-        <div style="font-weight:900;font-size:1rem">${m.ev_sahibi}</div>
-        <div style="color:var(--muted);font-size:.75rem;margin:4px 0">vs</div>
-        <div style="font-weight:900;font-size:1rem">${m.deplasman}</div>
+      <div class="analiz-box">
+        <span class="analiz-lbl">📊 ORANLAR</span>
+        <div class="analiz-row"><span>1:</span><b>${o['1']}</b></div>
+        <div class="analiz-row"><span>X:</span><b>${o['X']}</b></div>
+        <div class="analiz-row"><span>2:</span><b>${o['2']}</b></div>
       </div>
 
       <div class="analiz-box">
-        <span class="analiz-lbl">📈 FORM DURUMU</span>
-        <div class="analiz-row"><span>${m.ev_sahibi}:</span><span>${formHTML(m.ev_form)}</span></div>
-        <div class="analiz-row"><span class="muted">${evForm.G}G · ${evForm.B}B · ${evForm.M}M</span></div>
-        <div class="analiz-row" style="margin-top:8px"><span>${m.deplasman}:</span><span>${formHTML(m.deplasman_form)}</span></div>
-        <div class="analiz-row"><span class="muted">${depForm.G}G · ${depForm.B}B · ${depForm.M}M</span></div>
+        <span class="analiz-lbl">🎯 HAM OLASILIK (Marj Dahil)</span>
+        <div class="analiz-row"><span>1:</span><b class="green">%${analiz.p.ham1.toFixed(1)}</b></div>
+        <div class="analiz-row"><span>X:</span><b class="orange">%${analiz.p.hamX.toFixed(1)}</b></div>
+        <div class="analiz-row"><span>2:</span><b>%${analiz.p.ham2.toFixed(1)}</b></div>
       </div>
 
       <div class="analiz-box">
-        <span class="analiz-lbl">🎯 TAHMİN YÜZDELERİ</span>
-        <div class="analiz-row"><span>Ev Sahibi (1):</span><b class="green">%${y.ev_galibiyet}</b></div>
-        <div class="analiz-row"><span>Beraberlik (X):</span><b style="color:var(--orange)">%${y.beraberlik}</b></div>
-        <div class="analiz-row"><span>Deplasman (2):</span><b style="color:var(--blue)">%${y.deplasman_galibiyet}</b></div>
+        <span class="analiz-lbl">🧮 GERÇEK OLASILIK (Marj Çıkarıldı)</span>
+        <div class="analiz-row"><span>1:</span><b class="green">%${analiz.p.gercek1.toFixed(1)}</b></div>
+        <div class="analiz-row"><span>X:</span><b class="orange">%${analiz.p.gercekX.toFixed(1)}</b></div>
+        <div class="analiz-row"><span>2:</span><b>%${analiz.p.gercek2.toFixed(1)}</b></div>
+        <div class="analiz-row muted" style="margin-top:4px;font-size:.7rem">Toplam: %${(analiz.p.gercek1+analiz.p.gercekX+analiz.p.gercek2).toFixed(1)}</div>
       </div>
 
-      ${marj ? `
       <div class="analiz-box">
-        <span class="analiz-lbl">📊 BAHİSÇİ ANALİZİ</span>
-        <div class="analiz-row"><span>Oranlar:</span><b>${o['1']} / ${o['X']} / ${o['2']}</b></div>
-        <div class="analiz-row"><span>Bahisçi Ham %:</span><span>${marj.hamP1.toFixed(1)} / ${marj.hamPX.toFixed(1)} / ${marj.hamP2.toFixed(1)}</span></div>
-        <div class="analiz-row"><span>Marj:</span><b style="color:var(--orange)">%${marj.marj.toFixed(2)}</b></div>
-        ${vb ? `<div class="analiz-row"><span>En İyi EV:</span><b class="${vb.degerli?'green':'red'}">${vb.kod} → ${vb.ev.toFixed(3)}</b></div>` : ''}
+        <span class="analiz-lbl">💰 BAHİSÇİ MARJI</span>
+        <div class="analiz-row">
+          <span>Marj:</span>
+          <b class="${analiz.p.marj > 8 ? 'red' : analiz.p.marj > 5 ? 'orange' : 'green'}">%${analiz.p.marj.toFixed(2)}</b>
+        </div>
+        <div class="analiz-row muted" style="font-size:.72rem">
+          ${analiz.p.marj > 8 ? '⚠️ Yüksek marj — dezavantajlı' :
+            analiz.p.marj > 5 ? '⚡ Ortalama marj' :
+            '✅ Düşük marj — iyi oran'}
+        </div>
       </div>
-      ` : `
-      <div class="analiz-box">
-        <span class="analiz-lbl">📊 BAHİSÇİ ANALİZİ</span>
-        <div class="analiz-row"><span class="muted">Oran girilmedi. Bültenden 1/X/2 oranlarını gir.</span></div>
-      </div>
-      `}
 
-      <div class="${yorum.className}">
-        <div class="baslik">${yorum.baslik}</div>
-        ${yorum.satirlar.map(s => `<p>${s}</p>`).join('')}
+      <div class="${analiz.className}">
+        <div class="baslik">${analiz.tip}</div>
+        ${analiz.satirlar.map(s => `<p>${s}</p>`).join('')}
       </div>
 
       <div style="margin-top:16px;padding:12px;background:var(--bg3);border-radius:10px">
-        <div style="font-weight:900;color:var(--green);font-size:.82rem;margin-bottom:10px">🖐️ SENİN SEÇİMİN</div>
+        <div style="font-weight:900;color:var(--green);font-size:.85rem;margin-bottom:10px">🖐️ SENİN SEÇİMİN</div>
         <div class="secim-grid">
-          <button class="secim-btn ${sec.includes('1')?'secili':''}" onclick="detayToggle(${id},'1')">1</button>
-          <button class="secim-btn ${sec.includes('X')?'secili':''}" onclick="detayToggle(${id},'X')">X</button>
-          <button class="secim-btn ${sec.includes('2')?'secili':''}" onclick="detayToggle(${id},'2')">2</button>
+          <button class="secim-btn ${sec.includes('1')?'secili':''}" onclick="secimToggle(${id},'1');analizGoster(${id})">1</button>
+          <button class="secim-btn ${sec.includes('X')?'secili':''}" onclick="secimToggle(${id},'X');analizGoster(${id})">X</button>
+          <button class="secim-btn ${sec.includes('2')?'secili':''}" onclick="secimToggle(${id},'2');analizGoster(${id})">2</button>
         </div>
       </div>
 
     </div>`;
 
-  $('macDetayModal').classList.add('active');
-}
-
-function detayToggle(id, secim){
-  secimToggle(id, secim);
-  macDetayGoster(id);
+  $('analizModal').classList.add('active');
 }
 
 /* ==================== NAV / MODAL ==================== */
@@ -433,8 +414,7 @@ function switchTab(i, el){
   document.querySelectorAll('.tab, .page').forEach(e => e.classList.remove('active'));
   if(el) el.classList.add('active');
   $('page-'+i).classList.add('active');
-  if(i === 2) renderKupon();
-  if(i === 3) renderKayitliKuponlar();
+  if(i === 2) renderKayitliKuponlar();
 }
 
 function closeModal(id){ $(id).classList.remove('active'); }
@@ -443,10 +423,6 @@ function showToast(type, title, msg){
   $('toastTitle').innerText = title;
   $('toastMsg').innerText = msg;
   $('toastModal').classList.add('active');
-}
-
-if('serviceWorker' in navigator){
-  window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
 }
 
 window.onload = function(){ loadData(); };
