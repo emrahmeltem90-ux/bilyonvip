@@ -303,3 +303,65 @@ button:active{opacity:.8}
 .roi-item .v{font-weight:900;font-size:1.1rem;margin:2px 0}
 .roi-item .l{font-size:.6rem;color:var(--muted);font-weight:800}
 .roi-item .s{font-size:.58rem;color:var(--muted);margin-top:2px}
+/* === v11: SİSTEM vs SEN === */
+
+/* Karşılaştırma kartı */
+.karsilastirma-kart{
+  background:var(--bg2);border-radius:12px;padding:14px;margin-bottom:12px;
+  border-left:4px solid var(--blue);
+}
+.karsilastirma-kart .baslik{
+  font-weight:900;font-size:.85rem;margin-bottom:10px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.karsilastirma-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;
+}
+.karsilastirma-taraf{
+  background:var(--bg3);border-radius:10px;padding:10px;text-align:center;
+}
+.karsilastirma-taraf.kazanan{
+  background:linear-gradient(135deg,rgba(0,230,118,.15),rgba(0,230,118,.05));
+  border:1px solid rgba(0,230,118,.4);
+}
+.karsilastirma-taraf .lbl{
+  font-size:.6rem;color:var(--muted);font-weight:800;margin-bottom:6px;
+}
+.karsilastirma-taraf .skor{
+  font-weight:900;font-size:1.4rem;margin:4px 0;
+}
+.karsilastirma-taraf .alt{
+  font-size:.65rem;color:var(--muted);
+}
+.karsilastirma-mesaj{
+  margin-top:10px;padding:10px;border-radius:8px;
+  font-size:.75rem;text-align:center;font-weight:800;
+}
+.karsilastirma-mesaj.sistem-kazandi{background:rgba(61,139,255,.15);color:var(--blue)}
+.karsilastirma-mesaj.sen-kazandin{background:rgba(0,230,118,.15);color:var(--green)}
+.karsilastirma-mesaj.berabere{background:rgba(255,176,32,.15);color:var(--orange)}
+
+/* Manüel seçim butonları (kart üstünde) */
+.manuel-buttons{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px;
+}
+.manuel-btn{
+  padding:8px;border-radius:8px;border:1px solid var(--border);
+  background:var(--bg3);color:var(--text);font-weight:800;font-size:.8rem;
+  cursor:pointer;transition:.15s;
+}
+.manuel-btn:active{transform:scale(.97)}
+.manuel-btn.secili{
+  background:linear-gradient(135deg,rgba(61,139,255,.3),rgba(61,139,255,.15));
+  border-color:var(--blue);color:#fff;font-weight:900;
+  box-shadow:0 0 12px rgba(61,139,255,.4);
+}
+.manuel-btn.secili-yesil{
+  background:linear-gradient(135deg,rgba(0,230,118,.3),rgba(0,230,118,.15));
+  border-color:var(--green);color:#fff;
+  box-shadow:0 0 12px rgba(0,230,118,.4);
+}
+.manuel-baslik{
+  font-size:.62rem;color:var(--muted);font-weight:800;
+  margin-top:10px;margin-bottom:4px;
+}
