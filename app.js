@@ -1,5 +1,5 @@
 /* ============================================================
-   SKORLAB v8 PRO · Temiz Sürüm (Telegram Alarm Kapalı)
+   SKORLAB v9 PRO · Oran Bantları + Yorum Katmanı
    ============================================================ */
 
 let matchesData = [];
@@ -125,6 +125,88 @@ function bankoKalite(a){
 }
 
 /* ============================================================
+   M1.5: ORAN BANTLARI (YENİ)
+   ============================================================ */
+
+/* Favori oranına göre bant */
+function oranBandi(oran){
+  if(oran <= 1.25) return { kod:'banko', etiket:'🔒 BANKO', aciklama:'Çok düşük risk' };
+  if(oran <= 1.45) return { kod:'guvenli', etiket:'✅ GÜVENLİ', aciklama:'Düşük risk' };
+  if(oran <= 1.60) return { kod:'riskli', etiket:'⚠️ RİSKLİ', aciklama:'Banko değil, çift düşün' };
+  if(oran <= 2.10) return { kod:'denge', etiket:'⚡ DENGE', aciklama:'Kim kazanır belli değil' };
+  return { kod:'surpriz', etiket:'🚨 SÜRPRİZ', aciklama:'Sürprize açık' };
+}
+
+/* Favori oranına göre önerilen kupon tipi */
+function onerilenKupon(oran){
+  if(oran <= 1.25) return { tip:'TEK', kod:'banko' };
+  if(oran <= 1.45) return { tip:'TEK', kod:'guvenli' };
+  if(oran <= 1.60) return { tip:'ÇİFT', kod:'riskli' };
+  if(oran <= 2.10) return { tip:'ÇİFT', kod:'denge' };
+  return { tip:'ÜÇLÜ', kod:'surpriz' };
+}
+
+/* ============================================================
+   M1.6: YORUM KATMANI (YENİ)
+   ============================================================ */
+
+function yorumUret(a, tip, favOran){
+  if(!a) return null;
+  const t = a.enYuksek;
+  const band = oranBandi(favOran);
+  const kuponTip = onerilenKupon(favOran);
+  const tuzak = a.favoriTuzagi;
+  const tuzakDusuk = a.pX;
+
+  let satirlar = [];
+  let baslik = '';
+  let className = 'yorum-box';
+
+  /* Ana yorum */
+  if(band.kod === 'banko'){
+    baslik = '🔒 Banko maç';
+    satirlar.push(['Favori', `${t.kod} (%${t.olas.toFixed(1)})`]);
+    satirlar.push(['Oran', favOran.toFixed(2)]);
+    satirlar.push(['Öneri', 'Tek oyna, banko']);
+    satirlar.push(['Risk', 'Çok düşük']);
+  } else if(band.kod === 'guvenli'){
+    baslik = '✅ Güvenli favori';
+    satirlar.push(['Favori', `${t.kod} (%${t.olas.toFixed(1)})`]);
+    satirlar.push(['Oran', favOran.toFixed(2)]);
+    satirlar.push(['Öneri', 'Tek veya çift olabilir']);
+    satirlar.push(['Risk', 'Düşük']);
+  } else if(band.kod === 'riskli'){
+    baslik = '⚠️ RİSKLİ FAVORİ — Banko değil!';
+    className = 'yorum-box riskli';
+    satirlar.push(['Favori', `${t.kod} (%${t.olas.toFixed(1)})`]);
+    satirlar.push(['Oran', favOran.toFixed(2) + ' (banko için çok yüksek)']);
+    satirlar.push(['Tuzak', `%${tuzak.toFixed(0)} — sürprize açık`]);
+    satirlar.push(['Beraberlik', `%${tuzakDusuk.toFixed(1)} — dikkat`]);
+    satirlar.push(['Öneri', `ÇİFT ${t.kod}${a.ikinci.kod === 'X' ? 'X' : a.ikinci.kod}`]);
+    satirlar.push(['Uyarı', 'Bu oranla tek oynama']);
+  } else if(band.kod === 'denge'){
+    baslik = '⚡ Denge maçı — Belirsiz';
+    className = 'yorum-box tehlike';
+    satirlar.push(['En yüksek', `${t.kod} (%${t.olas.toFixed(1)})`]);
+    satirlar.push(['Oran', favOran.toFixed(2)]);
+    satirlar.push(['Tuzak', `%${tuzak.toFixed(0)}`]);
+    satirlar.push(['Öneri', `ÇİFT ${siraliAlternatif(t.kod, a.ikinci.kod)}`]);
+    satirlar.push(['Uyarı', 'Tek oynama, çift/üçlü düşün']);
+  } else {
+    baslik = '🚨 SÜRPRİZ BÖLGESİ';
+    className = 'yorum-box surpriz';
+    satirlar.push(['En yüksek', `${t.kod} (%${t.olas.toFixed(1)})`]);
+    satirlar.push(['Oran', favOran.toFixed(2)]);
+    satirlar.push(['Tuzak', `%${tuzak.toFixed(0)} — çok yüksek`]);
+    satirlar.push(['Beraberlik', `%${tuzakDusuk.toFixed(1)}`]);
+    satirlar.push(['Öneri', `ÜÇLÜ 1X2`]);
+    satirlar.push(['Uyarı', 'Sürprize en açık bant']);
+  }
+
+  return { baslik, satirlar, className, band, kuponTip };
+}
+
+/* ============================================================
    ANALİZ MOTORU
    ============================================================ */
 function macAnalizEt(id, o1, oX, o2){
@@ -147,6 +229,10 @@ function macAnalizEt(id, o1, oX, o2){
   else if(enYuksek.kod==='2') kazanamaRiski = hib.p1 + hib.pX;
   else kazanamaRiski = hib.p1 + hib.p2;
 
+  /* Favori oranı */
+  const oranlar = { '1': o1, 'X': oX, '2': o2 };
+  const favOran = oranlar[enYuksek.kod];
+
   const a = {
     id,
     p1:hib.p1, pX:hib.pX, p2:hib.p2,
@@ -158,10 +244,14 @@ function macAnalizEt(id, o1, oX, o2){
     sirali, enYuksek, ikinci, ucuncu, fark,
     favoriTuzagi, kazanamaRiski,
     surprizOlas:ucuncu.olas, rakipOlas:ikinci.olas,
+    favOran: favOran,
     favSinif:favSinifi(enYuksek.olas),
     beraberlikSinif:beraberlikSinifi(hib.pX),
     tuzakSinif:tuzakSinifi(enYuksek.olas),
-    surprizSinif:surprizSinifi(ikinci.olas)
+    surprizSinif:surprizSinifi(ikinci.olas),
+    /* v9: oran bandı */
+    band: oranBandi(favOran),
+    oneri: onerilenKupon(favOran)
   };
 
   const fav = enYuksek.olas, tuzak = 100-fav, px = hib.pX;
@@ -187,20 +277,37 @@ function tahminUret(a){
   const ent = entropyHesapla(a);
   const kalite = bankoKalite(a);
   const sinif = a.macSinif;
+
+  /* v9: Bandı kullan */
+  const band = a.band;
+  const oneri = a.oneri;
+
   let karar='', guven=0, risk='';
 
-  if(sinif==='BANKO ADAYI'){ karar='BANKO '+enYuksek.kod; guven=Math.min(100,Math.round(enYuksek.olas+8)); risk='Çok Düşük'; }
-  else if(sinif==='RİSKLİ FAVORİ'){ karar='BANKO '+enYuksek.kod; guven=Math.round(enYuksek.olas); risk='Orta'; }
-  else if(sinif==='BERABERLİK ADAYI'){ karar='ÇİFT '+siraliAlternatif(enYuksek.kod,'X'); guven=Math.round(enYuksek.olas); risk='Orta-Yüksek'; }
-  else if(sinif==='SÜRPRİZ ADAYI'){ karar='ÇİFT '+siraliAlternatif(enYuksek.kod,ikinci.kod); guven=Math.round(enYuksek.olas); risk='Yüksek'; }
-  else if(sinif==='DENGELİ MAÇ'){ karar='ÜÇLÜ 1X2'; guven=Math.max(30,Math.round(enYuksek.olas-5)); risk='Çok Yüksek'; }
-  else {
-    if(kalite>=75 && enYuksek.olas>=65){ karar='BANKO '+enYuksek.kod; guven=Math.min(100,enYuksek.olas+6); risk='Çok Düşük'; }
-    else if(kalite>=55 && enYuksek.olas>=55){ karar='BANKO '+enYuksek.kod; guven=Math.min(100,enYuksek.olas+3); risk='Düşük'; }
-    else if(kalite>=35 && enYuksek.olas>=42){ karar='ÇİFT '+siraliAlternatif(enYuksek.kod,ikinci.kod); guven=enYuksek.olas; risk='Orta'; }
-    else { karar='ÇİFT '+siraliAlternatif(enYuksek.kod,ikinci.kod); guven=enYuksek.olas-3; risk='Yüksek'; }
+  /* Bant bazlı karar */
+  if(band.kod === 'banko'){
+    karar = 'BANKO ' + enYuksek.kod;
+    guven = Math.min(100, Math.round(enYuksek.olas + 8));
+    risk = 'Çok Düşük';
+  } else if(band.kod === 'guvenli'){
+    karar = 'BANKO ' + enYuksek.kod;
+    guven = Math.round(enYuksek.olas);
+    risk = 'Düşük';
+  } else if(band.kod === 'riskli'){
+    karar = 'ÇİFT ' + siraliAlternatif(enYuksek.kod, ikinci.kod);
+    guven = Math.round(enYuksek.olas);
+    risk = 'Orta-Yüksek';
+  } else if(band.kod === 'denge'){
+    karar = 'ÇİFT ' + siraliAlternatif(enYuksek.kod, ikinci.kod);
+    guven = Math.round(enYuksek.olas - 3);
+    risk = 'Yüksek';
+  } else {
+    karar = 'ÜÇLÜ 1X2';
+    guven = Math.max(30, Math.round(enYuksek.olas - 8));
+    risk = 'Çok Yüksek';
   }
-  const alternatif = karar.includes('BANKO') ? siraliAlternatif(enYuksek.kod,ikinci.kod) : karar.replace('ÇİFT ','');
+
+  const alternatif = karar.includes('BANKO') ? siraliAlternatif(enYuksek.kod, ikinci.kod) : karar.replace('ÇİFT ','').replace('ÜÇLÜ ','');
   return {
     ana_tahmin:enYuksek.kod, alternatif, surpriz:ucuncu.kod,
     guven:Math.round(guven), risk, karar,
@@ -208,7 +315,9 @@ function tahminUret(a){
     favSinif:a.favSinif, beraberlikSinif:a.beraberlikSinif,
     tuzakSinif:a.tuzakSinif, surprizSinif:a.surprizSinif,
     favoriTuzagi:Math.round(a.favoriTuzagi), kazanamaRiski:Math.round(a.kazanamaRiski),
-    surprizOlas:a.surprizOlas
+    surprizOlas:a.surprizOlas,
+    band: a.band,
+    oneri: a.oneri
   };
 }
 
@@ -233,13 +342,6 @@ function kasaGuncelle(val){
   kasa = parseFloat(val) || 0;
   localStorage.setItem('skorlab_kasa', kasa);
   renderPerformans();
-}
-
-/* ============================================================
-   AYARLAR (Basitleştirildi - Telegram yok)
-   ============================================================ */
-function openAyarlar(){
-  closeModal('ayarlarModal');
 }
 
 /* ============================================================
@@ -318,12 +420,11 @@ function renderBulten(){
         return filtreAktif === 'bos';
       }
       const a = macAnalizEt(m.id, od['1'], od['X'], od['2']);
-      const t = tahminUret(a);
       const man = manuelSecimler['toto-'+m.id];
-      const k = man ? 'MANUEL '+man : t.karar;
-      if(filtreAktif === 'banko') return k.includes('BANKO');
-      if(filtreAktif === 'cift') return k.includes('ÇİFT') || k.includes('ÜÇLÜ');
-      if(filtreAktif === 'riskli') return a.macSinif === 'RİSKLİ FAVORİ' || a.macSinif === 'SÜRPRİZ ADAYI';
+      const bandKod = a.band.kod;
+      if(filtreAktif === 'banko') return bandKod === 'banko' || bandKod === 'guvenli';
+      if(filtreAktif === 'riskli') return bandKod === 'riskli';
+      if(filtreAktif === 'cift') return bandKod === 'denge' || bandKod === 'surpriz';
       return true;
     });
   }
@@ -353,13 +454,21 @@ function renderBulten(){
         : '<span class="badge red">❌ YATTI</span>';
     }
 
+    /* v9: Oran bandı etiketi */
+    let bandTag = '';
+    if(a){
+      bandTag = `<span class="band-tag band-${a.band.kod}">${a.band.etiket}</span>`;
+    }
+
     return `
     <div class="match">
       <div class="match-head" onclick="macDetayGoster('toto',${m.id})" style="cursor:pointer">
         <span>${m.date}</span>
         <span class="mid">MAÇ #${m.id}</span>
       </div>
-      <div class="teams" onclick="macDetayGoster('toto',${m.id})" style="cursor:pointer">${m.home} - ${m.away}${badge}${sonucBadge}${m.league?'<span class="league-tag">'+m.league+'</span>':''}</div>
+      <div class="teams" onclick="macDetayGoster('toto',${m.id})" style="cursor:pointer">
+        ${m.home} - ${m.away}${badge}${sonucBadge}${bandTag}${m.league?'<span class="league-tag">'+m.league+'</span>':''}
+      </div>
       <div class="oran-input-grid">
         <div class="oran-input-item"><label>1</label><input type="number" step="0.01" placeholder="1.00" value="${od['1']||''}" oninput="oranGuncelle(${m.id},'1',this.value)"></div>
         <div class="oran-input-item"><label>X</label><input type="number" step="0.01" placeholder="1.00" value="${od['X']||''}" oninput="oranGuncelle(${m.id},'X',this.value)"></div>
@@ -377,6 +486,16 @@ function renderBulten(){
         <span style="background:rgba(255,77,94,.1);color:var(--red);padding:3px 8px;border-radius:6px;font-weight:800">TUZAK: ${t.favoriTuzagi}%</span>
         <span style="background:rgba(168,85,247,.1);color:var(--purple);padding:3px 8px;border-radius:6px;font-weight:800">xG: ${a.xgEv.toFixed(2)}-${a.xgDep.toFixed(2)}</span>
       </div>
+
+      <!-- v9: YORUM KUTUSU -->
+      ${(() => {
+        const y = yorumUret(a, 'toto', a.favOran);
+        return `<div class="${y.className}">
+          <div class="baslik">${y.baslik}</div>
+          ${y.satirlar.map(s => `<div class="satir"><span>${s[0]}</span><span>${s[1]}</span></div>`).join('')}
+        </div>`;
+      })()}
+
       <div style="margin-top:8px">
         <button class="btn btn-gray" style="width:100%;padding:8px;font-size:.72rem" onclick="sonucAc('toto',${m.id})">
           ${sonuc ? '✏️ Sonucu Değiştir' : '✅ Sonuç Gir'}
@@ -452,10 +571,14 @@ function renderSerbest(){
       : '';
     const sonuc = macSonuclari['iddaa-'+m.id];
     const sonucBadge = sonuc === 'dogru' ? '<span class="badge green">✅</span>' : sonuc === 'yanlis' ? '<span class="badge red">❌</span>' : '';
+
+    /* Band tag */
+    const bandTag = `<span class="band-tag band-${a.band.kod}">${a.band.etiket}</span>`;
+
     return `
     <div class="tahmin-kart ${cls}" style="margin-bottom:10px">
       <div class="tk-head">
-        <span>${iko} İDDAA #${idx+1} · ${t.macSinif} ${sonucBadge}</span>
+        <span>${iko} İDDAA #${idx+1} · ${t.macSinif} ${sonucBadge} ${bandTag}</span>
         <button onclick="serbestSil(${idx})" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:1rem;width:auto;padding:2px 6px">🗑️</button>
       </div>
       <div class="tk-teams">${m.mac}</div>
@@ -471,6 +594,16 @@ function renderSerbest(){
         <div class="tk-item"><span class="lbl">Beraberlik</span><span class="val">${t.beraberlikSinif}</span></div>
         <div class="tk-item"><span class="lbl">xG</span><span class="val">${a.xgEv.toFixed(2)}-${a.xgDep.toFixed(2)}</span></div>
       </div>
+
+      <!-- v9: YORUM KUTUSU -->
+      ${(() => {
+        const y = yorumUret(a, 'iddaa', a.favOran);
+        return `<div class="${y.className}">
+          <div class="baslik">${y.baslik}</div>
+          ${y.satirlar.map(s => `<div class="satir"><span>${s[0]}</span><span>${s[1]}</span></div>`).join('')}
+        </div>`;
+      })()}
+
       ${kellyBox}
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px">
         <button onclick="macDetayGoster('iddaa',${m.id})" class="btn btn-gray" style="padding:8px;font-size:.75rem">🔍</button>
@@ -761,14 +894,28 @@ function macDetayGoster(tip, id){
   const oranFav = parseFloat(tip==='toto' ? oddsData[id][t.ana_tahmin] : (t.ana_tahmin==='1'?o1:t.ana_tahmin==='X'?oX:o2));
   const kelly = kellyHesapla(a.enYuksek.olas, oranFav, kellyFraction);
 
+  /* Yorum */
+  const yorum = yorumUret(a, tip, a.favOran);
+  const yorumHTML = `<div class="${yorum.className}">
+    <div class="baslik">${yorum.baslik}</div>
+    ${yorum.satirlar.map(s => `<div class="satir"><span>${s[0]}</span><span>${s[1]}</span></div>`).join('')}
+  </div>`;
+
   $('macDetayTitle').innerText = '📊 ' + (tip==='toto' ? 'MAÇ #'+id : 'İDDAA');
   $('macDetayBody').innerHTML = `
     <div style="font-size:.8rem;line-height:1.8">
       <div style="text-align:center;margin-bottom:14px">
         <div style="font-weight:900;font-size:1rem">${isim}</div>
         <div style="color:var(--muted);font-size:.7rem;margin-top:4px">${tarih}${league?' · '+league:''}</div>
-        <div style="margin-top:8px;padding:6px 12px;background:var(--bg3);border-radius:8px;display:inline-block;font-size:.72rem;font-weight:800;color:var(--green)">${t.macSinif}</div>
+        <div style="margin-top:8px">
+          <span class="band-tag band-${a.band.kod}">${a.band.etiket}</span>
+          <span style="margin-left:6px;padding:6px 12px;background:var(--bg3);border-radius:8px;font-size:.72rem;font-weight:800;color:var(--green)">${t.macSinif}</span>
+        </div>
       </div>
+
+      <!-- YORUM -->
+      ${yorumHTML}
+
       <div class="analiz-box">
         <div class="analiz-row"><span class="analiz-lbl">📊 ORANLAR</span></div>
         <div class="analiz-row"><span>1: <b>${o1}</b></span><span>X: <b>${oX}</b></span><span>2: <b>${o2}</b></span></div>
@@ -794,10 +941,6 @@ function macDetayGoster(tip, id){
       </div>
       <div class="analiz-box">
         <div style="position:relative;height:260px"><canvas id="radarChart"></canvas></div>
-      </div>
-      <div class="sürpriz-alert">
-        <div class="baslik">⚠️ TUZAK: %${t.favoriTuzagi} · ${a.tuzakSinif}</div>
-        <div class="neden">Kazanama: <b>%${t.kazanamaRiski}</b></div>
       </div>
       ${kelly.degerli ? `
       <div class="kelly-box">
@@ -981,9 +1124,9 @@ function setRiskMode(mode, el){
   document.querySelectorAll('[id^="mode-"]').forEach(e => e.classList.remove('active'));
   if(el) el.classList.add('active');
   const info = {
-    guvenli:'<b>🛡️ GÜVENLİ</b><br>Banko maçlara öncelik.',
-    dengeli:'<b>⚖️ DENGELİ</b><br>Banko + çift karışık.',
-    agresif:'<b>🚀 AGRESİF</b><br>Sürprizlere daha fazla kolon.'
+    guvenli:'<b>🛡️ GÜVENLİ</b><br>Sadece banko ve güvenli oranlı maçlar.',
+    dengeli:'<b>⚖️ DENGELİ</b><br>Banko + riskli karışık.',
+    agresif:'<b>🚀 AGRESİF</b><br>Riskli ve sürpriz bantlara kolon ver.'
   };
   const el2 = $('modeInfo'); if(el2) el2.innerHTML = info[mode];
 }
@@ -1035,6 +1178,11 @@ function kuponOlustur(){
     });
   }
   if(!kaynak.length){ showToast('error','Maç Yok','Kaynakta maç/oran yok.'); return; }
+
+  /* Risk moduna göre filtre */
+  if(riskMode === 'guvenli'){
+    kaynak = kaynak.filter(k => k.a.band.kod === 'banko' || k.a.band.kod === 'guvenli');
+  }
 
   const kolonlar = [];
   for(let c = 0; c < kolonSayisi; c++){
@@ -1124,7 +1272,7 @@ function kuponGorseliOlustur(){
   ctx.fillStyle = grd; ctx.fillRect(0, 0, W, H);
 
   ctx.fillStyle = '#00e676'; ctx.font = 'bold 56px sans-serif';
-  ctx.fillText('⚽ SKORLAB v8 PRO', 60, 100);
+  ctx.fillText('⚽ SKORLAB v9 PRO', 60, 100);
 
   ctx.fillStyle = '#7a8ba8'; ctx.font = '24px sans-serif';
   ctx.fillText('Kupon · ' + new Date().toLocaleString('tr-TR'), 60, 145);
@@ -1381,7 +1529,10 @@ function tahminKartHTML({tip, m, a, t, man, id, isim, tarih}){
         <div class="tk-item"><span class="lbl">Beraberlik</span><span class="val">${t.beraberlikSinif}</span></div>
         <div class="tk-item"><span class="lbl">Kalite</span><span class="val">${t.kalite}</span></div>
       </div>
-      <div class="tk-alt"><b>Alt:</b> ${t.alternatif} · <b>Sür:</b> ${t.surpriz}</div>
+      <div class="tk-alt">
+        <span class="band-tag band-${a.band.kod}">${a.band.etiket}</span>
+        <b>Alt:</b> ${t.alternatif} · <b>Sür:</b> ${t.surpriz}
+      </div>
     </div>`;
 }
 
