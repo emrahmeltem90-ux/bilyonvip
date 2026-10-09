@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<header class="app-header">
+<header class="app-header" id="appHeader">
   <div class="logo">⚽ SKORLAB <span class="v">v16</span></div>
   <div id="weekTitle" class="week">Yükleniyor...</div>
 </header>
@@ -35,6 +35,7 @@
 
 <main>
 
+<!-- SAYFA 1: BÜLTEN -->
 <section id="page-1" class="page active">
   <div class="stats-grid">
     <div class="stat-card"><div class="stat-val" id="statMac">0</div><div class="stat-lbl">MAÇ</div></div>
@@ -58,6 +59,7 @@
   </div>
 </section>
 
+<!-- SAYFA 2: SERBEST -->
 <section id="page-2" class="page">
   <div class="page-actions">
     <button class="btn btn-green" onclick="openSerbestModal()">➕ Maç Ekle</button>
@@ -77,6 +79,7 @@
   </div>
 </section>
 
+<!-- SAYFA 3: KUPONLARIM -->
 <section id="page-3" class="page">
   <div class="card">
     <div class="result-title">💾 KAYITLI KUPONLARIM</div>
@@ -84,15 +87,20 @@
   </div>
 </section>
 
+<!-- SAYFA 4: KARŞILAŞTIR -->
 <section id="page-4" class="page">
   <div class="card">
     <div class="result-title">🆚 SİSTEM vs SEN</div>
+    <div class="muted" style="font-size:.72rem;margin-bottom:12px">
+      Kaydettiğin kuponların sonuçlarına göre karşılaştırma
+    </div>
     <div id="karsilastirmaListesi"></div>
   </div>
 </section>
 
 </main>
 
+<!-- MODAL: OTOMATİK KUPON SEÇİMİ -->
 <div class="modal" id="secimModal">
   <div class="modal-content">
     <div class="modal-head"><span>⚡ OTOMATİK KUPON</span><button onclick="closeModal('secimModal')">✖</button></div>
@@ -100,6 +108,7 @@
   </div>
 </div>
 
+<!-- MODAL: SERBEST MAÇ EKLE -->
 <div class="modal" id="serbestModal">
   <div class="modal-content">
     <div class="modal-head"><span>➕ SERBEST MAÇ EKLE</span><button onclick="closeModal('serbestModal')">✖</button></div>
@@ -116,6 +125,7 @@
   </div>
 </div>
 
+<!-- MODAL: MAÇ DETAY -->
 <div class="modal" id="macDetayModal">
   <div class="modal-content">
     <div class="modal-head"><span id="macDetayTitle">Maç Detay</span><button onclick="closeModal('macDetayModal')">✖</button></div>
@@ -123,6 +133,7 @@
   </div>
 </div>
 
+<!-- MODAL: KUPON DETAY -->
 <div class="modal" id="kuponDetayModal">
   <div class="modal-content">
     <div class="modal-head"><span>💾 KUPON DETAY</span><button onclick="closeModal('kuponDetayModal')">✖</button></div>
@@ -130,6 +141,7 @@
   </div>
 </div>
 
+<!-- MODAL: TOAST -->
 <div class="modal" id="toastModal">
   <div class="modal-content small">
     <div class="modal-body center">
