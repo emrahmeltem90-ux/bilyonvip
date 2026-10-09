@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#070b14">
-<title>SkorLab v13 · Toto Modu</title>
+<title>SkorLab v14 · Toto Modu</title>
 
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
@@ -17,21 +17,22 @@
 <body>
 
 <header class="app-header">
-  <div class="logo">⚽ SKORLAB <span class="v">v13</span></div>
+  <div class="logo">⚽ SKORLAB <span class="v">v14</span></div>
   <div id="weekTitle" class="week">Yükleniyor...</div>
 </header>
 
 <div class="kasa-bar">
-  <span>💰 Kasa:</span>
-  <input type="number" id="kasaInput" value="1000" step="50" oninput="kasaGuncelle(this.value)">
+  <span>💰 Bütçe:</span>
+  <input type="number" id="butceInput" value="100" step="10" oninput="butceGuncelle(this.value)">
   <span>TL</span>
+  <span class="kasa-sep">·</span>
+  <button class="btn btn-blue btn-mini" onclick="otomatikKupon()">⚡ OTOMATİK KUPON</button>
 </div>
 
 <nav class="tabs">
   <button class="tab active" onclick="switchTab(1,this)">📋 Bülten</button>
   <button class="tab" onclick="switchTab(2,this)">💾 Kuponlarım</button>
   <button class="tab" onclick="switchTab(3,this)">🆚 Karşılaştır</button>
-  <button class="tab" onclick="switchTab(4,this)">💼 Kasa</button>
 </nav>
 
 <main>
@@ -42,7 +43,7 @@
     <div class="stat-card"><div class="stat-val" id="statMac">0</div><div class="stat-lbl">MAÇ</div></div>
     <div class="stat-card"><div class="stat-val blue" id="statSecilen">0</div><div class="stat-lbl">SEÇİLEN</div></div>
     <div class="stat-card"><div class="stat-val green" id="statKolon">0</div><div class="stat-lbl">KOLON</div></div>
-    <div class="stat-card"><div class="stat-val purple" id="statDeger">0</div><div class="stat-lbl">💎 DEĞER</div></div>
+    <div class="stat-card"><div class="stat-val purple" id="statDeger">0</div><div class="stat-lbl">💎</div></div>
   </div>
 
   <div id="matchesList"></div>
@@ -59,19 +60,12 @@
         <b id="kcKolon">0</b>
       </div>
       <div class="kc-satir">
-        <span>Misli</span>
-        <select id="kcMisli" onchange="updateKuponCubugu()">
-          <option value="1" selected>1</option>
-          <option value="2">2</option>
-          <option value="5">5</option>
-          <option value="10">10</option>
-          <option value="25">25</option>
-          <option value="50">50</option>
-        </select>
-      </div>
-      <div class="kc-satir">
         <span>Tutar</span>
         <b id="kcTutar">0 TL</b>
+      </div>
+      <div class="kc-satir">
+        <span>Kalan</span>
+        <b id="kcKalan">100 TL</b>
       </div>
     </div>
     <div class="kc-butonlar">
@@ -97,22 +91,6 @@
       Kaydettiğin kuponların sonuçlarına göre karşılaştırma
     </div>
     <div id="karsilastirmaListesi"></div>
-  </div>
-</section>
-
-<!-- SAYFA 4: KASA -->
-<section id="page-4" class="page">
-  <div class="card">
-    <div class="result-title">💰 KASA ÖZETİ</div>
-    <div id="kasaOzet"></div>
-  </div>
-  <div class="card">
-    <div class="result-title">📈 KASA GRAFİĞİ</div>
-    <div style="position:relative;height:220px"><canvas id="kasaChart"></canvas></div>
-  </div>
-  <div class="card">
-    <div class="result-title">📊 PERFORMANS</div>
-    <div id="roiOzet"></div>
   </div>
 </section>
 
