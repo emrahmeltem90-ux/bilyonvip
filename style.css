@@ -365,3 +365,70 @@ button:active{opacity:.8}
   font-size:.62rem;color:var(--muted);font-weight:800;
   margin-top:10px;margin-bottom:4px;
 }
+/* === v12: SADE BÜLTEN + KUPON ÇUBUĞU === */
+
+/* Bülten sade maç kartı */
+.sade-mac{
+  background:var(--bg2);border:1px solid var(--border);border-radius:12px;
+  padding:12px;margin-bottom:10px;
+}
+.sade-mac-head{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:10px;cursor:pointer;
+}
+.sade-mac-no{
+  font-weight:900;color:var(--orange);font-size:.85rem;
+  background:var(--bg3);padding:4px 10px;border-radius:6px;
+}
+.sade-mac-tarih{
+  font-size:.65rem;color:var(--muted);
+}
+.sade-mac-teams{
+  font-weight:900;font-size:.9rem;margin-bottom:10px;cursor:pointer;
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.sade-mac-tahminler{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+}
+.sade-btn{
+  padding:14px 10px;border-radius:10px;border:2px solid var(--border);
+  background:var(--bg3);color:var(--text);font-weight:900;font-size:1rem;
+  cursor:pointer;transition:.15s;position:relative;
+}
+.sade-btn .kod{display:block;font-size:1.1rem}
+.sade-btn .yuzde{display:block;font-size:.62rem;color:var(--muted);margin-top:3px;font-weight:700}
+.sade-btn:active{transform:scale(.97)}
+.sade-btn.secili{
+  background:linear-gradient(135deg,#00c853,#00e676);
+  border-color:#00e676;color:#000;
+  box-shadow:0 0 15px rgba(0,230,118,.5);
+}
+.sade-btn.secili .yuzde{color:rgba(0,0,0,.7)}
+
+/* Sistem tahmin mini etiketi */
+.sistem-mini{
+  display:inline-block;font-size:.62rem;font-weight:900;
+  padding:3px 8px;border-radius:6px;background:rgba(61,139,255,.15);
+  color:var(--blue);border:1px solid rgba(61,139,255,.3);
+}
+
+/* Alt kupon çubuğu */
+.kupon-cubugu{
+  position:fixed;bottom:0;left:0;right:0;
+  background:linear-gradient(180deg,#0f1523,#070b14);
+  border-top:2px solid var(--green);
+  padding:12px 16px;z-index:500;
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  box-shadow:0 -4px 20px rgba(0,0,0,.5);
+}
+.kc-info{display:flex;gap:16px}
+.kc-satir{display:flex;flex-direction:column;font-size:.7rem;color:var(--muted)}
+.kc-satir b{font-size:1.1rem;color:var(--green);margin-top:2px}
+.kc-butonlar{display:flex;gap:8px}
+.btn-sm{padding:10px 14px;font-size:.72rem}
+
+body{padding-bottom:100px}
+
+/* Değer etiketi (mevcut varsa kalsın) */
+.value-tag{display:inline-block;padding:3px 10px;border-radius:6px;font-size:.62rem;font-weight:900}
+.value-yes{background:rgba(168,85,247,.2);color:#a855f7;border:1px solid rgba(168,85,247,.5)}
