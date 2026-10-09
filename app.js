@@ -446,10 +446,8 @@ function serbestCanliAnaliz(){
 
   /* 5. MONTE CARLO */
   const mc = monteCarlo(xg.xgEv, xg.xgDep, 10000);
-  $('sm-mc-1').innerText = '%' + (mc.p1*100).toFixed(1);
-  $('sm-mc-X').innerText = '%' + (mc.pX*100).toFixed(1);
-  $('sm-mc-2').innerText = '%' + (mc.p2*100).toFixed(1);
-  $('sm-mc-ci').innerText = '±%' + mc.margin.toFixed(2);
+  $('sm-mc-1').innerText = '\%' + (mc.p1*100).toFixed(1);$('sm-mc-X').innerText = '%' + (mc.pX*100).toFixed(1);
+  $('sm-mc-2').innerText = '\%' + (mc.p2*100).toFixed(1);$('sm-mc-ci').innerText = '±%' + mc.margin.toFixed(2);
 
   /* 6. KELLY */
   const secenekler = [
@@ -464,8 +462,7 @@ function serbestCanliAnaliz(){
   const kellyOneri = Math.max(0, kellyF * 0.5) * 100;
 
   $('sm-kelly-fav').innerText = `${fav.kod} (%${(fav.olas*100).toFixed(1)}) @ ${fav.oran.toFixed(2)}`;
-  $('sm-kelly-ev').innerText = ev.toFixed(3);
-  $('sm-kelly-ev').style.color = ev > 1.05 ? 'var(--green)' : ev > 1.0 ? 'var(--orange)' : 'var(--red)';
+  $('sm-kelly-ev').innerText = ev.toFixed(3);$('sm-kelly-ev').style.color = ev > 1.05 ? 'var(--green)' : ev > 1.0 ? 'var(--orange)' : 'var(--red)';
 
   if(ev > 1.05){
     $('sm-kelly-oneri').innerText = `💎 DEĞERLİ (Kelly: %${kellyOneri.toFixed(1)})`;
@@ -483,8 +480,7 @@ function serbestCanliAnaliz(){
     $('sm-hedge').innerText = '💎 ARBITRAJ VAR!';
     $('sm-hedge').style.color = 'var(--green)';
   } else {
-    $('sm-hedge').innerText = 'Yok (Marj var)';
-    $('sm-hedge').style.color = 'var(--muted)';
+    $('sm-hedge').innerText = 'Yok (Marj var)';$('sm-hedge').style.color = 'var(--muted)';
   }
 
   /* 7. RİSK */
@@ -493,8 +489,7 @@ function serbestCanliAnaliz(){
   const vol = 1 - secenekler[0].olas;
 
   $('sm-entropy').innerText = ent.toFixed(3) + (ent > 0.9 ? ' (Yüksek)' : ent > 0.7 ? ' (Orta)' : ' (Düşük)');
-  $('sm-upset').innerText = '%' + (upset*100).toFixed(1);
-  $('sm-vol').innerText = '%' + (vol*100).toFixed(1);
+  $('sm-upset').innerText = '\%' + (upset*100).toFixed(1);$('sm-vol').innerText = '%' + (vol*100).toFixed(1);
 
   let riskKategori = '';
   if(ent > 0.85) riskKategori = '🔴 YÜKSEK';
@@ -719,104 +714,187 @@ function otomatikKuponAc(){
 
       <button class="secim-btn teklı" onclick="kuponTekliUret()">
         <div class="baslik" style="color:var(--blue)">🖐️ ${maxKolon} KOLON TEKLİ</div>
-        <div class="aciklama">10 farklı kolon · Her kolon tek seçim · ${maxKolon * 10} TL</div>
+        <div class="aciklama">Geniş kuponundan ${maxKolon} farklı tekli kolon üretir · ${maxKolon * 10} TL</div>
       </button>
 
       <button class="secim-btn sistem" onclick="kuponSistemUret()">
         <div class="baslik" style="color:var(--green)">🤖 SİSTEM KOLONU</div>
-        <div class="aciklama">Bankolar tek, riskliler çift/üçlü · Bütçeyi tam kullanır</div>
+        <div class="aciklama">Seçimlerini bütçene tam sığdırır (Bankolar tek, riskliler çift/üçlü)</div>
       </button>
     </div>
   `;
   $('secimModal').classList.add('active');
 }
 
+/* --- DÜZELTİLEN TEKLİ KUPON İNDİRGEME --- */
 function kuponTekliUret(){
+  if(!matchesData.length){ showToast('error','Maç Yok','Bülten boş.'); return; }
+  const maxKolon = Math.floor(butce / 10);
+  if(maxKolon < 1){ showToast('error','Bütçe Az','En az 10 TL gerekli.'); return; }
+
+  const secimVar = Object.keys(secimlerim).some(k => secimlerim[k] && secimlerim[k].length > 0);
+
   const maclar = [];
   matchesData.forEach(m => {
     const od = oddsData[m.id];
-    if(!od || !od['1'] || !od['X'] || !od['2']) return;
-    const a = macAnalizEt(m.id, od['1'], od['X'], od['2']);
-    if(!a) return;
-    maclar.push({ m, a });
-  });
-  if(!maclar.length){ showToast('error','Oran Yok','Oran girilmemiş.'); return; }
-
-  const maxKolon = Math.floor(butce / 10);
-  const macIdler = maclar.map(mc => mc.m.id);
-  const favoriler = maclar.map(mc => mc.a.enYuksek.kod);
-
-  const kolonlar = [];
-  for(let k = 0; k < maxKolon; k++){
-    const kolon = [...favoriler];
-    const sapmaSayisi = Math.floor((k * maclar.length) / maxKolon);
-    for(let i = 0; i < sapmaSayisi; i++){
-      const idx = (maclar.length - 1 - i);
-      if(idx >= 0) kolon[idx] = maclar[idx].a.sirali[1].kod;
+    const a = (od && od['1']) ? macAnalizEt(m.id, od['1'], od['X'], od['2']) : null;
+    
+    let adaylar = [];
+    if(secimVar && secimlerim[m.id] && secimlerim[m.id].length > 0){
+      adaylar = [...secimlerim[m.id]];
+    } else if(a){
+      adaylar = a.sirali.map(s => s.kod);
+    } else {
+      adaylar = ['1', 'X', '2'];
     }
-    kolonlar.push(kolon);
+
+    maclar.push({ m, a, adaylar });
+  });
+
+  if(!maclar.length){ showToast('error','Hata','Maç bulunamadı.'); return; }
+
+  // Kartezyen kombinasyon havuzu üret
+  let kombinasyonlar = [[]];
+  for(let i = 0; i < maclar.length; i++){
+    const yeni = [];
+    const secenekler = maclar[i].adaylar;
+    for(const k of kombinasyonlar){
+      for(const s of secenekler){
+        yeni.push([...k, s]);
+        if(yeni.length >= 30000) break;
+      }
+      if(yeni.length >= 30000) break;
+    }
+    kombinasyonlar = yeni;
   }
+
+  // Max kolon kadar homojen/örneklem seç
+  let secilenKolonlar = [];
+  if(kombinasyonlar.length <= maxKolon){
+    secilenKolonlar = kombinasyonlar;
+  } else {
+    const step = kombinasyonlar.length / maxKolon;
+    const kullanilanlar = new Set();
+    for(let i = 0; i < maxKolon; i++){
+      let idx = Math.floor(i * step + Math.random() * step);
+      idx = Math.min(Math.max(0, idx), kombinasyonlar.length - 1);
+      if(!kullanilanlar.has(idx)){
+        kullanilanlar.add(idx);
+        secilenKolonlar.push(kombinasyonlar[idx]);
+      } else {
+        for(let j = 0; j < kombinasyonlar.length; j++){
+          if(!kullanilanlar.has(j)){
+            kullanilanlar.add(j);
+            secilenKolonlar.push(kombinasyonlar[j]);
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  const macIdler = maclar.map(mc => mc.m.id);
 
   otomatikKolonlar = {
     tip: 'toto', mod: 'TEKLİ',
-    macIdler: macIdler, kolonlar: kolonlar,
-    tutar: kolonlar.length * 10
+    macIdler: macIdler, kolonlar: secilenKolonlar,
+    tutar: secilenKolonlar.length * 10
   };
   localStorage.setItem('skorlab_otomatik_kolonlar', JSON.stringify(otomatikKolonlar));
   closeModal('secimModal');
   renderBulten();
   updateKuponCubugu();
-  showToast('success','Tekli Kupon', kolonlar.length + ' kolon · ' + otomatikKolonlar.tutar + ' TL');
+  showToast('success','Tekli Kupon', secilenKolonlar.length + ' kolon · ' + otomatikKolonlar.tutar + ' TL');
 }
 
+/* --- DÜZELTİLEN SİSTEM KUPONU SIKIŞTIRMA/HESAPLAMA --- */
 function kuponSistemUret(){
+  if(!matchesData.length){ showToast('error','Maç Yok','Bülten boş.'); return; }
+  const maxKolon = Math.floor(butce / 10);
+  if(maxKolon < 1){ showToast('error','Bütçe Az','En az 10 TL gerekli.'); return; }
+
+  const secimVar = Object.keys(secimlerim).some(k => secimlerim[k] && secimlerim[k].length > 0);
+
   const maclar = [];
   matchesData.forEach(m => {
     const od = oddsData[m.id];
-    if(!od || !od['1'] || !od['X'] || !od['2']) return;
-    const a = macAnalizEt(m.id, od['1'], od['X'], od['2']);
-    if(!a) return;
-    maclar.push({ m, a });
-  });
-  if(!maclar.length){ showToast('error','Oran Yok','Oran girilmemiş.'); return; }
-
-  const maxKolon = Math.floor(butce / 10);
-  maclar.sort((x,y) => x.a.band.seviye - y.a.band.seviye);
-
-  const secenekSayilari = maclar.map(mc => {
-    if(mc.a.band.seviye <= 2) return 1;
-    if(mc.a.band.seviye === 3) return 2;
-    if(mc.a.band.seviye === 4) return 2;
-    return 3;
-  });
-
-  let toplam = secenekSayilari.reduce((t,s) => t*s, 1);
-  const oncelik = [...maclar.keys()].sort((a,b) => maclar[b].a.band.seviye - maclar[a].a.band.seviye);
-
-  for(const idx of oncelik){
-    while(toplam > maxKolon && secenekSayilari[idx] > 1){
-      const eski = secenekSayilari[idx];
-      secenekSayilari[idx]--;
-      toplam = toplam / eski * secenekSayilari[idx];
+    const a = (od && od['1']) ? macAnalizEt(m.id, od['1'], od['X'], od['2']) : null;
+    
+    let mevcutSecim = [];
+    if(secimVar && secimlerim[m.id] && secimlerim[m.id].length > 0){
+      mevcutSecim = [...secimlerim[m.id]];
+    } else if(a){
+      if(a.band.seviye <= 2) mevcutSecim = [a.sirali[0].kod];
+      else if(a.band.seviye <= 4) mevcutSecim = [a.sirali[0].kod, a.sirali[1].kod];
+      else mevcutSecim = [a.sirali[0].kod, a.sirali[1].kod, a.sirali[2].kod];
+    } else {
+      mevcutSecim = ['1'];
     }
-    if(toplam <= maxKolon) break;
+
+    const guvenlikSkoru = a ? a.band.seviye : 3;
+
+    maclar.push({
+      m, a,
+      secimler: mevcutSecim,
+      guvenlikSkoru: guvenlikSkoru
+    });
+  });
+
+  if(!maclar.length){ showToast('error','Hata','Maç bulunamadı.'); return; }
+
+  // 1. Seçimlerin toplam kolon adedi
+  let toplamKolon = maclar.reduce((t, mc) => t * mc.secimler.length, 1);
+
+  // 2. Bütçe aşıldıysa bankolardan başlayarak çifte/üçlü seçimleri düşür
+  if(toplamKolon > maxKolon){
+    const siraliIndeksler = [...maclar.keys()].sort((i, j) => maclar[i].guvenlikSkoru - maclar[j].guvenlikSkoru);
+
+    for(const idx of siraliIndeksler){
+      while(toplamKolon > maxKolon && maclar[idx].secimler.length > 1){
+        maclar[idx].secimler.pop();
+        toplamKolon = maclar.reduce((t, mc) => t * mc.secimler.length, 1);
+      }
+      if(toplamKolon <= maxKolon) break;
+    }
   }
 
-  function kartezyen(maclar, sayilar){
+  // 3. Bütçe artıyorsa riski yüksek maçlara bütçeyi dolduracak şekilde opsiyon ekle
+  if(toplamKolon < maxKolon){
+    const riskliIndeksler = [...maclar.keys()].sort((i, j) => maclar[j].guvenlikSkoru - maclar[i].guvenlikSkoru);
+
+    for(const idx of riskliIndeksler){
+      const mc = maclar[idx];
+      const tumAdaylar = mc.a ? mc.a.sirali.map(s => s.kod) : ['1', 'X', '2'];
+
+      for(const opt of tumAdaylar){
+        if(!mc.secimler.includes(opt)){
+          const yeniSecim = [...mc.secimler, opt];
+          const yeniToplam = (toplamKolon / mc.secimler.length) * yeniSecim.length;
+          if(yeniToplam <= maxKolon){
+            mc.secimler = yeniSecim;
+            toplamKolon = yeniToplam;
+          }
+        }
+      }
+      if(toplamKolon === maxKolon) break;
+    }
+  }
+
+  // 4. Kartezyen Sistem Kolonları Oluştur
+  function kartezyenUret(list){
     let sonuc = [[]];
-    for(let i = 0; i < maclar.length; i++){
+    for(let i = 0; i < list.length; i++){
       const yeni = [];
-      const secenekler = maclar[i].a.sirali.slice(0, sayilar[i]).map(s => s.kod);
+      const secenekler = list[i].secimler;
       for(const k of sonuc){
         for(const s of secenekler) yeni.push([...k, s]);
       }
       sonuc = yeni;
-      if(sonuc.length > 10000) break;
     }
     return sonuc;
   }
 
-  const kolonlar = kartezyen(maclar, secenekSayilari);
+  const kolonlar = kartezyenUret(maclar);
   const macIdler = maclar.map(mc => mc.m.id);
 
   otomatikKolonlar = {
@@ -1061,8 +1139,7 @@ function switchTab(i, el){
 
 function closeModal(id){ $(id).classList.remove('active'); }
 function showToast(type, title, msg){
-  $('toastIcon').innerText = type==='success' ? '✅' : '❌';
-  $('toastTitle').innerText = title;
+  $('toastIcon').innerText = type==='success' ? '✅' : '❌';$('toastTitle').innerText = title;
   $('toastMsg').innerText = msg;
   $('toastModal').classList.add('active');
 }
