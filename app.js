@@ -726,7 +726,7 @@ function otomatikKuponAc(){
   $('secimModal').classList.add('active');
 }
 
-/* --- DÜZELTİLEN TEKLİ KUPON İNDİRGEME --- */
+/* --- TEKLİ KUPON İNDİRGEME --- */
 function kuponTekliUret(){
   if(!matchesData.length){ showToast('error','Maç Yok','Bülten boş.'); return; }
   const maxKolon = Math.floor(butce / 10);
@@ -753,7 +753,6 @@ function kuponTekliUret(){
 
   if(!maclar.length){ showToast('error','Hata','Maç bulunamadı.'); return; }
 
-  // Kartezyen kombinasyon havuzu üret
   let kombinasyonlar = [[]];
   for(let i = 0; i < maclar.length; i++){
     const yeni = [];
@@ -768,7 +767,6 @@ function kuponTekliUret(){
     kombinasyonlar = yeni;
   }
 
-  // Max kolon kadar homojen/örneklem seç
   let secilenKolonlar = [];
   if(kombinasyonlar.length <= maxKolon){
     secilenKolonlar = kombinasyonlar;
@@ -807,7 +805,7 @@ function kuponTekliUret(){
   showToast('success','Tekli Kupon', secilenKolonlar.length + ' kolon · ' + otomatikKolonlar.tutar + ' TL');
 }
 
-/* --- DÜZELTİLEN SİSTEM KUPONU SIKIŞTIRMA/HESAPLAMA --- */
+/* --- SİSTEM KUPONU SIKIŞTIRMA/HESAPLAMA --- */
 function kuponSistemUret(){
   if(!matchesData.length){ showToast('error','Maç Yok','Bülten boş.'); return; }
   const maxKolon = Math.floor(butce / 10);
@@ -842,10 +840,8 @@ function kuponSistemUret(){
 
   if(!maclar.length){ showToast('error','Hata','Maç bulunamadı.'); return; }
 
-  // 1. Seçimlerin toplam kolon adedi
   let toplamKolon = maclar.reduce((t, mc) => t * mc.secimler.length, 1);
 
-  // 2. Bütçe aşıldıysa bankolardan başlayarak çifte/üçlü seçimleri düşür
   if(toplamKolon > maxKolon){
     const siraliIndeksler = [...maclar.keys()].sort((i, j) => maclar[i].guvenlikSkoru - maclar[j].guvenlikSkoru);
 
@@ -858,7 +854,6 @@ function kuponSistemUret(){
     }
   }
 
-  // 3. Bütçe artıyorsa riski yüksek maçlara bütçeyi dolduracak şekilde opsiyon ekle
   if(toplamKolon < maxKolon){
     const riskliIndeksler = [...maclar.keys()].sort((i, j) => maclar[j].guvenlikSkoru - maclar[i].guvenlikSkoru);
 
@@ -880,7 +875,6 @@ function kuponSistemUret(){
     }
   }
 
-  // 4. Kartezyen Sistem Kolonları Oluştur
   function kartezyenUret(list){
     let sonuc = [[]];
     for(let i = 0; i < list.length; i++){
@@ -913,22 +907,20 @@ function kuponSistemUret(){
 function kuponuKaydet(tip){
   if(tip === 'toto' && otomatikKolonlar){
     const h = kuponHesapla();
-    const detaylar = otomatikKolonlar.macIdler.map((mid, idx) => {
-      const m = matchesData.find(x => x.id === mid);
-      const secimler = [...new Set(otomatikKolonlar.kolonlar.map(k => k[idx]))];
-      return {
-        id: mid,
-        isim: m ? (m.home + ' - ' + m.away) : 'Maç #' + mid,
-        secim: secimler.join(''), secimler: secimler
-      };
-    });
 
     kayitliKuponlar.unshift({
-      id: Date.now(), tip: 'toto', mod: otomatikKolonlar.mod,
+      id: Date.now(),
+      tip: 'toto',
+      mod: otomatikKolonlar.mod,
       tarih: new Date().toLocaleString('tr-TR'),
-      macSayisi: h.macSayisi, kolon: h.kolon, tutar: h.tutar,
-      detaylar: detaylar, durum: 'bekliyor'
+      macSayisi: h.macSayisi,
+      kolon: h.kolon,
+      tutar: h.tutar,
+      macIdler: otomatikKolonlar.macIdler,
+      kolonlar: otomatikKolonlar.kolonlar, // Açık kolon verisi saklanıyor
+      durum: 'bekliyor'
     });
+
     if(kayitliKuponlar.length > 50) kayitliKuponlar = kayitliKuponlar.slice(0, 50);
     localStorage.setItem('skorlab_kuponlar', JSON.stringify(kayitliKuponlar));
 
@@ -968,6 +960,7 @@ function kuponuKaydet(tip){
     macSayisi: h.macSayisi, kolon: h.kolon, tutar: h.tutar,
     detaylar: detaylar, durum: 'bekliyor'
   });
+
   if(kayitliKuponlar.length > 50) kayitliKuponlar = kayitliKuponlar.slice(0, 50);
   localStorage.setItem('skorlab_kuponlar', JSON.stringify(kayitliKuponlar));
 
@@ -1011,16 +1004,42 @@ function kuponDetayAc(id){
   const k = kayitliKuponlar.find(x => x.id === id);
   if(!k) return;
   const emoji = k.durum === 'kazandi' ? '✅' : k.durum === 'kaybetti' ? '❌' : '⏳';
+  
+  let icerikHTML = '';
+
+  // Eğer kuponda açık kolonlar varsa (Otomatik Kupon) kolon kolon döküm ver
+  if(k.kolonlar && k.kolonlar.length > 0){
+    icerikHTML = k.kolonlar.map((kolon, kIdx) => {
+      const kolonOzet = kolon.map((s, mIdx) => {
+        const mid = k.macIdler ? k.macIdler[mIdx] : (mIdx + 1);
+        const m = matchesData.find(x => x.id === mid);
+        const macEtiket = m ? `${m.home.substring(0,3)}-${m.away.substring(0,3)}` : `#${mid}`;
+        return `
+          <div style="display:inline-block;background:var(--bg3);padding:3px 6px;margin:2px;border-radius:4px;font-size:.65rem">
+            <span style="color:var(--muted)">${macEtiket}:</span> <b style="color:var(--green)">${s}</b>
+          </div>`;
+      }).join('');
+
+      return `
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px;margin-bottom:8px">
+          <div style="font-weight:900;color:var(--green);font-size:.78rem;margin-bottom:6px">📋 KOLON ${kIdx + 1}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:2px">${kolonOzet}</div>
+        </div>`;
+    }).join('');
+  } else if(k.detaylar) {
+    icerikHTML = k.detaylar.map(d => `
+      <div style="padding:8px 0;border-bottom:1px solid var(--border)">
+        <div style="font-weight:800;margin-bottom:4px">${d.isim}</div>
+        <div style="color:var(--green);font-weight:900;text-align:right">${d.secim}</div>
+      </div>
+    `).join('');
+  }
+
   $('kuponDetayBody').innerHTML = `
     <div style="font-size:.75rem">
       <div class="muted" style="margin-bottom:10px">${emoji} ${k.tarih} · ${k.macSayisi} maç · ${k.kolon} kolon · ${k.tutar} TL</div>
       <div style="max-height:400px;overflow-y:auto;background:var(--bg3);border-radius:8px;padding:10px">
-        ${k.detaylar.map(d => `
-          <div style="padding:8px 0;border-bottom:1px solid var(--border)">
-            <div style="font-weight:800;margin-bottom:4px">${d.isim}</div>
-            <div style="color:var(--green);font-weight:900;text-align:right">${d.secim}</div>
-          </div>
-        `).join('')}
+        ${icerikHTML}
       </div>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:12px">
         <button class="btn ${k.durum==='kazandi'?'btn-green':'btn-gray'}" onclick="kuponDurum(${id},'kazandi')">✅ Kazandı</button>
