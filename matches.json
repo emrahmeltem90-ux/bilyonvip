@@ -2,125 +2,20 @@
   "hafta": "2026/2027 Sezonu 9. Hafta",
   "guncelleme_tarihi": "2026-10-09",
   "maclar": [
-    {
-      "mac_id": 1,
-      "ev_sahibi": "Galatasaray A.Ş.",
-      "deplasman": "Kasımpaşa A.Ş.",
-      "ev_form": ["G", "G", "B", "G"],
-      "deplasman_form": ["B", "M", "M", "B"],
-      "tahmini_yuzdeler": { "ev_galibiyet": 67, "beraberlik": 23, "deplasman_galibiyet": 10 }
-    },
-    {
-      "mac_id": 2,
-      "ev_sahibi": "Gençlerbirliği",
-      "deplasman": "Amed Sportif Faaliyetler",
-      "ev_form": ["G", "M", "B", "M"],
-      "deplasman_form": ["G", "B", "G", "M"],
-      "tahmini_yuzdeler": { "ev_galibiyet": 22, "beraberlik": 31, "deplasman_galibiyet": 47 }
-    },
-    {
-      "mac_id": 3,
-      "ev_sahibi": "Corendon Alanyaspor",
-      "deplasman": "Erzurumspor FK",
-      "ev_form": ["B", "M", "M", "G"],
-      "deplasman_form": ["M", "G", "B", "M"],
-      "tahmini_yuzdeler": { "ev_galibiyet": 67, "beraberlik": 23, "deplasman_galibiyet": 10 }
-    },
-    {
-      "mac_id": 4,
-      "ev_sahibi": "Samsunspor A.Ş.",
-      "deplasman": "Trabzonspor A.Ş.",
-      "ev_form": ["B", "G", "M", "B"],
-      "deplasman_form": ["B", "M", "G", "G"],
-      "tahmini_yuzdeler": { "ev_galibiyet": 13, "beraberlik": 23, "deplasman_galibiyet": 64 }
-    },
-    {
-      "mac_id": 5,
-      "ev_sahibi": "Çaykur Rizespor A.Ş.",
-      "deplasman": "Fenerbahçe A.Ş.",
-      "ev_form": ["G", "B", "M", "M"],
-      "deplasman_form": ["M", "G", "G", "G"],
-      "tahmini_yuzdeler": { "ev_galibiyet": 9, "beraberlik": 17, "deplasman_galibiyet": 74 }
-    },
-    {
-      "mac_id": 6,
-      "ev_sahibi": "Tümosan Konyaspor",
-      "deplasman": "İstanbul Başakşehir FK",
-      "ev_form": ["M", "M", "M", "M"],
-      "deplasman_form": ["G", "G", "M", "B"],
-      "tahmini_yuzdeler": { "ev_galibiyet": 32, "beraberlik": 38, "deplasman_galibiyet": 30 }
-    },
-    {
-      "mac_id": 7,
-      "ev_sahibi": "Gaziantep FK A.Ş.",
-      "deplasman": "Arca Çorum FK",
-      "ev_form": ["B", "M", "M", "G"],
-      "deplasman_form": ["B", "G", "M", "B"],
-      "tahmini_yuzdeler": { "ev_galibiyet": 45, "beraberlik": 30, "deplasman_galibiyet": 25 }
-    },
-    {
-      "mac_id": 8,
-      "ev_sahibi": "Beşiktaş A.Ş.",
-      "deplasman": "Kocaelispor",
-      "ev_form": ["G", "G", "M", "G"],
-      "deplasman_form": ["M", "G", "G", "G"],
-      "tahmini_yuzdeler": { "ev_galibiyet": 60, "beraberlik": 24, "deplasman_galibiyet": 16 }
-    },
-    {
-      "mac_id": 9,
-      "ev_sahibi": "Eyüpspor",
-      "deplasman": "Göztepe A.Ş.",
-      "ev_form": ["M", "G", "B", "G"],
-      "deplasman_form": ["B", "M", "B", "G"],
-      "tahmini_yuzdeler": { "ev_galibiyet": 52, "beraberlik": 28, "deplasman_galibiyet": 20 }
-    },
-    {
-      "mac_id": 10,
-      "ev_sahibi": "Augsburg",
-      "deplasman": "Bayern Münih",
-      "ev_form": ["M", "B", "M", "G"],
-      "deplasman_form": ["G", "G", "G", "B"],
-      "tahmini_yuzdeler": { "ev_galibiyet": 12, "beraberlik": 18, "deplasman_galibiyet": 70 }
-    },
-    {
-      "mac_id": 11,
-      "ev_sahibi": "Leipzig",
-      "deplasman": "Eintracht Frankfurt",
-      "ev_form": ["G", "M", "B", "G"],
-      "deplasman_form": ["G", "G", "M", "B"],
-      "tahmini_yuzdeler": { "ev_galibiyet": 48, "beraberlik": 27, "deplasman_galibiyet": 25 }
-    },
-    {
-      "mac_id": 12,
-      "ev_sahibi": "Manchester United",
-      "deplasman": "Tottenham",
-      "ev_form": ["M", "B", "G", "M"],
-      "deplasman_form": ["M", "G", "G", "B"],
-      "tahmini_yuzdeler": { "ev_galibiyet": 38, "beraberlik": 28, "deplasman_galibiyet": 34 }
-    },
-    {
-      "mac_id": 13,
-      "ev_sahibi": "Liverpool",
-      "deplasman": "Manchester City",
-      "ev_form": ["G", "G", "M", "G"],
-      "deplasman_form": ["G", "B", "G", "G"],
-      "tahmini_yuzdeler": { "ev_galibiyet": 35, "beraberlik": 30, "deplasman_galibiyet": 35 }
-    },
-    {
-      "mac_id": 14,
-      "ev_sahibi": "Real Madrid",
-      "deplasman": "Villarreal",
-      "ev_form": ["G", "B", "G", "G"],
-      "deplasman_form": ["G", "M", "B", "G"],
-      "tahmini_yuzdeler": { "ev_galibiyet": 65, "beraberlik": 20, "deplasman_galibiyet": 15 }
-    },
-    {
-      "mac_id": 15,
-      "ev_sahibi": "Como 1907",
-      "deplasman": "AS Roma",
-      "ev_form": ["M", "B", "G", "M"],
-      "deplasman_form": ["B", "M", "G", "B"],
-      "tahmini_yuzdeler": { "ev_galibiyet": 20, "beraberlik": 32, "deplasman_galibiyet": 48 }
-    }
+    { "mac_id": 1, "ev_sahibi": "Galatasaray A.Ş.", "deplasman": "Kasımpaşa A.Ş.", "ev_form": ["G","G","B","G"], "deplasman_form": ["B","M","M","B"], "tahmini_yuzdeler": { "ev_galibiyet": 67, "beraberlik": 23, "deplasman_galibiyet": 10 } },
+    { "mac_id": 2, "ev_sahibi": "Gençlerbirliği", "deplasman": "Amed Sportif", "ev_form": ["G","M","B","M"], "deplasman_form": ["G","B","G","M"], "tahmini_yuzdeler": { "ev_galibiyet": 22, "beraberlik": 31, "deplasman_galibiyet": 47 } },
+    { "mac_id": 3, "ev_sahibi": "Corendon Alanyaspor", "deplasman": "Erzurumspor FK", "ev_form": ["B","M","M","G"], "deplasman_form": ["M","G","B","M"], "tahmini_yuzdeler": { "ev_galibiyet": 67, "beraberlik": 23, "deplasman_galibiyet": 10 } },
+    { "mac_id": 4, "ev_sahibi": "Samsunspor A.Ş.", "deplasman": "Trabzonspor A.Ş.", "ev_form": ["B","G","M","B"], "deplasman_form": ["B","M","G","G"], "tahmini_yuzdeler": { "ev_galibiyet": 13, "beraberlik": 23, "deplasman_galibiyet": 64 } },
+    { "mac_id": 5, "ev_sahibi": "Çaykur Rizespor A.Ş.", "deplasman": "Fenerbahçe A.Ş.", "ev_form": ["G","B","M","M"], "deplasman_form": ["M","G","G","G"], "tahmini_yuzdeler": { "ev_galibiyet": 9, "beraberlik": 17, "deplasman_galibiyet": 74 } },
+    { "mac_id": 6, "ev_sahibi": "Tümosan Konyaspor", "deplasman": "İstanbul Başakşehir FK", "ev_form": ["M","M","M","M"], "deplasman_form": ["G","G","M","B"], "tahmini_yuzdeler": { "ev_galibiyet": 32, "beraberlik": 38, "deplasman_galibiyet": 30 } },
+    { "mac_id": 7, "ev_sahibi": "Gaziantep FK A.Ş.", "deplasman": "Arca Çorum FK", "ev_form": ["B","M","M","G"], "deplasman_form": ["B","G","M","B"], "tahmini_yuzdeler": { "ev_galibiyet": 45, "beraberlik": 30, "deplasman_galibiyet": 25 } },
+    { "mac_id": 8, "ev_sahibi": "Beşiktaş A.Ş.", "deplasman": "Kocaelispor", "ev_form": ["G","G","M","G"], "deplasman_form": ["M","G","G","G"], "tahmini_yuzdeler": { "ev_galibiyet": 60, "beraberlik": 24, "deplasman_galibiyet": 16 } },
+    { "mac_id": 9, "ev_sahibi": "Eyüpspor", "deplasman": "Göztepe A.Ş.", "ev_form": ["M","G","B","G"], "deplasman_form": ["B","M","B","G"], "tahmini_yuzdeler": { "ev_galibiyet": 52, "beraberlik": 28, "deplasman_galibiyet": 20 } },
+    { "mac_id": 10, "ev_sahibi": "Augsburg", "deplasman": "Bayern Münih", "ev_form": ["M","B","M","G"], "deplasman_form": ["G","G","G","B"], "tahmini_yuzdeler": { "ev_galibiyet": 12, "beraberlik": 18, "deplasman_galibiyet": 70 } },
+    { "mac_id": 11, "ev_sahibi": "Leipzig", "deplasman": "Eintracht Frankfurt", "ev_form": ["G","M","B","G"], "deplasman_form": ["G","G","M","B"], "tahmini_yuzdeler": { "ev_galibiyet": 48, "beraberlik": 27, "deplasman_galibiyet": 25 } },
+    { "mac_id": 12, "ev_sahibi": "Manchester United", "deplasman": "Tottenham", "ev_form": ["M","B","G","M"], "deplasman_form": ["M","G","G","B"], "tahmini_yuzdeler": { "ev_galibiyet": 38, "beraberlik": 28, "deplasman_galibiyet": 34 } },
+    { "mac_id": 13, "ev_sahibi": "Liverpool", "deplasman": "Manchester City", "ev_form": ["G","G","M","G"], "deplasman_form": ["G","B","G","G"], "tahmini_yuzdeler": { "ev_galibiyet": 35, "beraberlik": 30, "deplasman_galibiyet": 35 } },
+    { "mac_id": 14, "ev_sahibi": "Real Madrid", "deplasman": "Villarreal", "ev_form": ["G","B","G","G"], "deplasman_form": ["G","M","B","G"], "tahmini_yuzdeler": { "ev_galibiyet": 65, "beraberlik": 20, "deplasman_galibiyet": 15 } },
+    { "mac_id": 15, "ev_sahibi": "Como 1907", "deplasman": "AS Roma", "ev_form": ["M","B","G","M"], "deplasman_form": ["B","M","G","B"], "tahmini_yuzdeler": { "ev_galibiyet": 20, "beraberlik": 32, "deplasman_galibiyet": 48 } }
   ]
 }
