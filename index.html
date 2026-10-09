@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#070b14">
-<title>SkorLab v16</title>
+<title>SkorLab v17 PRO</title>
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="manifest" href="manifest.json">
@@ -13,8 +13,8 @@
 </head>
 <body>
 
-<header class="app-header" id="appHeader">
-  <div class="logo">⚽ SKORLAB <span class="v">v16</span></div>
+<header class="app-header">
+  <div class="logo">⚽ SKORLAB <span class="v">v17</span></div>
   <div id="weekTitle" class="week">Yükleniyor...</div>
 </header>
 
@@ -59,7 +59,7 @@
   </div>
 </section>
 
-<!-- SAYFA 2: SERBEST -->
+<!-- SAYFA 2: SERBEST (İDDAA) -->
 <section id="page-2" class="page">
   <div class="page-actions">
     <button class="btn btn-green" onclick="openSerbestModal()">➕ Maç Ekle</button>
@@ -100,7 +100,7 @@
 
 </main>
 
-<!-- MODAL: OTOMATİK KUPON SEÇİMİ -->
+<!-- MODAL: OTOMATİK KUPON -->
 <div class="modal" id="secimModal">
   <div class="modal-content">
     <div class="modal-head"><span>⚡ OTOMATİK KUPON</span><button onclick="closeModal('secimModal')">✖</button></div>
@@ -108,19 +108,118 @@
   </div>
 </div>
 
-<!-- MODAL: SERBEST MAÇ EKLE -->
+<!-- MODAL: SERBEST MAÇ EKLE / DÜZENLE + PRO ANALİZ -->
 <div class="modal" id="serbestModal">
   <div class="modal-content">
-    <div class="modal-head"><span>➕ SERBEST MAÇ EKLE</span><button onclick="closeModal('serbestModal')">✖</button></div>
+    <div class="modal-head">
+      <span id="serbestModalTitle">➕ SERBEST MAÇ EKLE</span>
+      <button onclick="closeModal('serbestModal')">✖</button>
+    </div>
     <div class="modal-body">
+
       <label>Maç Adı</label>
-      <input type="text" id="sm-match" placeholder="Örn: Galatasaray - Fenerbahçe">
+      <input type="text" id="sm-match" placeholder="Örn: Galatasaray - Fenerbahçe" maxlength="60">
+
+      <label style="margin-top:14px">Oranlar</label>
       <div class="oran-grid-3">
-        <div><label>1</label><input type="number" step="0.01" id="sm-o1"></div>
-        <div><label>X</label><input type="number" step="0.01" id="sm-oX"></div>
-        <div><label>2</label><input type="number" step="0.01" id="sm-o2"></div>
+        <div><label>1</label><input type="number" step="0.01" min="1.01" max="100" id="sm-o1" oninput="serbestCanliAnaliz()"></div>
+        <div><label>X</label><input type="number" step="0.01" min="1.01" max="100" id="sm-oX" oninput="serbestCanliAnaliz()"></div>
+        <div><label>2</label><input type="number" step="0.01" min="1.01" max="100" id="sm-o2" oninput="serbestCanliAnaliz()"></div>
       </div>
-      <button class="btn btn-green btn-lg" onclick="serbestEkle()" style="margin-top:12px">✅ EKLE</button>
+
+      <div id="sm-canli-analiz" style="display:none">
+
+        <div class="analiz-box">
+          <div class="analiz-row"><span class="analiz-lbl">📊 1. HAM OLASILIK</span></div>
+          <div class="analiz-row">
+            <span>1: <b id="sm-ham-1">—</b></span>
+            <span>X: <b id="sm-ham-X">—</b></span>
+            <span>2: <b id="sm-ham-2">—</b></span>
+          </div>
+          <div class="analiz-row">
+            <span class="muted">Bahis Marjı:</span>
+            <span><b id="sm-marj" style="color:var(--orange)">—</b></span>
+          </div>
+        </div>
+
+        <div class="analiz-box">
+          <div class="analiz-row"><span class="analiz-lbl">🧮 2. MARJ ARINDIRILMIŞ (Shin)</span></div>
+          <div class="analiz-row">
+            <span>1: <b class="green" id="sm-shin-1">—</b></span>
+            <span>X: <b class="green" id="sm-shin-X">—</b></span>
+            <span>2: <b class="green" id="sm-shin-2">—</b></span>
+          </div>
+          <div class="analiz-row">
+            <span class="muted">Toplam:</span>
+            <span><b id="sm-shin-toplam">—</b></span>
+          </div>
+        </div>
+
+        <div class="analiz-box">
+          <div class="analiz-row"><span class="analiz-lbl">⚽ 3. POISSON MODELİ</span></div>
+          <div class="analiz-row"><span class="muted">xG Tahmini:</span><span><b id="sm-xg">—</b></span></div>
+          <div class="analiz-row">
+            <span>1: <b id="sm-poi-1">—</b></span>
+            <span>X: <b id="sm-poi-X">—</b></span>
+            <span>2: <b id="sm-poi-2">—</b></span>
+          </div>
+          <div class="analiz-row">
+            <span>2.5 Üst: <b id="sm-poi-ust25">—</b></span>
+            <span>KG Var: <b id="sm-poi-kg">—</b></span>
+          </div>
+        </div>
+
+        <div class="analiz-box">
+          <div class="analiz-row"><span class="analiz-lbl">🎲 4. DIXON-COLES (Düzeltilmiş Skor)</span></div>
+          <div id="sm-dc-skorlar" style="font-size:.72rem;line-height:1.7"></div>
+        </div>
+
+        <div class="analiz-box">
+          <div class="analiz-row"><span class="analiz-lbl">🎰 5. MONTE CARLO (10.000 Simülasyon)</span></div>
+          <div class="analiz-row">
+            <span>1: <b id="sm-mc-1">—</b></span>
+            <span>X: <b id="sm-mc-X">—</b></span>
+            <span>2: <b id="sm-mc-2">—</b></span>
+          </div>
+          <div class="analiz-row">
+            <span class="muted">%95 Güven Aralığı:</span>
+            <span><b id="sm-mc-ci">—</b></span>
+          </div>
+        </div>
+
+        <div class="analiz-box">
+          <div class="analiz-row"><span class="analiz-lbl">💼 6. KELLY + VALUE BET</span></div>
+          <div class="analiz-row"><span>Favori:</span><span><b id="sm-kelly-fav">—</b></span></div>
+          <div class="analiz-row"><span>EV (Beklenen Değer):</span><span><b id="sm-kelly-ev">—</b></span></div>
+          <div class="analiz-row"><span>Kelly Önerisi:</span><span><b id="sm-kelly-oneri">—</b></span></div>
+          <div class="analiz-row"><span>Hedging Fırsatı:</span><span><b id="sm-hedge">—</b></span></div>
+        </div>
+
+        <div class="analiz-box">
+          <div class="analiz-row"><span class="analiz-lbl">⚠️ 7. RİSK METRİKLERİ</span></div>
+          <div class="analiz-row"><span>Entropy (Belirsizlik):</span><span><b id="sm-entropy">—</b></span></div>
+          <div class="analiz-row"><span>Upset Index (Sürpriz):</span><span><b id="sm-upset">—</b></span></div>
+          <div class="analiz-row"><span>Volatilite:</span><span><b id="sm-vol">—</b></span></div>
+          <div class="analiz-row"><span>Risk Kategorisi:</span><span><b id="sm-risk" style="font-size:.85rem">—</b></span></div>
+        </div>
+
+        <div class="analiz-box" style="border:1px solid var(--green)">
+          <div class="analiz-row"><span class="analiz-lbl">📌 8. KONSENSÜS (4+ Katman Aynı Yönde)</span></div>
+          <div class="analiz-row"><span>En Güçlü Sinyal:</span><span><b id="sm-konsensus" style="color:var(--green);font-size:.85rem">—</b></span></div>
+          <div class="analiz-row"><span>Konsensüs Skoru:</span><span><b id="sm-konsensus-skor">—</b></span></div>
+        </div>
+
+        <div class="uyari-alert" style="font-size:.68rem">
+          ⚠️ <b>ÖNEMLİ:</b> Bu değerler <b>tahmini olasılıklardır.</b> Hiçbir model %100 doğru değildir. Kesin sonuç garantisi vermez. Bahis kararlarınızı kendi araştırmanızla birlikte verin. Sorumlu bahis oynayın.
+        </div>
+
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px">
+        <button class="btn btn-gray btn-lg" onclick="closeModal('serbestModal')">İPTAL</button>
+        <button class="btn btn-green btn-lg" id="sm-kaydet-btn" onclick="serbestKaydet()">✅ EKLE</button>
+      </div>
+
     </div>
   </div>
 </div>
