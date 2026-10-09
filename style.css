@@ -214,3 +214,37 @@ button:active{opacity:.8}
 .perf-item{background:var(--bg3);border-radius:8px;padding:10px;text-align:center}
 .perf-item .v{font-weight:900;font-size:1.1rem;color:var(--green)}
 .perf-item .l{font-size:.62rem;color:var(--muted);margin-top:2px}
+
+/* === v9: ORAN BANTLARI VE YORUM KATMANI === */
+
+/* Oran bandı etiketi */
+.band-tag{
+  display:inline-block;padding:3px 10px;border-radius:6px;
+  font-size:.62rem;font-weight:900;letter-spacing:.3px;
+}
+.band-banko{background:rgba(0,230,118,.15);color:#00e676;border:1px solid rgba(0,230,118,.4)}
+.band-guvenli{background:rgba(61,139,255,.15);color:#3d8bff;border:1px solid rgba(61,139,255,.4)}
+.band-riskli{background:rgba(255,176,32,.15);color:#ffb020;border:1px solid rgba(255,176,32,.4)}
+.band-denge{background:rgba(255,77,94,.15);color:#ff4d5e;border:1px solid rgba(255,77,94,.4)}
+.band-surpriz{background:rgba(168,85,247,.15);color:#a855f7;border:1px solid rgba(168,85,247,.4)}
+
+/* Yorum kutusu */
+.yorum-box{
+  background:linear-gradient(135deg,rgba(0,230,118,.08),rgba(61,139,255,.05));
+  border-left:3px solid #00e676;
+  border-radius:8px;padding:10px 12px;margin-top:10px;
+  font-size:.72rem;line-height:1.6;color:#e8eef9;
+}
+.yorum-box.riskli{border-left-color:#ffb020;background:linear-gradient(135deg,rgba(255,176,32,.1),rgba(255,176,32,.03))}
+.yorum-box.tehlike{border-left-color:#ff4d5e;background:linear-gradient(135deg,rgba(255,77,94,.1),rgba(255,77,94,.03))}
+.yorum-box.surpriz{border-left-color:#a855f7;background:linear-gradient(135deg,rgba(168,85,247,.1),rgba(168,85,247,.03))}
+.yorum-box .baslik{font-weight:900;font-size:.75rem;margin-bottom:5px;display:block}
+.yorum-box .satir{padding:2px 0;display:flex;justify-content:space-between;gap:8px}
+.yorum-box .satir span:first-child{color:#7a8ba8}
+.yorum-box .satir span:last-child{font-weight:800;color:#e8eef9}
+
+/* Bahis oranı göstergesi */
+.oran-band-mini{
+  display:inline-block;font-size:.58rem;font-weight:800;
+  padding:2px 6px;border-radius:4px;margin-left:4px;
+}
