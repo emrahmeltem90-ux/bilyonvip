@@ -1,280 +1,104 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>SKORLAB v17 PRO</title>
-  <style>
-    :root {
-      --bg: #0b0f19;
-      --bg2: #151c2c;
-      --bg3: #1e293b;
-      --border: #2e3d52;
-      --green: #00e676;
-      --green-dark: #00a854;
-      --blue: #29b6f6;
-      --red: #ff5252;
-      --orange: #ffa726;
-      --muted: #94a3b8;
-      --text: #f8fafc;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: var(--bg); color: var(--text); padding-bottom: 90px; }
-
-    /* HEADER */
-    header { background: var(--bg2); padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; sticky; top: 0; z-index: 100; }
-    .logo { font-weight: 900; font-size: 1.1rem; color: #fff; display: flex; align-items: center; gap: 6px; }
-    .logo span { color: var(--orange); font-size: .8rem; }
-    .header-right { display: flex; align-items: center; gap: 10px; }
-    .butce-box { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 4px 8px; display: flex; align-items: center; gap: 4px; font-size: .75rem; }
-    .butce-box input { background: transparent; border: none; color: var(--green); font-weight: 800; width: 45px; text-align: center; font-size: .85rem; outline: none; }
-
-    /* TAB NAV */
-    .tabs { display: flex; background: var(--bg2); border-bottom: 1px solid var(--border); }
-    .tab { flex: 1; text-align: center; padding: 12px 4px; font-size: .75rem; font-weight: 700; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; transition: .2s; }
-    .tab.active { color: var(--green); border-bottom-color: var(--green); background: rgba(0,230,118,0.05); }
-
-    /* PAGES */
-    .page { display: none; padding: 12px; max-width: 600px; margin: 0 auto; }
-    .page.active { display: block; }
-
-    /* CARDS & MATCHES */
-    .card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
-    .sade-mac { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-bottom: 10px; }
-    .sade-mac-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: .7rem; }
-    .sade-mac-no { background: var(--bg3); color: var(--muted); padding: 2px 6px; border-radius: 4px; font-weight: 800; }
-    .sade-mac-tarih { color: var(--muted); }
-    .sade-mac-teams { font-weight: 800; font-size: .88rem; margin-bottom: 10px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-    .sade-mac-tahminler { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-
-    .sade-btn { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 8px; text-align: center; cursor: pointer; color: var(--text); transition: .2s; display: flex; flex-direction: column; align-items: center; }
-    .sade-btn.secili { background: var(--green); color: #000; border-color: var(--green); font-weight: 900; }
-    .sade-btn .kod { font-weight: 900; font-size: .85rem; }
-    .sade-btn .yuzde { font-size: .65rem; opacity: .8; margin-top: 2px; }
-
-    /* BADGES & BUTTONS */
-    .badge { padding: 2px 6px; border-radius: 4px; font-size: .6rem; font-weight: 800; display: inline-block; }
-    .badge.green { background: rgba(0,230,118,0.15); color: var(--green); }
-    .badge.yellow { background: rgba(255,215,0,0.15); color: #ffd700; }
-    .badge.orange { background: rgba(255,167,38,0.15); color: var(--orange); }
-    .badge.red { background: rgba(255,82,82,0.15); color: var(--red); }
-
-    .btn { width: 100%; border: none; border-radius: 8px; padding: 10px; font-weight: 800; font-size: .8rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: .2s; }
-    .btn-green { background: var(--green); color: #000; }
-    .btn-green:active { background: var(--green-dark); }
-    .btn-gray { background: var(--bg3); color: var(--text); border: 1px solid var(--border); }
-    .btn-red { background: rgba(255,82,82,0.2); color: var(--red); border: 1px solid var(--red); }
-    .btn-orange { background: rgba(255,167,38,0.2); color: var(--orange); border: 1px solid var(--orange); }
-    .btn-sm { padding: 6px 10px; font-size: .7rem; width: auto; }
-    .btn-lg { padding: 12px; font-size: .9rem; }
-
-    /* FOOTER BAR */
-    .kupon-cubugu { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg2); border-top: 1px solid var(--border); padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; z-index: 90; }
-    .kc-bilgi { font-size: .7rem; color: var(--muted); display: flex; gap: 12px; }
-    .kc-bilgi b { color: var(--text); display: block; font-size: .85rem; }
-
-    /* MODALS */
-    .modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 16px; }
-    .modal.active { display: flex; }
-    .modal-content { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; width: 100%; max-width: 450px; padding: 18px; max-height: 90vh; overflow-y: auto; }
-
-    .secim-btn { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 12px; width: 100%; text-align: left; margin-bottom: 10px; cursor: pointer; color: #fff; }
-    .secim-btn .baslik { font-weight: 800; font-size: .85rem; margin-bottom: 4px; }
-    .secim-btn .aciklama { font-size: .7rem; color: var(--muted); }
-
-    .kupon-gecmis { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 10px; }
-    .kupon-gecmis.kazandi { border-left: 4px solid var(--green); }
-    .kupon-gecmis.kaybetti { border-left: 4px solid var(--red); }
-    .kupon-gecmis.bekliyor { border-left: 4px solid var(--orange); }
-
-    .karsilastirma-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; text-align: center; }
-    .karsilastirma-taraf { background: var(--bg3); padding: 12px; border-radius: 8px; border: 1px solid var(--border); }
-    .karsilastirma-taraf .lbl { font-size: .65rem; color: var(--muted); margin-bottom: 4px; }
-    .karsilastirma-taraf .skor { font-weight: 900; font-size: 1.4rem; }
-    .karsilastirma-mesaj { text-align: center; padding: 8px; border-radius: 6px; font-weight: 800; font-size: .75rem; }
-    .karsilastirma-mesaj.sen-kazandin { background: rgba(0,230,118,0.15); color: var(--green); }
-    .karsilastirma-mesaj.sistem-kazandi { background: rgba(255,82,82,0.15); color: var(--red); }
-
-    .sm-duzenle-btn { background: none; border: none; color: var(--blue); cursor: pointer; font-size: .9rem; padding: 2px 6px; }
-    .muted { color: var(--muted); }
-    .green { color: var(--green); }
-    .analiz-box { background: var(--bg3); padding: 8px 10px; border-radius: 8px; margin-top: 8px; }
-    .analiz-row { display: flex; justify-content: space-between; font-size: .75rem; margin-top: 2px; }
-    .analiz-lbl { color: var(--muted); font-size: .68rem; font-weight: 800; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#070b14">
+<title>SkorLab v18</title>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header>
-    <div class="logo">⚽ SKORLAB <span>v17</span></div>
-    <div class="header-right">
-      <span id="weekTitle" style="font-size:.7rem;color:var(--muted)">-</span>
-      <div class="butce-box">
-        💰 Bütçe:
-        <input type="number" id="butceInput" value="100" onchange="butceGuncelle(this.value)">
-        TL
-      </div>
-      <button class="btn btn-green btn-sm" onclick="otomatikKuponAc()">⚡ OTOMATİK</button>
-    </div>
-  </header>
+<header class="app-header">
+  <div class="logo">⚽ SKORLAB <span class="v">v18</span></div>
+  <div id="weekTitle" class="week">Yükleniyor...</div>
+</header>
 
-  <!-- TAB NAV -->
-  <div class="tabs">
-    <div class="tab active" onclick="switchTab(0, this)">📋 Bülten</div>
-    <div class="tab" onclick="switchTab(1, this)">🎯 Serbest</div>
-    <div class="tab" onclick="switchTab(2, this)">💾 Kuponlarım</div>
-    <div class="tab" onclick="switchTab(3, this)">VS Karşılaştır</div>
+<nav class="tabs">
+  <button class="tab active" onclick="switchTab(1,this)">📋 Bülten</button>
+  <button class="tab" onclick="switchTab(2,this)">⚡ Kupon</button>
+  <button class="tab" onclick="switchTab(3,this)">💾 Kuponlarım</button>
+</nav>
+
+<main>
+
+<!-- SAYFA 1: BÜLTEN -->
+<section id="page-1" class="page active">
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-val" id="statMac">0</div><div class="stat-lbl">MAÇ</div></div>
+    <div class="stat-card"><div class="stat-val blue" id="statSecilen">0</div><div class="stat-lbl">SEÇİLEN</div></div>
+    <div class="stat-card"><div class="stat-val green" id="statKolon">0</div><div class="stat-lbl">KOLON</div></div>
+    <div class="stat-card"><div class="stat-val orange" id="statTutar">0</div><div class="stat-lbl">TUTAR (TL)</div></div>
   </div>
+  <div id="matchesList"></div>
+</section>
 
-  <!-- PAGE 0: BÜLTEN -->
-  <div id="page-0" class="page active">
-    <div id="matchesList"></div>
+<!-- SAYFA 2: KUPON -->
+<section id="page-2" class="page">
+  <div class="card">
+    <div class="result-title">⚡ KUPON ÖZETİ</div>
+    <div id="kuponOzet"></div>
   </div>
-
-  <!-- PAGE 1: SERBEST -->
-  <div id="page-1" class="page">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
-      <button class="btn btn-green" onclick="openSerbestModal()">➕ Maç Ekle</button>
-      <button class="btn btn-red" onclick="temizleSerbest()">🗑️ Temizle</button>
-    </div>
-    <div id="serbestListesi"></div>
+  <div class="card">
+    <div class="result-title">📋 SEÇİLEN MAÇLAR</div>
+    <div id="kuponMaclar"></div>
   </div>
+</section>
 
-  <!-- PAGE 2: KUPONLARIM -->
-  <div id="page-2" class="page">
+<!-- SAYFA 3: KUPONLARIM -->
+<section id="page-3" class="page">
+  <div class="card">
+    <div class="result-title">💾 KAYITLI KUPONLARIM</div>
     <div id="kayitliKuponlar"></div>
   </div>
+</section>
 
-  <!-- PAGE 3: KARŞILAŞTIRMA -->
-  <div id="page-3" class="page">
-    <div class="card">
-      <div style="font-weight:800;font-size:.85rem;margin-bottom:10px">📊 İSTATİSTİKLER & PERFORMANS</div>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;font-size:.7rem">
-        <div style="background:var(--bg3);padding:8px;border-radius:6px"><span class="muted" style="display:block">Maç</span><b id="statMac">0</b></div>
-        <div style="background:var(--bg3);padding:8px;border-radius:6px"><span class="muted" style="display:block">Seçilen</span><b id="statSecilen">0</b></div>
-        <div style="background:var(--bg3);padding:8px;border-radius:6px"><span class="muted" style="display:block">Kolon</span><b id="statKolon">0</b></div>
-        <div style="background:var(--bg3);padding:8px;border-radius:6px"><span class="muted" style="display:block">Değerli</span><b id="statDeger" style="color:var(--green)">0</b></div>
-      </div>
-    </div>
-    <div id="karsilastirmaListesi"></div>
+</main>
+
+<!-- ALT KUPON ÇUBUĞU -->
+<div class="kupon-cubugu" id="kuponCubugu">
+  <div class="kc-info">
+    <div class="kc-satir"><span>Maç</span><b id="kcMac">0</b></div>
+    <div class="kc-satir"><span>Kolon</span><b id="kcKolon">0</b></div>
+    <div class="kc-satir"><span>Tutar</span><b id="kcTutar">0 TL</b></div>
   </div>
-
-  <!-- FOOTER KUPON ÇUBUĞU (BÜLTEN İÇİN) -->
-  <div class="kupon-cubugu">
-    <div class="kc-bilgi">
-      <div>Maç <b id="kcMac">0</b></div>
-      <div>Kolon <b id="kcKolon">0</b></div>
-      <div>Tutar <b id="kcTutar">0 TL</b></div>
-      <div>Kalan <b id="kcKalan" style="color:var(--green)">0 TL</b></div>
-    </div>
-    <div style="display:flex;gap:6px">
-      <button class="btn btn-red btn-sm" onclick="tumSecimleriSil()">🗑️</button>
-      <button class="btn btn-green btn-sm" onclick="kuponuKaydet('toto')">💾 KAYDET</button>
-    </div>
+  <div class="kc-butonlar">
+    <button class="btn btn-red btn-sm" onclick="tumSecimleriSil()">🗑️</button>
+    <button class="btn btn-green" onclick="kuponuKaydet()">💾 KAYDET</button>
   </div>
+</div>
 
-  <!-- MODAL 1: OTOMATİK KUPON SEÇİMİ -->
-  <div id="secimModal" class="modal">
-    <div class="modal-content">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-        <h3 style="margin:0;font-size:1rem;color:var(--green)">⚡ OTOMATİK KUPON SİHİRBAZI</h3>
-        <span onclick="closeModal('secimModal')" style="cursor:pointer;font-weight:bold;font-size:1.2rem">✕</span>
-      </div>
-      <div id="secimModalBody"></div>
-    </div>
+<!-- MODAL: MAÇ DETAY / ANALİZ -->
+<div class="modal" id="macDetayModal">
+  <div class="modal-content">
+    <div class="modal-head"><span id="macDetayTitle">Maç Analizi</span><button onclick="closeModal('macDetayModal')">✖</button></div>
+    <div class="modal-body" id="macDetayBody"></div>
   </div>
+</div>
 
-  <!-- MODAL 2: SERBEST MAÇ EKLE / DÜZENLE -->
-  <div id="serbestModal" class="modal">
-    <div class="modal-content" style="max-width:480px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-        <h3 id="serbestModalTitle" style="margin:0;font-size:1rem;color:var(--green)">➕ SERBEST MAÇ EKLE</h3>
-        <span onclick="closeModal('serbestModal')" style="cursor:pointer;font-weight:bold;font-size:1.2rem">✕</span>
-      </div>
+<!-- MODAL: KUPON DETAY -->
+<div class="modal" id="kuponDetayModal">
+  <div class="modal-content">
+    <div class="modal-head"><span>💾 KUPON DETAY</span><button onclick="closeModal('kuponDetayModal')">✖</button></div>
+    <div class="modal-body" id="kuponDetayBody"></div>
+  </div>
+</div>
 
-      <div style="display:flex;flex-direction:column;gap:10px">
-        <div>
-          <label style="font-size:.7rem;color:var(--muted);display:block;margin-bottom:4px">Maç Adı</label>
-          <input type="text" id="sm-match" placeholder="Örn: Galatasaray - Fenerbahçe" style="width:100%;padding:10px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:#fff">
-        </div>
-
-        <!-- 1X2 TARAF ORANLARI -->
-        <div style="font-weight:800;font-size:.7rem;color:var(--green);margin-top:4px">1X2 TARAF ORANLARI</div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">
-          <input type="number" step="0.01" id="sm-o1" placeholder="1" oninput="serbestCanliAnaliz()" style="padding:8px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:#fff;text-align:center">
-          <input type="number" step="0.01" id="sm-oX" placeholder="X" oninput="serbestCanliAnaliz()" style="padding:8px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:#fff;text-align:center">
-          <input type="number" step="0.01" id="sm-o2" placeholder="2" oninput="serbestCanliAnaliz()" style="padding:8px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:#fff;text-align:center">
-        </div>
-
-        <!-- 2.5 GOL ALT/ÜST -->
-        <div style="font-weight:800;font-size:.7rem;color:var(--blue);margin-top:4px">2.5 GOL ALT / ÜST</div>
-        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px">
-          <input type="number" step="0.01" id="sm-oA25" placeholder="2.5 Alt" oninput="serbestCanliAnaliz()" style="padding:8px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:#fff;text-align:center">
-          <input type="number" step="0.01" id="sm-oU25" placeholder="2.5 Üst" oninput="serbestCanliAnaliz()" style="padding:8px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:#fff;text-align:center">
-        </div>
-
-        <!-- 3.5 GOL ALT/ÜST -->
-        <div style="font-weight:800;font-size:.7rem;color:#e91e63;margin-top:4px">3.5 GOL ALT / ÜST</div>
-        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px">
-          <input type="number" step="0.01" id="sm-oA35" placeholder="3.5 Alt" oninput="serbestCanliAnaliz()" style="padding:8px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:#fff;text-align:center">
-          <input type="number" step="0.01" id="sm-oU35" placeholder="3.5 Üst" oninput="serbestCanliAnaliz()" style="padding:8px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:#fff;text-align:center">
-        </div>
-
-        <!-- KARŞILIKLI GOL -->
-        <div style="font-weight:800;font-size:.7rem;color:var(--orange);margin-top:4px">KARŞILIKLI GOL (KG)</div>
-        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px">
-          <input type="number" step="0.01" id="sm-oKgV" placeholder="KG Var" oninput="serbestCanliAnaliz()" style="padding:8px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:#fff;text-align:center">
-          <input type="number" step="0.01" id="sm-oKgY" placeholder="KG Yok" oninput="serbestCanliAnaliz()" style="padding:8px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:#fff;text-align:center">
-        </div>
-
-        <!-- CANLI ANLIK SİSTEM ÖNERİSİ -->
-        <div id="sm-canli-analiz" style="display:none;background:var(--bg3);border:1px solid var(--green);border-radius:8px;padding:10px;margin-top:6px">
-          <div style="font-size:.7rem;color:var(--muted)">🧠 SİSTEM DEĞER ANALİZİ</div>
-          <div id="sm-en-degerli-tercih" style="font-weight:900;color:var(--green);font-size:.85rem;margin-top:4px">-</div>
-        </div>
-
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
-          <button class="btn btn-gray" onclick="closeModal('serbestModal')">İPTAL</button>
-          <button id="sm-kaydet-btn" class="btn btn-green" onclick="serbestKaydet()">✅ EKLE</button>
-        </div>
-      </div>
+<!-- MODAL: TOAST -->
+<div class="modal" id="toastModal">
+  <div class="modal-content small">
+    <div class="modal-body center">
+      <div id="toastIcon" style="font-size:2.5rem">✅</div>
+      <div id="toastTitle" style="font-weight:900;margin:8px 0"></div>
+      <div id="toastMsg" class="muted"></div>
+      <button class="btn btn-blue" onclick="closeModal('toastModal')" style="margin-top:12px">TAMAM</button>
     </div>
   </div>
+</div>
 
-  <!-- MODAL 3: KUPON DETAY -->
-  <div id="kuponDetayModal" class="modal">
-    <div class="modal-content">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-        <h3 style="margin:0;font-size:1rem;color:var(--green)">💾 KUPON DETAYI</h3>
-        <span onclick="closeModal('kuponDetayModal')" style="cursor:pointer;font-weight:bold;font-size:1.2rem">✕</span>
-      </div>
-      <div id="kuponDetayBody"></div>
-    </div>
-  </div>
-
-  <!-- MODAL 4: MAÇ DETAY (ANALİZ) -->
-  <div id="macDetayModal" class="modal">
-    <div class="modal-content">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-        <h3 id="macDetayTitle" style="margin:0;font-size:1rem;color:var(--green)">📊 MAÇ ANALİZİ</h3>
-        <span onclick="closeModal('macDetayModal')" style="cursor:pointer;font-weight:bold;font-size:1.2rem">✕</span>
-      </div>
-      <div id="macDetayBody"></div>
-    </div>
-  </div>
-
-  <!-- MODAL 5: TOAST / BİLDİRİM -->
-  <div id="toastModal" class="modal">
-    <div class="modal-content" style="text-align:center;max-width:320px;padding:24px">
-      <div id="toastIcon" style="font-size:2.5rem;margin-bottom:8px">✅</div>
-      <div id="toastTitle" style="font-weight:900;font-size:1.1rem;margin-bottom:4px">Başarılı</div>
-      <div id="toastMsg" style="font-size:.8rem;color:var(--muted);margin-bottom:16px">-</div>
-      <button class="btn btn-green" onclick="closeModal('toastModal')">TAMAM</button>
-    </div>
-  </div>
-
-  <script src="app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
