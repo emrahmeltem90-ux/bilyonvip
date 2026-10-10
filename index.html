@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#070b14">
-<title>SkorLab v24 PRO</title>
+<title>SkorLab v26 PRO</title>
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="manifest" href="manifest.json">
@@ -38,7 +38,7 @@
   <div class="page-actions">
     <button type="button" class="btn btn-red" onclick="temizleToto()">🗑️ Toto Temizle</button>
     <button type="button" class="btn btn-green" onclick="kuponOlusturToto()">⚡ TOTO KUPONU</button>
-    <button type="button" class="btn btn-purple" onclick="otomatikKuponToto()">🤖 OTOMATİK KUPON</button>
+    <button type="button" class="btn btn-purple" onclick="otomatikKuponToto()">🤖 OTOMATİK</button>
   </div>
   <div id="totoKuponSonuc"></div>
   <div id="totoListesi"></div>
@@ -48,10 +48,21 @@
 <section id="page-2" class="page">
   <div class="page-actions">
     <button type="button" class="btn btn-green" onclick="openIddaaModal()">➕ Maç Ekle</button>
-    <button type="button" class="btn btn-red" onclick="temizleIddaa()">🗑️ İddaa Temizle</button>
+    <button type="button" class="btn btn-purple" onclick="document.getElementById('belgeInput').click()">📷 Belge Yükle</button>
+    <button type="button" class="btn btn-red" onclick="temizleIddaa()">🗑️ Temizle</button>
     <button type="button" class="btn btn-blue" onclick="kuponOlusturIddaa()">⚡ İDDAA KUPONU</button>
-    <button type="button" class="btn btn-purple" onclick="otomatikKuponIddaa()">🤖 OTOMATİK</button>
+    <button type="button" class="btn btn-orange" onclick="otomatikKuponIddaa()">🤖 OTOMATİK</button>
   </div>
+
+  <input type="file" id="belgeInput" accept="image/*" capture="environment" style="display:none" onchange="belgeYukle(event)">
+
+  <div id="ocrDurum" style="display:none;padding:12px;background:var(--bg3);border-radius:8px;margin-bottom:12px;text-align:center">
+    <div id="ocrDurumMesaj" style="font-weight:900;color:var(--purple);font-size:.85rem">📷 Görüntü işleniyor...</div>
+    <div style="margin-top:8px;height:4px;background:var(--border);border-radius:4px;overflow:hidden">
+      <div id="ocrProgress" style="height:100%;width:0%;background:var(--purple);transition:width .3s"></div>
+    </div>
+  </div>
+
   <div id="kuponSonuc"></div>
   <div id="iddaaListesi"></div>
 </section>
@@ -60,13 +71,9 @@
 <section id="page-3" class="page">
   <div class="card">
     <div class="result-title">📊 SİSTEM ÖNERİLERİ</div>
-    <div class="muted" style="font-size:.72rem;margin-bottom:12px">
-      Tüm maçların analizi ve önerileri
-    </div>
+    <div class="muted" style="font-size:.72rem;margin-bottom:12px">Tüm maçların analizi ve önerileri</div>
     <div id="analizListesi">
-      <div class="muted" style="text-align:center;padding:20px">
-        Analiz için önce Toto veya İddaa'da oran girmelisin.
-      </div>
+      <div class="muted" style="text-align:center;padding:20px">Analiz için önce oran girmelisin.</div>
     </div>
   </div>
 </section>
@@ -83,9 +90,7 @@
 <section id="page-5" class="page">
   <div class="card">
     <div class="result-title">🧪 BACKTEST · Geçmiş Maç Testi</div>
-    <div class="muted" style="font-size:.72rem;margin-bottom:12px">
-      Geçmiş maçları gir → sistem ne önermiş, tutmuş mu → istatistik gör.
-    </div>
+    <div class="muted" style="font-size:.72rem;margin-bottom:12px">Geçmiş maçları gir → sistem ne önermiş, tutmuş mu → istatistik gör.</div>
 
     <label>Maç Adı</label>
     <input type="text" id="bt-mac" placeholder="Örn: Galatasaray - Fenerbahçe">
