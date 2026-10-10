@@ -1,7 +1,5 @@
 /* ============================================================
-   SKORLAB v25 PRO · Toto/İddaa Ayrı Karar Sistemi
-   Toto: TEK/ÇİFT/ÜÇLÜ (ATLA yok)
-   İddaa: TEK/ÇİFT/ÜÇLÜ/ATLA
+   SKORLAB v26 PRO · Toto/İddaa + OCR Belge Yükleme
    ============================================================ */
 
 /* ============================================================
@@ -189,7 +187,7 @@ class MonteCarloEngine {
 }
 
 /* ============================================================
-   3. TAHMİN MOTORU (TOTO / İDDAA AYRI)
+   3. TAHMİN MOTORU
    ============================================================ */
 class TahminMotoru {
   static birXikiTahmin(analiz){
@@ -309,13 +307,11 @@ class TahminMotoru {
     return satirlar;
   }
 
-  /* === YENİ: TOTO / İDDAA AYRI KARAR === */
   static karar(analiz, tahmin, mod='toto'){
     const favoriOlas = parseFloat(tahmin.birXiki.enOlasıOlas);
     const marj = parseFloat(analiz.marj1X2);
 
     if(mod === 'toto'){
-      // TOTO: ATLA yok. 3 kategori: TEK / ÇİFT / ÜÇLÜ
       if(favoriOlas >= 68){
         return { tip:'TEK', renk:'green', emoji:'🟢', mesaj:'Tek işaretle', kolon: 1 };
       }
@@ -324,7 +320,6 @@ class TahminMotoru {
       }
       return { tip:'ÜÇLÜ', renk:'red', emoji:'🔴', mesaj:'3 işaretle', kolon: 3 };
     } else {
-      // İDDAA: ATLA var. 4 kategori: TEK / ÇİFT / ÜÇLÜ / ATLA
       if(marj >= 14 || favoriOlas < 48){
         return { tip:'ATLA', renk:'gray', emoji:'⚫', mesaj:'Oynama, değer yok', kolon: 0 };
       }
@@ -494,7 +489,7 @@ function renderIddaa(){
   `;
 
   if(!maclarIddaa.length){
-    html += '<div class="card"><div class="muted" style="text-align:center;padding:20px">Henüz maç eklemedin. "➕ Maç Ekle" ile başla.</div></div>';
+    html += '<div class="card"><div class="muted" style="text-align:center;padding:20px">Henüz maç eklemedin. "➕ Maç Ekle" veya "📷 Belge Yükle" ile başla.</div></div>';
     c.innerHTML = html;
     return;
   }
@@ -563,7 +558,7 @@ function renderIddaa(){
           <span class="val orange">${tahmin.gol.kgTahmin} (%${tahmin.gol.kgOlas})</span>
         </div>
       </div>
-      <div class="yorum-box ${tahmin.karar.tip === 'ATLA' ? 'tehlike' : tahmin.karar.tip === 'ÜÇLÜ' ? 'tehlike' : tahmin.karar.tip === 'ÇİFT' ? 'riskli' : ''}">
+      <div class="yorum-box ${tahmin.karar.tip === 'ATLA' || tahmin.karar.tip === 'ÜÇLÜ' ? 'tehlike' : tahmin.karar.tip === 'ÇİFT' ? 'riskli' : ''}">
         <div class="baslik">${tahmin.karar.emoji} ${tahmin.karar.tip} — ${tahmin.karar.mesaj}</div>
         ${tahmin.yorum.slice(0,2).map(y => `<p>▸ ${y}</p>`).join('')}
       </div>
@@ -720,7 +715,6 @@ function kuponKurVeGoster(maclar, tip){
       secim = '1X2';
       k = 3;
     } else {
-      // ATLA
       secim = 'ATLA';
       k = 0;
     }
@@ -951,7 +945,7 @@ function updateKuponCubugu(){
 }
 
 /* ============================================================
-   14. TOTO KUPONU (klasik)
+   14. TOTO KUPONU
    ============================================================ */
 function kuponOlusturToto(){
   if(!maclarToto.length){ showToast('error','Maç Yok','Toto boş.'); return; }
@@ -1016,7 +1010,7 @@ function kuponKaydetToto(){
 }
 
 /* ============================================================
-   15. İDDAA KUPONU (klasik)
+   15. İDDAA KUPONU
    ============================================================ */
 function kuponOlusturIddaa(){
   if(!maclarIddaa.length){ showToast('error','Maç Yok','İddaa boş.'); return; }
@@ -1361,7 +1355,178 @@ function backtestTemizle(){
 }
 
 /* ============================================================
-   19. NAV / MODAL
+   19. BELGE YÜKLEME (OCR) - Bilyoner Formatı
+   ============================================================ */
+async function tesseractYukle(){
+  if(window.Tesseract) return true;
+  return new Promise((resolve) => {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.head.appendChild(script);
+  });
+}
+
+async function belgeYukle(event){
+  const file = event.target.files[0];
+  if(!file) return;
+
+  $('ocrDurum').style.display = 'block';
+  $('ocrDurumMesaj').innerText = '📷 Görüntü hazırlanıyor...';
+  $('ocrProgress').style.width = '10%';
+
+  const yuklendi = await tesseractYukle();
+  if(!yuklendi){
+    $('ocrDurumMesaj').innerText = '❌ OCR kütüphanesi yüklenemedi. İnternet bağlantını kontrol et.';
+    setTimeout(() => $('ocrDurum').style.display = 'none', 3000);
+    return;
+  }
+
+  $('ocrDurumMesaj').innerText = '🔍 Görüntü okunuyor... (10-20 saniye)';
+  $('ocrProgress').style.width = '30%';
+
+  try {
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      const dataUrl = e.target.result;
+      try {
+        const result = await Tesseract.recognize(dataUrl, 'tur+eng', {
+          logger: (m) => {
+            if(m.status === 'recognizing text'){
+              const yuzde = 30 + Math.round(m.progress * 60);
+              $('ocrProgress').style.width = yuzde + '%';
+            }
+          }
+        });
+        const metin = result.data.text;
+        $('ocrDurumMesaj').innerText = '🧠 Maç bilgileri ayrıştırılıyor...';
+        $('ocrProgress').style.width = '95%';
+
+        const maclar = bilyonerParse(metin);
+        if(maclar.length === 0){
+          $('ocrDurumMesaj').innerText = '⚠️ Hiç maç okunamadı. Görüntü net mi?';
+          setTimeout(() => {
+            $('ocrDurum').style.display = 'none';
+            $('belgeInput').value = '';
+          }, 3000);
+          return;
+        }
+
+        let eklenen = 0;
+        maclar.forEach(m => {
+          maclarIddaa.unshift({
+            id: Date.now() + Math.random(),
+            mac: m.mac,
+            oranlar: {
+              o1: m.o1, oX: m.oX, o2: m.o2,
+              oA25: m.oA25, oU25: m.oU25,
+              oKgV: m.oKgV, oKgY: m.oKgY
+            },
+            tarih: new Date().toLocaleString('tr-TR')
+          });
+          eklenen++;
+        });
+        localStorage.setItem('skorlab_iddaa', JSON.stringify(maclarIddaa));
+
+        $('ocrDurumMesaj').innerText = `✅ ${eklenen} maç eklendi!`;
+        $('ocrProgress').style.width = '100%';
+
+        setTimeout(() => {
+          $('ocrDurum').style.display = 'none';
+          $('belgeInput').value = '';
+          renderIddaa();
+          renderAnaliz();
+          showToast('success', 'Belge Okundu!', eklenen + ' maç eklendi. Kontrol et.');
+        }, 1000);
+
+      } catch(err) {
+        console.error(err);
+        $('ocrDurumMesaj').innerText = '❌ OCR hatası: ' + err.message;
+        setTimeout(() => {
+          $('ocrDurum').style.display = 'none';
+          $('belgeInput').value = '';
+        }, 3000);
+      }
+    };
+    reader.readAsDataURL(file);
+  } catch(err) {
+    console.error(err);
+    $('ocrDurumMesaj').innerText = '❌ Dosya okunamadı.';
+    setTimeout(() => {
+      $('ocrDurum').style.display = 'none';
+      $('belgeInput').value = '';
+    }, 3000);
+  }
+}
+
+function bilyonerParse(metin){
+  const maclar = [];
+  const satirlar = metin.split('\n').map(s => s.trim()).filter(s => s);
+
+  let i = 0;
+  while(i < satirlar.length){
+    const satir = satirlar[i];
+    const macMatch = satir.match(/^([A-ZÇĞİÖŞÜa-zçğıöşü0-9\s\.]{3,40})\s*[-–]\s*([A-ZÇĞİÖŞÜa-zçğıöşü0-9\s\.]{3,40})$/);
+    if(macMatch){
+      const ev = macMatch[1].trim();
+      const dep = macMatch[2].trim();
+      let o1 = null, oX = null, o2 = null;
+      let oA25 = null, oU25 = null;
+      let oKgV = null, oKgY = null;
+
+      for(let j = i + 1; j < Math.min(i + 25, satirlar.length); j++){
+        const s = satirlar[j];
+        const oranRegex = /(\d+[.,]\d+)/g;
+        const oranlar = s.match(oranRegex);
+        if(!oranlar) continue;
+
+        if(/ms\s*1/i.test(s) || /^1$/i.test(s)){
+          if(oranlar[0] && !o1) o1 = parseFloat(oranlar[0].replace(',','.'));
+        }
+        if(/ms\s*x/i.test(s)){
+          if(oranlar[0] && !oX) oX = parseFloat(oranlar[0].replace(',','.'));
+        }
+        if(/ms\s*2/i.test(s)){
+          if(oranlar[0] && !o2) o2 = parseFloat(oranlar[0].replace(',','.'));
+        }
+        if(/2[,.]5\s*alt/i.test(s)){
+          if(oranlar[0] && !oA25) oA25 = parseFloat(oranlar[0].replace(',','.'));
+        }
+        if(/2[,.]5\s*üst/i.test(s)){
+          if(oranlar[0] && !oU25) oU25 = parseFloat(oranlar[0].replace(',','.'));
+        }
+        if(/kg\s*var/i.test(s)){
+          if(oranlar[0] && !oKgV) oKgV = parseFloat(oranlar[0].replace(',','.'));
+        }
+        if(/kg\s*yok/i.test(s)){
+          if(oranlar[0] && !oKgY) oKgY = parseFloat(oranlar[0].replace(',','.'));
+        }
+        if(oranlar.length >= 3 && !o1 && !oX && !o2){
+          o1 = parseFloat(oranlar[0].replace(',','.'));
+          oX = parseFloat(oranlar[1].replace(',','.'));
+          o2 = parseFloat(oranlar[2].replace(',','.'));
+        }
+        if(/^([A-ZÇĞİÖŞÜa-zçğıöşü0-9\s\.]{3,40})\s*[-–]\s*([A-ZÇĞİÖŞÜa-zçğıöşü0-9\s\.]{3,40})$/.test(s)){
+          break;
+        }
+      }
+
+      if(o1 && oX && o2){
+        maclar.push({ mac: ev + ' - ' + dep, o1, oX, o2, oA25, oU25, oKgV, oKgY });
+      }
+
+      i += 5;
+    } else {
+      i++;
+    }
+  }
+
+  return maclar;
+}
+
+/* ============================================================
+   20. NAV / MODAL
    ============================================================ */
 function switchTab(i, el){
   document.querySelectorAll('.tab, .page').forEach(e => e.classList.remove('active'));
