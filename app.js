@@ -1,5 +1,6 @@
 /* ============================================================
-   SKORLAB v22 PRO · ValueBet + Monte Carlo + Gol Filtresi (İddaa)
+   SKORLAB v23 PRO · ValueBet + Monte Carlo + Gol Filtresi
+   + Beklenen Skor (B) + Tuzak Uyarısı (C) + Backtest (D)
    ============================================================ */
 
 /* ============================================================
@@ -9,27 +10,19 @@ class ValueBetEngine {
   static faktoriyel(n){ let r=1; for(let i=2;i<=n;i++) r*=i; return r; }
   static poissonPmf(k,lambda){ return (Math.exp(-lambda)*Math.pow(lambda,k))/this.faktoriyel(k); }
 
-  /* === DÜZELTİLDİ: Shin formülü (p/S yerine p²/S) === */
   static shinMarjArindir(o1,oX,o2){
     const p1 = 1/o1, pX = 1/oX, p2 = 1/o2;
     const S = p1 + pX + p2;
     if(S <= 1 || isNaN(S)) return { p1:0.33, pX:0.33, p2:0.34, marjYuzde:0 };
-
-    // Shin marj parametresi
     const z = (S - 1) / S;
-
     const f = (p) => {
       const num = Math.sqrt(z*z + 4*(1 - z) * (p*p / S)) - z;
       const den = 2 * (1 - z);
       return num / den;
     };
-
     const a = f(p1), b = f(pX), c = f(p2);
     const t = a + b + c;
-    return {
-      p1: a/t, pX: b/t, p2: c/t,
-      marjYuzde: (S - 1) * 100
-    };
+    return { p1: a/t, pX: b/t, p2: c/t, marjYuzde: (S - 1) * 100 };
   }
 
   static ikiliMarjArindir(oA,oB){
@@ -55,6 +48,7 @@ class ValueBetEngine {
   static dixonColesMatris(xgEv,xgDep,rho=-0.13){
     const MAX=8;
     let p1=0,pX=0,p2=0,kg=0,ust25=0;
+    const skorlar = [];
     for(let h=0;h<=MAX;h++){
       for(let a=0;a<=MAX;a++){
         let p = this.poissonPmf(h,xgEv)*this.poissonPmf(a,xgDep);
@@ -67,16 +61,24 @@ class ValueBetEngine {
         if(h>a) p1+=p; else if(h===a) pX+=p; else p2+=p;
         if(h+a>2.5) ust25+=p;
         if(h>=1&&a>=1) kg+=p;
+        skorlar.push({ skor: h+'-'+a, p });
       }
     }
     const t = p1+pX+p2;
     p1/=t; pX/=t; p2/=t; ust25/=t; kg/=t;
+    skorlar.forEach(s => s.p /= t);
+    skorlar.sort((a,b)=>b.p-a.p);
+
     return {
       p1,pX,p2,
       pUst25: Math.min(0.99, Math.max(0.01, ust25)),
       pAlt25: Math.min(0.99, Math.max(0.01, 1-ust25)),
       pKgVar: Math.min(0.99, Math.max(0.01, kg)),
-      pKgYok: Math.min(0.99, Math.max(0.01, 1-kg))
+      pKgYok: Math.min(0.99, Math.max(0.01, 1-kg)),
+      enOlasıSkorlar: skorlar.slice(0,5).map(s => ({
+        skor: s.skor,
+        yuzde: (s.p*100).toFixed(2)
+      }))
     };
   }
 
@@ -87,7 +89,6 @@ class ValueBetEngine {
     return Math.min(f*kesir*100, 5.0);
   }
 
-  /* === GOLLÜ MAÇ TESPİTİ === */
   static golluMacAnaliz(poisson, xgEv, xgDep){
     const toplamXg = xgEv + xgDep;
     const pUst25 = poisson.pUst25 * 100;
@@ -102,22 +103,13 @@ class ValueBetEngine {
     if(pKgVar > 55){ puan++; kriterler.push('KG'); }
     if(pBeraberlik > 20){ puan++; kriterler.push('X'); }
 
-    let seviye = '';
-    let etiket = '';
-    let sinif = '';
-
+    let seviye = '', etiket = '', sinif = '';
     if(puan >= 3){
-      seviye = 'gollu';
-      etiket = '🔥 GOLLÜ MAÇ';
-      sinif = 'gol-yes';
+      seviye = 'gollu'; etiket = '🔥 GOLLÜ MAÇ'; sinif = 'gol-yes';
     } else if(puan >= 2){
-      seviye = 'orta';
-      etiket = '⚡ ORTA';
-      sinif = 'gol-orta';
+      seviye = 'orta'; etiket = '⚡ ORTA'; sinif = 'gol-orta';
     } else {
-      seviye = 'az';
-      etiket = '❄️ AZ GOLLÜ';
-      sinif = 'gol-no';
+      seviye = 'az'; etiket = '❄️ AZ GOLLÜ'; sinif = 'gol-no';
     }
 
     return {
@@ -181,7 +173,8 @@ class ValueBetEngine {
         pUst25: (poi.pUst25*100).toFixed(1),
         pAlt25: (poi.pAlt25*100).toFixed(1),
         pKgVar: (poi.pKgVar*100).toFixed(1),
-        pKgYok: (poi.pKgYok*100).toFixed(1)
+        pKgYok: (poi.pKgYok*100).toFixed(1),
+        enOlasıSkorlar: poi.enOlasıSkorlar
       },
       values
     };
@@ -237,6 +230,7 @@ let oranlarToto = JSON.parse(localStorage.getItem('skorlab_oranlar_toto') || '{}
 let secimlerToto = JSON.parse(localStorage.getItem('skorlab_secimler_toto') || '{}');
 let secimlerIddaa = JSON.parse(localStorage.getItem('skorlab_secimler_iddaa') || '{}');
 let kayitliKuponlar = JSON.parse(localStorage.getItem('skorlab_kuponlar') || '[]');
+let backtestKayitlari = JSON.parse(localStorage.getItem('skorlab_backtest') || '[]');
 
 let golFiltre = 'hepsi';
 
@@ -260,6 +254,7 @@ async function loadData(){
   renderIddaa();
   renderAnaliz();
   renderKayitliKuponlar();
+  renderBacktest();
   updateStats();
   updateKuponCubugu();
 }
@@ -278,7 +273,7 @@ function oranGuncelleToto(mac_id, alan, val){
 }
 
 /* ============================================================
-   6. ÖNERİ ÜRET
+   6. ÖNERİ ÜRET (+ TUZAK UYARISI)
    ============================================================ */
 function oneriUret(analiz, oranlar){
   const p1 = parseFloat(analiz.shin.p1);
@@ -308,12 +303,42 @@ function oneriUret(analiz, oranlar){
     renk = 'red';
   }
 
+  /* === TUZAK UYARISI === */
+  let tuzakSeviye = 'normal';
+  let tuzakMesaj = '';
+  const marj = parseFloat(analiz.marj1X2);
+
+  if(favoriOlas < 52){
+    tuzakSeviye = 'tehlike';
+    tuzakMesaj = '🚨 Favori zayıf, sürpriz riski yüksek';
+  } else if(favoriOlas < 65){
+    tuzakSeviye = 'dikkat';
+    tuzakMesaj = '⚡ Favori orta seviyede, dikkatli oyna';
+  }
+
+  if(marj > 20){
+    tuzakSeviye = 'tehlike';
+    tuzakMesaj = '🚨 Bahisçi marjı çok yüksek (%' + marj.toFixed(1) + ')';
+  } else if(marj > 15 && tuzakSeviye === 'normal'){
+    tuzakSeviye = 'dikkat';
+    tuzakMesaj = '⚡ Marj yüksek (%' + marj.toFixed(1) + ')';
+  }
+
+  const favOran = oranlar['1'] && favoriKod === '1' ? parseFloat(oranlar['1']) :
+                  oranlar['2'] && favoriKod === '2' ? parseFloat(oranlar['2']) :
+                  oranlar['X'] && favoriKod === 'X' ? parseFloat(oranlar['X']) : 0;
+  if(favOran >= 1.40 && favOran <= 1.70 && favoriOlas < 68){
+    if(tuzakSeviye === 'normal') tuzakSeviye = 'dikkat';
+    if(!tuzakMesaj) tuzakMesaj = '⚠️ Klasik tuzak oranı (' + favOran + ')';
+  }
+
   const degerVar = analiz.values.length > 0 ? analiz.values[0] : null;
 
   return {
     favoriKod, favoriOlas: favoriOlas.toFixed(1),
     tip, renk,
     tuzak: (100 - favoriOlas).toFixed(0),
+    tuzakSeviye, tuzakMesaj,
     deger: degerVar
   };
 }
@@ -342,6 +367,9 @@ function renderToto(){
       oneri = oneriUret(a, o);
     }
 
+    const tuzakRenk = oneri && oneri.tuzakSeviye === 'tehlike' ? 'var(--red)' :
+                      oneri && oneri.tuzakSeviye === 'dikkat' ? 'var(--orange)' : 'var(--muted)';
+
     return `
     <div class="mac-kart">
       <div class="mac-head">
@@ -365,8 +393,13 @@ function renderToto(){
       <div style="margin:8px 0;padding:8px;background:var(--bg3);border-radius:8px;font-size:.72rem">
         <div style="display:flex;justify-content:space-between;align-items:center">
           <span style="font-weight:900;color:var(--${oneri.renk === 'green' ? 'green' : oneri.renk === 'yellow' ? 'orange' : oneri.renk === 'orange' ? 'orange' : 'red'})">🎯 ${oneri.tip}</span>
-          <span class="muted">Favori: %${oneri.favoriOlas} · Tuzak: %${oneri.tuzak}</span>
+          <span class="muted">Favori: %${oneri.favoriOlas}</span>
         </div>
+        ${oneri.tuzakMesaj ? `
+          <div style="margin-top:4px;color:${tuzakRenk};font-weight:800;font-size:.68rem">
+            ${oneri.tuzakMesaj}
+          </div>
+        ` : ''}
       </div>
       ` : ''}
 
@@ -414,7 +447,11 @@ function renderIddaa(){
     });
 
     const gol = ValueBetEngine.golluMacAnaliz(a.poisson, parseFloat(a.xgEv), parseFloat(a.xgDep));
-    const oneri = oneriUret(a, o);
+    const oneri = oneriUret(a, {
+      '1':o.o1, 'X':o.oX, '2':o.o2,
+      'U25':o.oU25, 'A25':o.oA25,
+      'KgV':o.oKgV, 'KgY':o.oKgY
+    });
 
     return { m, a, gol, oneri };
   });
@@ -434,6 +471,9 @@ function renderIddaa(){
   filtreli.forEach(({ m, a, gol, oneri }) => {
     const sec = secimlerIddaa[m.id] || [];
     const o = m.oranlar;
+
+    const tuzakRenk = oneri && oneri.tuzakSeviye === 'tehlike' ? 'var(--red)' :
+                      oneri && oneri.tuzakSeviye === 'dikkat' ? 'var(--orange)' : 'var(--muted)';
 
     html += `
     <div class="mac-kart">
@@ -468,6 +508,11 @@ function renderIddaa(){
           <span style="font-weight:900;color:var(--${oneri.renk === 'green' ? 'green' : oneri.renk === 'yellow' ? 'orange' : oneri.renk === 'orange' ? 'orange' : 'red'})">🎯 ${oneri.tip}</span>
           <span class="muted">Favori: %${oneri.favoriOlas}</span>
         </div>
+        ${oneri.tuzakMesaj ? `
+          <div style="margin-top:4px;color:${tuzakRenk};font-weight:800;font-size:.68rem">
+            ${oneri.tuzakMesaj}
+          </div>
+        ` : ''}
         ${oneri.deger ? `
           <div style="margin-top:4px;color:var(--purple);font-weight:800">
             💎 ${oneri.deger.market} @ ${oneri.deger.oran}
@@ -522,7 +567,11 @@ function renderAnaliz(){
       oU25:o.oU25, oA25:o.oA25,
       oKgV:o.oKgV, oKgY:o.oKgY
     });
-    const oneri = oneriUret(a, o);
+    const oneri = oneriUret(a, {
+      '1':o.o1, 'X':o.oX, '2':o.o2,
+      'U25':o.oU25, 'A25':o.oA25,
+      'KgV':o.oKgV, 'KgY':o.oKgY
+    });
     satirlar.push({ tip:'iddaa', id:m.id, isim:m.mac, oneri, analiz:a });
   });
 
@@ -536,26 +585,35 @@ function renderAnaliz(){
   const cift = satirlar.filter(s => s.oneri.tip.includes('ÇİFT')).length;
   const uclu = satirlar.filter(s => s.oneri.tip.includes('ÜÇLÜ')).length;
   const degerli = satirlar.filter(s => s.oneri.deger).length;
+  const riskli = satirlar.filter(s => s.oneri.tuzakSeviye === 'tehlike').length;
 
   let html = `
-    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:14px;font-size:.65rem;text-align:center">
+    <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:14px;font-size:.65rem;text-align:center">
       <div style="padding:6px;background:rgba(0,230,118,.15);border-radius:6px;color:var(--green);font-weight:900">${banko}<br><span style="font-size:.55rem;opacity:.7">BANKO</span></div>
       <div style="padding:6px;background:rgba(255,176,32,.15);border-radius:6px;color:var(--orange);font-weight:900">${tek}<br><span style="font-size:.55rem;opacity:.7">TEK</span></div>
       <div style="padding:6px;background:rgba(255,176,32,.15);border-radius:6px;color:var(--orange);font-weight:900">${cift}<br><span style="font-size:.55rem;opacity:.7">ÇİFT</span></div>
       <div style="padding:6px;background:rgba(255,77,94,.15);border-radius:6px;color:var(--red);font-weight:900">${uclu}<br><span style="font-size:.55rem;opacity:.7">ÜÇLÜ</span></div>
       <div style="padding:6px;background:rgba(168,85,247,.15);border-radius:6px;color:var(--purple);font-weight:900">${degerli}<br><span style="font-size:.55rem;opacity:.7">VALUE</span></div>
+      <div style="padding:6px;background:rgba(255,77,94,.25);border-radius:6px;color:var(--red);font-weight:900">${riskli}<br><span style="font-size:.55rem;opacity:.7">RİSKLİ</span></div>
     </div>
   `;
 
   satirlar.forEach(s => {
     const renk = s.oneri.renk === 'green' ? 'green' : s.oneri.renk === 'yellow' ? 'orange' : s.oneri.renk === 'orange' ? 'orange' : 'red';
+    const tuzakRenk = s.oneri.tuzakSeviye === 'tehlike' ? 'var(--red)' :
+                      s.oneri.tuzakSeviye === 'dikkat' ? 'var(--orange)' : 'var(--muted)';
     html += `
       <div style="padding:10px 0;border-bottom:1px solid var(--border);font-size:.78rem;cursor:pointer" onclick="analizGoster${s.tip === 'toto' ? 'Toto' : 'Iddaa'}(${s.id})">
         <div style="font-weight:900;margin-bottom:4px">${s.tip === 'toto' ? '#'+s.id : 'İ'} ${s.isim}</div>
         <div style="display:flex;justify-content:space-between;align-items:center">
           <span style="font-weight:900;color:var(--${renk})">🎯 ${s.oneri.tip}</span>
-          <span class="muted" style="font-size:.7rem">Favori: %${s.oneri.favoriOlas} · Tuzak: %${s.oneri.tuzak}</span>
+          <span class="muted" style="font-size:.7rem">Favori: %${s.oneri.favoriOlas}</span>
         </div>
+        ${s.oneri.tuzakMesaj ? `
+          <div style="margin-top:4px;color:${tuzakRenk};font-weight:800;font-size:.68rem">
+            ${s.oneri.tuzakMesaj}
+          </div>
+        ` : ''}
         ${s.oneri.deger ? `
           <div style="margin-top:4px;color:var(--purple);font-weight:800;font-size:.72rem">
             💎 ${s.oneri.deger.market} @ ${s.oneri.deger.oran} (EV: ${s.oneri.deger.ev})
@@ -744,6 +802,7 @@ function kuponOlusturToto(){
       tip: oneri.tip,
       favoriKod: oneri.favoriKod,
       favoriOlas: oneri.favoriOlas,
+      tuzakMesaj: oneri.tuzakMesaj,
       deger: oneri.deger
     });
   });
@@ -764,6 +823,7 @@ function kuponOlusturToto(){
           <b style="color:var(--${renk});font-size:.9rem">🎯 ${o.tip}</b>
           <span class="muted">Favori: %${o.favoriOlas}</span>
         </div>
+        ${o.tuzakMesaj ? `<div style="margin-top:2px;color:var(--orange);font-size:.68rem">${o.tuzakMesaj}</div>` : ''}
       </div>
     `;
   });
@@ -807,13 +867,18 @@ function kuponOlusturIddaa(){
 
     if(golFiltre !== 'hepsi' && gol.seviye !== golFiltre) return;
 
-    const oneri = oneriUret(a, o);
+    const oneri = oneriUret(a, {
+      '1':o.o1, 'X':o.oX, '2':o.o2,
+      'U25':o.oU25, 'A25':o.oA25,
+      'KgV':o.oKgV, 'KgY':o.oKgY
+    });
     oneriler.push({
       mac_id: m.id,
       isim: m.mac,
       tip: oneri.tip,
       favoriKod: oneri.favoriKod,
       favoriOlas: oneri.favoriOlas,
+      tuzakMesaj: oneri.tuzakMesaj,
       deger: oneri.deger,
       gol
     });
@@ -846,6 +911,7 @@ function kuponOlusturIddaa(){
           <b style="color:var(--${renk});font-size:.9rem">🎯 ${o.tip}</b>
           <span class="muted">Favori: %${o.favoriOlas}</span>
         </div>
+        ${o.tuzakMesaj ? `<div style="margin-top:2px;color:var(--orange);font-size:.68rem">${o.tuzakMesaj}</div>` : ''}
         ${o.gol ? `<span class="gol-etiket ${o.gol.sinif}" style="margin-top:4px">${o.gol.etiket}</span>` : ''}
         ${o.deger ? `
           <div style="margin-top:4px;color:var(--purple);font-weight:800;font-size:.72rem">
@@ -891,7 +957,7 @@ function kuponKaydetToto(){
     kolon: 1,
     tutar: 10,
     detaylar: oneriler.map(o => ({
-      mac_id: o.mac_id, isim: o.isim, secim: o.tip
+      mac_id: o.mac_id, isim: o.isim, secim: o.tip, favoriOlas: o.favoriOlas
     })),
     durum: 'bekliyor'
   });
@@ -915,7 +981,7 @@ function kuponKaydetIddaa(){
     kolon: 1,
     tutar: 10,
     detaylar: oneriler.map(o => ({
-      mac_id: o.mac_id, isim: o.isim, secim: o.tip
+      mac_id: o.mac_id, isim: o.isim, secim: o.tip, favoriOlas: o.favoriOlas
     })),
     durum: 'bekliyor'
   });
@@ -975,6 +1041,39 @@ function analizGosterOrtak(isim, o, tip){
   const renkMap = { green: 'var(--green)', yellow: 'var(--orange)', orange: 'var(--orange)', red: 'var(--red)' };
   const aktifRenk = renkMap[oneri.renk] || 'var(--green)';
 
+  let tuzakHTML = '';
+  if(oneri.tuzakMesaj){
+    const tuzakRenk = oneri.tuzakSeviye === 'tehlike' ? 'var(--red)' :
+                      oneri.tuzakSeviye === 'dikkat' ? 'var(--orange)' : 'var(--muted)';
+    const tuzakBaslik = oneri.tuzakSeviye === 'tehlike' ? '🚨 YÜKSEK RİSK' : '⚠️ DİKKAT';
+    tuzakHTML = `
+      <div class="analiz-box" style="border:1px solid ${tuzakRenk};background:rgba(255,77,94,.05)">
+        <span class="analiz-lbl" style="color:${tuzakRenk}">${tuzakBaslik}</span>
+        <div style="color:${tuzakRenk};font-weight:800;font-size:.78rem;margin-top:4px">
+          ${oneri.tuzakMesaj}
+        </div>
+      </div>
+    `;
+  }
+
+  let skorHTML = '';
+  if(rapor.poisson.enOlasıSkorlar && rapor.poisson.enOlasıSkorlar.length){
+    skorHTML = `
+      <div class="analiz-box" style="border:1px solid var(--purple)">
+        <span class="analiz-lbl" style="color:var(--purple)">🎯 BEKLENEN SKOR (Poisson)</span>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:1.6rem;font-weight:900;color:var(--purple)">${rapor.poisson.enOlasıSkorlar[0].skor}</span>
+          <span class="muted" style="font-size:.72rem">En olası: <b style="color:var(--text)">%${rapor.poisson.enOlasıSkorlar[0].yuzde}</b></span>
+        </div>
+        <div style="margin-top:8px">
+          ${rapor.poisson.enOlasıSkorlar.slice(1,5).map(s => `
+            <div class="analiz-row"><span>${s.skor}</span><b>%${s.yuzde}</b></div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+
   let golHTML = '';
   if(tip === 'iddaa'){
     const gol = ValueBetEngine.golluMacAnaliz(rapor.poisson, parseFloat(rapor.xgEv), parseFloat(rapor.xgDep));
@@ -1006,6 +1105,8 @@ function analizGosterOrtak(isim, o, tip){
         <div class="analiz-row"><span>Tuzak Riski:</span><b>%${oneri.tuzak}</b></div>
       </div>
 
+      ${tuzakHTML}
+      ${skorHTML}
       ${golHTML}
 
       <div class="analiz-box">
@@ -1031,7 +1132,7 @@ function analizGosterOrtak(isim, o, tip){
         <div class="analiz-row"><span>X:</span><b>%${mc.pX}</b></div>
         <div class="analiz-row"><span>2:</span><b>%${mc.p2}</b></div>
         <div style="margin-top:8px;padding-top:6px;border-top:1px solid var(--border)">
-          <div class="muted" style="font-size:.7rem;margin-bottom:4px">En Olası Skorlar:</div>
+          <div class="muted" style="font-size:.7rem;margin-bottom:4px">En Olası Skorlar (Simülasyon):</div>
           ${mc.enIyiSkorlar.map(s => `<div class="analiz-row"><span>${s.skor}</span><b>%${s.yuzde}</b></div>`).join('')}
         </div>
       </div>
@@ -1130,7 +1231,158 @@ function kuponSil(id){
 }
 
 /* ============================================================
-   18. NAV / MODAL
+   18. BACKTEST
+   ============================================================ */
+function renderBacktest(){
+  const c = $('backtestListesi');
+  if(!c) return;
+
+  if(!backtestKayitlari.length){
+    c.innerHTML = '<div class="card"><div class="muted" style="text-align:center;padding:20px">Henüz backtest kaydı yok. Yukarıdan maç ekle.</div></div>';
+    return;
+  }
+
+  const toplam = backtestKayitlari.length;
+  const tutan = backtestKayitlari.filter(b => b.tuttu === true).length;
+  const tutmayan = backtestKayitlari.filter(b => b.tuttu === false).length;
+  const oran = toplam > 0 ? ((tutan/toplam)*100).toFixed(1) : 0;
+
+  const kategoriler = {};
+  backtestKayitlari.forEach(b => {
+    const kat = b.oneriTip.includes('BANKO') ? 'BANKO' :
+                b.oneriTip.startsWith('TEK') ? 'TEK' :
+                b.oneriTip.includes('ÇİFT') ? 'ÇİFT' : 'ÜÇLÜ';
+    if(!kategoriler[kat]) kategoriler[kat] = { toplam:0, tutan:0 };
+    kategoriler[kat].toplam++;
+    if(b.tuttu === true) kategoriler[kat].tutan++;
+  });
+
+  let html = `
+    <div class="card">
+      <div class="result-title">📊 GENEL İSTATİSTİK</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center;margin-top:8px">
+        <div style="padding:10px;background:var(--bg3);border-radius:8px">
+          <div style="font-size:1.4rem;font-weight:900;color:var(--green)">${tutan}</div>
+          <div style="font-size:.65rem;color:var(--muted)">TUTAN</div>
+        </div>
+        <div style="padding:10px;background:var(--bg3);border-radius:8px">
+          <div style="font-size:1.4rem;font-weight:900;color:var(--red)">${tutmayan}</div>
+          <div style="font-size:.65rem;color:var(--muted)">TUTMAYAN</div>
+        </div>
+        <div style="padding:10px;background:var(--bg3);border-radius:8px">
+          <div style="font-size:1.4rem;font-weight:900;color:var(--orange)">%${oran}</div>
+          <div style="font-size:.65rem;color:var(--muted)">BAŞARI</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="result-title">🎯 KATEGORİ BAZLI BAŞARI</div>
+      ${Object.entries(kategoriler).map(([tip, v]) => {
+        const basari = v.toplam > 0 ? ((v.tutan/v.toplam)*100).toFixed(0) : 0;
+        const renk = basari >= 60 ? 'var(--green)' : basari >= 40 ? 'var(--orange)' : 'var(--red)';
+        return `
+          <div class="analiz-row" style="padding:6px 0">
+            <span>${tip}</span>
+            <b style="color:${renk}">%${basari} (${v.tutan}/${v.toplam})</b>
+          </div>
+        `;
+      }).join('')}
+    </div>
+
+    <div class="card">
+      <div class="result-title">📋 KAYITLAR (${toplam})</div>
+      ${backtestKayitlari.slice(0, 50).map(b => {
+        const emoji = b.tuttu === true ? '✅' : b.tuttu === false ? '❌' : '⏳';
+        const renk = b.tuttu === true ? 'green' : b.tuttu === false ? 'red' : 'orange';
+        return `
+          <div style="padding:10px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:8px">
+            <div style="flex:1">
+              <div style="font-weight:900;font-size:.8rem">${emoji} ${b.isim}</div>
+              <div class="muted" style="font-size:.68rem;margin-top:2px">
+                Öneri: <b style="color:var(--${renk})">${b.oneriTip}</b> (Favori %${b.favoriOlas})
+                ${b.gercekSkor ? ` · Sonuç: <b>${b.gercekSkor}</b>` : ''}
+              </div>
+            </div>
+            <button type="button" class="btn btn-red btn-sm" onclick="backtestSil(${b.id})">🗑️</button>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+
+  c.innerHTML = html;
+}
+
+function backtestEkle(){
+  const isim = $('bt-mac').value.trim();
+  const o1 = parseFloat($('bt-o1').value);
+  const oX = parseFloat($('bt-oX').value);
+  const o2 = parseFloat($('bt-o2').value);
+  const skor = $('bt-skor').value.trim();
+
+  if(!isim || !o1 || !oX || !o2){
+    showToast('error','Eksik','Maç adı ve 1X2 oranları zorunlu.');
+    return;
+  }
+
+  const a = ValueBetEngine.analizEt({
+    o1, oX, o2,
+    oU25:null, oA25:null, oKgV:null, oKgY:null
+  });
+  const oneri = oneriUret(a, { '1':o1, 'X':oX, '2':o2 });
+
+  let tuttu = null;
+  if(skor && /^\d+-\d+$/.test(skor)){
+    const [h, depl] = skor.split('-').map(Number);
+    const gercekKod = h > depl ? '1' : h < depl ? '2' : 'X';
+    if(oneri.tip.includes('BANKO') || oneri.tip.startsWith('TEK')){
+      tuttu = oneri.favoriKod === gercekKod;
+    } else if(oneri.tip.includes('ÇİFT')){
+      const kodlar = oneri.tip.replace('ÇİFT ','').split('');
+      tuttu = kodlar.includes(gercekKod);
+    } else if(oneri.tip.includes('ÜÇLÜ')){
+      tuttu = true;
+    }
+  }
+
+  backtestKayitlari.unshift({
+    id: Date.now(),
+    isim,
+    oranlar: { o1, oX, o2 },
+    oneriTip: oneri.tip,
+    favoriOlas: oneri.favoriOlas,
+    tuzakSeviye: oneri.tuzakSeviye,
+    gercekSkor: skor || null,
+    tuttu,
+    tarih: new Date().toLocaleString('tr-TR')
+  });
+
+  if(backtestKayitlari.length > 200) backtestKayitlari = backtestKayitlari.slice(0, 200);
+  localStorage.setItem('skorlab_backtest', JSON.stringify(backtestKayitlari));
+
+  ['bt-mac','bt-o1','bt-oX','bt-o2','bt-skor'].forEach(id => { const el = $(id); if(el) el.value = ''; });
+
+  renderBacktest();
+  showToast('success','Backtest Eklendi!', tuttu === true ? 'Öneri TUTTU ✅' : tuttu === false ? 'Öneri TUTMADI ❌' : 'Skor girilmedi');
+}
+
+function backtestSil(id){
+  if(!confirm('Bu kayıt silinsin mi?')) return;
+  backtestKayitlari = backtestKayitlari.filter(x => x.id !== id);
+  localStorage.setItem('skorlab_backtest', JSON.stringify(backtestKayitlari));
+  renderBacktest();
+}
+
+function backtestTemizle(){
+  if(!confirm('Tüm backtest kayıtları silinsin mi?')) return;
+  backtestKayitlari = [];
+  localStorage.setItem('skorlab_backtest', '[]');
+  renderBacktest();
+}
+
+/* ============================================================
+   19. NAV / MODAL
    ============================================================ */
 function switchTab(i, el){
   document.querySelectorAll('.tab, .page').forEach(e => e.classList.remove('active'));
@@ -1138,6 +1390,7 @@ function switchTab(i, el){
   $('page-'+i).classList.add('active');
   if(i === 3) renderAnaliz();
   if(i === 4) renderKayitliKuponlar();
+  if(i === 5) renderBacktest();
 }
 
 function closeModal(id){ $(id).classList.remove('active'); }
