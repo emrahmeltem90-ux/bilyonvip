@@ -40,9 +40,6 @@ button:active{opacity:.8}
 .oran-item label{font-size:.6rem;color:var(--muted);font-weight:800;display:block;margin-bottom:2px;text-align:center}
 .oran-item input{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px;font-size:.85rem;font-weight:800;text-align:center}
 
-.olasi-goster{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0;font-size:.72rem;text-align:center;color:var(--muted)}
-.olasi-goster b{color:var(--green)}
-
 .secim-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
 .secim-btn{padding:12px 10px;border-radius:10px;border:2px solid var(--border);background:var(--bg3);color:var(--text);font-weight:900;font-size:1rem;cursor:pointer;transition:.15s}
 .secim-btn.secili{background:linear-gradient(135deg,#00c853,#00e676);border-color:#00e676;color:#000;box-shadow:0 0 15px rgba(0,230,118,.5)}
@@ -59,6 +56,7 @@ button:active{opacity:.8}
 .btn-red{background:var(--red)}
 .btn-blue{background:var(--blue)}
 .btn-orange{background:var(--orange);color:#000}
+.btn-purple{background:var(--purple)}
 .btn-gray{background:var(--bg3);color:var(--text)}
 .btn-sm{padding:8px 10px;font-size:.7rem}
 .btn-lg{width:100%;padding:14px;font-size:.9rem}
@@ -70,16 +68,28 @@ button:active{opacity:.8}
 .analiz-box{background:var(--bg3);border-radius:10px;padding:10px;margin:10px 0}
 .analiz-lbl{color:var(--orange);font-weight:900;font-size:.72rem;display:block;margin-bottom:6px}
 .analiz-row{display:flex;justify-content:space-between;font-size:.78rem;padding:4px 0;gap:8px;flex-wrap:wrap}
-.analiz-row .green{color:var(--green)}
-.analiz-row .red{color:var(--red)}
-.analiz-row .orange{color:var(--orange)}
 .muted{color:var(--muted);font-size:.7rem}
 
-.yorum-box{background:linear-gradient(135deg,rgba(0,230,118,.08),rgba(61,139,255,.05));border-left:3px solid #00e676;border-radius:8px;padding:12px;margin-top:10px;font-size:.78rem;line-height:1.7}
-.yorum-box.riskli{border-left-color:#ffb020}
-.yorum-box.tehlike{border-left-color:#ff4d5e}
-.yorum-box .baslik{font-weight:900;font-size:.82rem;margin-bottom:6px}
-.yorum-box p{margin:5px 0}
+/* TAHMİN KUTUSU - YENİ */
+.tahmin-box{background:linear-gradient(135deg,rgba(0,230,118,.08),rgba(168,85,247,.06));border:1px solid var(--border);border-radius:10px;padding:10px;margin:8px 0}
+.tahmin-satir{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:.75rem;border-bottom:1px dashed var(--border)}
+.tahmin-satir:last-child{border-bottom:none}
+.tahmin-satir .lbl{color:var(--muted);font-weight:700}
+.tahmin-satir .val{font-weight:900}
+.tahmin-satir .val.green{color:var(--green)}
+.tahmin-satir .val.red{color:var(--red)}
+.tahmin-satir .val.orange{color:var(--orange)}
+.tahmin-satir .val.purple{color:var(--purple)}
+
+/* YORUM KUTUSU */
+.yorum-box{background:linear-gradient(135deg,rgba(0,230,118,.08),rgba(61,139,255,.05));border-left:3px solid #00e676;border-radius:8px;padding:12px;margin-top:10px;font-size:.76rem;line-height:1.7}
+.yorum-box.riskli{border-left-color:#ffb020;background:linear-gradient(135deg,rgba(255,176,32,.08),rgba(61,139,255,.05))}
+.yorum-box.tehlike{border-left-color:#ff4d5e;background:linear-gradient(135deg,rgba(255,77,94,.08),rgba(61,139,255,.05))}
+.yorum-box .baslik{font-weight:900;font-size:.8rem;margin-bottom:6px;color:var(--text)}
+.yorum-box p{margin:4px 0}
+.yorum-box .vurgu{color:var(--green);font-weight:900}
+.yorum-box .vurgu-riskli{color:var(--orange);font-weight:900}
+.yorum-box .vurgu-tehlike{color:var(--red);font-weight:900}
 
 .kupon-gecmis{background:var(--bg3);border-radius:10px;padding:12px;margin-bottom:8px;border-left:3px solid var(--blue);cursor:pointer}
 .kupon-gecmis.kazandi{border-left-color:var(--green)}
@@ -108,60 +118,22 @@ button:active{opacity:.8}
   .page-actions{gap:4px}
 }
 
-/* === İDDAA GOL FİLTRESİ === */
-.gol-filtre-bar{
-  display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:4px;
-}
-.gol-filtre-btn{
-  padding:8px 12px;background:var(--bg3);border:1px solid var(--border);
-  border-radius:20px;color:var(--muted);font-weight:800;font-size:.68rem;
-  cursor:pointer;white-space:nowrap;
-}
+/* === GOL FİLTRESİ === */
+.gol-filtre-bar{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:4px}
+.gol-filtre-btn{padding:8px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;color:var(--muted);font-weight:800;font-size:.68rem;cursor:pointer;white-space:nowrap}
 .gol-filtre-btn.active{background:rgba(0,230,118,.15);border-color:var(--green);color:var(--green)}
 
-.gol-etiket{
-  display:inline-block;padding:3px 10px;border-radius:6px;
-  font-size:.62rem;font-weight:900;letter-spacing:.3px;
-  margin-top:6px;
-}
+.gol-etiket{display:inline-block;padding:3px 10px;border-radius:6px;font-size:.62rem;font-weight:900;letter-spacing:.3px;margin-top:6px}
 .gol-yes{background:rgba(0,230,118,.15);color:var(--green);border:1px solid rgba(0,230,118,.4)}
 .gol-orta{background:rgba(255,176,32,.15);color:var(--orange);border:1px solid rgba(255,176,32,.4)}
 .gol-no{background:rgba(61,139,255,.15);color:var(--blue);border:1px solid rgba(61,139,255,.4)}
 
-.gol-info{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:6px;
-  font-size:.68rem;margin-top:6px;padding:6px;
-  background:var(--bg3);border-radius:6px;text-align:center;
-}
+.gol-info{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;font-size:.68rem;margin-top:6px;padding:6px;background:var(--bg3);border-radius:6px;text-align:center}
 .gol-info b{color:var(--green)}
 
 /* === BACKTEST SAYFASI === */
-#page-5 label{
-  font-size:.7rem;
-  color:var(--muted);
-  font-weight:800;
-  display:block;
-  margin:10px 0 4px;
-}
-#page-5 input{
-  width:100%;
-  background:var(--bg3);
-  border:1px solid var(--border);
-  color:var(--text);
-  border-radius:8px;
-  padding:10px;
-  font-size:.9rem;
-  font-weight:700;
-  box-sizing:border-box;
-}
-#page-5 input:focus{
-  border-color:var(--green);
-  outline:none;
-}
-#page-5 .oran-grid-3{
-  margin-top:6px;
-}
-#page-5 .oran-grid-3 label{
-  font-size:.6rem;
-  margin:0 0 3px 0;
-}
+#page-5 label{font-size:.7rem;color:var(--muted);font-weight:800;display:block;margin:10px 0 4px}
+#page-5 input{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:10px;font-size:.9rem;font-weight:700;box-sizing:border-box}
+#page-5 input:focus{border-color:var(--green);outline:none}
+#page-5 .oran-grid-3{margin-top:6px}
+#page-5 .oran-grid-3 label{font-size:.6rem;margin:0 0 3px 0}
