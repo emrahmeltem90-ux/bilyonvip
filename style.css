@@ -138,7 +138,3 @@ button:active{opacity:.8}
 #page-5 input:focus{border-color:var(--green);outline:none}
 #page-5 .oran-grid-3{margin-top:6px}
 #page-5 .oran-grid-3 label{font-size:.6rem;margin:0 0 3px 0}
-
-/* === BELGE YÜKLEME === */
-#ocrDurum{border:1px solid var(--purple);animation:pulse 1.5s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.7}}
