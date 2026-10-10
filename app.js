@@ -1,5 +1,5 @@
 /* ============================================================
-   SKORLAB v26 PRO · Toto/İddaa + OCR Belge Yükleme
+   SKORLAB v27 PRO · Toto/İddaa + Metin Yapıştır (Manuel Parser)
    ============================================================ */
 
 /* ============================================================
@@ -489,7 +489,7 @@ function renderIddaa(){
   `;
 
   if(!maclarIddaa.length){
-    html += '<div class="card"><div class="muted" style="text-align:center;padding:20px">Henüz maç eklemedin. "➕ Maç Ekle" veya "📷 Belge Yükle" ile başla.</div></div>';
+    html += '<div class="card"><div class="muted" style="text-align:center;padding:20px">Henüz maç eklemedin. "➕ Maç Ekle" veya "📋 Metin Yapıştır" ile başla.</div></div>';
     c.innerHTML = html;
     return;
   }
@@ -1355,172 +1355,81 @@ function backtestTemizle(){
 }
 
 /* ============================================================
-   19. BELGE YÜKLEME (OCR) - Bilyoner Formatı
+   19. METİN YAPIŞTIR (Manuel Parser)
    ============================================================ */
-async function tesseractYukle(){
-  if(window.Tesseract) return true;
-  return new Promise((resolve) => {
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
-    script.onload = () => resolve(true);
-    script.onerror = () => resolve(false);
-    document.head.appendChild(script);
-  });
+function openMetinModal(){
+  $('metinInput').value = '';
+  $('metinModal').classList.add('active');
 }
 
-async function belgeYukle(event){
-  const file = event.target.files[0];
-  if(!file) return;
-
-  $('ocrDurum').style.display = 'block';
-  $('ocrDurumMesaj').innerText = '📷 Görüntü hazırlanıyor...';
-  $('ocrProgress').style.width = '10%';
-
-  const yuklendi = await tesseractYukle();
-  if(!yuklendi){
-    $('ocrDurumMesaj').innerText = '❌ OCR kütüphanesi yüklenemedi. İnternet bağlantını kontrol et.';
-    setTimeout(() => $('ocrDurum').style.display = 'none', 3000);
+function metinOku(){
+  const metin = $('metinInput').value.trim();
+  if(!metin){
+    showToast('error','Boş','Metin boş. Bir şeyler yapıştır.');
     return;
   }
 
-  $('ocrDurumMesaj').innerText = '🔍 Görüntü okunuyor... (10-20 saniye)';
-  $('ocrProgress').style.width = '30%';
+  const maclar = metinParse(metin);
 
-  try {
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      const dataUrl = e.target.result;
-      try {
-        const result = await Tesseract.recognize(dataUrl, 'tur+eng', {
-          logger: (m) => {
-            if(m.status === 'recognizing text'){
-              const yuzde = 30 + Math.round(m.progress * 60);
-              $('ocrProgress').style.width = yuzde + '%';
-            }
-          }
-        });
-        const metin = result.data.text;
-        $('ocrDurumMesaj').innerText = '🧠 Maç bilgileri ayrıştırılıyor...';
-        $('ocrProgress').style.width = '95%';
-
-        const maclar = bilyonerParse(metin);
-        if(maclar.length === 0){
-          $('ocrDurumMesaj').innerText = '⚠️ Hiç maç okunamadı. Görüntü net mi?';
-          setTimeout(() => {
-            $('ocrDurum').style.display = 'none';
-            $('belgeInput').value = '';
-          }, 3000);
-          return;
-        }
-
-        let eklenen = 0;
-        maclar.forEach(m => {
-          maclarIddaa.unshift({
-            id: Date.now() + Math.random(),
-            mac: m.mac,
-            oranlar: {
-              o1: m.o1, oX: m.oX, o2: m.o2,
-              oA25: m.oA25, oU25: m.oU25,
-              oKgV: m.oKgV, oKgY: m.oKgY
-            },
-            tarih: new Date().toLocaleString('tr-TR')
-          });
-          eklenen++;
-        });
-        localStorage.setItem('skorlab_iddaa', JSON.stringify(maclarIddaa));
-
-        $('ocrDurumMesaj').innerText = `✅ ${eklenen} maç eklendi!`;
-        $('ocrProgress').style.width = '100%';
-
-        setTimeout(() => {
-          $('ocrDurum').style.display = 'none';
-          $('belgeInput').value = '';
-          renderIddaa();
-          renderAnaliz();
-          showToast('success', 'Belge Okundu!', eklenen + ' maç eklendi. Kontrol et.');
-        }, 1000);
-
-      } catch(err) {
-        console.error(err);
-        $('ocrDurumMesaj').innerText = '❌ OCR hatası: ' + err.message;
-        setTimeout(() => {
-          $('ocrDurum').style.display = 'none';
-          $('belgeInput').value = '';
-        }, 3000);
-      }
-    };
-    reader.readAsDataURL(file);
-  } catch(err) {
-    console.error(err);
-    $('ocrDurumMesaj').innerText = '❌ Dosya okunamadı.';
-    setTimeout(() => {
-      $('ocrDurum').style.display = 'none';
-      $('belgeInput').value = '';
-    }, 3000);
+  if(maclar.length === 0){
+    showToast('error','Hata','Hiç maç okunamadı. Format doğru mu?');
+    return;
   }
+
+  let eklenen = 0;
+  maclar.forEach(m => {
+    maclarIddaa.unshift({
+      id: Date.now() + Math.random(),
+      mac: m.mac,
+      oranlar: {
+        o1: m.o1, oX: m.oX, o2: m.o2,
+        oA25: m.oA25, oU25: m.oU25,
+        oKgV: m.oKgV, oKgY: m.oKgY
+      },
+      tarih: new Date().toLocaleString('tr-TR')
+    });
+    eklenen++;
+  });
+
+  localStorage.setItem('skorlab_iddaa', JSON.stringify(maclarIddaa));
+  closeModal('metinModal');
+  renderIddaa();
+  renderAnaliz();
+  showToast('success','Eklendi!', eklenen + ' maç listeye eklendi.');
 }
 
-function bilyonerParse(metin){
+function metinParse(metin){
   const maclar = [];
-  const satirlar = metin.split('\n').map(s => s.trim()).filter(s => s);
+  const bloklar = metin.split(/\n\s*\n/);
 
-  let i = 0;
-  while(i < satirlar.length){
-    const satir = satirlar[i];
-    const macMatch = satir.match(/^([A-ZÇĞİÖŞÜa-zçğıöşü0-9\s\.]{3,40})\s*[-–]\s*([A-ZÇĞİÖŞÜa-zçğıöşü0-9\s\.]{3,40})$/);
-    if(macMatch){
-      const ev = macMatch[1].trim();
-      const dep = macMatch[2].trim();
-      let o1 = null, oX = null, o2 = null;
-      let oA25 = null, oU25 = null;
-      let oKgV = null, oKgY = null;
+  bloklar.forEach(blok => {
+    const satirlar = blok.split('\n').map(s => s.trim()).filter(s => s);
+    if(satirlar.length < 2) return;
 
-      for(let j = i + 1; j < Math.min(i + 25, satirlar.length); j++){
-        const s = satirlar[j];
-        const oranRegex = /(\d+[.,]\d+)/g;
-        const oranlar = s.match(oranRegex);
-        if(!oranlar) continue;
+    const macIsmi = satirlar[0];
+    if(!macIsmi.includes('-') && !macIsmi.includes('–')) return;
 
-        if(/ms\s*1/i.test(s) || /^1$/i.test(s)){
-          if(oranlar[0] && !o1) o1 = parseFloat(oranlar[0].replace(',','.'));
-        }
-        if(/ms\s*x/i.test(s)){
-          if(oranlar[0] && !oX) oX = parseFloat(oranlar[0].replace(',','.'));
-        }
-        if(/ms\s*2/i.test(s)){
-          if(oranlar[0] && !o2) o2 = parseFloat(oranlar[0].replace(',','.'));
-        }
-        if(/2[,.]5\s*alt/i.test(s)){
-          if(oranlar[0] && !oA25) oA25 = parseFloat(oranlar[0].replace(',','.'));
-        }
-        if(/2[,.]5\s*üst/i.test(s)){
-          if(oranlar[0] && !oU25) oU25 = parseFloat(oranlar[0].replace(',','.'));
-        }
-        if(/kg\s*var/i.test(s)){
-          if(oranlar[0] && !oKgV) oKgV = parseFloat(oranlar[0].replace(',','.'));
-        }
-        if(/kg\s*yok/i.test(s)){
-          if(oranlar[0] && !oKgY) oKgY = parseFloat(oranlar[0].replace(',','.'));
-        }
-        if(oranlar.length >= 3 && !o1 && !oX && !o2){
-          o1 = parseFloat(oranlar[0].replace(',','.'));
-          oX = parseFloat(oranlar[1].replace(',','.'));
-          o2 = parseFloat(oranlar[2].replace(',','.'));
-        }
-        if(/^([A-ZÇĞİÖŞÜa-zçğıöşü0-9\s\.]{3,40})\s*[-–]\s*([A-ZÇĞİÖŞÜa-zçğıöşü0-9\s\.]{3,40})$/.test(s)){
-          break;
-        }
-      }
+    const o1x2 = satirlar[1].split(/[\s,]+/).map(s => parseFloat(s.replace(',','.'))).filter(n => !isNaN(n));
+    if(o1x2.length < 3) return;
 
-      if(o1 && oX && o2){
-        maclar.push({ mac: ev + ' - ' + dep, o1, oX, o2, oA25, oU25, oKgV, oKgY });
-      }
-
-      i += 5;
-    } else {
-      i++;
+    let oA25 = null, oU25 = null;
+    if(satirlar[2]){
+      const o25 = satirlar[2].split(/[\s,]+/).map(s => parseFloat(s.replace(',','.'))).filter(n => !isNaN(n));
+      if(o25.length >= 2){ oA25 = o25[0]; oU25 = o25[1]; }
     }
-  }
+
+    let oKgV = null, oKgY = null;
+    if(satirlar[3]){
+      const oKg = satirlar[3].split(/[\s,]+/).map(s => parseFloat(s.replace(',','.'))).filter(n => !isNaN(n));
+      if(oKg.length >= 2){ oKgV = oKg[0]; oKgY = oKg[1]; }
+    }
+
+    maclar.push({
+      mac: macIsmi,
+      o1: o1x2[0], oX: o1x2[1], o2: o1x2[2],
+      oA25, oU25, oKgV, oKgY
+    });
+  });
 
   return maclar;
 }
