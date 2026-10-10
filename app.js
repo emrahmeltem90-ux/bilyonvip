@@ -1,5 +1,5 @@
 /* ============================================================
-   SKORLAB v27 PRO · Toto/İddaa + Metin Yapıştır (Manuel Parser)
+   SKORLAB v28 PRO · Toto/İddaa + Metin Yapıştır (Bug Fix)
    ============================================================ */
 
 /* ============================================================
@@ -88,11 +88,12 @@ class ValueBetEngine {
     return Math.min(f*kesir*100, 5.0);
   }
 
+  /* DÜZELTİLDİ: * 100 kaldırıldı */
   static golluMacAnaliz(poisson, xgEv, xgDep){
     const toplamXg = xgEv + xgDep;
-    const pUst25 = poisson.pUst25 * 100;
-    const pKgVar = poisson.pKgVar * 100;
-    const pBeraberlik = poisson.pX * 100;
+    const pUst25 = parseFloat(poisson.pUst25);
+    const pKgVar = parseFloat(poisson.pKgVar);
+    const pBeraberlik = parseFloat(poisson.pX);
     let puan = 0;
     const kriterler = [];
     if(toplamXg > 3.0){ puan++; kriterler.push('xG>3'); }
@@ -103,7 +104,13 @@ class ValueBetEngine {
     if(puan >= 3){ seviye='gollu'; etiket='🔥 GOLLÜ MAÇ'; sinif='gol-yes'; }
     else if(puan >= 2){ seviye='orta'; etiket='⚡ ORTA'; sinif='gol-orta'; }
     else { seviye='az'; etiket='❄️ AZ GOLLÜ'; sinif='gol-no'; }
-    return { seviye, etiket, sinif, puan, toplamXg: toplamXg.toFixed(2), pUst25: pUst25.toFixed(1), pKgVar: pKgVar.toFixed(1), kriterler };
+    return {
+      seviye, etiket, sinif, puan,
+      toplamXg: toplamXg.toFixed(2),
+      pUst25: pUst25.toFixed(1),
+      pKgVar: pKgVar.toFixed(1),
+      kriterler
+    };
   }
 
   static analizEt(veri){
@@ -307,6 +314,7 @@ class TahminMotoru {
     return satirlar;
   }
 
+  /* DÜZELTİLDİ: Marj kontrolü akıllı hale getirildi */
   static karar(analiz, tahmin, mod='toto'){
     const favoriOlas = parseFloat(tahmin.birXiki.enOlasıOlas);
     const marj = parseFloat(analiz.marj1X2);
@@ -320,9 +328,16 @@ class TahminMotoru {
       }
       return { tip:'ÜÇLÜ', renk:'red', emoji:'🔴', mesaj:'3 işaretle', kolon: 3 };
     } else {
-      if(marj >= 14 || favoriOlas < 48){
-        return { tip:'ATLA', renk:'gray', emoji:'⚫', mesaj:'Oynama, değer yok', kolon: 0 };
+      // İDDAA
+      // Sadece favori ÇOK zayıfsa ATLA
+      if(favoriOlas < 45){
+        return { tip:'ATLA', renk:'gray', emoji:'⚫', mesaj:'Favori çok zayıf, değer yok', kolon: 0 };
       }
+      // Marj ÇOK yüksek VE favori zayıfsa ATLA
+      if(marj >= 20 && favoriOlas < 60){
+        return { tip:'ATLA', renk:'gray', emoji:'⚫', mesaj:'Marj çok yüksek, değer yok', kolon: 0 };
+      }
+      // Normal karar
       if(favoriOlas >= 72){
         return { tip:'TEK', renk:'green', emoji:'🟢', mesaj:'Tek oyna', kolon: 1 };
       }
@@ -1355,7 +1370,7 @@ function backtestTemizle(){
 }
 
 /* ============================================================
-   19. METİN YAPIŞTIR (Manuel Parser)
+   19. METİN YAPIŞTIR
    ============================================================ */
 function openMetinModal(){
   $('metinInput').value = '';
