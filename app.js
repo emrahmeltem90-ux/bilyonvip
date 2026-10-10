@@ -9,18 +9,27 @@ class ValueBetEngine {
   static faktoriyel(n){ let r=1; for(let i=2;i<=n;i++) r*=i; return r; }
   static poissonPmf(k,lambda){ return (Math.exp(-lambda)*Math.pow(lambda,k))/this.faktoriyel(k); }
 
+  /* === DÜZELTİLDİ: Shin formülü (p/S yerine p²/S) === */
   static shinMarjArindir(o1,oX,o2){
-    const p1=1/o1, pX=1/oX, p2=1/o2;
-    const S = p1+pX+p2;
-    if(S<=1 || isNaN(S)) return {p1:0.33,pX:0.33,p2:0.34,marjYuzde:0};
-    const f = p => {
-      const num = Math.sqrt(S*S + 4*(1-S)*Math.pow(p/S,2)) - S;
-      const den = 2*(1-S);
-      return num/den;
+    const p1 = 1/o1, pX = 1/oX, p2 = 1/o2;
+    const S = p1 + pX + p2;
+    if(S <= 1 || isNaN(S)) return { p1:0.33, pX:0.33, p2:0.34, marjYuzde:0 };
+
+    // Shin marj parametresi
+    const z = (S - 1) / S;
+
+    const f = (p) => {
+      const num = Math.sqrt(z*z + 4*(1 - z) * (p*p / S)) - z;
+      const den = 2 * (1 - z);
+      return num / den;
     };
-    const a=f(p1), b=f(pX), c=f(p2);
-    const t = a+b+c;
-    return { p1:a/t, pX:b/t, p2:c/t, marjYuzde:(S-1)*100 };
+
+    const a = f(p1), b = f(pX), c = f(p2);
+    const t = a + b + c;
+    return {
+      p1: a/t, pX: b/t, p2: c/t,
+      marjYuzde: (S - 1) * 100
+    };
   }
 
   static ikiliMarjArindir(oA,oB){
@@ -78,7 +87,7 @@ class ValueBetEngine {
     return Math.min(f*kesir*100, 5.0);
   }
 
-  /* === YENİ: GOLLÜ MAÇ TESPİTİ === */
+  /* === GOLLÜ MAÇ TESPİTİ === */
   static golluMacAnaliz(poisson, xgEv, xgDep){
     const toplamXg = xgEv + xgDep;
     const pUst25 = poisson.pUst25 * 100;
@@ -229,8 +238,7 @@ let secimlerToto = JSON.parse(localStorage.getItem('skorlab_secimler_toto') || '
 let secimlerIddaa = JSON.parse(localStorage.getItem('skorlab_secimler_iddaa') || '{}');
 let kayitliKuponlar = JSON.parse(localStorage.getItem('skorlab_kuponlar') || '[]');
 
-/* YENİ: İddaa gol filtresi */
-let golFiltre = 'hepsi'; // hepsi | gollu | orta | az
+let golFiltre = 'hepsi';
 
 const $ = id => document.getElementById(id);
 
@@ -311,7 +319,7 @@ function oneriUret(analiz, oranlar){
 }
 
 /* ============================================================
-   7. TOTO RENDER (DEĞİŞMEDİ)
+   7. TOTO RENDER
    ============================================================ */
 function renderToto(){
   if(!maclarToto.length){
@@ -374,13 +382,12 @@ function renderToto(){
 }
 
 /* ============================================================
-   8. İDDAA RENDER (GOL FİLTRESİ + ETİKET)
+   8. İDDAA RENDER
    ============================================================ */
 function renderIddaa(){
   const c = $('iddaaListesi');
   if(!c) return;
 
-  // Önce gol filtresi bar'ı bas
   let html = `
     <div class="gol-filtre-bar">
       <button type="button" class="gol-filtre-btn ${golFiltre==='hepsi'?'active':''}" onclick="setGolFiltre('hepsi')">Tümü</button>
@@ -396,7 +403,6 @@ function renderIddaa(){
     return;
   }
 
-  // Her maçı analiz et, filtre uygula
   const macAnalizler = maclarIddaa.map(m => {
     const o = m.oranlar;
     if(!o.o1 || !o.oX || !o.o2) return { m, a: null, gol: null, oneri: null };
@@ -413,7 +419,6 @@ function renderIddaa(){
     return { m, a, gol, oneri };
   });
 
-  // Filtre uygula
   const filtreli = macAnalizler.filter(item => {
     if(golFiltre === 'hepsi') return true;
     if(!item.gol) return false;
@@ -483,7 +488,6 @@ function renderIddaa(){
   c.innerHTML = html;
 }
 
-/* YENİ: Gol filtresi değiştir */
 function setGolFiltre(f){
   golFiltre = f;
   renderIddaa();
@@ -785,7 +789,7 @@ function kuponOlusturToto(){
 }
 
 /* ============================================================
-   14. İDDAA KUPONU (GOL FİLTRESİ UYGULANIR)
+   14. İDDAA KUPONU
    ============================================================ */
 function kuponOlusturIddaa(){
   if(!maclarIddaa.length){ showToast('error','Maç Yok','İddaa boş.'); return; }
@@ -801,7 +805,6 @@ function kuponOlusturIddaa(){
     });
     const gol = ValueBetEngine.golluMacAnaliz(a.poisson, parseFloat(a.xgEv), parseFloat(a.xgDep));
 
-    // Aktif gol filtresi uygulanır
     if(golFiltre !== 'hepsi' && gol.seviye !== golFiltre) return;
 
     const oneri = oneriUret(a, o);
@@ -972,7 +975,6 @@ function analizGosterOrtak(isim, o, tip){
   const renkMap = { green: 'var(--green)', yellow: 'var(--orange)', orange: 'var(--orange)', red: 'var(--red)' };
   const aktifRenk = renkMap[oneri.renk] || 'var(--green)';
 
-  /* Gollü maç analizi (sadece iddaa'da göster) */
   let golHTML = '';
   if(tip === 'iddaa'){
     const gol = ValueBetEngine.golluMacAnaliz(rapor.poisson, parseFloat(rapor.xgEv), parseFloat(rapor.xgDep));
