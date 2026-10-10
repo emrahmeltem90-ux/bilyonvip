@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#070b14">
-<title>SkorLab v26 PRO</title>
+<title>SkorLab v27 PRO</title>
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="manifest" href="manifest.json">
@@ -48,19 +48,10 @@
 <section id="page-2" class="page">
   <div class="page-actions">
     <button type="button" class="btn btn-green" onclick="openIddaaModal()">➕ Maç Ekle</button>
-    <button type="button" class="btn btn-purple" onclick="document.getElementById('belgeInput').click()">📷 Belge Yükle</button>
+    <button type="button" class="btn btn-purple" onclick="openMetinModal()">📋 Metin Yapıştır</button>
     <button type="button" class="btn btn-red" onclick="temizleIddaa()">🗑️ Temizle</button>
     <button type="button" class="btn btn-blue" onclick="kuponOlusturIddaa()">⚡ İDDAA KUPONU</button>
     <button type="button" class="btn btn-orange" onclick="otomatikKuponIddaa()">🤖 OTOMATİK</button>
-  </div>
-
-  <input type="file" id="belgeInput" accept="image/*" capture="environment" style="display:none" onchange="belgeYukle(event)">
-
-  <div id="ocrDurum" style="display:none;padding:12px;background:var(--bg3);border-radius:8px;margin-bottom:12px;text-align:center">
-    <div id="ocrDurumMesaj" style="font-weight:900;color:var(--purple);font-size:.85rem">📷 Görüntü işleniyor...</div>
-    <div style="margin-top:8px;height:4px;background:var(--border);border-radius:4px;overflow:hidden">
-      <div id="ocrProgress" style="height:100%;width:0%;background:var(--purple);transition:width .3s"></div>
-    </div>
   </div>
 
   <div id="kuponSonuc"></div>
@@ -163,6 +154,32 @@
       </div>
 
       <button type="button" class="btn btn-green btn-lg" onclick="iddaaEkle()" style="margin-top:16px">✅ EKLE</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: METİN YAPIŞTIR -->
+<div class="modal" id="metinModal">
+  <div class="modal-content">
+    <div class="modal-head">
+      <span>📋 METİN YAPIŞTIR</span>
+      <button type="button" onclick="closeModal('metinModal')">✖</button>
+    </div>
+    <div class="modal-body">
+      <div class="muted" style="font-size:.75rem;margin-bottom:10px">
+        Maç bilgilerini aşağıdaki formatta yapıştır:
+      </div>
+      <div style="background:var(--bg3);border-radius:8px;padding:10px;font-size:.7rem;font-family:monospace;color:var(--muted);margin-bottom:10px;line-height:1.6">
+        Peñarol Uru - CA Progreso<br>
+        1.22 4.03 6.53<br>
+        1.69 1.58<br>
+        1.85 1.47<br>
+        <br>
+        Galatasaray - Fenerbahçe<br>
+        1.55 3.70 3.82
+      </div>
+      <textarea id="metinInput" placeholder="Buraya metni yapıştır..." style="width:100%;min-height:200px;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:10px;font-size:.8rem;font-family:monospace;resize:vertical"></textarea>
+      <button type="button" class="btn btn-purple btn-lg" onclick="metinOku()" style="margin-top:12px">✅ OKU VE EKLE</button>
     </div>
   </div>
 </div>
