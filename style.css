@@ -70,7 +70,7 @@ button:active{opacity:.8}
 .analiz-row{display:flex;justify-content:space-between;font-size:.78rem;padding:4px 0;gap:8px;flex-wrap:wrap}
 .muted{color:var(--muted);font-size:.7rem}
 
-/* TAHMİN KUTUSU - YENİ */
+/* TAHMİN KUTUSU */
 .tahmin-box{background:linear-gradient(135deg,rgba(0,230,118,.08),rgba(168,85,247,.06));border:1px solid var(--border);border-radius:10px;padding:10px;margin:8px 0}
 .tahmin-satir{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:.75rem;border-bottom:1px dashed var(--border)}
 .tahmin-satir:last-child{border-bottom:none}
@@ -80,6 +80,7 @@ button:active{opacity:.8}
 .tahmin-satir .val.red{color:var(--red)}
 .tahmin-satir .val.orange{color:var(--orange)}
 .tahmin-satir .val.purple{color:var(--purple)}
+.tahmin-satir .val.gray{color:var(--muted)}
 
 /* YORUM KUTUSU */
 .yorum-box{background:linear-gradient(135deg,rgba(0,230,118,.08),rgba(61,139,255,.05));border-left:3px solid #00e676;border-radius:8px;padding:12px;margin-top:10px;font-size:.76rem;line-height:1.7}
@@ -137,3 +138,7 @@ button:active{opacity:.8}
 #page-5 input:focus{border-color:var(--green);outline:none}
 #page-5 .oran-grid-3{margin-top:6px}
 #page-5 .oran-grid-3 label{font-size:.6rem;margin:0 0 3px 0}
+
+/* === BELGE YÜKLEME === */
+#ocrDurum{border:1px solid var(--purple);animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.7}}
