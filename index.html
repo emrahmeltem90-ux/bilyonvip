@@ -9,7 +9,6 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="style.css">
-<!-- TELEGRAM WEB APP SDK -->
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
@@ -24,6 +23,8 @@
   <button type="button" class="tab" onclick="switchTab(3,this)">📊 Analiz</button>
   <button type="button" class="tab" onclick="switchTab(4,this)">💾 Kuponlarım</button>
   <button type="button" class="tab" onclick="switchTab(5,this)">🧪 Backtest</button>
+  <button type="button" class="tab" onclick="switchTab(6,this)">📈 Performans</button>
+  <button type="button" class="tab" onclick="switchTab(7,this)">📁 Arşiv</button>
 </nav>
 
 <main>
@@ -37,7 +38,8 @@
     <div class="stat-card"><div class="stat-val orange" id="statTutar">0</div><div class="stat-lbl">TL</div></div>
   </div>
   <div class="page-actions">
-    <button type="button" class="btn btn-purple" onclick="bankobot()" style="grid-column:1/-1">🤖 BANKOBOT (En İyi 5)</button>
+    <button type="button" class="btn btn-blue" onclick="haftaninParmakIzi()" style="grid-column:1/-1">🔍 HAFTANIN PARMAK İZİ</button>
+    <button type="button" class="btn btn-purple" onclick="bankobot()">🤖 BANKOBOT</button>
     <button type="button" class="btn btn-green" onclick="kuponOlusturToto()">⚡ TOTO KUPONU</button>
     <button type="button" class="btn btn-red" onclick="temizleToto()">🗑️ TEMİZLE</button>
   </div>
@@ -88,6 +90,28 @@
   </div>
 
   <div id="backtestListesi"></div>
+</section>
+
+<!-- SAYFA 6: PERFORMANS -->
+<section id="page-6" class="page">
+  <div class="card">
+    <div class="result-title">📈 ŞEFFAF PERFORMANS</div>
+    <div class="muted" style="font-size:.72rem;margin-bottom:12px">Modelin geçmiş başarı kaydı</div>
+  </div>
+  <div id="performansListesi"></div>
+</section>
+
+<!-- SAYFA 7: ARŞİV -->
+<section id="page-7" class="page">
+  <div class="card">
+    <div class="result-title">📁 VERİ ARŞİVİ</div>
+    <div class="muted" style="font-size:.72rem;margin-bottom:12px">Haftalık bültenleri kaydet · JSON indir</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <button type="button" class="btn btn-green" onclick="bultenArsivle()">💾 ARŞİVLE</button>
+      <button type="button" class="btn btn-blue" onclick="arsivIndir()">📥 JSON İNDİR</button>
+    </div>
+  </div>
+  <div id="arsivListesi"></div>
 </section>
 
 </main>
