@@ -93,12 +93,10 @@ button:active{opacity:.8}
 .skor-sayi{font-weight:900;font-size:.95rem;color:var(--purple)}
 .skor-yuzde{font-size:.65rem;color:var(--muted);margin-top:2px}
 
-/* POISSON MATRİSİ HEATMAP */
 .poisson-matris{display:grid;grid-template-columns:30px repeat(6,1fr);gap:3px;margin-top:8px;font-size:.55rem}
 .poisson-cell{padding:6px 2px;text-align:center;border-radius:4px;font-weight:700}
 .poisson-label{display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:900;background:transparent}
 
-/* CONTEXTUAL UYARILAR */
 .uyari-list{display:flex;flex-direction:column;gap:6px;margin-top:8px}
 .uyari-item{padding:8px 10px;border-radius:8px;font-size:.72rem;font-weight:700;display:flex;align-items:flex-start;gap:8px}
 .uyari-item.riskli{background:rgba(255,176,32,.12);border-left:3px solid var(--orange);color:var(--orange)}
@@ -130,7 +128,6 @@ button:active{opacity:.8}
 .gol-orta{background:rgba(255,176,32,.15);color:var(--orange);border:1px solid rgba(255,176,32,.4)}
 .gol-no{background:rgba(61,139,255,.15);color:var(--blue);border:1px solid rgba(61,139,255,.4)}
 
-/* SLIDER (KUPON OLUŞTURUCU) */
 .slider-input{width:100%;-webkit-appearance:none;height:6px;border-radius:3px;background:var(--bg3);outline:none;margin:10px 0}
 .slider-input::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:24px;height:24px;border-radius:50%;background:var(--green);cursor:pointer;box-shadow:0 0 10px rgba(0,230,118,.6)}
 .slider-input::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:var(--green);cursor:pointer;border:none}
@@ -138,6 +135,27 @@ button:active{opacity:.8}
 .strateji-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0}
 .strateji-btn{padding:12px 6px;background:var(--bg3);border:2px solid var(--border);border-radius:10px;color:var(--text);font-weight:900;font-size:.7rem;cursor:pointer;text-align:center;transition:.15s}
 .strateji-btn.aktif{background:linear-gradient(135deg,rgba(0,230,118,.2),rgba(168,85,247,.1));border-color:var(--green);color:var(--green);box-shadow:0 0 15px rgba(0,230,118,.3)}
+
+.banko-kart{background:linear-gradient(135deg,rgba(255,176,32,.15),rgba(239,68,68,.08));border:2px solid var(--orange);border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 0 20px rgba(255,176,32,.3)}
+.banko-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:10px;border-bottom:1px dashed var(--orange)}
+.banko-title{font-weight:900;font-size:1rem;color:var(--orange);letter-spacing:.5px}
+.banko-guven{background:var(--orange);color:#000;padding:4px 10px;border-radius:20px;font-weight:900;font-size:.75rem}
+.banko-mac{font-weight:900;font-size:1rem;margin-bottom:8px;color:var(--text)}
+.banko-satir{display:flex;justify-content:space-between;font-size:.78rem;padding:4px 0}
+.banko-satir .fav{color:var(--green);font-weight:900;}
+.banko-satir .skor{color:var(--purple);font-weight:900;}
+
+.grafik-bar{display:flex;align-items:flex-end;gap:4px;height:120px;padding:10px;background:var(--bg3);border-radius:10px;margin-top:10px;padding-bottom:30px}
+.grafik-bar-item{flex:1;background:linear-gradient(180deg,var(--green),var(--blue));border-radius:4px 4px 0 0;min-height:8px;position:relative;transition:height .3s ease}
+.grafik-bar-item .bar-label{position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);font-size:.5rem;color:var(--muted);white-space:nowrap}
+.grafik-daire{display:flex;justify-content:center;align-items:center;padding:20px 0}
+
+.vip-kart{background:linear-gradient(135deg,rgba(255,176,32,.15),rgba(168,85,247,.1));border:2px solid var(--orange);border-radius:14px;padding:16px;margin-bottom:12px;text-align:center}
+.vip-kart .vip-icon{font-size:3rem;margin-bottom:8px}
+.vip-kart .vip-title{font-size:1.1rem;font-weight:900;color:var(--orange);margin-bottom:6px}
+.vip-kart .vip-price{font-size:1.8rem;font-weight:900;color:var(--green);margin:10px 0}
+.vip-kart .vip-desc{font-size:.75rem;color:var(--muted);margin-bottom:12px;line-height:1.6}
+.vip-kart .vip-features{text-align:left;background:var(--bg3);border-radius:10px;padding:12px;margin:12px 0;font-size:.75rem;line-height:1.8}
 
 #page-5 label{font-size:.7rem;color:var(--muted);font-weight:800;display:block;margin:10px 0 4px}
 #page-5 input{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:10px;font-size:.9rem;font-weight:700;box-sizing:border-box}
