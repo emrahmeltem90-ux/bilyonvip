@@ -15,7 +15,25 @@ button:active{opacity:.8}
 .logo .v{color:var(--orange);font-size:.75rem}
 .week{font-size:.7rem;color:var(--muted);flex:1;text-align:center}
 
-.tabs{display:flex;background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:56px;z-index:99;overflow-x:auto}
+/* 🎮 OYUN BARI */
+.oyun-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:10px 12px;background:linear-gradient(135deg,#0a0f1a,#0f1523);border-bottom:1px solid var(--border);position:sticky;top:56px;z-index:98}
+.ob-item{display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:8px 10px}
+.ob-icon{font-size:1.3rem}
+.ob-val{font-weight:900;font-size:.95rem;color:var(--green);line-height:1}
+.ob-lbl{font-size:.55rem;color:var(--muted);font-weight:800;letter-spacing:.3px;margin-top:2px}
+
+/* 🎯 GÜNLÜK GÖREV */
+.gorev-bar{background:linear-gradient(135deg,rgba(0,230,118,.08),rgba(168,85,247,.05));border-bottom:1px solid var(--border);padding:12px 14px}
+.gb-head{display:flex;justify-content:space-between;font-size:.7rem;font-weight:900;color:var(--orange);letter-spacing:.5px;margin-bottom:8px}
+.gb-item{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--bg2);border-radius:8px;margin-bottom:6px;font-size:.75rem;border-left:3px solid var(--border)}
+.gb-item.tamam{border-left-color:var(--green);opacity:.7}
+.gb-item .gb-check{font-size:1.1rem;width:22px;text-align:center}
+.gb-item .gb-text{flex:1;font-weight:700}
+.gb-item .gb-xp{font-weight:900;color:var(--green);font-size:.75rem}
+.gb-odul{margin-top:8px;padding:8px;background:var(--bg3);border-radius:8px;text-align:center;font-size:.7rem;color:var(--muted)}
+.gb-odul b{color:var(--orange)}
+
+.tabs{display:flex;background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:104px;z-index:97;overflow-x:auto}
 .tab{flex:1;min-width:70px;padding:12px 6px;background:none;border:none;color:var(--muted);font-weight:800;font-size:.68rem;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
 .tab.active{color:var(--green);border-bottom-color:var(--green)}
 .page{display:none;padding:12px}
@@ -79,15 +97,6 @@ button:active{opacity:.8}
 .tahmin-satir .val.orange{color:var(--orange)}
 .tahmin-satir .val.purple{color:var(--purple)}
 
-.yorum-box{background:linear-gradient(135deg,rgba(0,230,118,.08),rgba(61,139,255,.05));border-left:3px solid #00e676;border-radius:8px;padding:12px;margin-top:10px;font-size:.76rem;line-height:1.7}
-.yorum-box.riskli{border-left-color:#ffb020;background:linear-gradient(135deg,rgba(255,176,32,.08),rgba(61,139,255,.05))}
-.yorum-box.tehlike{border-left-color:#ff4d5e;background:linear-gradient(135deg,rgba(255,77,94,.08),rgba(61,139,255,.05))}
-.yorum-box .baslik{font-weight:900;font-size:.8rem;margin-bottom:6px;color:var(--text)}
-.yorum-box p{margin:4px 0}
-.yorum-box .vurgu{color:var(--green);font-weight:900}
-.yorum-box .vurgu-riskli{color:var(--orange);font-weight:900}
-.yorum-box .vurgu-tehlike{color:var(--red);font-weight:900}
-
 .skor-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:8px}
 .skor-item{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 4px;text-align:center}
 .skor-item:first-child{background:linear-gradient(135deg,rgba(168,85,247,.2),rgba(0,230,118,.1));border-color:var(--purple)}
@@ -133,10 +142,6 @@ button:active{opacity:.8}
 .slider-input::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:24px;height:24px;border-radius:50%;background:var(--green);cursor:pointer;box-shadow:0 0 10px rgba(0,230,118,.6)}
 .slider-input::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:var(--green);cursor:pointer;border:none}
 
-.strateji-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0}
-.strateji-btn{padding:12px 6px;background:var(--bg3);border:2px solid var(--border);border-radius:10px;color:var(--text);font-weight:900;font-size:.7rem;cursor:pointer;text-align:center;transition:.15s}
-.strateji-btn.aktif{background:linear-gradient(135deg,rgba(0,230,118,.2),rgba(168,85,247,.1));border-color:var(--green);color:var(--green);box-shadow:0 0 15px rgba(0,230,118,.3)}
-
 .banko-kart{background:linear-gradient(135deg,rgba(255,176,32,.15),rgba(239,68,68,.08));border:2px solid var(--orange);border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 0 20px rgba(255,176,32,.3)}
 .banko-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:10px;border-bottom:1px dashed var(--orange)}
 .banko-title{font-weight:900;font-size:1rem;color:var(--orange);letter-spacing:.5px}
@@ -158,17 +163,21 @@ button:active{opacity:.8}
 .vip-kart .vip-desc{font-size:.75rem;color:var(--muted);margin-bottom:12px;line-height:1.6}
 .vip-kart .vip-features{text-align:left;background:var(--bg3);border-radius:10px;padding:12px;margin:12px 0;font-size:.75rem;line-height:1.8}
 
-.form-giris{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
-.form-giris label{font-size:.6rem;color:var(--muted);font-weight:800;display:block;margin-bottom:2px}
-.form-giris input{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px;font-size:.8rem;font-weight:800;text-align:center;text-transform:uppercase}
+/* 🎉 KONFETİ */
+.konfeti-katman{position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden}
+.konfeti-parca{position:absolute;width:10px;height:10px;top:-20px;animation:konfetiDus 2.5s linear forwards}
+@keyframes konfetiDus{
+  0%{transform:translateY(-20px) rotate(0deg);opacity:1}
+  100%{transform:translateY(100vh) rotate(720deg);opacity:0}
+}
 
-.sakat-uyari{background:rgba(239,68,68,.12);border-left:3px solid var(--red);border-radius:8px;padding:8px 12px;font-size:.72rem;color:var(--red);font-weight:700;margin-top:6px}
-
-#page-5 label{font-size:.7rem;color:var(--muted);font-weight:800;display:block;margin:10px 0 4px}
-#page-5 input{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:10px;font-size:.9rem;font-weight:700;box-sizing:border-box}
-#page-5 input:focus{border-color:var(--green);outline:none}
-#page-5 .oran-grid-3{margin-top:6px}
-#page-5 .oran-grid-3 label{font-size:.6rem;margin:0 0 3px 0}
+/* 💰 UÇAN PUAN */
+.ucan-katman{position:fixed;inset:0;pointer-events:none;z-index:9999}
+.ucan-puan{position:absolute;font-weight:900;font-size:1.5rem;color:var(--green);text-shadow:0 0 20px rgba(0,230,118,.9),0 2px 4px #000;animation:ucanYukari 1.5s ease-out forwards;white-space:nowrap}
+@keyframes ucanYukari{
+  0%{transform:translateY(0) scale(1);opacity:1}
+  100%{transform:translateY(-140px) scale(1.4);opacity:0}
+}
 
 @media(max-width:420px){
   .stats-grid{grid-template-columns:repeat(2,1fr)}
