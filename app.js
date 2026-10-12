@@ -1,7 +1,38 @@
 /* ============================================================
-   SKORLAB v32 · BASİT VERSİYON
-   Sadece 7 oran: 1X2 + 2.5 + KG
+   SKORLAB TOTO · TELEGRAM MINI APP
+   Sadece Toto + Bankobot
    ============================================================ */
+
+/* ============================================================
+   TELEGRAM MINI APP
+   ============================================================ */
+let TG = null;
+
+function initTelegram() {
+  if (window.Telegram && window.Telegram.WebApp) {
+    TG = window.Telegram.WebApp;
+    TG.ready();
+    TG.expand();
+    TG.enableClosingConfirmation();
+    applyTelegramTheme(TG);
+    TG.onEvent('themeChanged', () => applyTelegramTheme(TG));
+
+    const user = TG.initDataUnsafe?.user;
+    if (user && user.first_name) {
+      console.log(`👋 Merhaba, ${user.first_name}!`);
+    }
+  }
+}
+
+function applyTelegramTheme(tg) {
+  const params = tg.themeParams || {};
+  const root = document.documentElement;
+  if (params.bg_color) root.style.setProperty('--bg', params.bg_color);
+  if (params.secondary_bg_color) root.style.setProperty('--bg2', params.secondary_bg_color);
+  if (params.text_color) root.style.setProperty('--text', params.text_color);
+  if (params.hint_color) root.style.setProperty('--muted', params.hint_color);
+  if (params.button_color) root.style.setProperty('--green', params.button_color);
+}
 
 /* ============================================================
    1. MOTOR
@@ -67,7 +98,6 @@ class Motor {
     const xg = this.xg(sh.p1, sh.pX, sh.p2);
     const poi = this.poisson(xg.xgEv, xg.xgDep);
 
-    // Gollü mü?
     const ust25 = poi.pUst25 * 100;
     const kgv = poi.pKgVar * 100;
     let gollu = '';
@@ -97,10 +127,8 @@ class Motor {
    2. UYGULAMA DURUMU
    ============================================================ */
 let maclarToto = [];
-let maclarIddaa = JSON.parse(localStorage.getItem('skorlab_iddaa') || '[]');
 let oranlarToto = JSON.parse(localStorage.getItem('skorlab_oranlar_toto') || '{}');
 let secimlerToto = JSON.parse(localStorage.getItem('skorlab_secimler_toto') || '{}');
-let secimlerIddaa = JSON.parse(localStorage.getItem('skorlab_secimler_iddaa') || '{}');
 let kayitliKuponlar = JSON.parse(localStorage.getItem('skorlab_kuponlar') || '[]');
 let backtestKayitlari = JSON.parse(localStorage.getItem('skorlab_backtest') || '[]');
 
@@ -117,8 +145,9 @@ async function loadData(){
     $('weekTitle').innerText = raw.hafta || 'Bu Hafta';
   }catch(e){
     $('weekTitle').innerText = 'Veri Yüklenemedi';
+    console.error(e);
   }
-  renderToto(); renderIddaa(); renderAnaliz();
+  renderToto(); renderAnaliz();
   renderKayitliKuponlar(); renderBacktest();
   updateStats(); updateKuponCubugu();
 }
@@ -193,51 +222,7 @@ function favoriOlas(shin){
 }
 
 /* ============================================================
-   6. İDDAA RENDER
-   ============================================================ */
-function renderIddaa(){
-  const c = $('iddaaListesi');
-  if(!c) return;
-  if(!maclarIddaa.length){
-    c.innerHTML = '<div class="card"><div class="muted" style="text-align:center;padding:20px">Maç ekle veya metin yapıştır.</div></div>';
-    return;
-  }
-  c.innerHTML = maclarIddaa.map(m => {
-    const o = m.oranlar;
-    if(!o.o1 || !o.oX || !o.o2) return '';
-    const a = Motor.analiz({ o1:o.o1, oX:o.oX, o2:o.o2 });
-    return `
-    <div class="mac-kart">
-      <div class="mac-head">
-        <span class="mac-no">İDDAA</span>
-        <div>
-          <button type="button" class="mac-analiz-btn" onclick="analizGosterIddaa(${m.id})">📊</button>
-          <button type="button" class="btn btn-red btn-sm" onclick="iddaaSil(${m.id})" style="margin-left:6px">🗑️</button>
-        </div>
-      </div>
-      <div class="mac-teams">${m.mac}</div>
-      <div style="font-size:.7rem;color:var(--muted);display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px">
-        <span>1: <b style="color:var(--text)">${o.o1}</b></span>
-        <span>X: <b style="color:var(--text)">${o.oX}</b></span>
-        <span>2: <b style="color:var(--text)">${o.o2}</b></span>
-      </div>
-      <div class="tahmin-box">
-        <div class="tahmin-satir"><span class="lbl">🎯 FAVORİ</span><span class="val green">${favoriKod(a.shin)} (%${favoriOlas(a.shin)})</span></div>
-        <div class="tahmin-satir"><span class="lbl">⚽ SKOR</span><span class="val purple">${a.poi.enOlası[0].skor} · ${a.poi.enOlası[1].skor}</span></div>
-        <div class="tahmin-satir"><span class="lbl">📊 2.5 Üst</span><span class="val ${a.poi.pUst25>=55?'green':'orange'}">%${a.poi.pUst25}</span></div>
-        <div class="tahmin-satir"><span class="lbl">🥅 KG Var</span><span class="val ${a.poi.pKgVar>=55?'green':'orange'}">%${a.poi.pKgVar}</span></div>
-        <div class="tahmin-satir"><span class="lbl">📌 DURUM</span><span class="val orange">${a.gollu}</span></div>
-      </div>
-      <div style="margin-top:8px;display:flex;gap:6px;align-items:center">
-        <span class="gol-etiket ${a.gollu.includes('ÇOK')?'gol-yes':a.gollu.includes('GOLLÜ')?'gol-yes':a.gollu.includes('ORTA')?'gol-orta':'gol-no'}">${a.gollu}</span>
-      </div>
-    </div>
-    `;
-  }).join('');
-}
-
-/* ============================================================
-   7. ANALİZ SEKMESİ
+   6. ANALİZ SEKMESİ
    ============================================================ */
 function renderAnaliz(){
   const c = $('analizListesi');
@@ -247,13 +232,7 @@ function renderAnaliz(){
     const o = oranlarToto[m.mac_id];
     if(!o || !o['1'] || !o['X'] || !o['2']) return;
     const a = Motor.analiz({ o1:o['1'], oX:o['X'], o2:o['2'] });
-    satirlar.push({ tip:'toto', id:m.mac_id, isim:m.ev_sahibi + ' - ' + m.deplasman, a });
-  });
-  maclarIddaa.forEach(m => {
-    const o = m.oranlar;
-    if(!o.o1 || !o.oX || !o.o2) return;
-    const a = Motor.analiz({ o1:o.o1, oX:o.oX, o2:o.o2 });
-    satirlar.push({ tip:'iddaa', id:m.id, isim:m.mac, a });
+    satirlar.push({ id:m.mac_id, isim:m.ev_sahibi + ' - ' + m.deplasman, a });
   });
   if(!satirlar.length){
     c.innerHTML = '<div class="muted" style="text-align:center;padding:20px">Analiz için oran gir.</div>';
@@ -261,8 +240,8 @@ function renderAnaliz(){
   }
   satirlar.sort((x,y)=> parseFloat(y.a.poi.pUst25) - parseFloat(x.a.poi.pUst25));
   c.innerHTML = satirlar.map(s => `
-    <div style="padding:10px 0;border-bottom:1px solid var(--border);font-size:.78rem;cursor:pointer" onclick="analizGoster${s.tip === 'toto' ? 'Toto' : 'Iddaa'}(${s.id})">
-      <div style="font-weight:900;margin-bottom:4px">${s.tip === 'toto' ? '#'+s.id : 'İ'} ${s.isim}</div>
+    <div style="padding:10px 0;border-bottom:1px solid var(--border);font-size:.78rem;cursor:pointer" onclick="analizGosterToto(${s.id})">
+      <div style="font-weight:900;margin-bottom:4px">#${s.id} ${s.isim}</div>
       <div style="display:flex;justify-content:space-between">
         <span style="font-weight:900;color:var(--green)">${favoriKod(s.a.shin)} (%${favoriOlas(s.a.shin)})</span>
         <span class="muted">2.5Ü %${s.a.poi.pUst25} · KG %${s.a.poi.pKgVar}</span>
@@ -273,7 +252,7 @@ function renderAnaliz(){
 }
 
 /* ============================================================
-   8. SEÇİM
+   7. SEÇİM
    ============================================================ */
 function secimToggleToto(id, s){
   let arr = secimlerToto[id] || [];
@@ -283,20 +262,11 @@ function secimToggleToto(id, s){
   renderToto(); updateStats(); updateKuponCubugu();
 }
 
-function secimToggleIddaa(id, s){
-  let arr = secimlerIddaa[id] || [];
-  if(arr.includes(s)) arr = arr.filter(x => x !== s); else arr.push(s);
-  if(!arr.length) delete secimlerIddaa[id]; else secimlerIddaa[id] = arr;
-  localStorage.setItem('skorlab_secimler_iddaa', JSON.stringify(secimlerIddaa));
-  renderIddaa(); updateStats(); updateKuponCubugu();
-}
-
 function tumSecimleriSil(){
   if(!confirm('Tüm seçimler silinsin mi?')) return;
-  secimlerToto = {}; secimlerIddaa = {};
+  secimlerToto = {};
   localStorage.setItem('skorlab_secimler_toto', '{}');
-  localStorage.setItem('skorlab_secimler_iddaa', '{}');
-  renderToto(); renderIddaa(); updateStats(); updateKuponCubugu();
+  renderToto(); updateStats(); updateKuponCubugu();
 }
 
 function temizleToto(){
@@ -307,69 +277,21 @@ function temizleToto(){
   renderToto(); renderAnaliz(); updateStats(); updateKuponCubugu();
 }
 
-function temizleIddaa(){
-  if(!confirm('İddaa maçları silinsin mi?')) return;
-  maclarIddaa = []; secimlerIddaa = {};
-  localStorage.removeItem('skorlab_iddaa');
-  localStorage.setItem('skorlab_secimler_iddaa', '{}');
-  renderIddaa(); renderAnaliz(); updateStats(); updateKuponCubugu();
-}
-
 /* ============================================================
-   9. İDDAA MAÇ EKLE (MANUEL)
-   ============================================================ */
-function openIddaaModal(){
-  ['im-mac','im-o1','im-oX','im-o2','im-u25alt','im-u25ust','im-kgvar','im-kgyok'].forEach(id => {
-    const el = $(id); if(el) el.value = '';
-  });
-  $('iddaaModal').classList.add('active');
-}
-
-function sayi(id){ const v = parseFloat($(id)?.value); return isNaN(v) ? null : v; }
-
-function iddaaEkle(){
-  const mac = $('im-mac').value.trim();
-  const o1 = sayi('im-o1'), oX = sayi('im-oX'), o2 = sayi('im-o2');
-  if(!mac || !o1 || !oX || !o2){ showToast('error','Eksik','Maç + 1X2 zorunlu'); return; }
-  maclarIddaa.unshift({
-    id: Date.now(), mac,
-    oranlar: { o1, oX, o2, oA25: sayi('im-u25alt'), oU25: sayi('im-u25ust'), oKgV: sayi('im-kgvar'), oKgY: sayi('im-kgyok') },
-    tarih: new Date().toLocaleString('tr-TR')
-  });
-  localStorage.setItem('skorlab_iddaa', JSON.stringify(maclarIddaa));
-  closeModal('iddaaModal');
-  renderIddaa(); renderAnaliz();
-  showToast('success','Eklendi!', mac);
-}
-
-function iddaaSil(id){
-  if(!confirm('Silinsin mi?')) return;
-  maclarIddaa = maclarIddaa.filter(x => x.id !== id);
-  delete secimlerIddaa[id];
-  localStorage.setItem('skorlab_iddaa', JSON.stringify(maclarIddaa));
-  localStorage.setItem('skorlab_secimler_iddaa', JSON.stringify(secimlerIddaa));
-  renderIddaa(); renderAnaliz(); updateStats(); updateKuponCubugu();
-}
-
-/* ============================================================
-   10. KUPON HESAP
+   8. KUPON HESAP
    ============================================================ */
 function kuponHesapla(){
-  let toto=0, iddaa=0, kolon=1;
+  let toto=0, kolon=1;
   Object.keys(secimlerToto).forEach(id => {
     const s = secimlerToto[id]; if(!s||!s.length) return;
     toto++; kolon *= s.length;
   });
-  Object.keys(secimlerIddaa).forEach(id => {
-    const s = secimlerIddaa[id]; if(!s||!s.length) return;
-    iddaa++; kolon *= s.length;
-  });
-  return { toto, iddaa, toplam: toto+iddaa, kolon, tutar: kolon*10 };
+  return { toto, toplam: toto, kolon, tutar: kolon*10 };
 }
 
 function updateStats(){
   const h = kuponHesapla();
-  const sM=$('statMac'); if(sM) sM.innerText = maclarToto.length + maclarIddaa.length;
+  const sM=$('statMac'); if(sM) sM.innerText = maclarToto.length;
   const sS=$('statSecilen'); if(sS) sS.innerText = h.toplam;
   const sK=$('statKolon'); if(sK) sK.innerText = h.kolon;
   const sT=$('statTutar'); if(sT) sT.innerText = h.tutar;
@@ -378,12 +300,11 @@ function updateStats(){
 function updateKuponCubugu(){
   const h = kuponHesapla();
   const kT=$('kcToto'); if(kT) kT.innerText = h.toto;
-  const kI=$('kcIddaa'); if(kI) kI.innerText = h.iddaa;
   const kP=$('kcToplam'); if(kP) kP.innerText = h.tutar + ' TL';
 }
 
 /* ============================================================
-   11. KUPON OLUŞTUR (TOTO)
+   9. KUPON OLUŞTUR (TOTO)
    ============================================================ */
 function kuponOlusturToto(){
   const oneriler = [];
@@ -401,10 +322,11 @@ function kuponOlusturToto(){
     const favO = parseFloat(o.favO);
     let secim, renk, carpan;
     if(favO >= 68){ secim = o.fav; renk='green'; carpan=1; }
-    else if(favO >= 52){ secim = 'ÇİFT'; renk='orange'; carpan=2;
+    else if(favO >= 52){
       const s = o.a.shin;
       const sirali = [{k:'1',o:parseFloat(s.p1)},{k:'X',o:parseFloat(s.pX)},{k:'2',o:parseFloat(s.p2)}].sort((a,b)=>b.o-a.o);
       secim = sirali[0].k + sirali[1].k;
+      renk='orange'; carpan=2;
     }
     else { secim = '1X2'; renk='red'; carpan=3; }
     kolon *= carpan;
@@ -421,7 +343,8 @@ function kuponOlusturToto(){
     <div class="analiz-row"><span>Kolon:</span><b class="green">${kolon}</b></div>
     <div class="analiz-row"><span>Tutar:</span><b class="green">${kolon*10} TL</b></div>
   </div>
-  <button type="button" class="btn btn-green btn-lg" onclick="kuponKaydetToto()" style="margin-top:12px">💾 KAYDET</button></div>`;
+  <button type="button" class="btn btn-green btn-lg" onclick="kuponKaydetToto()" style="margin-top:12px">💾 KAYDET</button>
+  <button type="button" class="btn btn-blue btn-lg" onclick="paylasKupon()" style="margin-top:8px">📤 PAYLAŞ</button></div>`;
   $('totoKuponSonuc').innerHTML = html;
   window.sonTotoKuponu = oneriler;
 }
@@ -439,80 +362,154 @@ function kuponKaydetToto(){
   localStorage.setItem('skorlab_kuponlar', JSON.stringify(kayitliKuponlar));
   renderKayitliKuponlar();
   showToast('success','Kaydedildi!', oneriler.length + ' maç');
-  $('totoKuponSonuc').innerHTML = '';
-  window.sonTotoKuponu = null;
 }
 
 /* ============================================================
-   12. KUPON OLUŞTUR (İDDAA - Gollü maçlar)
+   10. BANKOBOT · En güvenli 5 maç
    ============================================================ */
-function kuponOlusturIddaa(){
-  const oneriler = [];
-  maclarIddaa.forEach(m => {
-    const o = m.oranlar;
-    if(!o.o1 || !o.oX || !o.o2) return;
-    const a = Motor.analiz({ o1:o.o1, oX:o.oX, o2:o.o2 });
-    oneriler.push({ isim:m.mac, a, fav:favoriKod(a.shin), favO:favoriOlas(a.shin) });
-  });
-  if(!oneriler.length){ showToast('error','Maç Yok','Oran gir.'); return; }
+function bankobot(){
+  if(!maclarToto.length){ showToast('error','Maç Yok','Toto maçları yüklenmedi.'); return; }
 
-  // Gollü olanları üste
-  oneriler.sort((x,y)=> parseFloat(y.a.poi.pUst25) - parseFloat(x.a.poi.pUst25));
+  const analizler = maclarToto.map(m => {
+    const o = oranlarToto[m.mac_id];
+    if(!o || !o['1'] || !o['X'] || !o['2']) return null;
+    const a = Motor.analiz({ o1:o['1'], oX:o['X'], o2:o['2'] });
+    return {
+      mac_id: m.mac_id,
+      mac: `${m.ev_sahibi} - ${m.deplasman}`,
+      fav: favoriKod(a.shin),
+      favO: parseFloat(favoriOlas(a.shin)),
+      skor: a.poi.enOlası[0].skor,
+      gollu: a.gollu,
+      pUst25: a.poi.pUst25,
+      pKgVar: a.poi.pKgVar,
+      analiz: a
+    };
+  }).filter(Boolean);
 
-  let html = `<div class="card" style="border:1px solid var(--green)"><div class="result-title">⚡ İDDAA ÖNERİSİ (Gollü odaklı)</div>`;
-  let kolon = 1;
-  oneriler.forEach(o => {
-    const favO = parseFloat(o.favO);
-    let secim, renk, carpan;
-    if(favO >= 68){ secim = o.fav; renk='green'; carpan=1; }
-    else if(favO >= 52){
-      const s = o.a.shin;
-      const sirali = [{k:'1',o:parseFloat(s.p1)},{k:'X',o:parseFloat(s.pX)},{k:'2',o:parseFloat(s.p2)}].sort((a,b)=>b.o-a.o);
-      secim = sirali[0].k + sirali[1].k; renk='orange'; carpan=2;
-    } else { secim = 'ATLA'; renk='gray'; carpan=0; }
-    if(carpan > 0) kolon *= carpan;
-    html += `<div style="padding:10px 0;border-bottom:1px solid var(--border);font-size:.78rem">
-      <div style="font-weight:900;margin-bottom:4px">${o.isim}</div>
-      <div style="display:flex;justify-content:space-between">
-        <b style="color:var(--${renk})">🎯 ${secim}</b>
-        <span class="muted">Fav: ${o.fav} (%${o.favO})</span>
+  if(!analizler.length){ showToast('error','Oran Yok','Önce oranları gir.'); return; }
+
+  analizler.sort((a, b) => b.favO - a.favO);
+  const bankolar = analizler.filter(a => a.favO >= 62).slice(0, 5);
+
+  if(!bankolar.length){ showToast('error','Banko Yok','Yeterli güvenli maç yok.'); return; }
+
+  const ortGuv = (bankolar.reduce((s, b) => s + b.favO, 0) / bankolar.length).toFixed(1);
+
+  let html = `<div class="card" style="border:2px solid var(--purple)">
+    <div class="result-title">🤖 BANKOBOT · ${bankolar.length} MAÇ</div>
+    <div class="muted" style="font-size:.72rem;margin-bottom:10px">En güvenli maçlar · Ortalama %${ortGuv}</div>`;
+
+  bankolar.forEach((b, i) => {
+    html += `
+      <div style="padding:12px 0;border-bottom:1px solid var(--border)">
+        <div style="font-weight:900;font-size:.85rem;margin-bottom:6px">${i+1}. ${b.mac}</div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+          <span>🎯 <b style="color:var(--green)">${b.fav}</b> (%${b.favO})</span>
+          <span>⚽ <b style="color:var(--purple)">${b.skor}</b></span>
+        </div>
+        <div class="muted" style="font-size:.68rem">📊 ${b.gollu} · 2.5Ü %${b.pUst25} · KG %${b.pKgVar}</div>
       </div>
-      <div style="margin-top:3px">
-        <span class="gol-etiket ${o.a.gollu.includes('ÇOK')||o.a.gollu.includes('GOLLÜ')?'gol-yes':o.a.gollu.includes('ORTA')?'gol-orta':'gol-no'}">${o.a.gollu}</span>
-      </div>
-      <div class="muted" style="font-size:.68rem;margin-top:3px">2.5Ü %${o.a.poi.pUst25} · KG %${o.a.poi.pKgVar} · Skor ${o.a.poi.enOlası[0].skor}</div>
-    </div>`;
+    `;
   });
-  html += `<div style="margin-top:12px;padding:10px;background:var(--bg3);border-radius:8px">
-    <div class="analiz-row"><span>Kolon:</span><b class="green">${kolon}</b></div>
-    <div class="analiz-row"><span>Tutar:</span><b class="green">${kolon*10} TL</b></div>
-  </div>
-  <button type="button" class="btn btn-green btn-lg" onclick="kuponKaydetIddaa()" style="margin-top:12px">💾 KAYDET</button></div>`;
-  $('kuponSonuc').innerHTML = html;
-  window.sonIddaaKuponu = oneriler;
+
+  html += `
+    <div style="margin-top:12px;padding:10px;background:var(--bg3);border-radius:8px;text-align:center">
+      <div style="font-size:.8rem;color:var(--muted)">Ortalama Güven</div>
+      <div style="font-size:1.4rem;font-weight:900;color:var(--purple)">%${ortGuv}</div>
+    </div>
+    <button type="button" class="btn btn-purple btn-lg" onclick="paylasBankobot()" style="margin-top:12px">📤 TELEGRAM'DA PAYLAŞ</button>
+    <button type="button" class="btn btn-green btn-lg" onclick="kaydetBankobot()" style="margin-top:8px">💾 KUPONA KAYDET</button>
+  </div>`;
+
+  $('totoKuponSonuc').innerHTML = html;
+  window.sonBankobot = bankolar;
 }
 
-function kuponKaydetIddaa(){
-  const oneriler = window.sonIddaaKuponu || [];
-  if(!oneriler.length) return;
-  kayitliKuponlar.unshift({
-    id: Date.now(), tip:'iddaa', tarih: new Date().toLocaleString('tr-TR'),
-    macSayisi: oneriler.length, kolon:oneriler.length, tutar:oneriler.length*10,
-    detaylar: oneriler.map(o => ({ isim:o.isim, secim:o.fav + ' (%' + o.favO + ') · ' + o.a.gollu })),
-    durum:'bekliyor'
+function paylasBankobot(){
+  const bankolar = window.sonBankobot || [];
+  if(!bankolar.length){ showToast('error','Boş','Önce bankobot oluştur.'); return; }
+
+  let metin = '🤖 SKORLAB BANKOBOT\n';
+  metin += `📅 ${new Date().toLocaleDateString('tr-TR')}\n\n`;
+  bankolar.forEach((b, i) => {
+    metin += `${i+1}. ${b.mac}\n`;
+    metin += `   🎯 ${b.fav} (%${b.favO})\n`;
+    metin += `   ⚽ ${b.skor} · ${b.gollu}\n\n`;
   });
+  const ortGuv = (bankolar.reduce((s, b) => s + b.favO, 0) / bankolar.length).toFixed(1);
+  metin += `💰 Ortalama güven: %${ortGuv}\n`;
+  metin += `📱 @SkorLabBot`;
+
+  if(TG && TG.isVersionAtLeast && TG.isVersionAtLeast('6.1')){
+    TG.switchInlineQuery(metin, ['users', 'groups']);
+  } else if(navigator.share){
+    navigator.share({ title: 'SkorLab Bankobot', text: metin }).catch(() => {});
+  } else {
+    navigator.clipboard.writeText(metin).then(() => {
+      showToast('success', 'Kopyalandı!', 'Kupon panoya kopyalandı.');
+    });
+  }
+}
+
+function kaydetBankobot(){
+  const bankolar = window.sonBankobot || [];
+  if(!bankolar.length) return;
+
+  kayitliKuponlar.unshift({
+    id: Date.now(),
+    tip: 'bankobot',
+    tarih: new Date().toLocaleString('tr-TR'),
+    macSayisi: bankolar.length,
+    kolon: bankolar.length,
+    tutar: bankolar.length * 10,
+    detaylar: bankolar.map(b => ({
+      isim: b.mac,
+      secim: `${b.fav} (%${b.favO}) · ${b.skor}`
+    })),
+    durum: 'bekliyor'
+  });
+
   if(kayitliKuponlar.length > 50) kayitliKuponlar = kayitliKuponlar.slice(0, 50);
   localStorage.setItem('skorlab_kuponlar', JSON.stringify(kayitliKuponlar));
   renderKayitliKuponlar();
-  showToast('success','Kaydedildi!', oneriler.length + ' maç');
-  $('kuponSonuc').innerHTML = '';
-  window.sonIddaaKuponu = null;
+  showToast('success', 'Kaydedildi!', `${bankolar.length} maç`);
 }
 
-function hizliKaydet(){ showToast('error','Kaydet','Kupon oluştur butonunu kullan.'); }
+/* ============================================================
+   11. PAYLAŞ KUPON
+   ============================================================ */
+function paylasKupon(){
+  const secimler = secimlerToto;
+  if(!Object.keys(secimler).length){ showToast('error','Boş','Önce maç seç.'); return; }
+
+  let metin = '⚽ SKORLAB TOTO KUPONU\n\n';
+  let kolon = 1;
+  Object.keys(secimler).forEach(id => {
+    const m = maclarToto.find(x => x.mac_id == id);
+    if(!m) return;
+    const s = secimler[id];
+    kolon *= s.length;
+    metin += `#${id} ${m.ev_sahibi} - ${m.deplasman}\n`;
+    metin += `🎯 ${s.join(' / ')}\n\n`;
+  });
+  metin += `💰 Kolon: ${kolon}\n`;
+  metin += `💵 Tutar: ${kolon * 10} TL\n\n`;
+  metin += `📱 @SkorLabBot`;
+
+  if(TG && TG.isVersionAtLeast && TG.isVersionAtLeast('6.1')){
+    TG.switchInlineQuery(metin, ['users', 'groups']);
+  } else if(navigator.share){
+    navigator.share({ title: 'SkorLab Kuponu', text: metin }).catch(() => {});
+  } else {
+    navigator.clipboard.writeText(metin).then(() => {
+      showToast('success', 'Kopyalandı!', 'Kupon panoya kopyalandı.');
+    });
+  }
+}
 
 /* ============================================================
-   13. ANALİZ MODAL
+   12. ANALİZ MODAL
    ============================================================ */
 function analizGosterToto(id){
   const m = maclarToto.find(x => x.mac_id === id);
@@ -520,14 +517,6 @@ function analizGosterToto(id){
   const o = oranlarToto[id];
   if(!o || !o['1']) { showToast('error','Oran Yok','1/X/2 gir'); return; }
   analizOrtak(m.ev_sahibi + ' - ' + m.deplasman, { o1:o['1'], oX:o['X'], o2:o['2'] });
-}
-
-function analizGosterIddaa(id){
-  const m = maclarIddaa.find(x => x.id === id);
-  if(!m) return;
-  const o = m.oranlar;
-  if(!o.o1) { showToast('error','Oran Yok','1/X/2 eksik'); return; }
-  analizOrtak(m.mac, { o1:o.o1, oX:o.oX, o2:o.o2 });
 }
 
 function analizOrtak(isim, o){
@@ -541,7 +530,6 @@ function analizOrtak(isim, o){
           ${favoriKod(a.shin)} · %${favoriOlas(a.shin)}
         </div>
       </div>
-
       <div class="analiz-box">
         <span class="analiz-lbl">📊 SHIN (Marj Arındırma)</span>
         <div class="analiz-row"><span>1:</span><b>%${a.shin.p1}</b></div>
@@ -549,7 +537,6 @@ function analizOrtak(isim, o){
         <div class="analiz-row"><span>2:</span><b>%${a.shin.p2}</b></div>
         <div class="analiz-row"><span class="muted">Marj:</span><b style="color:var(--orange)">%${a.marj}</b></div>
       </div>
-
       <div class="analiz-box">
         <span class="analiz-lbl">⚽ POISSON · xG: ${a.xgEv} - ${a.xgDep}</span>
         <div class="analiz-row"><span>2.5 Üst:</span><b class="${parseFloat(a.poi.pUst25)>=55?'green':'orange'}">%${a.poi.pUst25}</b></div>
@@ -557,14 +544,12 @@ function analizOrtak(isim, o){
         <div class="analiz-row"><span>KG Var:</span><b class="${parseFloat(a.poi.pKgVar)>=55?'green':'orange'}">%${a.poi.pKgVar}</b></div>
         <div class="analiz-row"><span>KG Yok:</span><b>%${a.poi.pKgYok}</b></div>
       </div>
-
       <div class="analiz-box">
         <span class="analiz-lbl">⚽ BEKLENEN SKORLAR</span>
         <div class="skor-grid">
           ${a.poi.enOlası.map(s => `<div class="skor-item"><div class="skor-sayi">${s.skor}</div><div class="skor-yuzde">%${s.yuzde}</div></div>`).join('')}
         </div>
       </div>
-
       <div class="analiz-box">
         <span class="analiz-lbl">📌 DURUM</span>
         <div style="text-align:center;padding:8px 0">
@@ -576,7 +561,7 @@ function analizOrtak(isim, o){
 }
 
 /* ============================================================
-   14. KUPONLARIM
+   13. KUPONLARIM
    ============================================================ */
 function renderKayitliKuponlar(){
   const c = $('kayitliKuponlar');
@@ -588,7 +573,7 @@ function renderKayitliKuponlar(){
   c.innerHTML = kayitliKuponlar.map(k => {
     const renk = k.durum === 'kazandi' ? 'kazandi' : k.durum === 'kaybetti' ? 'kaybetti' : 'bekliyor';
     const emoji = k.durum === 'kazandi' ? '✅' : k.durum === 'kaybetti' ? '❌' : '⏳';
-    const ikon = k.tip === 'iddaa' ? '🎯' : '📋';
+    const ikon = k.tip === 'bankobot' ? '🤖' : '📋';
     return `
       <div class="kupon-gecmis ${renk}" onclick="kuponDetayAc(${k.id})">
         <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:4px">
@@ -643,7 +628,7 @@ function kuponSil(id){
 }
 
 /* ============================================================
-   15. BACKTEST
+   14. BACKTEST
    ============================================================ */
 function renderBacktest(){
   const c = $('backtestListesi');
@@ -727,69 +712,19 @@ function backtestTemizle(){
 }
 
 /* ============================================================
-   16. METİN YAPIŞTIR (BASİT FORMAT)
-   ============================================================ */
-function openMetinModal(){
-  $('metinInput').value = '';
-  $('metinModal').classList.add('active');
-}
-
-function metinOku(){
-  const metin = $('metinInput').value.trim();
-  if(!metin){ showToast('error','Boş','Metin boş'); return; }
-  const maclar = metinParse(metin);
-  if(!maclar.length){ showToast('error','Hata','Maç okunamadı'); return; }
-  maclar.forEach(m => {
-    maclarIddaa.unshift({
-      id: Date.now() + Math.random(), mac: m.mac,
-      oranlar: { o1:m.o1, oX:m.oX, o2:m.o2, oA25:m.oA25, oU25:m.oU25, oKgV:m.oKgV, oKgY:m.oKgY },
-      tarih: new Date().toLocaleString('tr-TR')
-    });
-  });
-  localStorage.setItem('skorlab_iddaa', JSON.stringify(maclarIddaa));
-  closeModal('metinModal');
-  renderIddaa(); renderAnaliz();
-  showToast('success','Eklendi!', maclar.length + ' maç');
-}
-
-function metinParse(metin){
-  const maclar = [];
-  const bloklar = metin.split(/\n\s*\n/);
-  bloklar.forEach(blok => {
-    const satirlar = blok.split('\n').map(s => s.trim()).filter(s => s);
-    if(satirlar.length < 2) return;
-    const macIsmi = satirlar[0];
-    if(!macIsmi.includes('-') && !macIsmi.includes('–')) return;
-    const o1x2 = satirlar[1].split(/[\s,]+/).map(s => parseFloat(s.replace(',','.'))).filter(n => !isNaN(n));
-    if(o1x2.length < 3) return;
-    let oA25 = null, oU25 = null;
-    if(satirlar[2]){
-      const o25 = satirlar[2].split(/[\s,]+/).map(s => parseFloat(s.replace(',','.'))).filter(n => !isNaN(n));
-      if(o25.length >= 2){ oA25 = o25[0]; oU25 = o25[1]; }
-    }
-    let oKgV = null, oKgY = null;
-    if(satirlar[3]){
-      const oKg = satirlar[3].split(/[\s,]+/).map(s => parseFloat(s.replace(',','.'))).filter(n => !isNaN(n));
-      if(oKg.length >= 2){ oKgV = oKg[0]; oKgY = oKg[1]; }
-    }
-    maclar.push({ mac:macIsmi, o1:o1x2[0], oX:o1x2[1], o2:o1x2[2], oA25, oU25, oKgV, oKgY });
-  });
-  return maclar;
-}
-
-/* ============================================================
-   17. NAV / MODAL
+   15. NAV / MODAL
    ============================================================ */
 function switchTab(i, el){
   document.querySelectorAll('.tab, .page').forEach(e => e.classList.remove('active'));
   if(el) el.classList.add('active');
-  $('page-'+i).classList.add('active');
+  const page = $('page-'+i);
+  if(page) page.classList.add('active');
   if(i === 3) renderAnaliz();
   if(i === 4) renderKayitliKuponlar();
   if(i === 5) renderBacktest();
 }
 
-function closeModal(id){ $(id).classList.remove('active'); }
+function closeModal(id){ const el = $(id); if(el) el.classList.remove('active'); }
 
 function showToast(type, title, msg){
   $('toastIcon').innerText = type === 'success' ? '✅' : '❌';
@@ -798,4 +733,10 @@ function showToast(type, title, msg){
   $('toastModal').classList.add('active');
 }
 
-window.onload = function(){ loadData(); };
+/* ============================================================
+   16. BAŞLAT
+   ============================================================ */
+window.onload = function(){
+  initTelegram();
+  loadData();
+};
