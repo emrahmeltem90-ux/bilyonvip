@@ -156,3 +156,75 @@ button:active{opacity:.8}
 #page-5 input:focus{border-color:var(--green);outline:none}
 #page-5 .oran-grid-3{margin-top:6px}
 #page-5 .oran-grid-3 label{font-size:.6rem;margin:0 0 3px 0}
+
+/* ============================================ */
+/* BANKOBOT · YENİ STİLLER */
+/* ============================================ */
+.bankobot-kart{
+  background:linear-gradient(135deg,rgba(168,85,247,.12),rgba(0,230,118,.06));
+  border:2px solid var(--purple);
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:12px;
+  box-shadow:0 0 20px rgba(168,85,247,.3);
+}
+.bankobot-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:12px;
+  padding-bottom:10px;
+  border-bottom:1px dashed var(--purple);
+}
+.bankobot-title{
+  font-weight:900;
+  font-size:.95rem;
+  color:var(--purple);
+  letter-spacing:.5px;
+}
+.bankobot-guven{
+  background:var(--purple);
+  color:#fff;
+  padding:4px 10px;
+  border-radius:20px;
+  font-weight:900;
+  font-size:.75rem;
+}
+.bankobot-item{
+  padding:10px 0;
+  border-bottom:1px solid var(--border);
+}
+.bankobot-item:last-child{
+  border-bottom:none;
+}
+.bankobot-mac{
+  font-weight:900;
+  font-size:.82rem;
+  margin-bottom:6px;
+  color:var(--text);
+}
+.bankobot-satir{
+  display:flex;
+  justify-content:space-between;
+  font-size:.75rem;
+  margin-bottom:3px;
+}
+.bankobot-satir .fav{
+  color:var(--green);
+  font-weight:900;
+}
+.bankobot-satir .skor{
+  color:var(--purple);
+  font-weight:900;
+}
+.bankobot-meta{
+  font-size:.65rem;
+  color:var(--muted);
+  margin-top:4px;
+}
+.bankobot-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:14px;
+}
