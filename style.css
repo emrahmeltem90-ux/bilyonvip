@@ -27,6 +27,7 @@ button:active{opacity:.8}
 .stat-val.green{color:var(--green)}
 .stat-val.blue{color:var(--blue)}
 .stat-val.orange{color:var(--orange)}
+.stat-val.purple{color:var(--purple)}
 .stat-lbl{font-size:.58rem;color:var(--muted);margin-top:2px}
 
 .mac-kart{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:10px}
@@ -156,6 +157,12 @@ button:active{opacity:.8}
 .vip-kart .vip-price{font-size:1.8rem;font-weight:900;color:var(--green);margin:10px 0}
 .vip-kart .vip-desc{font-size:.75rem;color:var(--muted);margin-bottom:12px;line-height:1.6}
 .vip-kart .vip-features{text-align:left;background:var(--bg3);border-radius:10px;padding:12px;margin:12px 0;font-size:.75rem;line-height:1.8}
+
+.form-giris{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.form-giris label{font-size:.6rem;color:var(--muted);font-weight:800;display:block;margin-bottom:2px}
+.form-giris input{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px;font-size:.8rem;font-weight:800;text-align:center;text-transform:uppercase}
+
+.sakat-uyari{background:rgba(239,68,68,.12);border-left:3px solid var(--red);border-radius:8px;padding:8px 12px;font-size:.72rem;color:var(--red);font-weight:700;margin-top:6px}
 
 #page-5 label{font-size:.7rem;color:var(--muted);font-weight:800;display:block;margin:10px 0 4px}
 #page-5 input{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:10px;font-size:.9rem;font-weight:700;box-sizing:border-box}
