@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#070b14">
-<title>SkorLab · Toto Analiz</title>
+<title>SkorLab · Toto & Tahmin</title>
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="manifest" href="manifest.json">
@@ -20,6 +20,7 @@
 
 <nav class="tabs">
   <button type="button" class="tab active" onclick="switchTab(1,this)">📋 Toto</button>
+  <button type="button" class="tab" onclick="switchTab(10,this)">🎮 Tahmin</button>
   <button type="button" class="tab" onclick="switchTab(3,this)">📊 Analiz</button>
   <button type="button" class="tab" onclick="switchTab(4,this)">💾 Kuponlarım</button>
   <button type="button" class="tab" onclick="switchTab(5,this)">🧪 Backtest</button>
@@ -49,6 +50,24 @@
   </div>
   <div id="totoKuponSonuc"></div>
   <div id="totoListesi"></div>
+</section>
+
+<!-- SAYFA 10: TAHMİN LİGİ -->
+<section id="page-10" class="page">
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-val green" id="ligPuan">0</div><div class="stat-lbl">PUAN</div></div>
+    <div class="stat-card"><div class="stat-val orange" id="ligSeri">0</div><div class="stat-lbl">SERİ</div></div>
+    <div class="stat-card"><div class="stat-val purple" id="ligBonus">×1</div><div class="stat-lbl">BONUS</div></div>
+    <div class="stat-card"><div class="stat-val blue" id="ligTahmin">0</div><div class="stat-lbl">TAHMİN</div></div>
+  </div>
+  <div class="page-actions">
+    <button type="button" class="btn btn-green" onclick="tahminleriKaydet()" style="grid-column:1/-1">💾 TAHMİNLERİ KAYDET</button>
+    <button type="button" class="btn btn-blue" onclick="ligSiralamasi()">🏆 LİDERLİK</button>
+    <button type="button" class="btn btn-orange" onclick="seriGoster()">🔥 SERİ</button>
+    <button type="button" class="btn btn-purple" onclick="rozetleriGoster()">🎖️ ROZETLER</button>
+    <button type="button" class="btn btn-red" onclick="ligTemizle()">🗑️ TEMİZLE</button>
+  </div>
+  <div id="ligListesi"></div>
 </section>
 
 <!-- SAYFA 3: ANALİZ -->
