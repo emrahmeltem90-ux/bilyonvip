@@ -18,6 +18,41 @@
   <div id="weekTitle" class="week">Yükleniyor...</div>
 </header>
 
+<!-- 🎮 OYUN BARI -->
+<div id="oyunBar" class="oyun-bar">
+  <div class="ob-item">
+    <span class="ob-icon">🔥</span>
+    <div>
+      <div class="ob-val" id="obSeri">0</div>
+      <div class="ob-lbl">SERİ</div>
+    </div>
+  </div>
+  <div class="ob-item">
+    <span class="ob-icon">💰</span>
+    <div>
+      <div class="ob-val" id="obPuan">0</div>
+      <div class="ob-lbl">PUAN</div>
+    </div>
+  </div>
+  <div class="ob-item">
+    <span class="ob-icon">🏆</span>
+    <div>
+      <div class="ob-val" id="obSeviye">Çaylak</div>
+      <div class="ob-lbl" id="obSeviyeAlt">0/500</div>
+    </div>
+  </div>
+</div>
+
+<!-- 🎯 GÜNLÜK GÖREV -->
+<div id="gorevBar" class="gorev-bar" style="display:none">
+  <div class="gb-head">
+    <span>📅 GÜNLÜK GÖREV</span>
+    <span id="gbSayac">0/3</span>
+  </div>
+  <div id="gbListe"></div>
+  <div id="gbOdul" class="gb-odul">🎁 Hepsi bitince: <b>+150 puan</b></div>
+</div>
+
 <nav class="tabs">
   <button type="button" class="tab active" onclick="switchTab(1,this)">📋 Toto</button>
   <button type="button" class="tab" onclick="switchTab(10,this)">🎮 Tahmin</button>
@@ -42,11 +77,9 @@
   </div>
   <div class="page-actions">
     <button type="button" class="btn btn-orange" onclick="gununBankosuAc()" style="grid-column:1/-1">🔥 GÜNÜN BANKOSU</button>
-    <button type="button" class="btn btn-blue" onclick="haftaninParmakIzi()" style="grid-column:1/-1">🔍 HAFTANIN PARMAK İZİ</button>
     <button type="button" class="btn btn-purple" onclick="bankobot()">🤖 BANKOBOT</button>
     <button type="button" class="btn btn-green" onclick="kuponOlusturToto()">⚡ TOTO KUPONU</button>
-    <button type="button" class="btn btn-orange" onclick="kuponOlusturucuAc()">🎯 KUPON OLUŞTURUCU</button>
-    <button type="button" class="btn btn-red" onclick="temizleToto()">🗑️ TEMİZLE</button>
+    <button type="button" class="btn btn-red" onclick="temizleToto()" style="grid-column:1/-1">🗑️ TEMİZLE</button>
   </div>
   <div id="totoKuponSonuc"></div>
   <div id="totoListesi"></div>
@@ -186,17 +219,6 @@
   </div>
 </div>
 
-<!-- MODAL: KUPON OLUŞTURUCU -->
-<div class="modal" id="kuponOlusturucuModal">
-  <div class="modal-content">
-    <div class="modal-head">
-      <span>🎯 KUPON OLUŞTURUCU</span>
-      <button type="button" onclick="closeModal('kuponOlusturucuModal')">✖</button>
-    </div>
-    <div class="modal-body" id="kuponOlusturucuBody"></div>
-  </div>
-</div>
-
 <!-- MODAL: KUPON DETAY -->
 <div class="modal" id="kuponDetayModal">
   <div class="modal-content">
@@ -219,6 +241,12 @@
     </div>
   </div>
 </div>
+
+<!-- 🎉 KONFETİ KATMANI -->
+<div id="konfetiKatman" class="konfeti-katman"></div>
+
+<!-- 🎯 UÇAN PUAN KATMANI -->
+<div id="ucanKatman" class="ucan-katman"></div>
 
 <script src="app.js"></script>
 <script>
