@@ -1,6 +1,6 @@
 /* ============================================================
-   SKORLAB v23 · SANAL İDDAA OYUNU
-   Coin sistemi + Bahis + Sonuç girişi
+   SKORLAB v24 · TAHMİN OYUNU
+   Toto (kolon) + Tahmin (taraf+skor) + Çark + Joker
    ============================================================ */
 'use strict';
 
@@ -25,10 +25,6 @@ function escapeHTML(value) {
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
   }[ch]));
 }
-function validOdds(...values) {
-  return values.every(v => v !== '' && v !== null && v !== undefined &&
-    Number.isFinite(Number(v)) && Number(v) > 1);
-}
 function bugun() { return new Date().toISOString().split('T')[0]; }
 function formatCoin(n) {
   return Number(n || 0).toLocaleString('tr-TR');
@@ -43,6 +39,15 @@ function initTelegram() {
   try {
     TG.ready(); TG.expand();
     if (typeof TG.enableClosingConfirmation === 'function') TG.enableClosingConfirmation();
+    // Kullanıcı adı çek
+    const user = TG.initDataUnsafe?.user;
+    if (user) {
+      const ad = user.first_name || user.username || 'Oyuncu';
+      if (!oyunIsim) {
+        oyunIsim = ad;
+        persistOyun();
+      }
+    }
   } catch (e) {}
 }
 
@@ -70,6 +75,7 @@ function sesCal(tur) {
     else if (tur === 'ok') { osc.frequency.value = 880; gain.gain.value = 0.1; }
     else if (tur === 'kazanc') { osc.frequency.value = 1200; gain.gain.value = 0.12; }
     else if (tur === 'hata') { osc.frequency.value = 300; gain.gain.value = 0.1; }
+    else if (tur === 'cark') { osc.frequency.value = 1500; gain.gain.value = 0.08; }
     osc.start();
     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
     osc.stop(ctx.currentTime + 0.2);
@@ -84,18 +90,20 @@ let oyunSeri = safeReadJSON('skorlab_seri', 0);
 let oyunSonGiris = safeReadJSON('skorlab_son_giris', '');
 let oyunRozetler = safeReadJSON('skorlab_rozetler', []);
 let oyunIsim = safeReadJSON('skorlab_isim', '');
-let oyunToplamOynanan = safeReadJSON('skorlab_toplam_oynanan', 0);
-let oyunToplamKazanc = safeReadJSON('skorlab_toplam_kazanc', 0);
-let oyunToplamKayip = safeReadJSON('skorlab_toplam_kayip', 0);
+let oyunJokerler = safeReadJSON('skorlab_jokerler', { duzeltme: 0, cift: 0, garanti: 0 });
+let oyunSonCark = safeReadJSON('skorlab_son_cark', '');
+let oyunToplamTaraf = safeReadJSON('skorlab_toplam_taraf', 0);
+let oyunToplamSkor = safeReadJSON('skorlab_toplam_skor', 0);
 
 if (typeof oyunKasa !== 'number' || oyunKasa < 0) oyunKasa = 1000;
 if (typeof oyunSeri !== 'number') oyunSeri = 0;
 if (typeof oyunSonGiris !== 'string') oyunSonGiris = '';
 if (!Array.isArray(oyunRozetler)) oyunRozetler = [];
 if (typeof oyunIsim !== 'string') oyunIsim = '';
-if (typeof oyunToplamOynanan !== 'number') oyunToplamOynanan = 0;
-if (typeof oyunToplamKazanc !== 'number') oyunToplamKazanc = 0;
-if (typeof oyunToplamKayip !== 'number') oyunToplamKayip = 0;
+if (!oyunJokerler || typeof oyunJokerler !== 'object') oyunJokerler = { duzeltme: 0, cift: 0, garanti: 0 };
+if (typeof oyunSonCark !== 'string') oyunSonCark = '';
+if (typeof oyunToplamTaraf !== 'number') oyunToplamTaraf = 0;
+if (typeof oyunToplamSkor !== 'number') oyunToplamSkor = 0;
 
 function persistOyun() {
   safeSaveJSON('skorlab_kasa', oyunKasa);
@@ -103,27 +111,34 @@ function persistOyun() {
   safeSaveJSON('skorlab_son_giris', oyunSonGiris);
   safeSaveJSON('skorlab_rozetler', oyunRozetler);
   safeSaveJSON('skorlab_isim', oyunIsim);
-  safeSaveJSON('skorlab_toplam_oynanan', oyunToplamOynanan);
-  safeSaveJSON('skorlab_toplam_kazanc', oyunToplamKazanc);
-  safeSaveJSON('skorlab_toplam_kayip', oyunToplamKayip);
+  safeSaveJSON('skorlab_jokerler', oyunJokerler);
+  safeSaveJSON('skorlab_son_cark', oyunSonCark);
+  safeSaveJSON('skorlab_toplam_taraf', oyunToplamTaraf);
+  safeSaveJSON('skorlab_toplam_skor', oyunToplamSkor);
 }
 
 /* ============================================================
-   4. OYUN VERİLERİ — BAHİSLER
+   4. KUPONLAR
    ============================================================ */
-let totoBahisleri = safeReadJSON('skorlab_toto_bahisler', {}); // {mac_id: {secim: '1', coin: 100, oran: 2.5}}
-let ligBahisleri = safeReadJSON('skorlab_lig_bahisler', {});   // {mac_id: {secim: '1', coin: 100, oran: 2.5}}
+let kuponlar = safeReadJSON('skorlab_kuponlar', []);
+if (!Array.isArray(kuponlar)) kuponlar = [];
+function persistKuponlar() { safeSaveJSON('skorlab_kuponlar', kuponlar); }
 
-if (!totoBahisleri || typeof totoBahisleri !== 'object') totoBahisleri = {};
-if (!ligBahisleri || typeof ligBahisleri !== 'object') ligBahisleri = {};
+/* ============================================================
+   5. TOTO SEÇİMLERİ + TAHMİN SEÇİMLERİ
+   ============================================================ */
+let totoSecimler = safeReadJSON('skorlab_toto_secimler', {}); // {mac_id: ['1','X']}
+let tahminSecimler = safeReadJSON('skorlab_tahmin_secimler', {}); // {mac_id: {taraf:'1', ev:2, dep:1}}
+if (!totoSecimler || typeof totoSecimler !== 'object') totoSecimler = {};
+if (!tahminSecimler || typeof tahminSecimler !== 'object') tahminSecimler = {};
 
-function persistBahisler() {
-  safeSaveJSON('skorlab_toto_bahisler', totoBahisleri);
-  safeSaveJSON('skorlab_lig_bahisler', ligBahisleri);
+function persistSecimler() {
+  safeSaveJSON('skorlab_toto_secimler', totoSecimler);
+  safeSaveJSON('skorlab_tahmin_secimler', tahminSecimler);
 }
 
 /* ============================================================
-   5. SEVİYE
+   6. SEVİYE
    ============================================================ */
 const SEVIYELER = [
   { ad: 'Çaylak', min: 0, max: 500, ikon: '🥉' },
@@ -140,17 +155,17 @@ function seviyeHesapla() {
 }
 
 /* ============================================================
-   6. ROZETLER
+   7. ROZETLER
    ============================================================ */
 const ROZETLER = [
-  { id: 'ilk', ikon: '🎬', ad: 'İlk Adım', sart: () => oyunToplamOynanan >= 1 },
+  { id: 'ilk', ikon: '🎬', ad: 'İlk Adım', sart: () => oyunToplamTaraf + oyunToplamSkor >= 1 },
+  { id: 'taraf10', ikon: '🎯', ad: 'Keskin', sart: () => oyunToplamTaraf >= 10 },
+  { id: 'taraf50', ikon: '🏆', ad: 'Usta', sart: () => oyunToplamTaraf >= 50 },
+  { id: 'skor1', ikon: '💎', ad: 'Kahin', sart: () => oyunToplamSkor >= 1 },
+  { id: 'skor5', ikon: '👑', ad: 'Şampiyon', sart: () => oyunToplamSkor >= 5 },
   { id: 'seri3', ikon: '🔥', ad: 'Ateşli', sart: () => oyunSeri >= 3 },
   { id: 'seri7', ikon: '🔥🔥', ad: 'Alev Aldı', sart: () => oyunSeri >= 7 },
-  { id: 'kasa2k', ikon: '💰', ad: 'Zengin', sart: () => oyunKasa >= 2000 },
-  { id: 'kasa5k', ikon: '💎', ad: 'Efsane', sart: () => oyunKasa >= 5000 },
-  { id: 'kasa10k', ikon: '👑', ad: 'Şampiyon', sart: () => oyunKasa >= 10000 },
-  { id: 'kazanc10', ikon: '🎯', ad: 'Keskin Nişancı', sart: () => oyunToplamKazanc >= 1000 },
-  { id: 'oynanan50', ikon: '🎰', ad: 'Bağımlı', sart: () => oyunToplamOynanan >= 50 }
+  { id: 'kasa5k', ikon: '💰', ad: 'Zengin', sart: () => oyunKasa >= 5000 }
 ];
 
 function rozetKontrol() {
@@ -171,7 +186,7 @@ function rozetKontrol() {
 }
 
 /* ============================================================
-   7. ANİMASYONLAR
+   8. ANİMASYONLAR
    ============================================================ */
 function konfetiGoster(adet = 30) {
   let katman = $('konfetiKatman');
@@ -204,7 +219,7 @@ function ucanPuan(metin, renk = 'var(--green)') {
 }
 
 /* ============================================================
-   8. PROFİL BARI
+   9. PROFİL BARI
    ============================================================ */
 function renderProfilBar() {
   const seviye = seviyeHesapla();
@@ -213,19 +228,12 @@ function renderProfilBar() {
   if ($('pbCoin')) $('pbCoin').textContent = '💰 ' + formatCoin(Math.floor(oyunKasa));
   if ($('pbSeri')) $('pbSeri').textContent = '🔥 ' + oyunSeri + ' gün';
 
-  // Kasa kartları (Toto + Lig)
   if ($('totoKasa')) $('totoKasa').textContent = formatCoin(Math.floor(oyunKasa));
   if ($('ligKasa')) $('ligKasa').textContent = formatCoin(Math.floor(oyunKasa));
-  if ($('totoOynanan')) $('totoOynanan').textContent = formatCoin(oyunToplamOynanan);
-  if ($('totoKazanc')) $('totoKazanc').textContent = formatCoin(Math.floor(oyunToplamKazanc));
-  if ($('totoKayip')) $('totoKayip').textContent = formatCoin(Math.floor(oyunToplamKayip));
-  if ($('ligOynanan')) $('ligOynanan').textContent = formatCoin(oyunToplamOynanan);
-  if ($('ligKazanc')) $('ligKazanc').textContent = formatCoin(Math.floor(oyunToplamKazanc));
-  if ($('ligKayip')) $('ligKayip').textContent = formatCoin(Math.floor(oyunToplamKayip));
 }
 
 /* ============================================================
-   9. GÜNLÜK SERİ + BONUS
+   10. GÜNLÜK SERİ + BONUS
    ============================================================ */
 function gunlukSeriKontrol() {
   const bugunT = bugun();
@@ -259,17 +267,14 @@ function gunlukSeriKontrol() {
 }
 
 /* ============================================================
-   10. VERİ
+   11. VERİ YÜKLE
    ============================================================ */
 let maclarToto = [];
 let liglerData = {};
-let kuponlar = safeReadJSON('skorlab_kuponlar', []);
-if (!Array.isArray(kuponlar)) kuponlar = [];
-function persistKuponlar() { safeSaveJSON('skorlab_kuponlar', kuponlar); }
 
 async function loadData() {
   try {
-    const res = await fetch('matches.json?v=23');
+    const res = await fetch('matches.json?v=24');
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const raw = await res.json();
     maclarToto = Array.isArray(raw.maclar) ? raw.maclar : [];
@@ -279,233 +284,93 @@ async function loadData() {
   }
   renderToto();
   renderLigler();
-  renderAnaliz();
   renderKuponlar();
   renderSiralama();
+  renderRozetler();
   renderVip();
   renderProfilBar();
+  updateKuponCubugu();
 }
 
 /* ============================================================
-   11. ANALİZ MOTORU
-   ============================================================ */
-class Motor {
-  static faktoriyel(n) {
-    if (n < 0 || !Number.isInteger(n)) return NaN;
-    let r = 1;
-    for (let i = 2; i <= n; i++) r *= i;
-    return r;
-  }
-  static poissonPmf(k, lambda) {
-    if (!Number.isFinite(lambda) || lambda < 0 || !Number.isInteger(k) || k < 0) return 0;
-    if (lambda === 0) return k === 0 ? 1 : 0;
-    return Math.exp(-lambda + k * Math.log(lambda) - Math.log(this.faktoriyel(k)));
-  }
-  static shin(o1, oX, o2) {
-    if (!validOdds(o1, oX, o2)) throw new Error('Geçersiz oran');
-    const implied = [o1, oX, o2].map(o => 1 / Number(o));
-    const S = implied.reduce((a, b) => a + b, 0);
-    const marj = Math.max(0, (S - 1) * 100);
-    if (S <= 1) {
-      const total = implied.reduce((a, b) => a + b, 0);
-      return { p1: implied[0] / total, pX: implied[1] / total, p2: implied[2] / total, marj };
-    }
-    const probsAt = z => implied.map(p =>
-      (Math.sqrt(z * z + 4 * (1 - z) * p * p / S) - z) / (2 * (1 - z))
-    );
-    let lo = 0, hi = 0.999999;
-    for (let i = 0; i < 80; i++) {
-      const mid = (lo + hi) / 2;
-      const sum = probsAt(mid).reduce((a, b) => a + b, 0);
-      if (sum > 1) lo = mid; else hi = mid;
-    }
-    const raw = probsAt((lo + hi) / 2);
-    const total = raw.reduce((a, b) => a + b, 0);
-    return { p1: raw[0] / total, pX: raw[1] / total, p2: raw[2] / total, marj };
-  }
-  static poisson(lambdaHome, lambdaAway, maxGoals = 10) {
-    const home = Array.from({ length: maxGoals + 1 }, (_, k) => this.poissonPmf(k, lambdaHome));
-    const away = Array.from({ length: maxGoals + 1 }, (_, k) => this.poissonPmf(k, lambdaAway));
-    let p1 = 0, pX = 0, p2 = 0, ust25 = 0, alt25 = 0, kg = 0;
-    const skorlar = [];
-    for (let h = 0; h <= maxGoals; h++) {
-      for (let a = 0; a <= maxGoals; a++) {
-        const p = home[h] * away[a];
-        if (h > a) p1 += p; else if (h === a) pX += p; else p2 += p;
-        if (h + a >= 3) ust25 += p; else alt25 += p;
-        if (h > 0 && a > 0) kg += p;
-        skorlar.push({ h, a, skor: `${h}-${a}`, p });
-      }
-    }
-    const total = p1 + pX + p2;
-    if (!total) throw new Error('Poisson hesabı yapılamadı.');
-    skorlar.forEach(s => { s.p /= total; });
-    skorlar.sort((a, b) => b.p - a.p);
-    return {
-      p1: p1 / total, pX: pX / total, p2: p2 / total,
-      pUst25: ust25 / total, pAlt25: alt25 / total,
-      pKgVar: kg / total, pKgYok: Math.max(0, (total - kg) / total),
-      enOlası: skorlar.slice(0, 5).map(s => ({ skor: s.skor, yuzde: (s.p * 100).toFixed(1) }))
-    };
-  }
-  static xg(p1, pX, p2) {
-    const hedef = [p1, pX, p2];
-    const toplam = hedef.reduce((a, b) => a + b, 0);
-    if (!hedef.every(Number.isFinite) || toplam <= 0) throw new Error('Olasılıklar geçersiz.');
-    const t = hedef.map(v => v / toplam);
-    let best = { home: 1.25, away: 1.05, loss: Infinity };
-    for (let home = 0.2; home <= 3.5; home += 0.05) {
-      for (let away = 0.2; away <= 3.5; away += 0.05) {
-        const r = this.poisson(home, away, 9);
-        const loss = (r.p1 - t[0]) ** 2 + (r.pX - t[1]) ** 2 + (r.p2 - t[2]) ** 2;
-        if (loss < best.loss) best = { home, away, loss };
-      }
-    }
-    return { xgEv: best.home, xgDep: best.away, hata: best.loss };
-  }
-  static analiz(veri) {
-    const { o1, oX, o2 } = veri;
-    if (!validOdds(o1, oX, o2)) throw new Error('Geçerli oran gerekli.');
-    const sh = this.shin(o1, oX, o2);
-    const xg = this.xg(sh.p1, sh.pX, sh.p2);
-    const poi = this.poisson(xg.xgEv, xg.xgDep, 10);
-    const ust = poi.pUst25 * 100;
-    const kg = poi.pKgVar * 100;
-    let gollu;
-    if (ust >= 65 && kg >= 65) gollu = '🔥 ÇOK GOLLÜ';
-    else if (ust >= 55 || kg >= 55) gollu = '⚡ GOLLÜ';
-    else if (ust >= 45 || kg >= 45) gollu = '🟡 ORTA';
-    else gollu = '❄️ AZ GOLLÜ';
-    return {
-      marj: sh.marj.toFixed(1),
-      shin: { p1: (sh.p1 * 100).toFixed(1), pX: (sh.pX * 100).toFixed(1), p2: (sh.p2 * 100).toFixed(1) },
-      xgEv: xg.xgEv.toFixed(2), xgDep: xg.xgDep.toFixed(2),
-      poi: {
-        p1: (poi.p1 * 100).toFixed(1), pX: (poi.pX * 100).toFixed(1), p2: (poi.p2 * 100).toFixed(1),
-        pUst25: ust.toFixed(1), pAlt25: (poi.pAlt25 * 100).toFixed(1),
-        pKgVar: kg.toFixed(1), pKgYok: (poi.pKgYok * 100).toFixed(1),
-        enOlası: poi.enOlası
-      },
-      gollu
-    };
-  }
-}
-
-/* ============================================================
-   12. ORANLAR (matches.json'dan veya kullanıcı)
-   ============================================================ */
-// Toto maçları için oranlar (varsayılan tahmini)
-const TOTO_ORANLARI = {
-  1:{'1':1.15,'X':5.43,'2':8.11},2:{'1':2.40,'X':3.30,'2':2.90},
-  3:{'1':2.80,'X':3.20,'2':2.50},4:{'1':6.00,'X':4.20,'2':1.50},
-  5:{'1':1.35,'X':5.00,'2':7.50},6:{'1':2.40,'X':3.30,'2':2.90},
-  7:{'1':2.30,'X':3.30,'2':3.00},8:{'1':1.90,'X':3.50,'2':4.00},
-  9:{'1':2.50,'X':3.30,'2':2.80},10:{'1':2.20,'X':3.40,'2':3.10},
-  11:{'1':4.50,'X':3.80,'2':1.75},12:{'1':4.00,'X':3.90,'2':1.80},
-  13:{'1':1.40,'X':4.80,'2':6.50},14:{'1':2.30,'X':3.40,'2':3.00},
-  15:{'1':2.10,'X':3.30,'2':3.50}
-};
-
-/* ============================================================
-   13. TOTO EKRANI — BAHİS SİSTEMİ
+   12. TOTO — KLASİK KOLON SİSTEMİ
    ============================================================ */
 function renderToto() {
   const c = $('totoListesi');
   if (!c) return;
   if (!maclarToto.length) {
     c.innerHTML = '<div class="card"><div class="muted" style="text-align:center;padding:20px">Maç yok.</div></div>';
-    updateKuponCubugu();
     return;
   }
 
   c.innerHTML = maclarToto.map(m => {
     const id = m.mac_id;
-    const o = TOTO_ORANLARI[id] || { '1': 2, 'X': 3, '2': 3 };
-    const b = totoBahisleri[id] || {};
-    const secili = b.secim || '';
-    const coin = b.coin || 0;
-    const oran = secili ? (o[secili] || 0) : 0;
-    const potansiyel = coin > 0 && oran > 0 ? Math.floor(coin * oran) : 0;
-
+    const sec = Array.isArray(totoSecimler[id]) ? totoSecimler[id] : [];
     return `
       <div class="mac-kart">
         <div class="mac-head">
           <span class="mac-no">#${escapeHTML(id)}</span>
           <span class="mac-saat">🕐 20:00</span>
-          <button type="button" class="mac-analiz-btn" onclick="analizGosterToto(${Number(id)})">📊</button>
         </div>
         <div class="mac-teams">${escapeHTML(m.ev_sahibi)} <span style="color:var(--muted);font-weight:700">vs</span> ${escapeHTML(m.deplasman)}</div>
-
-        <div class="oran-grid">
-          <button type="button" class="oran-btn ${secili === '1' ? 'secili' : ''}" onclick="bahisSecToto(${Number(id)},'1')">
-            <span class="oran-lbl">1</span>
-            <span class="oran-deger">${o['1'].toFixed(2)}</span>
+        <div class="toto-grid">
+          <button type="button" class="toto-btn ${sec.includes('1') ? 'secili' : ''}" onclick="totoToggle(${Number(id)},'1')">
+            <span class="kod">1</span>
+            <span class="aciklama">EV</span>
           </button>
-          <button type="button" class="oran-btn ${secili === 'X' ? 'secili' : ''}" onclick="bahisSecToto(${Number(id)},'X')">
-            <span class="oran-lbl">X</span>
-            <span class="oran-deger">${o.X.toFixed(2)}</span>
+          <button type="button" class="toto-btn ${sec.includes('X') ? 'secili' : ''}" onclick="totoToggle(${Number(id)},'X')">
+            <span class="kod">X</span>
+            <span class="aciklama">BERABERE</span>
           </button>
-          <button type="button" class="oran-btn ${secili === '2' ? 'secili' : ''}" onclick="bahisSecToto(${Number(id)},'2')">
-            <span class="oran-lbl">2</span>
-            <span class="oran-deger">${o['2'].toFixed(2)}</span>
+          <button type="button" class="toto-btn ${sec.includes('2') ? 'secili' : ''}" onclick="totoToggle(${Number(id)},'2')">
+            <span class="kod">2</span>
+            <span class="aciklama">DEPLASMAN</span>
           </button>
         </div>
-
-        ${secili ? `
-          <div class="bahis-input-grup">
-            <label>💰 BAHİS</label>
-            <input type="number" min="1" max="1000" step="10" value="${coin || 10}" onchange="bahisCoinToto(${Number(id)},this.value)" inputmode="numeric">
-            <span style="color:var(--muted);font-weight:900;font-size:.7rem">COIN</span>
-          </div>
-          <div class="bahis-hizli">
-            <button type="button" onclick="bahisCoinToto(${Number(id)},10)">10</button>
-            <button type="button" onclick="bahisCoinToto(${Number(id)},50)">50</button>
-            <button type="button" onclick="bahisCoinToto(${Number(id)},100)">100</button>
-            <button type="button" onclick="bahisCoinToto(${Number(id)},250)">250</button>
-            <button type="button" onclick="bahisCoinToto(${Number(id)},500)">500</button>
-          </div>
-          <div class="potansiyel">
-            <span>🎯 Kazanırsan:</span>
-            <span>+${formatCoin(potansiyel)} 💰</span>
-          </div>
-        ` : ''}
       </div>
     `;
   }).join('');
 
-  updateKuponCubugu();
+  updateTotoStats();
 }
 
-function bahisSecToto(id, secim) {
-  const o = TOTO_ORANLARI[id];
-  if (!o || !o[secim]) return;
-
-  if (!totoBahisleri[id]) totoBahisleri[id] = {};
-  if (totoBahisleri[id].secim === secim) {
-    // Aynı seçime basınca iptal
-    delete totoBahisleri[id];
+function totoToggle(id, secim) {
+  let arr = Array.isArray(totoSecimler[id]) ? [...totoSecimler[id]] : [];
+  if (arr.includes(secim)) {
+    arr = arr.filter(x => x !== secim);
   } else {
-    totoBahisleri[id].secim = secim;
-    totoBahisleri[id].oran = o[secim];
-    if (!totoBahisleri[id].coin) totoBahisleri[id].coin = 10;
+    arr.push(secim);
+    arr = ['1', 'X', '2'].filter(x => arr.includes(x));
   }
-  persistBahisler();
+  if (!arr.length) delete totoSecimler[id];
+  else totoSecimler[id] = arr;
+
+  persistSecimler();
   renderToto();
   updateKuponCubugu();
-  titreşim(20); sesCal('tik');
+  titreşim(15); sesCal('tik');
 }
 
-function bahisCoinToto(id, val) {
-  const coin = Math.max(0, Math.min(1000, Number(val) || 0));
-  if (!totoBahisleri[id]) totoBahisleri[id] = {};
-  totoBahisleri[id].coin = coin;
-  persistBahisler();
-  renderToto();
-  updateKuponCubugu();
+function totoKolonHesapla() {
+  let kolon = 1, macSayisi = 0;
+  Object.values(totoSecimler).forEach(s => {
+    if (Array.isArray(s) && s.length) {
+      kolon *= s.length;
+      macSayisi++;
+    }
+  });
+  return { kolon: macSayisi ? kolon : 0, macSayisi };
+}
+
+function updateTotoStats() {
+  const h = totoKolonHesapla();
+  const maliyet = h.kolon * 10;
+  if ($('totoKolon')) $('totoKolon').textContent = formatCoin(h.kolon);
+  if ($('totoMaliyet')) $('totoMaliyet').textContent = formatCoin(maliyet);
 }
 
 /* ============================================================
-   14. LİG EKRANI — BAHİS SİSTEMİ
+   13. TAHMİN — TARAF + SKOR
    ============================================================ */
 function renderLigler() {
   const c = $('ligListesi');
@@ -523,54 +388,33 @@ function renderLigler() {
 
     (lig.maclar || []).forEach(m => {
       const id = m.mac_id;
-      // Varsayılan oranlar (yoksa 2.00)
-      const o = m.oran || { '1': 2.00, 'X': 3.30, '2': 3.30 };
-      const b = ligBahisleri[id] || {};
-      const secili = b.secim || '';
-      const coin = b.coin || 0;
-      const oran = secili ? (o[secili] || 0) : 0;
-      const potansiyel = coin > 0 && oran > 0 ? Math.floor(coin * oran) : 0;
+      const t = tahminSecimler[id] || {};
+      const taraf = t.taraf || '';
+      const evSkor = t.ev !== undefined && t.ev !== null ? t.ev : '';
+      const depSkor = t.dep !== undefined && t.dep !== null ? t.dep : '';
       const sonucVar = m.sonuc !== null && m.sonuc !== undefined;
 
       html += `
-        <div class="mac-kart" style="${sonucVar ? 'opacity:.6' : ''}">
+        <div class="mac-kart" style="${sonucVar ? 'opacity:.7' : ''}">
           <div class="mac-head">
             <span class="mac-saat">🕐 ${escapeHTML(m.saat || '')}</span>
             ${sonucVar ? `<span style="color:var(--green);font-weight:900;font-size:.7rem">✅ ${m.sonuc.ev}-${m.sonuc.dep}</span>` : '<span class="canli">● CANLI</span>'}
           </div>
           <div class="mac-teams">${escapeHTML(m.ev)} <span style="color:var(--muted);font-weight:700">vs</span> ${escapeHTML(m.dep)}</div>
 
-          <div class="oran-grid">
-            <button type="button" class="oran-btn ${secili === '1' ? 'secili' : ''}" onclick="bahisSecLig(${id},'1')">
-              <span class="oran-lbl">1</span>
-              <span class="oran-deger">${o['1'].toFixed(2)}</span>
-            </button>
-            <button type="button" class="oran-btn ${secili === 'X' ? 'secili' : ''}" onclick="bahisSecLig(${id},'X')">
-              <span class="oran-lbl">X</span>
-              <span class="oran-deger">${o.X.toFixed(2)}</span>
-            </button>
-            <button type="button" class="oran-btn ${secili === '2' ? 'secili' : ''}" onclick="bahisSecLig(${id},'2')">
-              <span class="oran-lbl">2</span>
-              <span class="oran-deger">${o['2'].toFixed(2)}</span>
-            </button>
+          <div class="taraf-grid">
+            <button type="button" class="taraf-btn ${taraf === '1' ? 'secili' : ''}" onclick="tahminTaraf(${id},'1')">1</button>
+            <button type="button" class="taraf-btn ${taraf === 'X' ? 'secili' : ''}" onclick="tahminTaraf(${id},'X')">X</button>
+            <button type="button" class="taraf-btn ${taraf === '2' ? 'secili' : ''}" onclick="tahminTaraf(${id},'2')">2</button>
           </div>
 
-          ${secili && !sonucVar ? `
-            <div class="bahis-input-grup">
-              <label>💰 BAHİS</label>
-              <input type="number" min="1" max="1000" step="10" value="${coin || 10}" onchange="bahisCoinLig(${id},this.value)" inputmode="numeric">
-              <span style="color:var(--muted);font-weight:900;font-size:.7rem">COIN</span>
-            </div>
-            <div class="bahis-hizli">
-              <button type="button" onclick="bahisCoinLig(${id},10)">10</button>
-              <button type="button" onclick="bahisCoinLig(${id},50)">50</button>
-              <button type="button" onclick="bahisCoinLig(${id},100)">100</button>
-              <button type="button" onclick="bahisCoinLig(${id},250)">250</button>
-              <button type="button" onclick="bahisCoinLig(${id},500)">500</button>
-            </div>
-            <div class="potansiyel">
-              <span>🎯 Kazanırsan:</span>
-              <span>+${formatCoin(potansiyel)} 💰</span>
+          ${taraf && !sonucVar ? `
+            <div class="skor-giris">
+              <label>⚽ SKOR</label>
+              <input type="number" min="0" max="20" placeholder="0" value="${evSkor}" onchange="tahminSkor(${id},'ev',this.value)" inputmode="numeric">
+              <span class="skor-orta">-</span>
+              <input type="number" min="0" max="20" placeholder="0" value="${depSkor}" onchange="tahminSkor(${id},'dep',this.value)" inputmode="numeric">
+              <label style="color:var(--gold)">+500💰</label>
             </div>
           ` : ''}
         </div>
@@ -581,144 +425,316 @@ function renderLigler() {
   });
 
   c.innerHTML = html;
+  updateLigStats();
 }
 
-function bahisSecLig(id, secim) {
-  // Oranı bul
-  let oran = null;
-  for (const lig of Object.values(liglerData)) {
-    const m = (lig.maclar || []).find(x => x.mac_id === id);
-    if (m) {
-      const o = m.oran || { '1': 2, 'X': 3.3, '2': 3.3 };
-      oran = o[secim];
-      break;
-    }
-  }
-  if (!oran) return;
-
-  if (!ligBahisleri[id]) ligBahisleri[id] = {};
-  if (ligBahisleri[id].secim === secim) {
-    delete ligBahisleri[id];
+function tahminTaraf(id, taraf) {
+  if (!tahminSecimler[id]) tahminSecimler[id] = {};
+  if (tahminSecimler[id].taraf === taraf) {
+    delete tahminSecimler[id].taraf;
+    delete tahminSecimler[id].ev;
+    delete tahminSecimler[id].dep;
+    if (!Object.keys(tahminSecimler[id]).length) delete tahminSecimler[id];
   } else {
-    ligBahisleri[id].secim = secim;
-    ligBahisleri[id].oran = oran;
-    if (!ligBahisleri[id].coin) ligBahisleri[id].coin = 10;
+    tahminSecimler[id].taraf = taraf;
   }
-  persistBahisler();
+  persistSecimler();
   renderLigler();
   updateKuponCubugu();
-  titreşim(20); sesCal('tik');
+  titreşim(15); sesCal('tik');
 }
 
-function bahisCoinLig(id, val) {
-  const coin = Math.max(0, Math.min(1000, Number(val) || 0));
-  if (!ligBahisleri[id]) ligBahisleri[id] = {};
-  ligBahisleri[id].coin = coin;
-  persistBahisler();
-  renderLigler();
-  updateKuponCubugu();
+function tahminSkor(id, alan, val) {
+  if (!tahminSecimler[id]) tahminSecimler[id] = {};
+  const n = Math.max(0, Math.min(20, Number(val) || 0));
+  tahminSecimler[id][alan] = n;
+  persistSecimler();
+}
+
+function updateLigStats() {
+  let tarafSayisi = 0, skorSayisi = 0;
+  Object.values(tahminSecimler).forEach(t => {
+    if (t.taraf) {
+      tarafSayisi++;
+      if (t.ev !== undefined && t.dep !== undefined) skorSayisi++;
+    }
+  });
+  if ($('ligTaraf')) $('ligTaraf').textContent = tarafSayisi;
+  if ($('ligSkor')) $('ligSkor').textContent = skorSayisi;
+  if ($('ligToplam')) $('ligToplam').textContent = tarafSayisi + skorSayisi;
 }
 
 /* ============================================================
-   15. ALT KUPON ÇUBUĞU
+   14. ALT KUPON ÇUBUĞU
    ============================================================ */
 function updateKuponCubugu() {
-  let toplam = 0;
-  let bahisSayisi = 0;
-  Object.values(totoBahisleri).forEach(b => {
-    if (b.secim && b.coin > 0) { toplam += b.coin; bahisSayisi++; }
-  });
-  Object.values(ligBahisleri).forEach(b => {
-    if (b.secim && b.coin > 0) { toplam += b.coin; bahisSayisi++; }
-  });
-  if ($('kcToto')) $('kcToto').textContent = bahisSayisi;
-  if ($('kcToplam')) $('kcToplam').textContent = formatCoin(toplam) + ' 💰';
+  const h = totoKolonHesapla();
+  let tahminSayisi = 0;
+  Object.values(tahminSecimler).forEach(t => { if (t.taraf) tahminSayisi++; });
+
+  const toplamCoin = h.kolon * 10 + tahminSayisi * 0;
+  if ($('kcToto')) $('kcToto').textContent = h.macSayisi + tahminSayisi;
+  if ($('kcToplam')) $('kcToplam').textContent = formatCoin(toplamCoin) + ' 💰';
 }
 
 /* ============================================================
-   16. BAHİSLERİ ONAYLA
+   15. TOTOYU KAYDET
    ============================================================ */
-function tumBahisleriOnayla() {
-  let toplam = 0;
-  let sayi = 0;
-  Object.values(totoBahisleri).forEach(b => {
-    if (b.secim && b.coin > 0) { toplam += b.coin; sayi++; }
-  });
-  Object.values(ligBahisleri).forEach(b => {
-    if (b.secim && b.coin > 0) { toplam += b.coin; sayi++; }
-  });
+function totoKaydet() {
+  const h = totoKolonHesapla();
+  if (h.kolon === 0) { showToast('error', 'Boş', 'Hiç maç seçmedin.'); return; }
+  if (h.kolon > 2500) { showToast('error', 'Limit Aşıldı', 'Maksimum 2.500 kolon oynayabilirsin.'); return; }
 
-  if (sayi === 0) {
-    showToast('error', 'Boş', 'Önce bahis seç.');
-    return;
-  }
-  if (toplam > oyunKasa) {
-    showToast('error', 'Yetersiz Kasa', 'Kasanda ' + formatCoin(oyunKasa) + ' 💰 var.');
+  const maliyet = h.kolon * 10;
+  if (maliyet > oyunKasa) {
+    showToast('error', 'Yetersiz Kasa', 'Kasanda ' + formatCoin(oyunKasa) + ' 💰 var, ' + formatCoin(maliyet) + ' 💰 gerekli.');
     return;
   }
 
-  if (!confirm(sayi + ' bahis · Toplam ' + formatCoin(toplam) + ' 💰\nOnaylıyor musun?')) return;
+  if (!confirm(h.kolon + ' kolon · ' + formatCoin(maliyet) + ' 💰\nOnaylıyor musun?')) return;
 
-  // Kasayı düş
-  oyunKasa -= toplam;
-  oyunToplamOynanan += sayi;
+  oyunKasa -= maliyet;
   persistOyun();
-  renderProfilBar();
 
-  // Kuponu kaydet
   kuponlar.unshift({
     id: Date.now(),
     tarih: new Date().toLocaleString('tr-TR'),
-    tip: 'bahis',
-    toplamCoin: toplam,
-    bahisSayisi: sayi,
-    toto: JSON.parse(JSON.stringify(totoBahisleri)),
-    lig: JSON.parse(JSON.stringify(ligBahisleri)),
+    tip: 'toto',
+    kolon: h.kolon,
+    maliyet: maliyet,
+    secimler: JSON.parse(JSON.stringify(totoSecimler)),
     durum: 'bekliyor'
   });
   kuponlar = kuponlar.slice(0, 50);
   persistKuponlar();
 
-  // Bahisleri temizle
-  totoBahisleri = {};
-  ligBahisleri = {};
-  persistBahisler();
+  totoSecimler = {};
+  persistSecimler();
 
   renderToto();
-  renderLigler();
-  updateKuponCubugu();
+  renderProfilBar();
   renderKuponlar();
+  updateKuponCubugu();
 
-  titreşim(100);
-  sesCal('ok');
-  ucanPuan('-' + formatCoin(toplam) + ' 💰', 'var(--red)');
-  showToast('success', '✅ Bahisler Alındı', sayi + ' bahis · ' + formatCoin(toplam) + ' 💰');
+  titreşim(100); sesCal('ok');
+  ucanPuan('-' + formatCoin(maliyet) + ' 💰', 'var(--red)');
+  showToast('success', '✅ Toto Kaydedildi!', h.kolon + ' kolon · ' + formatCoin(maliyet) + ' 💰');
   rozetKontrol();
 }
 
+/* ============================================================
+   16. TAHMİNLERİ KAYDET
+   ============================================================ */
+function tahminleriKaydet() {
+  let tarafSayisi = 0, skorSayisi = 0;
+  Object.values(tahminSecimler).forEach(t => {
+    if (t.taraf) {
+      tarafSayisi++;
+      if (t.ev !== undefined && t.dep !== undefined) skorSayisi++;
+    }
+  });
+
+  if (tarafSayisi === 0) { showToast('error', 'Boş', 'Hiç tahmin yapmadın.'); return; }
+  if (!confirm(tarafSayisi + ' tahmin (' + skorSayisi + ' skorlu)\nOnaylıyor musun?')) return;
+
+  kuponlar.unshift({
+    id: Date.now(),
+    tarih: new Date().toLocaleString('tr-TR'),
+    tip: 'tahmin',
+    tarafSayisi: tarafSayisi,
+    skorSayisi: skorSayisi,
+    secimler: JSON.parse(JSON.stringify(tahminSecimler)),
+    durum: 'bekliyor'
+  });
+  kuponlar = kuponlar.slice(0, 50);
+  persistKuponlar();
+
+  tahminSecimler = {};
+  persistSecimler();
+
+  renderLigler();
+  renderKuponlar();
+  updateKuponCubugu();
+
+  titreşim(80); sesCal('ok');
+  ucanPuan('+' + tarafSayisi + ' TAHMİN', 'var(--green)');
+  showToast('success', '✅ Tahminler Kaydedildi!', tarafSayisi + ' taraf · ' + skorSayisi + ' skor');
+  rozetKontrol();
+}
+
+/* ============================================================
+   17. TEMİZLE
+   ============================================================ */
 function tumSecimleriSil() {
-  if (!confirm('Tüm bahisler silinsin mi?')) return;
-  totoBahisleri = {};
-  ligBahisleri = {};
-  persistBahisler();
+  if (!confirm('Tüm seçimler silinsin mi?')) return;
+  totoSecimler = {};
+  tahminSecimler = {};
+  persistSecimler();
   renderToto();
   renderLigler();
   updateKuponCubugu();
-}
-
-function ligTemizle() { tumSecimleriSil(); }
+ }
 
 /* ============================================================
-   17. SONUÇ GİRME EKRANI
+   18. ÇARKIFELEK
+   ============================================================ */
+const CARK_DILIMLERI = [
+  { tip: 'coin', miktar: 50, renk: '#ffb020' },
+  { tip: 'coin', miktar: 100, renk: '#00d97e' },
+  { tip: 'coin', miktar: 250, renk: '#2979ff' },
+  { tip: 'joker', tipJoker: 'duzeltme', renk: '#8b5cf6' },
+  { tip: 'coin', miktar: 500, renk: '#ff3355' },
+  { tip: 'coin', miktar: 1000, renk: '#ffd700' },
+  { tip: 'joker', tipJoker: 'cift', renk: '#00d97e' },
+  { tip: 'coin', miktar: 100, renk: '#2979ff' }
+];
+
+function carkifelekAc() {
+  const body = $('carkBody');
+  if (!body) return;
+
+  const bugunT = bugun();
+  const cevirebilir = oyunSonCark !== bugunT;
+
+  body.innerHTML = `
+    <div class="cark-container">
+      <div style="position:relative">
+        <div class="cark-pointer">▼</div>
+        <div class="cark-teker" id="carkTeker"></div>
+      </div>
+      <div class="cark-odul" id="carkSonuc">${cevirebilir ? 'Çevirmeye hazır mısın?' : 'Bugün çevirdin!'}</div>
+      <div class="cark-bilgi" id="carkBilgi">
+        ${cevirebilir ? '🎁 Günde 1 kez ücretsiz çevir' : '⏰ Yarın tekrar dene'}
+      </div>
+      <button type="button" class="btn btn-gold btn-lg" id="carkBtn" onclick="carkCevir()" ${cevirebilir ? '' : 'disabled style="opacity:.5"'}>
+        ${cevirebilir ? '🎰 ÇEVİR' : '✅ YARIN GEL'}
+      </button>
+    </div>
+  `;
+  $('carkModal').classList.add('active');
+}
+
+let carkDonuyor = false;
+
+function carkCevir() {
+  if (carkDonuyor) return;
+  if (oyunSonCark === bugun()) {
+    showToast('info', 'Yarın Gel', 'Bugün zaten çevirdin.');
+    return;
+  }
+  carkDonuyor = true;
+
+  const teker = $('carkTeker');
+  const btn = $('carkBtn');
+  if (btn) btn.disabled = true;
+
+  // Rastgele dilim seç (joker %20 şans)
+  let index;
+  const r = Math.random();
+  if (r < 0.20) {
+    // Joker dilimleri (index 3 veya 6)
+    index = Math.random() < 0.5 ? 3 : 6;
+  } else {
+    // Coin dilimleri (0,1,2,4,5,7)
+    const coinIndexler = [0, 1, 2, 4, 5, 7];
+    index = coinIndexler[Math.floor(Math.random() * coinIndexler.length)];
+  }
+
+  const dilim = CARK_DILIMLERI[index];
+  const aci = 360 * 6 + (index * 45) + 22.5;
+
+  teker.style.transform = 'rotate(' + aci + 'deg)';
+
+  // Ses efekti
+  let sayac = 0;
+  const interval = setInterval(() => {
+    sesCal('cark');
+    titreşim(10);
+    sayac++;
+    if (sayac > 20) clearInterval(interval);
+  }, 150);
+
+  setTimeout(() => {
+    clearInterval(interval);
+    carkDonuyor = false;
+    oyunSonCark = bugun();
+    persistOyun();
+
+    let sonucMetin = '';
+    if (dilim.tip === 'coin') {
+      oyunKasa += dilim.miktar;
+      sonucMetin = '🎉 +' + formatCoin(dilim.miktar) + ' 💰';
+      ucanPuan('+' + formatCoin(dilim.miktar) + ' 💰', 'var(--gold)');
+      konfetiGoster(40);
+      sesCal('kazanc');
+      titreşim(150);
+    } else {
+      const j = dilim.tipJoker;
+      oyunJokerler[j] = (oyunJokerler[j] || 0) + 1;
+      const jokerAd = j === 'duzeltme' ? '🔄 Düzeltme' : j === 'cift' ? '💰 Çift Kazanç' : '🎯 Garanti';
+      sonucMetin = '🃏 ' + jokerAd + ' Joker kazandın!';
+      ucanPuan('🃏 JOKER!', 'var(--purple)');
+      konfetiGoster(60);
+      sesCal('kazanc');
+      titreşim(200);
+    }
+
+    persistOyun();
+    renderProfilBar();
+
+    const sonucEl = $('carkSonuc');
+    const bilgiEl = $('carkBilgi');
+    const btn2 = $('carkBtn');
+    if (sonucEl) sonucEl.textContent = sonucMetin;
+    if (bilgiEl) bilgiEl.textContent = '⏰ Yarın tekrar dene';
+    if (btn2) { btn2.textContent = '✅ YARIN GEL'; btn2.disabled = true; btn2.style.opacity = '.5'; }
+
+    showToast('success', '🎡 Çarkifelek', sonucMetin);
+    rozetKontrol();
+  }, 3200);
+}
+
+/* ============================================================
+   19. JOKERLER
+   ============================================================ */
+function jokerleriGoster() {
+  const body = $('jokerBody');
+  if (!body) return;
+
+  const d = oyunJokerler.duzeltme || 0;
+  const c = oyunJokerler.cift || 0;
+  const g = oyunJokerler.garanti || 0;
+
+  body.innerHTML = `
+    <div class="joker-kart">
+      <h3>🔄 Düzeltme Joker <span class="joker-adet">${d} adet</span></h3>
+      <p>Yanlış tahminini 1 kez düzeltir. Maç başlamadan önce kullan.</p>
+    </div>
+    <div class="joker-kart">
+      <h3>💰 Çift Kazanç <span class="joker-adet">${c} adet</span></h3>
+      <p>Bir maçta kazandığın coin 2 katına çıkar.</p>
+    </div>
+    <div class="joker-kart">
+      <h3>🎯 Garanti Taraf <span class="joker-adet">${g} adet</span></h3>
+      <p>1 maçın tarafını otomatik doğru işaretler.</p>
+    </div>
+    <div class="muted" style="text-align:center;margin-top:14px;font-size:.7rem">
+      🎡 Çarkifelek'ten joker kazanabilirsin!
+    </div>
+  `;
+  $('jokerModal').classList.add('active');
+}
+
+/* ============================================================
+   20. SONUÇ GİRME EKRANI
    ============================================================ */
 function sonuclariGirAc() {
   const body = $('sonucBody');
   if (!body) return;
 
-  // Bekleyen kuponları bul
   const bekleyen = kuponlar.filter(k => k.durum === 'bekliyor');
   if (!bekleyen.length) {
-    body.innerHTML = '<div class="muted" style="text-align:center;padding:20px">Bekleyen bahis yok.</div>';
+    body.innerHTML = '<div class="muted" style="text-align:center;padding:20px">Bekleyen kupon yok.</div>';
     $('sonucModal').classList.add('active');
     return;
   }
@@ -726,101 +742,180 @@ function sonuclariGirAc() {
   let html = '';
   bekleyen.forEach(k => {
     html += `<div class="card" style="margin-bottom:12px">
-      <div class="result-title">📋 Kupon #${k.id.toString().slice(-6)}</div>
-      <div class="muted" style="margin-bottom:10px">${k.tarih} · ${k.bahisSayisi} bahis · ${formatCoin(k.toplamCoin)} 💰</div>`;
+      <div class="result-title">${k.tip === 'toto' ? '🎰 Toto' : '⚽ Tahmin'} #${String(k.id).slice(-6)}</div>
+      <div class="muted" style="margin-bottom:10px">${k.tarih}</div>`;
 
-    // Toto bahisleri
-    Object.entries(k.toto || {}).forEach(([id, b]) => {
-      const m = maclarToto.find(x => String(x.mac_id) === String(id));
-      if (!m) return;
-      html += `
-        <div style="padding:8px 0;border-bottom:1px solid var(--border)">
-          <div style="font-weight:800;font-size:.8rem;margin-bottom:4px">${escapeHTML(m.ev_sahibi)} - ${escapeHTML(m.deplasman)}</div>
-          <div style="font-size:.7rem;color:var(--muted)">Bahis: <b style="color:var(--orange)">${b.secim}</b> × ${b.oran} · ${b.coin} 💰</div>
-          <div style="display:flex;gap:6px;margin-top:6px">
-            <button type="button" class="btn btn-green btn-sm" onclick="sonucKaydet('${k.id}','toto','${id}','1')">1</button>
-            <button type="button" class="btn btn-orange btn-sm" onclick="sonucKaydet('${k.id}','toto','${id}','X')">X</button>
-            <button type="button" class="btn btn-green btn-sm" onclick="sonucKaydet('${k.id}','toto','${id}','2')">2</button>
-          </div>
-        </div>`;
-    });
+    if (k.tip === 'toto') {
+      Object.entries(k.secimler || {}).forEach(([id, secimler]) => {
+        const m = maclarToto.find(x => String(x.mac_id) === String(id));
+        if (!m) return;
+        html += `
+          <div style="padding:10px 0;border-bottom:1px solid var(--border)">
+            <div style="font-weight:800;font-size:.85rem;margin-bottom:6px">#${id} ${escapeHTML(m.ev_sahibi)} - ${escapeHTML(m.deplasman)}</div>
+            <div style="font-size:.7rem;color:var(--muted);margin-bottom:6px">Tahmin: <b style="color:var(--orange)">${secimler.join(' / ')}</b></div>
+            <div style="display:flex;gap:6px">
+              <button type="button" class="btn btn-green btn-sm" onclick="totoSonucKaydet('${k.id}','${id}','1')">1</button>
+              <button type="button" class="btn btn-orange btn-sm" onclick="totoSonucKaydet('${k.id}','${id}','X')">X</button>
+              <button type="button" class="btn btn-green btn-sm" onclick="totoSonucKaydet('${k.id}','${id}','2')">2</button>
+            </div>
+            ${k.secimler[id].sonuc ? `<div style="margin-top:6px;font-size:.7rem;color:var(--green);font-weight:900">✅ Sonuç: ${k.secimler[id].sonuc}</div>` : ''}
+          </div>`;
+      });
+    } else {
+      Object.entries(k.secimler || {}).forEach(([id, t]) => {
+        let m = null;
+        for (const lig of Object.values(liglerData)) {
+          m = (lig.maclar || []).find(x => String(x.mac_id) === String(id));
+          if (m) break;
+        }
+        if (!m) return;
+        const skorText = (t.ev !== undefined && t.dep !== undefined) ? t.ev + '-' + t.dep : 'skor yok';
+        html += `
+          <div style="padding:10px 0;border-bottom:1px solid var(--border)">
+            <div style="font-weight:800;font-size:.85rem;margin-bottom:6px">${escapeHTML(m.ev)} - ${escapeHTML(m.dep)}</div>
+            <div style="font-size:.7rem;color:var(--muted);margin-bottom:6px">Tahmin: <b style="color:var(--orange)">${t.taraf}</b> · Skor: <b style="color:var(--purple)">${skorText}</b></div>
+            <div style="display:flex;gap:6px;align-items:center">
+              <span style="font-size:.65rem;color:var(--muted);font-weight:800">SKOR:</span>
+              <input type="number" min="0" max="20" placeholder="0" id="sonuc-ev-${k.id}-${id}" style="width:50px;text-align:center;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:6px;font-weight:900">
+              <span style="color:var(--muted)">-</span>
+              <input type="number" min="0" max="20" placeholder="0" id="sonuc-dep-${k.id}-${id}" style="width:50px;text-align:center;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:6px;font-weight:900">
+              <button type="button" class="btn btn-green btn-sm" onclick="tahminSonucKaydet('${k.id}','${id}')">KAYDET</button>
+            </div>
+            ${t.gercekSonuc ? `<div style="margin-top:6px;font-size:.7rem;color:var(--green);font-weight:900">✅ Sonuç: ${t.gercekSonuc.ev}-${t.gercekSonuc.dep} ${t.tuttu ? '🎯' : ''}</div>` : ''}
+          </div>`;
+      });
+    }
 
-    // Lig bahisleri
-    Object.entries(k.lig || {}).forEach(([id, b]) => {
-      let m = null;
-      for (const lig of Object.values(liglerData)) {
-        m = (lig.maclar || []).find(x => String(x.mac_id) === String(id));
-        if (m) break;
-      }
-      if (!m) return;
-      html += `
-        <div style="padding:8px 0;border-bottom:1px solid var(--border)">
-          <div style="font-weight:800;font-size:.8rem;margin-bottom:4px">${escapeHTML(m.ev)} - ${escapeHTML(m.dep)}</div>
-          <div style="font-size:.7rem;color:var(--muted)">Bahis: <b style="color:var(--orange)">${b.secim}</b> × ${b.oran} · ${b.coin} 💰</div>
-          <div style="display:flex;gap:6px;margin-top:6px">
-            <button type="button" class="btn btn-green btn-sm" onclick="sonucKaydet('${k.id}','lig','${id}','1')">1</button>
-            <button type="button" class="btn btn-orange btn-sm" onclick="sonucKaydet('${k.id}','lig','${id}','X')">X</button>
-            <button type="button" class="btn btn-green btn-sm" onclick="sonucKaydet('${k.id}','lig','${id}','2')">2</button>
-          </div>
-        </div>`;
-    });
-
-    html += `</div>`;
+    // Kuponu sonuçlandır
+    html += `
+      <button type="button" class="btn btn-blue btn-sm" onclick="kuponuSonuclandir('${k.id}')" style="margin-top:10px;width:100%">✅ KUPONU KAPAT</button>
+    </div>`;
   });
 
   body.innerHTML = html;
   $('sonucModal').classList.add('active');
 }
 
-function sonucKaydet(kuponId, tip, macId, sonuc) {
+function totoSonucKaydet(kuponId, macId, sonuc) {
   const k = kuponlar.find(x => String(x.id) === String(kuponId));
   if (!k) return;
-  const bahis = tip === 'toto' ? k.toto[macId] : k.lig[macId];
-  if (!bahis) return;
+  const secimler = k.secimler[macId];
+  if (!secimler || !Array.isArray(secimler)) return;
+  if (secimler.sonuc) {
+    showToast('info', 'Zaten Girildi', 'Bu maç için sonuç zaten girildi.');
+    return;
+  }
+  secimler.sonuc = sonuc;
+  secimler.tuttu = secimler.includes(sonuc);
+  persistKuponlar();
+  titreşim(20); sesCal('tik');
+  sonuclariGirAc();
+}
 
-  // Zaten işaretlenmiş mi?
-  if (bahis.sonuc) {
+function tahminSonucKaydet(kuponId, macId) {
+  const k = kuponlar.find(x => String(x.id) === String(kuponId));
+  if (!k) return;
+  const t = k.secimler[macId];
+  if (!t) return;
+  if (t.gercekSonuc) {
     showToast('info', 'Zaten Girildi', 'Bu maç için sonuç zaten girildi.');
     return;
   }
 
-  bahis.sonuc = sonuc;
-  bahis.tuttu = bahis.secim === sonuc;
+  const ev = Number($('sonuc-ev-' + kuponId + '-' + macId)?.value) || 0;
+  const dep = Number($('sonuc-dep-' + kuponId + '-' + macId)?.value) || 0;
+  const gercekTaraf = ev > dep ? '1' : ev < dep ? '2' : 'X';
 
-  // Kazanç hesapla
-  if (bahis.tuttu) {
-    const kazanc = Math.floor(bahis.coin * bahis.oran);
-    oyunKasa += kazanc;
-    oyunToplamKazanc += kazanc;
-    ucanPuan('+' + formatCoin(kazanc) + ' 💰', 'var(--green)');
-    konfetiGoster(15);
+  t.gercekSonuc = { ev, dep, taraf: gercekTaraf };
+
+  let kazanc = 0;
+  const tarafTuttu = t.taraf === gercekTaraf;
+  const skorTuttu = t.ev === ev && t.dep === dep;
+
+  if (skorTuttu) {
+    kazanc = 500;
+    oyunToplamSkor++;
+    ucanPuan('+500 💰', 'var(--gold)');
+    konfetiGoster(50);
+    titreşim(200);
+    sesCal('kazanc');
+  } else if (tarafTuttu) {
+    kazanc = 50;
+    oyunToplamTaraf++;
+    ucanPuan('+50 💰', 'var(--green)');
+    konfetiGoster(20);
     titreşim(80);
     sesCal('kazanc');
   } else {
-    oyunToplamKayip += bahis.coin;
     titreşim(30);
     sesCal('hata');
   }
 
+  t.kazanc = kazanc;
+  t.tuttu = tarafTuttu;
+  t.skorTuttu = skorTuttu;
+
+  oyunKasa += kazanc;
   persistOyun();
   persistKuponlar();
   renderProfilBar();
-
-  // Tüm bahisler sonuçlandı mı?
-  const tumTotoSonuc = Object.values(k.toto || {}).every(b => b.sonuc);
-  const tumLigSonuc = Object.values(k.lig || {}).every(b => b.sonuc);
-  if (tumTotoSonuc && tumLigSonuc) {
-    k.durum = 'sonuclandi';
-    persistKuponlar();
-  }
-
-  sonuclariGirAc(); // Yenile
-  renderKuponlar();
+  sonuclariGirAc();
   rozetKontrol();
 }
 
+function kuponuSonuclandir(kuponId) {
+  const k = kuponlar.find(x => String(x.id) === String(kuponId));
+  if (!k) return;
+
+  let toplamKazanc = 0;
+  let mesaj = '';
+
+  if (k.tip === 'toto') {
+    const secimler = k.secimler;
+    let dogruSayisi = 0;
+    let toplamMac = 0;
+    Object.entries(secimler).forEach(([id, s]) => {
+      if (!Array.isArray(s)) return;
+      toplamMac++;
+      if (s.sonuc && s.includes(s.sonuc)) dogruSayisi++;
+    });
+
+    let ikramiye = 0;
+    if (dogruSayisi >= 15) ikramiye = 10000;
+    else if (dogruSayisi >= 14) ikramiye = 2000;
+    else if (dogruSayisi >= 13) ikramiye = 500;
+    else if (dogruSayisi >= 12) ikramiye = 100;
+
+    toplamKazanc = ikramiye;
+    mesaj = dogruSayisi + '/15 doğru · ' + (ikramiye > 0 ? 'İkramiye: +' + formatCoin(ikramiye) + ' 💰' : 'İkramiye yok');
+  } else {
+    // Tahmin kuponu
+    let toplamKazancT = 0;
+    let tarafSayisi = 0, skorSayisi = 0;
+    Object.values(k.secimler).forEach(t => {
+      if (t.kazanc) toplamKazancT += t.kazanc;
+      if (t.tuttu) tarafSayisi++;
+      if (t.skorTuttu) skorSayisi++;
+    });
+    toplamKazanc = toplamKazancT;
+    mesaj = tarafSayisi + ' taraf · ' + skorSayisi + ' skor doğru · +' + formatCoin(toplamKazancT) + ' 💰';
+  }
+
+  k.durum = 'sonuclandi';
+  k.toplamKazanc = toplamKazanc;
+  persistKuponlar();
+
+  closeModal('sonucModal');
+  renderKuponlar();
+  renderProfilBar();
+  updateKuponCubugu();
+
+  showToast('success', '✅ Kupon Kapatıldı', mesaj);
+  titreşim(100); sesCal('ok');
+}
+
 /* ============================================================
-   18. KUPONLAR
+   21. KUPONLAR
    ============================================================ */
 function renderKuponlar() {
   const c = $('kayitliKuponlar');
@@ -833,14 +928,19 @@ function renderKuponlar() {
   c.innerHTML = kuponlar.map(k => {
     const durum = k.durum || 'bekliyor';
     const emoji = durum === 'sonuclandi' ? '✅' : '⏳';
+    const ikon = k.tip === 'toto' ? '🎰' : '⚽';
+    const baslik = k.tip === 'toto' ? k.kolon + ' kolon' : k.tarafSayisi + ' tahmin';
+    const kazanc = k.toplamKazanc || 0;
+    const kazancText = kazanc > 0 ? `<b style="color:var(--green)">+${formatCoin(kazanc)} 💰</b>` : `<b style="color:var(--red)">0 💰</b>`;
+
     return `
       <div class="kupon-gecmis ${durum}" onclick="kuponDetayAc(${Number(k.id)})">
         <div style="display:flex;justify-content:space-between;gap:8px;font-size:.8rem;margin-bottom:4px">
-          <span>${emoji} <b>${k.bahisSayisi || 0} bahis</b></span>
+          <span>${emoji} ${ikon} <b>${baslik}</b></span>
           <span class="muted">${escapeHTML(k.tarih || '')}</span>
         </div>
         <div style="font-size:.72rem;color:var(--muted)">
-          Toplam: <b style="color:var(--gold)">${formatCoin(k.toplamCoin)} 💰</b>
+          ${k.tip === 'toto' ? 'Maliyet: ' + formatCoin(k.maliyet) + ' 💰 · ' + kazancText : 'Kazanç: ' + kazancText}
         </div>
       </div>`;
   }).join('');
@@ -853,41 +953,41 @@ function kuponDetayAc(id) {
   if (!body) return;
 
   let html = `<div style="font-size:.8rem">
-    <div class="muted" style="margin-bottom:10px">${escapeHTML(k.tarih || '')} · ${k.bahisSayisi} bahis · ${formatCoin(k.toplamCoin)} 💰</div>`;
+    <div class="muted" style="margin-bottom:10px">${escapeHTML(k.tarih || '')} · ${k.tip === 'toto' ? k.kolon + ' kolon' : k.tarafSayisi + ' tahmin'}</div>`;
 
-  // Toto
-  Object.entries(k.toto || {}).forEach(([mid, b]) => {
-    const m = maclarToto.find(x => String(x.mac_id) === String(mid));
-    if (!m) return;
-    const renk = b.tuttu === true ? 'var(--green)' : b.tuttu === false ? 'var(--red)' : 'var(--muted)';
-    html += `
-      <div style="padding:8px 0;border-bottom:1px solid var(--border)">
-        <div style="font-weight:800;margin-bottom:4px">${escapeHTML(m.ev_sahibi)} - ${escapeHTML(m.deplasman)}</div>
-        <div style="display:flex;justify-content:space-between">
-          <span style="color:var(--orange);font-weight:900">${b.secim}</span>
-          <span style="color:${renk};font-weight:900">${b.sonuc ? (b.tuttu ? '✅ ' + b.sonuc : '❌ ' + b.sonuc) : '⏳'}</span>
-        </div>
-      </div>`;
-  });
-
-  // Lig
-  Object.entries(k.lig || {}).forEach(([mid, b]) => {
-    let m = null;
-    for (const lig of Object.values(liglerData)) {
-      m = (lig.maclar || []).find(x => String(x.mac_id) === String(mid));
-      if (m) break;
-    }
-    if (!m) return;
-    const renk = b.tuttu === true ? 'var(--green)' : b.tuttu === false ? 'var(--red)' : 'var(--muted)';
-    html += `
-      <div style="padding:8px 0;border-bottom:1px solid var(--border)">
-        <div style="font-weight:800;margin-bottom:4px">${escapeHTML(m.ev)} - ${escapeHTML(m.dep)}</div>
-        <div style="display:flex;justify-content:space-between">
-          <span style="color:var(--orange);font-weight:900">${b.secim}</span>
-          <span style="color:${renk};font-weight:900">${b.sonuc ? (b.tuttu ? '✅ ' + b.sonuc : '❌ ' + b.sonuc) : '⏳'}</span>
-        </div>
-      </div>`;
-  });
+  if (k.tip === 'toto') {
+    Object.entries(k.secimler || {}).forEach(([mid, s]) => {
+      const m = maclarToto.find(x => String(x.mac_id) === String(mid));
+      if (!m || !Array.isArray(s)) return;
+      const renk = s.tuttu === true ? 'var(--green)' : s.tuttu === false ? 'var(--red)' : 'var(--muted)';
+      html += `
+        <div style="padding:8px 0;border-bottom:1px solid var(--border)">
+          <div style="font-weight:800;margin-bottom:4px">#${mid} ${escapeHTML(m.ev_sahibi)} - ${escapeHTML(m.deplasman)}</div>
+          <div style="display:flex;justify-content:space-between">
+            <span style="color:var(--orange);font-weight:900">${s.join(' / ')}</span>
+            <span style="color:${renk};font-weight:900">${s.sonuc ? (s.tuttu ? '✅ ' + s.sonuc : '❌ ' + s.sonuc) : '⏳'}</span>
+          </div>
+        </div>`;
+    });
+  } else {
+    Object.entries(k.secimler || {}).forEach(([mid, t]) => {
+      let m = null;
+      for (const lig of Object.values(liglerData)) {
+        m = (lig.maclar || []).find(x => String(x.mac_id) === String(mid));
+        if (m) break;
+      }
+      if (!m) return;
+      const renk = t.tuttu === true ? 'var(--green)' : t.tuttu === false ? 'var(--red)' : 'var(--muted)';
+      html += `
+        <div style="padding:8px 0;border-bottom:1px solid var(--border)">
+          <div style="font-weight:800;margin-bottom:4px">${escapeHTML(m.ev)} - ${escapeHTML(m.dep)}</div>
+          <div style="display:flex;justify-content:space-between">
+            <span style="color:var(--orange);font-weight:900">${t.taraf}${t.ev !== undefined ? ' · ' + t.ev + '-' + t.dep : ''}</span>
+            <span style="color:${renk};font-weight:900">${t.kazanc ? '+' + formatCoin(t.kazanc) + ' 💰' : '⏳'}</span>
+          </div>
+        </div>`;
+    });
+  }
 
   html += `<button type="button" class="btn btn-red btn-lg" onclick="kuponSil(${Number(k.id)})" style="margin-top:12px">🗑️ Sil</button></div>`;
   body.innerHTML = html;
@@ -903,111 +1003,7 @@ function kuponSil(id) {
 }
 
 /* ============================================================
-   19. ANALİZ
-   ============================================================ */
-function analizGosterToto(id) {
-  const m = maclarToto.find(x => String(x.mac_id) === String(id));
-  if (!m) return;
-  const o = TOTO_ORANLARI[id];
-  if (!o) return;
-
-  const a = Motor.analiz({ o1: o['1'], oX: o.X, o2: o['2'] });
-  if ($('analizTitle')) $('analizTitle').textContent = '📊 ' + m.ev_sahibi + ' - ' + m.deplasman;
-
-  const body = $('analizBody');
-  if (!body) return;
-
-  body.innerHTML = `
-    <div style="font-size:.85rem;line-height:1.8">
-      <div class="analiz-box" style="border:2px solid var(--green)">
-        <span class="analiz-lbl">🎯 MODEL FAVORİSİ</span>
-        <div style="text-align:center;font-size:1.4rem;font-weight:900;color:var(--green);padding:8px 0">${favoriKod(a.shin)} · %${favoriOlas(a.shin)}</div>
-      </div>
-      <div class="analiz-box">
-        <span class="analiz-lbl">📊 SHIN</span>
-        <div class="analiz-row"><span>1:</span><b>%${a.shin.p1}</b></div>
-        <div class="analiz-row"><span>X:</span><b>%${a.shin.pX}</b></div>
-        <div class="analiz-row"><span>2:</span><b>%${a.shin.p2}</b></div>
-        <div class="analiz-row"><span class="muted">Marj:</span><b style="color:var(--orange)">%${a.marj}</b></div>
-      </div>
-      <div class="analiz-box">
-        <span class="analiz-lbl">⚽ POISSON · xG ${a.xgEv} - ${a.xgDep}</span>
-        <div class="analiz-row"><span>2.5 Üst:</span><b style="color:var(--green)">%${a.poi.pUst25}</b></div>
-        <div class="analiz-row"><span>KG Var:</span><b style="color:var(--green)">%${a.poi.pKgVar}</b></div>
-      </div>
-      <div class="analiz-box">
-        <span class="analiz-lbl">⚽ EN OLASI SKORLAR</span>
-        <div class="skor-grid">${a.poi.enOlası.map(s => `<div class="skor-item"><div class="skor-sayi">${s.skor}</div><div class="skor-yuzde">%${s.yuzde}</div></div>`).join('')}</div>
-      </div>
-      <div class="analiz-box">
-        <span class="analiz-lbl">📌 GOL DURUMU</span>
-        <div style="text-align:center;padding:8px 0;font-size:1rem;font-weight:900;color:var(--orange)">${a.gollu}</div>
-      </div>
-      <div class="muted" style="font-size:.7rem;text-align:center">Model tahminidir. Garanti değildir.</div>
-    </div>`;
-  $('analizModal')?.classList.add('active');
-}
-
-function favoriKod(shin) {
-  const p1 = Number(shin.p1), pX = Number(shin.pX), p2 = Number(shin.p2);
-  if (p1 >= pX && p1 >= p2) return '1';
-  if (p2 >= p1 && p2 >= pX) return '2';
-  return 'X';
-}
-function favoriOlas(shin) {
-  return Math.max(Number(shin.p1), Number(shin.pX), Number(shin.p2)).toFixed(1);
-}
-
-function renderAnaliz() {
-  const c = $('analizListesi');
-  if (!c) return;
-  c.innerHTML = '<div class="muted" style="text-align:center;padding:20px">Analiz için Toto sekmesinde maç seç.</div>';
-}
-
-/* ============================================================
-   20. GÜNÜN BANKOSU + BANKOBOT
-   ============================================================ */
-function gununBankosuAc() {
-  if (!maclarToto.length) { showToast('error', 'Maç Yok', 'Maç yüklenmedi.'); return; }
-  const analizler = maclarToto.map(m => {
-    const o = TOTO_ORANLARI[m.mac_id];
-    if (!o) return null;
-    try {
-      const a = Motor.analiz({ o1: o['1'], oX: o.X, o2: o['2'] });
-      return {
-        mac: m.ev_sahibi + ' - ' + m.deplasman,
-        fav: favoriKod(a.shin), favO: Number(favoriOlas(a.shin)),
-        skor: a.poi.enOlası[0].skor, gollu: a.gollu
-      };
-    } catch (e) { return null; }
-  }).filter(Boolean);
-
-  if (!analizler.length) return;
-  analizler.sort((a, b) => b.favO - a.favO);
-  const b = analizler[0];
-
-  $('gununBankosuBody').innerHTML = `
-    <div class="banko-kart">
-      <div class="banko-head">
-        <div class="banko-title">🔥 GÜNÜN BANKOSU</div>
-        <div class="banko-guven">%${b.favO.toFixed(1)}</div>
-      </div>
-      <div class="banko-mac">${escapeHTML(b.mac)}</div>
-      <div class="banko-satir"><span>🎯 FAVORİ</span><span class="fav">${b.fav}</span></div>
-      <div class="banko-satir"><span>⚽ TAHMİN</span><span class="skor">${b.skor}</span></div>
-      <div class="banko-satir"><span>📊 GOL</span><span style="color:var(--orange);font-weight:900">${b.gollu}</span></div>
-      <div class="muted" style="font-size:.68rem;margin-top:12px;padding:8px;background:rgba(255,159,28,.1);border-radius:6px;text-align:center">📌 Model tahminidir.</div>
-    </div>`;
-  $('gununBankosuModal')?.classList.add('active');
-}
-
-function bankobot() {
-  if (!maclarToto.length) return;
-  showToast('info', '🤖 Bankobot', 'Bu hafta ' + maclarToto.length + ' maç var. Günün Bankosuna bak!');
-}
-
-/* ============================================================
-   21. SIRALAMA (BOT)
+   22. SIRALAMA
    ============================================================ */
 function renderSiralama() {
   const c = $('siralamaListesi');
@@ -1018,7 +1014,8 @@ function renderSiralama() {
     { isim: 'Mehmet', puan: 2100 },
     { isim: 'Ayşe', puan: 1850 },
     { isim: 'Can', puan: 1100 },
-    { isim: 'Zeynep', puan: 950 }
+    { isim: 'Zeynep', puan: 950 },
+    { isim: 'Emre', puan: 780 }
   ];
 
   const siralama = [
@@ -1026,34 +1023,36 @@ function renderSiralama() {
     { isim: oyunIsim || 'Sen', puan: Math.floor(oyunKasa), sen: true }
   ].sort((a, b) => b.puan - a.puan);
 
-  let html = `<div class="card"><div class="result-title">🏆 LİDERLİK TABLOSU</div>`;
-  siralama.forEach((k, i) => {
+  c.innerHTML = siralama.map((k, i) => {
     const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i + 1) + '.';
     const vurgu = k.sen ? 'color:var(--green);font-weight:900;background:rgba(0,217,126,.08)' : '';
-    html += `
+    return `
       <div style="padding:12px 10px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;${vurgu};border-radius:6px">
         <span>${medal} ${escapeHTML(k.isim)}${k.sen ? ' (Sen)' : ''}</span>
         <span>${formatCoin(k.puan)} 💰</span>
       </div>`;
-  });
-  html += `</div>`;
-  c.innerHTML = html;
-}
-
-function ligSiralamasi() { switchTab(5, document.querySelectorAll('.tab')[4]); }
-
-function seriGoster() {
-  const bonus = oyunSeri >= 30 ? 4 : oyunSeri >= 14 ? 3 : oyunSeri >= 7 ? 2 : oyunSeri >= 3 ? 1.5 : 1;
-  showToast('info', '🔥 Seri: ' + oyunSeri + ' gün', 'Bonus çarpanı: ×' + bonus);
-}
-
-function rozetleriGoster() {
-  let msg = oyunRozetler.length + '/' + ROZETLER.length + ' rozet kazandın!';
-  showToast('info', '🎖️ Rozetler', msg);
+  }).join('');
 }
 
 /* ============================================================
-   22. VIP
+   23. ROZETLER
+   ============================================================ */
+function renderRozetler() {
+  const c = $('rozetListesi');
+  if (!c) return;
+
+  c.innerHTML = `<div class="rozet-grid">${ROZETLER.map(r => {
+    const kazanildi = oyunRozetler.includes(r.id);
+    return `
+      <div class="rozet-item ${kazanildi ? 'kazanildi' : ''}">
+        <span class="ikon">${r.ikon}</span>
+        <span class="ad">${r.ad}</span>
+      </div>`;
+  }).join('')}</div>`;
+}
+
+/* ============================================================
+   24. VIP
    ============================================================ */
 function renderVip() {
   const c = $('vipListesi');
@@ -1071,7 +1070,6 @@ function renderVip() {
       <div class="vip-features">
         <div>✅ Günlük 5 banko maç</div>
         <div>✅ Detaylı istatistikler</div>
-        <div>✅ Poisson matrisi</div>
         <div>✅ Reklamsız deneyim</div>
         <div>✅ Öncelikli destek</div>
       </div>
@@ -1092,30 +1090,52 @@ function renderVip() {
 
 function vipAl() {
   const vipFiyat = 10000;
-  if (oyunKasa < vipFiyat) { showToast('error', 'Yetersiz', 'Kasanda yeterli coin yok.'); return; }
+  if (oyunKasa < vipFiyat) { showToast('error', 'Yetersiz', 'Yeterli coin yok.'); return; }
   if (!confirm('VIP açılsın mı? ' + formatCoin(vipFiyat) + ' 💰 gidecek.')) return;
   oyunKasa -= vipFiyat;
   persistOyun();
   renderProfilBar();
   renderVip();
   konfetiGoster(50);
-  titreşim(200);
-  sesCal('kazanc');
+  titreşim(200); sesCal('kazanc');
   showToast('success', '👑 VIP Aktif!', 'Hoş geldin!');
 }
 
 /* ============================================================
-   23. SEKME + MODAL + TOAST
+   25. PAYLAŞ
+   ============================================================ */
+function paylasKupon() {
+  let sayi = 0;
+  Object.values(totoSecimler).forEach(s => { if (Array.isArray(s) && s.length) sayi++; });
+  Object.values(tahminSecimler).forEach(t => { if (t.taraf) sayi++; });
+
+  if (!sayi) { showToast('error', 'Boş', 'Önce seçim yap.'); return; }
+
+  let metin = '🎰 SKORLAB KUPONUM\n\n';
+  metin += '📊 ' + sayi + ' maç seçtim\n';
+  metin += '💰 Kasam: ' + formatCoin(oyunKasa) + ' SkorCoin\n\n';
+  metin += '🎮 @SkorLabBot';
+
+  if (TG && typeof TG.switchInlineQuery === 'function' && TG.isVersionAtLeast && TG.isVersionAtLeast('6.1')) {
+    TG.switchInlineQuery(metin, ['users', 'groups']); return;
+  }
+  if (navigator.share) { navigator.share({ title: 'SkorLab', text: metin }).catch(() => {}); return; }
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(metin).then(() => showToast('success', 'Kopyalandı!', 'Panoya kopyalandı.'));
+  }
+}
+
+/* ============================================================
+   26. SEKME + MODAL + TOAST
    ============================================================ */
 function switchTab(i, el) {
   document.querySelectorAll('.tab, .page').forEach(n => n.classList.remove('active'));
   if (el) el.classList.add('active');
   const page = $('page-' + i);
   if (page) page.classList.add('active');
-  if (i === 3) renderAnaliz();
-  if (i === 4) renderKuponlar();
-  if (i === 5) renderSiralama();
-  if (i === 6) renderVip();
+  if (i === 3) renderKuponlar();
+  if (i === 4) { renderSiralama(); renderRozetler(); }
+  if (i === 5) renderVip();
   titreşim(15); sesCal('tik');
 }
 
@@ -1133,31 +1153,7 @@ function showToast(type, title, msg) {
 }
 
 /* ============================================================
-   24. PAYLAŞ
-   ============================================================ */
-function paylasKupon() {
-  let toplam = 0, sayi = 0;
-  Object.values(totoBahisleri).forEach(b => { if (b.secim) { toplam += b.coin || 0; sayi++; } });
-  Object.values(ligBahisleri).forEach(b => { if (b.secim) { toplam += b.coin || 0; sayi++; } });
-
-  if (!sayi) { showToast('error', 'Boş', 'Önce bahis seç.'); return; }
-
-  let metin = '🎰 SKORLAB KUPONUM\n\n';
-  metin += '📊 ' + sayi + ' bahis · ' + formatCoin(toplam) + ' 💰\n\n';
-  metin += '🎮 @SkorLabBot\n';
-  metin += '💰 Sanal para · Oyun';
-
-  if (TG && typeof TG.switchInlineQuery === 'function' && TG.isVersionAtLeast && TG.isVersionAtLeast('6.1')) {
-    TG.switchInlineQuery(metin, ['users', 'groups']); return;
-  }
-  if (navigator.share) { navigator.share({ title: 'SkorLab', text: metin }).catch(() => {}); return; }
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(metin).then(() => showToast('success', 'Kopyalandı!', 'Panoya kopyalandı.'));
-  }
-}
-
-/* ============================================================
-   25. BAŞLAT
+   27. BAŞLAT
    ============================================================ */
 window.addEventListener('DOMContentLoaded', () => {
   initTelegram();
