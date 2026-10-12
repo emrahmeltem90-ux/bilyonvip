@@ -1,8 +1,8 @@
 /* ============================================================
-   SKORLAB TOTO v20 · TELEGRAM MINI APP
-   Toto + Bankobot + Parmak İzi + Performans + Arşiv + 
+   SKORLAB TOTO v21 · TELEGRAM MINI APP
+   Motor + Toto + Bankobot + Parmak İzi + Performans + Arşiv + 
    Kupon Oluşturucu + Günün Bankosu + Titreşim + Ses + 
-   Form + Sakat + Grafik + VIP + Stars
+   Form + Sakat + Grafik + VIP + Stars + Tahmin Ligi
    ============================================================ */
 'use strict';
 
@@ -244,19 +244,24 @@ class Motor {
 /* ============================================================
    5. VERİ YÜKLE
    ============================================================ */
+let liglerData = {};
+
 async function loadData() {
   try {
     const res = await fetch('matches.json');
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const raw = await res.json();
     maclarToto = Array.isArray(raw.maclar) ? raw.maclar : [];
+    liglerData = raw.ligler || {};
     if ($('weekTitle')) $('weekTitle').innerText = raw.hafta || 'Bu Hafta';
   } catch (e) {
     maclarToto = [];
     if ($('weekTitle')) $('weekTitle').innerText = 'Veri Yüklenemedi';
+    console.error('Veri yüklenemedi:', e);
   }
   renderToto(); renderAnaliz(); renderKayitliKuponlar(); renderBacktest();
   updateStats(); updateKuponCubugu();
+  kontrolSeri();
 }
 
 /* ============================================================
@@ -368,17 +373,6 @@ function sakatGuncelle(mac_id, val) {
   sakatVerileri[mac_id] = val;
   persistSakat();
   renderToto();
-}
-
-function formPuan(form) {
-  if (!form) return 0.5;
-  let puan = 0;
-  for (let i = 0; i < form.length; i++) {
-    const c = form[i].toUpperCase();
-    if (c === 'G') puan += 3;
-    else if (c === 'B') puan += 1;
-  }
-  return puan / (form.length * 3);
 }
 
 /* ============================================================
@@ -908,23 +902,11 @@ function haftaninParmakIzi() {
         <div style="font-size:2rem;font-weight:900;color:var(--${seviyeRenk});margin:4px 0">%${kapsamaSkoru}</div>
         <div style="font-size:.85rem;font-weight:900;color:var(--${seviyeRenk})">${seviyeEmoji} ${seviye}</div>
       </div>
-      <div class="yorum-box ${celiskili.length >= 5 ? 'tehlike' : celiskili.length >= 2 ? 'riskli' : ''}">
-        <div class="baslik">💡 YORUM</div>
-        ${dengeli.length >= 5 ? `<p>• ${dengeli.length} dengeli maç var.</p>` : ''}
-        ${netFavori.length >= 5 ? `<p>• ${netFavori.length} net favori var.</p>` : ''}
-        ${celiskili.length >= 2 ? `<p>• ${celiskili.length} maçta çelişki var.</p>` : ''}
-        ${kapsamaSkoru < 40 ? `<p>• Kuponun zayıf.</p>` : ''}
-        ${kapsamaSkoru >= 80 ? `<p>• Kuponun çok iyi!</p>` : ''}
-      </div>
       <div class="muted" style="font-size:.65rem;margin-top:12px;padding:8px;background:var(--bg3);border-radius:6px;text-align:center">📌 Model tahminidir. Garanti değildir.</div>
       <button type="button" class="btn btn-purple btn-lg" onclick="paylasParmakIzi()" style="margin-top:12px">📤 PAYLAŞ</button>
     </div>`;
   if ($('totoKuponSonuc')) $('totoKuponSonuc').innerHTML = html;
-  window.sonParmakIzi = {
-    toplamMac, dengeli: dengeli.length, netFavori: netFavori.length,
-    celiskili: celiskili.length, kapsamaGerek: kapsamaGerek.length,
-    kapsamaSkoru, seviye, seviyeEmoji
-  };
+  window.sonParmakIzi = { toplamMac, dengeli: dengeli.length, netFavori: netFavori.length, celiskili: celiskili.length, kapsamaGerek: kapsamaGerek.length, kapsamaSkoru, seviye, seviyeEmoji };
   titreşim(30); sesCal('ok');
 }
 
@@ -1119,10 +1101,240 @@ function kuponSil(id) {
   if (!confirm('Kupon silinsin mi?')) return;
   kayitliKuponlar = kayitliKuponlar.filter(x => Number(x.id) !== Number(id));
   persistCoupons(); closeModal('kuponDetayModal'); renderKayitliKuponlar();
+ } 
+
+/* ============================================================
+   20. TAHMİN LİGİ · OYUN SİSTEMİ
+   ============================================================ */
+let tahminler = safeReadJSON('skorlab_tahminler', {});
+let kullaniciPuan = safeReadJSON('skorlab_puan', 0);
+let kullaniciSeri = safeReadJSON('skorlab_seri', 0);
+let sonGirisTarihi = safeReadJSON('skorlab_son_giris', '');
+let kazanilanRozetler = safeReadJSON('skorlab_rozetler', []);
+let toplamDogruTaraf = safeReadJSON('skorlab_dogru_taraf', 0);
+let toplamTamSkor = safeReadJSON('skorlab_tam_skor', 0);
+
+function persistTahminler() { safeSaveJSON('skorlab_tahminler', tahminler); }
+function persistPuan() { safeSaveJSON('skorlab_puan', kullaniciPuan); }
+function persistSeri() { safeSaveJSON('skorlab_seri', kullaniciSeri); }
+function persistSonGiris() { safeSaveJSON('skorlab_son_giris', sonGirisTarihi); }
+function persistRozetler() { safeSaveJSON('skorlab_rozetler', kazanilanRozetler); }
+function persistIstatistik() {
+  safeSaveJSON('skorlab_dogru_taraf', toplamDogruTaraf);
+  safeSaveJSON('skorlab_tam_skor', toplamTamSkor);
+}
+
+const ROZETLER = [
+  { id: 'caylak', ikon: '🥉', isim: 'Çaylak', desc: 'İlk tahminini yap', sart: () => Object.keys(tahminler).length >= 1 },
+  { id: 'usta', ikon: '🥈', isim: 'Usta', desc: '10 doğru taraf', sart: () => toplamDogruTaraf >= 10 },
+  { id: 'efsane', ikon: '🥇', isim: 'Efsane', desc: '50 doğru taraf', sart: () => toplamDogruTaraf >= 50 },
+  { id: 'mukemmel', ikon: '💎', isim: 'Mükemmeliyetçi', desc: '1 tam skor', sart: () => toplamTamSkor >= 1 },
+  { id: 'keskin', ikon: '🎯', isim: 'Keskin Nişancı', desc: '10 tam skor', sart: () => toplamTamSkor >= 10 },
+  { id: 'atesli', ikon: '🔥', isim: 'Ateşli', desc: '7 gün seri', sart: () => kullaniciSeri >= 7 },
+  { id: 'sampiyon', ikon: '👑', isim: 'Şampiyon', desc: '30 gün seri', sart: () => kullaniciSeri >= 30 },
+  { id: 'zengin', ikon: '💰', isim: 'Zengin', desc: '5000 puan', sart: () => kullaniciPuan >= 5000 }
+];
+
+function kontrolSeri() {
+  const bugun = new Date().toISOString().split('T')[0];
+  if (sonGirisTarihi === bugun) return;
+
+  const dun = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+  if (sonGirisTarihi === dun) {
+    kullaniciSeri++;
+    kullaniciPuan += 10;
+  } else if (sonGirisTarihi !== '') {
+    kullaniciSeri = 1;
+  } else {
+    kullaniciSeri = 1;
+  }
+  sonGirisTarihi = bugun;
+  persistSeri();
+  persistPuan();
+  persistSonGiris();
+  checkRozetler();
+}
+
+function bonusHesapla() {
+  if (kullaniciSeri >= 30) return 4;
+  if (kullaniciSeri >= 14) return 3;
+  if (kullaniciSeri >= 7) return 2;
+  if (kullaniciSeri >= 3) return 1.5;
+  return 1;
+}
+
+function renderLigler() {
+  const c = $('ligListesi');
+  if (!c) return;
+
+  updateLigStats();
+
+  if (!liglerData || !Object.keys(liglerData).length) {
+    c.innerHTML = '<div class="card"><div class="muted" style="text-align:center;padding:20px">Maç yok.</div></div>';
+    return;
+  }
+
+  let html = '';
+  Object.entries(liglerData).forEach(([ligKey, lig]) => {
+    html += `<div class="card">
+      <div class="result-title">${lig.bayrak} ${escapeHTML(lig.isim)}</div>`;
+
+    lig.maclar.forEach(m => {
+      const t = tahminler[m.mac_id] || {};
+      const bitti = m.sonuc !== null && m.sonuc !== undefined;
+      const sonucRenk = bitti ? (t.taraf === m.sonuc.taraf ? 'var(--green)' : 'var(--red)') : 'var(--muted)';
+
+      html += `
+        <div class="mac-kart" style="margin-bottom:8px;${bitti ? 'opacity:.8' : ''}">
+          <div style="display:flex;justify-content:space-between;font-size:.7rem;color:var(--muted);margin-bottom:6px">
+            <span>🕐 ${escapeHTML(m.saat)}</span>
+            <span style="color:${sonucRenk}">${bitti ? '✅ ' + m.sonuc.ev + '-' + m.sonuc.dep : '⏳ Bekliyor'}</span>
+          </div>
+          <div class="mac-teams">${escapeHTML(m.ev)} - ${escapeHTML(m.dep)}</div>
+
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">
+            <button type="button" class="secim-btn ${t.taraf === '1' ? 'secili' : ''}" onclick="tahminYap(${m.mac_id},'taraf','1')">1</button>
+            <button type="button" class="secim-btn ${t.taraf === 'X' ? 'secili' : ''}" onclick="tahminYap(${m.mac_id},'taraf','X')">X</button>
+            <button type="button" class="secim-btn ${t.taraf === '2' ? 'secili' : ''}" onclick="tahminYap(${m.mac_id},'taraf','2')">2</button>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:8px;margin-top:8px">
+            <span style="font-size:.75rem;color:var(--muted);font-weight:800">SKOR:</span>
+            <input type="number" min="0" max="20" value="${t.ev || 0}" onchange="tahminYap(${m.mac_id},'ev',this.value)" style="width:50px;text-align:center;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:6px;font-weight:900">
+            <span style="color:var(--muted)">-</span>
+            <input type="number" min="0" max="20" value="${t.dep || 0}" onchange="tahminYap(${m.mac_id},'dep',this.value)" style="width:50px;text-align:center;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:6px;font-weight:900">
+          </div>
+        </div>`;
+    });
+
+    html += `</div>`;
+  });
+
+  c.innerHTML = html;
+}
+
+function tahminYap(mac_id, alan, deger) {
+  if (!tahminler[mac_id]) tahminler[mac_id] = {};
+  if (alan === 'taraf') tahminler[mac_id].taraf = deger;
+  else if (alan === 'ev') tahminler[mac_id].ev = Number(deger);
+  else if (alan === 'dep') tahminler[mac_id].dep = Number(deger);
+  persistTahminler();
+  titreşim(15);
+  sesCal('tik');
+  updateLigStats();
+}
+
+function updateLigStats() {
+  if ($('ligPuan')) $('ligPuan').textContent = kullaniciPuan;
+  if ($('ligSeri')) $('ligSeri').textContent = kullaniciSeri;
+  if ($('ligBonus')) $('ligBonus').textContent = '×' + bonusHesapla();
+  if ($('ligTahmin')) $('ligTahmin').textContent = Object.keys(tahminler).length;
+}
+
+function tahminleriKaydet() {
+  if (!Object.keys(tahminler).length) {
+    showToast('error', 'Boş', 'Önce tahmin yap.');
+    return;
+  }
+  kullaniciPuan += 10;
+  persistPuan();
+  updateLigStats();
+  showToast('success', 'Kaydedildi!', `${Object.keys(tahminler).length} tahmin · +10 puan`);
+  titreşim(50);
+  sesCal('ok');
+  checkRozetler();
+}
+
+function ligSiralamasi() {
+  const localSiralama = [
+    { isim: 'Ahmet', puan: 2450 },
+    { isim: 'Mehmet', puan: 2100 },
+    { isim: 'Ayşe', puan: 1850 },
+    { isim: 'Sen', puan: kullaniciPuan, sen: true },
+    { isim: 'Can', puan: 1100 }
+  ].sort((a, b) => b.puan - a.puan);
+
+  let html = `<div class="card"><div class="result-title">🏆 LİDERLİK TABLOSU</div>`;
+  localSiralama.forEach((k, i) => {
+    const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}.`;
+    const vurgu = k.sen ? 'color:var(--green);font-weight:900' : '';
+    html += `
+      <div style="padding:10px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;${vurgu}">
+        <span>${medal} ${k.isim}${k.sen ? ' (Sen)' : ''}</span>
+        <span>${k.puan} puan</span>
+      </div>`;
+  });
+  html += `</div>`;
+  html += `<button type="button" class="btn btn-green btn-lg" onclick="renderLigler()" style="margin-top:12px">⬅️ GERİ DÖN</button>`;
+
+  if ($('ligListesi')) $('ligListesi').innerHTML = html;
+}
+
+function seriGoster() {
+  const bonus = bonusHesapla();
+  let sonrakiHedef = 3;
+  if (kullaniciSeri >= 3) sonrakiHedef = 7;
+  if (kullaniciSeri >= 7) sonrakiHedef = 14;
+  if (kullaniciSeri >= 14) sonrakiHedef = 30;
+
+  let html = `
+    <div class="card" style="border:2px solid var(--orange)">
+      <div class="result-title" style="color:var(--orange)">🔥 SERİ DURUMU</div>
+      <div style="text-align:center;padding:20px 0">
+        <div style="font-size:3rem;font-weight:900;color:var(--orange)">${kullaniciSeri}</div>
+        <div style="font-size:.8rem;color:var(--muted)">GÜN ÜST ÜSTE</div>
+      </div>
+      <div class="analiz-row"><span>Bonus:</span><b class="green">×${bonus}</b></div>
+      <div class="analiz-row"><span>Sonraki hedef:</span><b>${sonrakiHedef} gün</b></div>
+      <div class="analiz-row"><span>Kalan:</span><b>${Math.max(0, sonrakiHedef - kullaniciSeri)} gün</b></div>
+    </div>
+    <button type="button" class="btn btn-green btn-lg" onclick="renderLigler()" style="margin-top:12px">⬅️ GERİ DÖN</button>`;
+
+  if ($('ligListesi')) $('ligListesi').innerHTML = html;
+}
+
+function rozetleriGoster() {
+  let html = `<div class="card"><div class="result-title">🎖️ ROZETLER</div>`;
+  ROZETLER.forEach(r => {
+    const kazanildi = kazanilanRozetler.includes(r.id);
+    html += `
+      <div style="padding:10px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;${kazanildi ? '' : 'opacity:.4'}">
+        <div style="font-size:2rem">${r.ikon}</div>
+        <div style="flex:1">
+          <div style="font-weight:900;font-size:.85rem">${r.isim}</div>
+          <div class="muted" style="font-size:.7rem">${r.desc}</div>
+        </div>
+        <div style="font-size:1.2rem">${kazanildi ? '✅' : '🔒'}</div>
+      </div>`;
+  });
+  html += `</div>`;
+  html += `<button type="button" class="btn btn-green btn-lg" onclick="renderLigler()" style="margin-top:12px">⬅️ GERİ DÖN</button>`;
+
+  if ($('ligListesi')) $('ligListesi').innerHTML = html;
+}
+
+function checkRozetler() {
+  ROZETLER.forEach(r => {
+    if (!kazanilanRozetler.includes(r.id) && r.sart()) {
+      kazanilanRozetler.push(r.id);
+      persistRozetler();
+      showToast('success', '🎖️ Yeni Rozet!', r.isim);
+      titreşim(100);
+      sesCal('ok');
+    }
+  });
+}
+
+function ligTemizle() {
+  if (!confirm('Tüm tahminler silinsin mi?')) return;
+  tahminler = {};
+  persistTahminler();
+  renderLigler();
+  showToast('success', 'Temizlendi', 'Tahminler silindi.');
 }
 
 /* ============================================================
-   20. BACKTEST
+   21. BACKTEST
    ============================================================ */
 function renderBacktest() {
   const c = $('backtestListesi');
@@ -1203,7 +1415,7 @@ function backtestTemizle() {
 }
 
 /* ============================================================
-   21. PERFORMANS
+   22. PERFORMANS
    ============================================================ */
 function renderPerformans() {
   const c = $('performansListesi');
@@ -1240,7 +1452,7 @@ function renderPerformans() {
 }
 
 /* ============================================================
-   22. GRAFİK
+   23. GRAFİK
    ============================================================ */
 function renderGrafik() {
   const c = $('grafikListesi');
@@ -1308,7 +1520,7 @@ function renderGrafik() {
 }
 
 /* ============================================================
-   23. VIP
+   24. VIP
    ============================================================ */
 function renderVip() {
   const c = $('vipListesi');
@@ -1370,7 +1582,7 @@ function starsOdemeAc() {
 }
 
 /* ============================================================
-   24. ARŞİV
+   25. ARŞİV
    ============================================================ */
 function bultenArsivle() {
   if (!maclarToto.length) { showToast('error', 'Maç Yok', 'Arşivlenecek maç yok.'); return; }
@@ -1425,7 +1637,7 @@ function renderArsiv() {
 }
 
 /* ============================================================
-   25. SEKME VE MODAL
+   26. SEKME VE MODAL
    ============================================================ */
 function switchTab(i, el) {
   document.querySelectorAll('.tab, .page').forEach(node => node.classList.remove('active'));
@@ -1439,6 +1651,7 @@ function switchTab(i, el) {
   if (i === 7) renderArsiv();
   if (i === 8) renderGrafik();
   if (i === 9) renderVip();
+  if (i === 10) renderLigler();
   titreşim(15); sesCal('tik');
 }
 
@@ -1456,7 +1669,7 @@ function showToast(type, title, msg) {
 }
 
 /* ============================================================
-   26. BAŞLAT
+   27. BAŞLAT
    ============================================================ */
 window.addEventListener('DOMContentLoaded', () => {
   initTelegram();
