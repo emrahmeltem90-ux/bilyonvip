@@ -25,6 +25,8 @@
   <button type="button" class="tab" onclick="switchTab(5,this)">🧪 Backtest</button>
   <button type="button" class="tab" onclick="switchTab(6,this)">📈 Performans</button>
   <button type="button" class="tab" onclick="switchTab(7,this)">📁 Arşiv</button>
+  <button type="button" class="tab" onclick="switchTab(8,this)">📊 Grafik</button>
+  <button type="button" class="tab" onclick="switchTab(9,this)">👑 VIP</button>
 </nav>
 
 <main>
@@ -38,11 +40,12 @@
     <div class="stat-card"><div class="stat-val orange" id="statTutar">0</div><div class="stat-lbl">TL</div></div>
   </div>
   <div class="page-actions">
+    <button type="button" class="btn btn-orange" onclick="gununBankosuAc()" style="grid-column:1/-1">🔥 GÜNÜN BANKOSU</button>
     <button type="button" class="btn btn-blue" onclick="haftaninParmakIzi()" style="grid-column:1/-1">🔍 HAFTANIN PARMAK İZİ</button>
     <button type="button" class="btn btn-purple" onclick="bankobot()">🤖 BANKOBOT</button>
     <button type="button" class="btn btn-green" onclick="kuponOlusturToto()">⚡ TOTO KUPONU</button>
     <button type="button" class="btn btn-orange" onclick="kuponOlusturucuAc()">🎯 KUPON OLUŞTURUCU</button>
-    <button type="button" class="btn btn-red" onclick="temizleToto()" style="grid-column:1/-1">🗑️ TEMİZLE</button>
+    <button type="button" class="btn btn-red" onclick="temizleToto()">🗑️ TEMİZLE</button>
   </div>
   <div id="totoKuponSonuc"></div>
   <div id="totoListesi"></div>
@@ -110,6 +113,24 @@
   <div id="arsivListesi"></div>
 </section>
 
+<!-- SAYFA 8: GRAFİK -->
+<section id="page-8" class="page">
+  <div class="card">
+    <div class="result-title">📊 BAŞARI GRAFİKLERİ</div>
+    <div class="muted" style="font-size:.72rem;margin-bottom:12px">Model performansı görsel</div>
+  </div>
+  <div id="grafikListesi"></div>
+</section>
+
+<!-- SAYFA 9: VIP -->
+<section id="page-9" class="page">
+  <div class="card" style="border:2px solid var(--orange)">
+    <div class="result-title" style="color:var(--orange)">👑 VIP SKORLAB</div>
+    <div class="muted" style="font-size:.72rem;margin-bottom:12px">Premium özellikler · Aylık abonelik</div>
+  </div>
+  <div id="vipListesi"></div>
+</section>
+
 </main>
 
 <!-- ALT KUPON ÇUBUĞU -->
@@ -132,6 +153,17 @@
       <button type="button" onclick="closeModal('analizModal')">✖</button>
     </div>
     <div class="modal-body" id="analizBody"></div>
+  </div>
+</div>
+
+<!-- MODAL: GÜNÜN BANKOSU -->
+<div class="modal" id="gununBankosuModal">
+  <div class="modal-content">
+    <div class="modal-head">
+      <span>🔥 GÜNÜN BANKOSU</span>
+      <button type="button" onclick="closeModal('gununBankosuModal')">✖</button>
+    </div>
+    <div class="modal-body" id="gununBankosuBody"></div>
   </div>
 </div>
 
@@ -170,5 +202,10 @@
 </div>
 
 <script src="app.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
+</script>
 </body>
 </html>
