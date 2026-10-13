@@ -1,7 +1,7 @@
 'use strict';
 
 /* ============================================================
-   SKORLAB QUIZ · app.js (MONETAG + ADSGRAM + TÜM ÖZELLİKLER)
+   SKORLAB QUIZ · app.js (TAM SÜRÜM - DAVET + REKLAM + TÜM ÖZELLİKLER)
    ============================================================ */
 
 let TG = null;
@@ -70,6 +70,66 @@ function monetagReklamIzle() {
   } catch (e) {
     console.error('Monetag hatası:', e);
     toast('⚠️ Reklam yüklenemedi');
+  }
+}
+
+/* ============================================================
+   DAVET ET KAZAN SİSTEMİ
+   ============================================================ */
+const DAVET_ODUL = { davetEden: 100, davetEdilen: 50 };
+
+function davetKontrolEt() {
+  if (!TG || !TG.initDataUnsafe) return;
+  const startParam = TG.initDataUnsafe.start_param;
+  if (!startParam || !startParam.startsWith('davet_')) return;
+  
+  const davetEdenId = startParam.replace('davet_', '');
+  const benimId = TG.initDataUnsafe.user?.id;
+  
+  if (!benimId || String(benimId) === String(davetEdenId)) return;
+  if (user.davetEdildi) return;
+  
+  user.davetEdildi = true;
+  user.coin += DAVET_ODUL.davetEdilen;
+  persistUser();
+  ustBarGuncelle();
+  
+  setTimeout(() => {
+    toast(`🎁 Davet edildin! +${DAVET_ODUL.davetEdilen} 💰 kazandın!`);
+    konfetiGoster(40);
+    sesCal('kupa');
+    titreşim(150);
+    ucanPuan(`+${DAVET_ODUL.davetEdilen} 💰`, 'var(--gold)');
+  }, 2000);
+}
+
+function davetLinkiOlustur() {
+  if (!TG || !TG.initDataUnsafe) {
+    return 'https://t.me/SkorLabBot/skorlab';
+  }
+  const benimId = TG.initDataUnsafe.user?.id || 'anon';
+  return `https://t.me/SkorLabBot/skorlab?startapp=davet_${benimId}`;
+}
+
+function davetEt() {
+  const link = davetLinkiOlustur();
+  const metin = `⚽ SKORLAB QUIZ'e katıl!\n\n` +
+    `Futbol bilgini test et, 600 soru, 60 kategori!\n` +
+    `Sen de +50 💰 coin kazan!\n\n` +
+    `👉 ${link}`;
+  
+  if (TG && TG.openTelegramLink) {
+    TG.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(metin)}`);
+    sesCal('tik');
+    titreşim(30);
+    return;
+  }
+  
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(metin).then(() => {
+      toast('📋 Davet linki kopyalandı!');
+      sesCal('ok');
+    });
   }
 }
 
@@ -223,7 +283,8 @@ let user = safeReadJSON('skorlab_user', {
   muzik: false, ses: true, titresim: true, aciklama: true,
   toplamOynanan: 0,
   gununSonOynanan: '', gununSeri: 0,
-  tarihSonOynanan: ''
+  tarihSonOynanan: '',
+  davetEdildi: false
 });
 if (typeof user.coin !== 'number') user.coin = 500;
 if (typeof user.yildiz !== 'number') user.yildiz = 0;
@@ -350,7 +411,7 @@ function toast(mesaj) {
   t.textContent = mesaj;
   t.classList.add('aktif');
   clearTimeout(t._timeout);
-  t._timeout = setTimeout(() => t.classList.remove('aktif'), 2000);
+  t._timeout = setTimeout(() => t.classList.remove('aktif'), 2500);
 }
 
 function konfetiGoster(adet = 30) {
@@ -384,6 +445,7 @@ function ucanPuan(metin, renk = 'var(--green)') {
 window.addEventListener('DOMContentLoaded', async () => {
   initTelegram();
   await sorulariYukle();
+  setTimeout(() => davetKontrolEt(), 1500);
   await splashBitir();
 
   document.addEventListener('click', function ilkMuzik() {
@@ -1286,7 +1348,11 @@ function profilKaydet() {
 function vipAc() { ekranGoster('vipEkran'); }
 function vipSatinAl() {
   if (user.vip) { toast('👑 Zaten VIP\'sin'); return; }
-  toast('👑 Telegram Stars ile ödeme yakında!');
+  if (!TG || !TG.openInvoice) {
+    toast('👑 Telegram içinde açmalısın');
+    return;
+  }
+  toast('👑 Stars ödeme sistemi yakında aktif olacak!');
   sesCal('tik');
 }
 
@@ -1563,4 +1629,4 @@ async function bilgiGoster() {
    ============================================================ */
 function closeModal(id) {
   document.getElementById(id)?.classList.remove('aktif');
-     }
+                                            }
