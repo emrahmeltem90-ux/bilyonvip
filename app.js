@@ -1,7 +1,7 @@
 'use strict';
 
 /* ============================================================
-   SKORLAB QUIZ · app.js (VIP ENTEGRELİ TAM SÜRÜM)
+   SKORLAB QUIZ · app.js (REKLAM ENTEGRELİ TAM SÜRÜM)
    ============================================================ */
 
 let TG = null;
@@ -45,6 +45,53 @@ function muzikToggle() {
     toast('🔇 Müzik kapalı');
   }
 }
+
+/* ============================================================
+   REKLAM İZLE KAZAN (Adsgram) - BlockID: 53759
+   ============================================================ */
+let adController = null;
+
+function reklamBaslat() {
+  if (typeof window.Adsgram === 'undefined') {
+    console.warn('Adsgram yüklenmemiş');
+    return;
+  }
+  try {
+    adController = window.Adsgram.init({ blockId: "53759" });
+    console.log('✅ Adsgram hazır');
+  } catch (e) {
+    console.error('Adsgram init hatası:', e);
+  }
+}
+
+async function reklamIzle() {
+  if (!adController) {
+    reklamBaslat();
+    if (!adController) { toast('📺 Reklam sistemi yükleniyor, tekrar dene'); return; }
+  }
+  try {
+    const result = await adController.show();
+    if (result && result.done) {
+      user.coin += 50;
+      persistUser();
+      ustBarGuncelle();
+      konfetiGoster(30);
+      sesCal('kupa');
+      titreşim(100);
+      toast('🎉 +50 Coin kazandın!');
+      ucanPuan('+50 💰', 'var(--gold)');
+    } else {
+      toast('⚠️ Reklam tamamlanmadı');
+    }
+  } catch (e) {
+    console.error('Reklam hatası:', e);
+    toast('⚠️ Reklam yüklenemedi veya atlandı');
+  }
+}
+
+window.addEventListener('load', () => {
+  setTimeout(() => reklamBaslat(), 2000);
+});
 
 /* ============================================================
    YARDIMCI FONKSİYONLAR
@@ -207,7 +254,7 @@ if (typeof user.isim !== 'string') user.isim = 'Oyuncu';
 function persistUser() { safeSaveJSON('skorlab_user', user); }
 
 /* ============================================================
-   SORU YÜKLEME (VIP paketleri dahil)
+   SORU YÜKLEME
    ============================================================ */
 let sorularData = { NORMAL: [], SAMPİYONLAR: [], EFSANELER: [], VIP_EFSANELER: [] };
 let sorularYuklendi = false;
@@ -241,7 +288,6 @@ async function sorulariYukle() {
         kategoriler.forEach(k => { k.bolum = 'EFSANELER'; sorularData.EFSANELER.push(k); });
       }
     } catch (e) {}
-    // VIP Paket 1
     try {
       const res = await fetch('sorular_vip1.json');
       if (res.ok) {
@@ -250,7 +296,6 @@ async function sorulariYukle() {
         kategoriler.forEach(k => { k.bolum = 'VIP_EFSANELER'; sorularData.VIP_EFSANELER.push(k); });
       }
     } catch (e) { console.error('❌ sorular_vip1.json:', e.message); }
-    // VIP Paket 2
     try {
       const res = await fetch('sorular_vip2.json');
       if (res.ok) {
@@ -475,7 +520,6 @@ function kategoriListesiniGuncelle() {
     let kilitTipi = '';
     let kilitMiktar = 0;
 
-    // VIP bölümü: hepsi açık (VIP olanlar zaten girmiş)
     if (aktifBolum === 'VIP_EFSANELER') {
       kilitli = false;
     } else if (aktifBolum !== 'NORMAL') {
@@ -612,7 +656,7 @@ function kategoriSec(id) {
   const oncekiTamam = oncekiKategori ? (user.kategoriler[oncekiKategori.kategori_id]?.tamamlandi || false) : true;
 
   if (aktifBolum === 'VIP_EFSANELER') {
-    // VIP'de hepsi açık
+    // VIP açık
   } else if (aktifBolum !== 'NORMAL') {
     if (kat.gereken_yildiz > 0 && !ilerleme.tamamlandi) {
       kilitAcModal(id, 'yildiz', kat.gereken_yildiz);
@@ -1539,4 +1583,4 @@ async function bilgiGoster() {
    ============================================================ */
 function closeModal(id) {
   document.getElementById(id)?.classList.remove('aktif');
-     }
+                                   }
