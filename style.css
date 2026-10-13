@@ -326,3 +326,67 @@ input:checked + .slider:before{transform:translateX(24px)}
   .ms-deger{font-size:1.1rem}
   .quiz-soru{font-size:.95rem;padding:18px 14px}
 }
+
+/* Önceki style.css'in TAMAMI */
+/* + En sona bu eklendi: */
+
+/* ============================================================
+   GÜNÜN 10 SORUSU
+   ============================================================ */
+.menu-gunun{background:linear-gradient(180deg,rgba(255,159,28,.15),rgba(255,77,94,.08));border-color:var(--orange)}
+.menu-gunun .mgb-ikon{filter:drop-shadow(0 0 10px rgba(255,159,28,.6))}
+.menu-tarih{background:linear-gradient(180deg,rgba(41,121,255,.15),rgba(139,92,246,.08));border-color:var(--blue)}
+
+.gunun-icerik{display:flex;flex-direction:column;gap:16px}
+.gunun-kart{background:linear-gradient(135deg,#0b111c,#141b2b);border:2px solid var(--orange);border-radius:20px;padding:20px;text-align:center;position:relative;overflow:hidden}
+.gunun-kart::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,159,28,.15) 0%,transparent 70%);pointer-events:none}
+.gk-ikon{font-size:3rem;margin-bottom:8px;animation:zipla 1.5s infinite alternate}
+.gk-baslik{font-size:1.3rem;font-weight:900;color:var(--orange);margin-bottom:4px}
+.gk-aciklama{font-size:.8rem;color:var(--muted2);margin-bottom:14px}
+.gk-seri{background:var(--bg3);border-radius:10px;padding:10px;font-size:.8rem;color:var(--muted2);margin-bottom:14px;display:flex;justify-content:center;gap:6px}
+.gk-seri b{color:var(--orange);font-weight:900}
+.gk-bilgi{margin-top:12px;font-size:.75rem;color:var(--muted2)}
+.gunun-oduller{background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:14px}
+.go-baslik{font-size:.75rem;font-weight:900;color:var(--gold);margin-bottom:10px;letter-spacing:.5px}
+.go-satir{display:flex;justify-content:space-between;font-size:.8rem;padding:6px 0;border-bottom:1px solid var(--border)}
+.go-satir:last-child{border-bottom:none}
+.go-satir span{color:var(--muted2)}
+.go-satir b{color:var(--green);font-weight:900}
+
+/* GİZEMLİ KUTU */
+.kutu-icerik{text-align:center}
+.kutu-ikon{font-size:6rem;margin-bottom:12px;animation:zipla 1s infinite alternate;cursor:pointer;filter:drop-shadow(0 0 20px rgba(255,215,0,.6))}
+.kutu-baslik{font-size:1.4rem;font-weight:900;color:var(--gold);margin-bottom:8px}
+.kutu-aciklama{font-size:.85rem;color:var(--muted2);margin-bottom:16px}
+.kutu-odul{font-size:2rem;font-weight:900;color:var(--green);text-shadow:0 0 30px rgba(0,217,126,.8);margin:16px 0;animation:zipla 1s infinite alternate}
+
+/* SONUÇ KARTI (PAYLAŞ) */
+.paylas-icerik{text-align:center}
+.paylas-baslik{font-size:1.1rem;font-weight:900;color:var(--green);margin-bottom:16px}
+.paylas-kart{background:linear-gradient(135deg,#0b111c,#141b2b);border:3px solid var(--gold);border-radius:20px;padding:24px;margin-bottom:16px;position:relative;overflow:hidden;box-shadow:0 0 40px rgba(255,215,0,.3)}
+.paylas-kart::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(0,217,126,.1) 0%,transparent 70%);pointer-events:none}
+.pk-ust{font-size:.8rem;font-weight:900;color:var(--green);letter-spacing:1px;margin-bottom:12px}
+.pk-skor{font-size:1.8rem;font-weight:900;color:#fff;margin-bottom:8px;text-shadow:0 0 20px rgba(255,255,255,.3)}
+.pk-yildiz{font-size:2rem;margin-bottom:8px;color:var(--gold);text-shadow:0 0 20px rgba(255,215,0,.8)}
+.pk-detay{font-size:.85rem;color:var(--muted2);margin-bottom:12px}
+.pk-alt{font-size:.75rem;color:var(--muted);font-style:italic;margin-bottom:12px}
+.pk-logo{font-size:.75rem;font-weight:900;color:var(--green);letter-spacing:1px}
+.paylas-butonlar{display:flex;flex-direction:column;gap:8px}
+
+/* BUGÜN FUTBOL TARİHİNDE */
+.tarih-icerik{display:flex;flex-direction:column;gap:16px}
+.tarih-yukleniyor{text-align:center;padding:40px;color:var(--muted2)}
+.tarih-kart{background:linear-gradient(135deg,#0b111c,#141b2b);border:2px solid var(--blue);border-radius:20px;padding:24px;text-align:center;position:relative;overflow:hidden}
+.tarih-kart::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(41,121,255,.15) 0%,transparent 70%);pointer-events:none}
+.tk-tarih{font-size:1rem;font-weight:900;color:var(--blue);margin-bottom:12px;letter-spacing:1px}
+.tk-ikon{font-size:3rem;margin-bottom:12px}
+.tk-baslik{font-size:1.2rem;font-weight:900;color:var(--text);margin-bottom:12px}
+.tk-aciklama{font-size:.85rem;color:var(--muted2);line-height:1.7;margin-bottom:20px}
+.tk-soru-baslik{font-size:.75rem;font-weight:900;color:var(--gold);margin-bottom:10px;letter-spacing:.5px}
+.tk-soru{background:var(--bg3);border-radius:12px;padding:14px;margin-bottom:12px;font-size:.9rem;font-weight:800;line-height:1.4}
+.tk-secenekler{display:flex;flex-direction:column;gap:8px}
+.tk-secenek{background:var(--bg2);border:2px solid var(--border2);border-radius:12px;padding:12px;font-size:.85rem;font-weight:700;text-align:left;color:var(--text);transition:.15s}
+.tk-secenek:active:not(:disabled){transform:scale(.98);background:var(--bg3)}
+.tk-secenek.dogru{background:linear-gradient(135deg,#00d97e,#00874e);border-color:var(--green);color:#fff}
+.tk-secenek.yanlis{background:linear-gradient(135deg,#ff3355,#991b1b);border-color:var(--red);color:#fff;animation:salla .4s}
+.tk-sonuc{text-align:center;padding:14px;background:rgba(0,217,126,.1);border-radius:12px;font-weight:900;color:var(--green);margin-top:12px}
