@@ -1,3 +1,4 @@
+// SkorLab SW - Cache Temizleyici
 self.addEventListener('install', e => self.skipWaiting());
 self.addEventListener('activate', e => {
   e.waitUntil(
