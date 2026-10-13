@@ -1583,4 +1583,4 @@ async function bilgiGoster() {
    ============================================================ */
 function closeModal(id) {
   document.getElementById(id)?.classList.remove('aktif');
-                                   }
+   }
