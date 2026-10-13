@@ -8,7 +8,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="style.css?v=31">
+<link rel="stylesheet" href="style.css?v=32">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
@@ -50,7 +50,7 @@
 </div>
 
 <!-- PROFİL BARI -->
-<header class="profil-bar" id="profilBar" onclick="switchTab(5, document.querySelectorAll('.tab')[5])">
+<header class="profil-bar" id="profilBar" onclick="switchTab(8, document.querySelectorAll('.tab')[8])">
   <div class="pb-avatar" id="pbAvatar">👤</div>
   <div class="pb-bilgi">
     <div class="pb-isim" id="pbIsim">Oyuncu</div>
@@ -71,6 +71,8 @@
   <button type="button" class="tab" onclick="switchTab(7,this)"><span class="tab-ikon">🏆</span><span class="tab-yazi">Turnuva</span></button>
   <button type="button" class="tab" onclick="switchTab(3,this)"><span class="tab-ikon">💾</span><span class="tab-yazi">Kupon</span></button>
   <button type="button" class="tab" onclick="switchTab(4,this)"><span class="tab-ikon">🥇</span><span class="tab-yazi">Sıra</span></button>
+  <button type="button" class="tab" onclick="switchTab(5,this)"><span class="tab-ikon">🎡</span><span class="tab-yazi">Çark</span></button>
+  <button type="button" class="tab" onclick="switchTab(9,this)"><span class="tab-ikon">👑</span><span class="tab-yazi">VIP</span></button>
 </nav>
 
 <main>
@@ -135,8 +137,18 @@
   </div>
 </section>
 
-<!-- SAYFA 5: PROFİL -->
-<section id="page-5" class="page"><div id="profilListesi"></div></section>
+<!-- SAYFA 5: ÇARK -->
+<section id="page-5" class="page">
+  <div class="card" style="border:2px solid var(--orange)">
+    <div class="result-title" style="color:var(--orange)">🎡 ÇARKIFELEK</div>
+    <div class="muted" style="font-size:.72rem;margin-bottom:12px">Günde 1 kez çevir · Coin veya joker kazan</div>
+    <button type="button" class="btn btn-gold btn-lg" onclick="carkifelekAc()">🎰 ÇARKI ÇEVİR</button>
+  </div>
+  <div class="card">
+    <div class="result-title">🃏 JOKERLERİM</div>
+    <div id="jokerOzet"></div>
+  </div>
+</section>
 
 <!-- SAYFA 6: SEZON -->
 <section id="page-6" class="page">
@@ -149,6 +161,12 @@
 
 <!-- SAYFA 7: TURNUVA -->
 <section id="page-7" class="page"><div id="turnuvaListesi"></div></section>
+
+<!-- SAYFA 8: PROFİL -->
+<section id="page-8" class="page"><div id="profilListesi"></div></section>
+
+<!-- SAYFA 9: VIP -->
+<section id="page-9" class="page"><div id="vipListesi"></div></section>
 
 </main>
 
@@ -163,7 +181,7 @@
   </div>
 </div>
 
-<!-- MODAL: ÇARKIFELEK -->
+<!-- MODALLAR -->
 <div class="modal" id="carkModal">
   <div class="modal-content">
     <div class="modal-head"><span>🎡 ÇARKIFELEK</span><button type="button" onclick="closeModal('carkModal')">✖</button></div>
@@ -171,7 +189,6 @@
   </div>
 </div>
 
-<!-- MODAL: JOKERLER -->
 <div class="modal" id="jokerModal">
   <div class="modal-content">
     <div class="modal-head"><span>🃏 JOKERLERİM</span><button type="button" onclick="closeModal('jokerModal')">✖</button></div>
@@ -179,7 +196,6 @@
   </div>
 </div>
 
-<!-- MODAL: SONUÇ GİR -->
 <div class="modal" id="sonucModal">
   <div class="modal-content">
     <div class="modal-head"><span>📝 SONUÇ GİR</span><button type="button" onclick="closeModal('sonucModal')">✖</button></div>
@@ -187,7 +203,6 @@
   </div>
 </div>
 
-<!-- MODAL: KUPON DETAY -->
 <div class="modal" id="kuponDetayModal">
   <div class="modal-content">
     <div class="modal-head"><span>💾 KUPON DETAY</span><button type="button" onclick="closeModal('kuponDetayModal')">✖</button></div>
@@ -195,7 +210,6 @@
   </div>
 </div>
 
-<!-- MODAL: PROFİL DÜZENLE -->
 <div class="modal" id="profilDuzenleModal">
   <div class="modal-content">
     <div class="modal-head"><span>⚙️ PROFİLİ DÜZENLE</span><button type="button" onclick="closeModal('profilDuzenleModal')">✖</button></div>
@@ -203,21 +217,18 @@
   </div>
 </div>
 
-<!-- MODAL: ÖDÜL -->
 <div class="modal" id="odulModal">
   <div class="modal-content small" style="border-top:3px solid var(--gold)">
     <div class="modal-body center" id="odulBody"></div>
   </div>
 </div>
 
-<!-- MODAL: SEVİYE ATLAMA -->
 <div class="modal" id="seviyeModal">
   <div class="modal-content small" style="border-top:3px solid var(--gold)">
     <div class="modal-body center" id="seviyeBody"></div>
   </div>
 </div>
 
-<!-- MODAL: ARKADAŞ DAVET -->
 <div class="modal" id="davetModal">
   <div class="modal-content">
     <div class="modal-head"><span>👥 ARKADAŞ DAVET</span><button type="button" onclick="closeModal('davetModal')">✖</button></div>
@@ -225,7 +236,6 @@
   </div>
 </div>
 
-<!-- MODAL: TOAST -->
 <div class="modal" id="toastModal">
   <div class="modal-content small">
     <div class="modal-body center">
@@ -241,7 +251,7 @@
 <div id="ucanKatman" class="ucan-katman"></div>
 <div id="patlamaKatman" class="patlama-katman"></div>
 
-<script src="app.js?v=31"></script>
+<script src="app.js?v=32"></script>
 <script>
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(() => {});
