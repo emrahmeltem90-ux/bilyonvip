@@ -95,7 +95,6 @@ let sorularYuklendi = false;
 async function sorulariYukle() {
   if (sorularYuklendi) return true;
   try {
-    // Normal (1-4)
     const normalDosyalar = ['sorular_1.json', 'sorular_2.json', 'sorular_3.json', 'sorular_4.json'];
     for (const dosya of normalDosyalar) {
       try {
@@ -107,7 +106,6 @@ async function sorulariYukle() {
         console.log('✅ ' + dosya + ': ' + kategoriler.length + ' kategori');
       } catch (e) { console.error('❌ ' + dosya + ':', e.message); }
     }
-    // Şampiyonlar (5)
     try {
       const res = await fetch('sorular_5.json');
       if (res.ok) {
@@ -117,7 +115,6 @@ async function sorulariYukle() {
         console.log('✅ sorular_5.json: ' + kategoriler.length + ' kategori (ŞL)');
       }
     } catch (e) { console.error('❌ sorular_5.json:', e.message); }
-    // Efsaneler (6)
     try {
       const res = await fetch('sorular_6.json');
       if (res.ok) {
@@ -166,10 +163,16 @@ let quizCiftHak = false;
 let quizPauseAktif = false;
 
 function ekranGoster(id) {
-  document.querySelectorAll('.ekran').forEach(e => e.classList.remove('aktif'));
-  const el = $(id);
-  if (el) el.classList.add('aktif');
-  const ustBar = $('ustBar');
+  console.log('📺 Ekran:', id);
+  const tumEkranlar = document.querySelectorAll('.ekran');
+  tumEkranlar.forEach(e => e.classList.remove('aktif'));
+  const el = document.getElementById(id);
+  if (!el) {
+    console.error('❌ EKRAN BULUNAMADI:', id);
+    return;
+  }
+  el.classList.add('aktif');
+  const ustBar = document.getElementById('ustBar');
   if (ustBar) {
     if (id === 'quizEkran') ustBar.style.display = 'none';
     else ustBar.style.display = 'flex';
@@ -272,6 +275,9 @@ function menuGuncelle() {
   }
 }
 
+/* ============================================================
+   KATEGORİ
+   ============================================================ */
 function oyunaBasla() {
   aktifBolum = 'NORMAL';
   document.querySelectorAll('.bolum-tab').forEach(t => t.classList.remove('aktif'));
@@ -292,7 +298,7 @@ function kategoriListesiniGuncelle() {
   const liste = $('kategoriListesi');
   if (!liste) return;
   const kategoriler = aktifSorular();
-  console.log('📂 ' + aktifBolum + ' kategoriler:', kategoriler.length);
+  console.log('📂 ' + aktifBolum + ':', kategoriler.length, 'kategori');
   if (!kategoriler.length) {
     liste.innerHTML = '<div style="text-align:center;color:var(--muted);padding:30px">Bu bölümde kategori yok.</div>';
     return;
@@ -337,6 +343,9 @@ function kategoriSec(id) {
   quizBaslat();
 }
 
+/* ============================================================
+   QUIZ MOTORU
+   ============================================================ */
 function quizBaslat() {
   if (!aktifKategori || !aktifKategori.sorular) { toast('Soru yok'); return; }
   quizSorular = [...aktifKategori.sorular].sort(() => Math.random() - 0.5).slice(0, 10);
@@ -566,7 +575,9 @@ function kategoriyeDon() {
   kategoriListesiniGuncelle();
 }
 
-/* PAUSE */
+/* ============================================================
+   PAUSE
+   ============================================================ */
 function quizPauseAc() {
   if (quizCevaplandi) { toast('Bu soru cevaplandı'); return; }
   quizPauseAktif = true;
@@ -609,7 +620,9 @@ function quizPauseCik() {
   anaEkranaDon();
 }
 
-/* GÜNLÜK */
+/* ============================================================
+   GÜNLÜK ÖDÜL
+   ============================================================ */
 const GUNLUK_ODULLER = [
   { gun: 1, coin: 50, yildiz: 0 }, { gun: 2, coin: 100, yildiz: 0 },
   { gun: 3, coin: 150, yildiz: 1 }, { gun: 4, coin: 200, yildiz: 0 },
@@ -627,10 +640,12 @@ function gunlukSeriHesapla() {
   if (gecen > 2 * GUN_MS) { user.gunlukSeri = 0; persistUser(); }
   return user.gunlukSeri || 0;
 }
+
 function gunlukOdulAc() {
   ekranGoster('gunlukEkran');
   gunlukGridGuncelle();
 }
+
 function gunlukGridGuncelle() {
   const grid = $('gunlukGrid'); if (!grid) return;
   const seri = gunlukSeriHesapla();
@@ -656,6 +671,7 @@ function gunlukGridGuncelle() {
     }
   }
 }
+
 function gunlukAl() {
   if (!gunlukAlinabilirMi()) { toast('⏰ Bugün aldın'); return; }
   let seri = gunlukSeriHesapla();
@@ -675,7 +691,9 @@ function gunlukAl() {
   menuGuncelle();
 }
 
-/* ÇARK */
+/* ============================================================
+   ÇARKIFELEK
+   ============================================================ */
 const CARK_DILIMLER = [
   { yazi: '50💰', tip: 'coin', deger: 50, renk: '#00d97e' },
   { yazi: '100💰', tip: 'coin', deger: 100, renk: '#ff9f1c' },
@@ -691,28 +709,72 @@ let carkAci = 0;
 
 function carkifelekAc() {
   ekranGoster('carkEkran');
-  carkCiz();
+  const canvas = $('carkCanvas');
+  if (canvas) {
+    canvas.width = 320;
+    canvas.height = 320;
+  }
+  setTimeout(() => carkCiz(), 100);
   carkDurumGuncelle();
 }
+
 function carkCiz() {
-  const canvas = $('carkCanvas'); if (!canvas) return;
+  const canvas = $('carkCanvas');
+  if (!canvas) {
+    console.error('❌ carkCanvas bulunamadı');
+    return;
+  }
   const ctx = canvas.getContext('2d');
-  const cx = canvas.width / 2, cy = canvas.height / 2;
-  const r = canvas.width / 2 - 8;
+  const cx = canvas.width / 2;
+  const cy = canvas.height / 2;
+  const r = canvas.width / 2 - 10;
   const aci = (2 * Math.PI) / CARK_DILIMLER.length;
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+
   CARK_DILIMLER.forEach((d, i) => {
     const bas = i * aci - Math.PI / 2;
     const bit = bas + aci;
-    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, r, bas, bit); ctx.closePath();
-    ctx.fillStyle = d.renk; ctx.fill();
-    ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
-    ctx.save(); ctx.translate(cx, cy); ctx.rotate(bas + aci / 2);
-    ctx.textAlign = 'right'; ctx.fillStyle = '#fff'; ctx.font = 'bold 15px sans-serif';
-    ctx.fillText(d.yazi, r - 15, 6);
+
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, bas, bit);
+    ctx.closePath();
+    ctx.fillStyle = d.renk;
+    ctx.fill();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(bas + aci / 2);
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 18px Arial, sans-serif';
+    ctx.shadowColor = '#000';
+    ctx.shadowBlur = 4;
+    ctx.fillText(d.yazi, r - 20, 0);
     ctx.restore();
   });
+
+  ctx.beginPath();
+  ctx.arc(cx, cy, 30, 0, 2 * Math.PI);
+  ctx.fillStyle = '#0b111c';
+  ctx.fill();
+  ctx.strokeStyle = '#ffd700';
+  ctx.lineWidth = 4;
+  ctx.stroke();
+  ctx.fillStyle = '#ffd700';
+  ctx.font = 'bold 24px Arial';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('🎡', cx, cy);
+
+  console.log('✅ Çark çizildi');
 }
+
 function carkDurumGuncelle() {
   const btn = $('carkBtn');
   const bilgi = $('carkBilgi');
@@ -729,6 +791,7 @@ function carkDurumGuncelle() {
     if (bilgi) bilgi.textContent = `Yeni hak: ${saat}s ${dk}dk sonra`;
   }
 }
+
 function carkCevir() {
   if (carkDonuyor) return;
   const gecen = Date.now() - (user.sonCark || 0);
@@ -762,7 +825,9 @@ function carkCevir() {
   }, 4000);
 }
 
-/* BAŞARIM */
+/* ============================================================
+   BAŞARIMLAR
+   ============================================================ */
 const BASARIMLAR = [
   { id: 'ilk_dogru', ikon: '🩸', isim: 'İlk Kan', desc: 'İlk doğru cevabını ver', kontrol: () => user.toplamDogru >= 1 },
   { id: 'on_dogru', ikon: '🥉', isim: 'Çaylak', desc: '10 doğru cevap', kontrol: () => user.toplamDogru >= 10 },
@@ -822,7 +887,9 @@ function basarimKontrol() {
   }
 }
 
-/* MAĞAZA */
+/* ============================================================
+   MAĞAZA
+   ============================================================ */
 const MAGAZA_URUNLERI = [
   { id: 'tema_altin', ikon: '🟡', isim: 'Altın Tema', desc: 'Altın renk teması', fiyat: 500, tip: 'tema' },
   { id: 'tema_mor', ikon: '🟣', isim: 'Mor Tema', desc: 'Mor renk teması', fiyat: 400, tip: 'tema' },
@@ -875,7 +942,9 @@ function magazaSatinAl(id) {
   magazaListeGuncelle();
 }
 
-/* PROFİL */
+/* ============================================================
+   PROFİL
+   ============================================================ */
 function profilAc() {
   ekranGoster('profilEkran');
   if ($('profilIsim')) $('profilIsim').value = user.isim || 'Oyuncu';
@@ -904,15 +973,21 @@ function profilKaydet() {
   menuGuncelle();
 }
 
-/* VIP */
-function vipAc() { ekranGoster('vipEkran'); }
+/* ============================================================
+   VIP
+   ============================================================ */
+function vipAc() {
+  ekranGoster('vipEkran');
+}
 function vipSatinAl() {
   if (user.vip) { toast('👑 Zaten VIP\'sin'); return; }
   toast('👑 Telegram Stars ile ödeme yakında!');
   sesCal('tik');
 }
 
-/* AYARLAR */
+/* ============================================================
+   AYARLAR
+   ============================================================ */
 function ayarlarAc() {
   ekranGoster('ayarlarEkran');
   if ($('ayarMuzik')) $('ayarMuzik').checked = !!user.muzik;
@@ -940,4 +1015,4 @@ function verileriSifirla() {
   if (!confirm('Tüm veriler silinsin mi?')) return;
   localStorage.removeItem('skorlab_user');
   location.reload();
-}
+                                            }
