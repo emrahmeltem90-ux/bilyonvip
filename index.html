@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>SkorLab Quiz</title>
-<link rel="stylesheet" href="style.css?v=2">
+<link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
 
@@ -113,6 +113,7 @@
     <button class="bolum-tab aktif" onclick="bolumSec('NORMAL', this)">📚 NORMAL</button>
     <button class="bolum-tab" onclick="bolumSec('SAMPİYONLAR', this)">⭐ ŞL</button>
     <button class="bolum-tab" onclick="bolumSec('EFSANELER', this)">👑 EFSANELER</button>
+    <button class="bolum-tab" onclick="bolumSec('VIP_EFSANELER', this)">💎 VIP</button>
   </div>
   <div id="kategoriListesi" class="kategori-listesi"></div>
 </div>
@@ -183,9 +184,7 @@
       <div class="gunun-ikon">📅</div>
       <div class="gunun-tarih" id="gununTarih"></div>
     </div>
-    <div class="gunun-seri">
-      🔥 Seri: <span id="gununSeri">0</span> gün
-    </div>
+    <div class="gunun-seri">🔥 Seri: <span id="gununSeri">0</span> gün</div>
     <div class="gunun-bilgi" id="gununBilgi">Bugün henüz çözmedin</div>
     <button class="menu-buyuk-btn" id="gununBtn" onclick="gununBasla()">
       <div class="mbb-icerik">
@@ -281,6 +280,7 @@
       <div class="vip-ozellik">✅ Sınırsız joker (ücretsiz)</div>
       <div class="vip-ozellik">✅ Reklamsız deneyim</div>
       <div class="vip-ozellik">✅ Tüm kategoriler açık</div>
+      <div class="vip-ozellik">✅ 200 Özel Efsane Sorusu</div>
       <div class="vip-ozellik">✅ Günlük 500 coin bonus</div>
       <div class="vip-ozellik">✅ Özel VIP rozeti</div>
       <div class="vip-ozellik">✅ Öncelikli destek</div>
@@ -313,7 +313,7 @@
   </div>
 </div>
 
-<!-- TARİH / BİLGİ EKRANI -->
+<!-- BİLGİ EKRANI -->
 <div id="tarihEkran" class="ekran">
   <div class="ekran-ust">
     <button class="geri-btn" onclick="anaEkranaDon()">←</button>
@@ -404,6 +404,6 @@
 <!-- UÇAN PUAN -->
 <div id="ucanKatman" class="ucan-katman"></div>
 
-<script src="app.js?v=2"></script>
+<script src="app.js?v=3"></script>
 </body>
 </html>
