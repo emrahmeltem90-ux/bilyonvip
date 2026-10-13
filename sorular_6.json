@@ -1,0 +1,187 @@
+{
+  "quiz_adi": "SkorLab Quiz",
+  "paket": "501-600",
+  "bolum": "EFSANELER",
+  "kategoriler": [
+    {
+      "kategori_id": 51,
+      "kategori_adi": "Zor Şampiyonlar Ligi Soruları",
+      "kategori_ikon": "👑",
+      "gereken_yildiz": 160,
+      "sorular": [
+        { "id": 501, "soru": "Şampiyonlar Ligi tarihinde bir maçta 4 gol atan ilk futbolcu kimdir?", "secenekler": { "A": "Marco van Basten", "B": "Simone Inzaghi", "C": "Ruud van Nistelrooy", "D": "Lionel Messi" }, "dogru_cevap": "B" },
+        { "id": 502, "soru": "Bir Şampiyonlar Ligi maçında 5 gol atan ilk futbolcu kimdir?", "secenekler": { "A": "Lionel Messi", "B": "Luiz Adriano", "C": "Erling Haaland", "D": "Robert Lewandowski" }, "dogru_cevap": "B" },
+        { "id": 503, "soru": "UEFA Şampiyonlar Ligi tarihinde finalde gol atan en genç oyunculardan biri olan Patrick Kluivert, 1995 finalinde hangi takım adına gol attı?", "secenekler": { "A": "Ajax", "B": "Barcelona", "C": "PSV", "D": "Feyenoord" }, "dogru_cevap": "A" },
+        { "id": 504, "soru": "1994 Şampiyonlar Ligi finalinde Barcelona'yı 4-0 yenen takım hangisidir?", "secenekler": { "A": "AC Milan", "B": "Juventus", "C": "Ajax", "D": "Manchester United" }, "dogru_cevap": "A" },
+        { "id": 505, "soru": "1994 Şampiyonlar Ligi finalinde AC Milan adına iki gol atan futbolcu kimdi?", "secenekler": { "A": "Daniele Massaro", "B": "Dejan Savićević", "C": "Marcel Desailly", "D": "Zvonimir Boban" }, "dogru_cevap": "A" },
+        { "id": 506, "soru": "2007 Şampiyonlar Ligi finalinde Liverpool'u yenen Milan'ın iki golünü kim attı?", "secenekler": { "A": "Kaká", "B": "Filippo Inzaghi", "C": "Clarence Seedorf", "D": "Andrea Pirlo" }, "dogru_cevap": "B" },
+        { "id": 507, "soru": "2012 Şampiyonlar Ligi finalinde Bayern Münih'e karşı Chelsea'nin ilk golünü kim attı?", "secenekler": { "A": "Didier Drogba", "B": "Frank Lampard", "C": "Juan Mata", "D": "Fernando Torres" }, "dogru_cevap": "A" },
+        { "id": 508, "soru": "2012 Şampiyonlar Ligi finalinde penaltı atışlarında Bayern Münih adına penaltı kaçıran oyunculardan biri kimdi?", "secenekler": { "A": "Arjen Robben", "B": "Bastian Schweinsteiger", "C": "Thomas Müller", "D": "Mario Gómez" }, "dogru_cevap": "B" },
+        { "id": 509, "soru": "2010 Şampiyonlar Ligi finalinde Inter'in Bayern Münih'i yenerek kupayı kazanmasında iki gol atan futbolcu kimdir?", "secenekler": { "A": "Samuel Eto'o", "B": "Diego Milito", "C": "Wesley Sneijder", "D": "Maicon" }, "dogru_cevap": "B" },
+        { "id": 510, "soru": "2004 Şampiyonlar Ligi finalinde Porto'nun Monaco karşısındaki ilk golünü kim attı?", "secenekler": { "A": "Carlos Alberto", "B": "Deco", "C": "Derlei", "D": "Maniche" }, "dogru_cevap": "A" }
+      ]
+    },
+    {
+      "kategori_id": 52,
+      "kategori_adi": "Dünya Kupası Zor Sorular",
+      "kategori_ikon": "👑",
+      "gereken_yildiz": 165,
+      "sorular": [
+        { "id": 511, "soru": "Dünya Kupası tarihinde final oynayan en genç futbolcu kimdir?", "secenekler": { "A": "Pelé", "B": "Kylian Mbappé", "C": "Ronaldo Nazário", "D": "Bobby Charlton" }, "dogru_cevap": "A" },
+        { "id": 512, "soru": "1966 Dünya Kupası finalinde İngiltere adına hat-trick yapan futbolcu kimdir?", "secenekler": { "A": "Geoff Hurst", "B": "Bobby Charlton", "C": "Jimmy Greaves", "D": "Roger Hunt" }, "dogru_cevap": "A" },
+        { "id": 513, "soru": "1974 Dünya Kupası finalinde Hollanda'nın kullandığı meşhur oyun sisteminin önemli isimlerinden biri kimdi?", "secenekler": { "A": "Johan Cruyff", "B": "Franz Beckenbauer", "C": "Gerd Müller", "D": "Paolo Rossi" }, "dogru_cevap": "A" },
+        { "id": 514, "soru": "1990 Dünya Kupası'nda Arjantin'in kalecisi kimdi?", "secenekler": { "A": "Sergio Goycochea", "B": "Nery Pumpido", "C": "Claudio Caniggia", "D": "José Chamot" }, "dogru_cevap": "A" },
+        { "id": 515, "soru": "1990 Dünya Kupası yarı finalinde Arjantin'i penaltılarla eleyen ülke hangisidir?", "secenekler": { "A": "İtalya", "B": "Almanya", "C": "İngiltere", "D": "Hollanda" }, "dogru_cevap": "A" },
+        { "id": 516, "soru": "Dünya Kupası tarihinde en fazla turnuvada forma giyen oyunculardan biri olan Antonio Carbajal hangi ülkeyi temsil etmiştir?", "secenekler": { "A": "Meksika", "B": "İspanya", "C": "Şili", "D": "Kolombiya" }, "dogru_cevap": "A" },
+        { "id": 517, "soru": "2014 Dünya Kupası'nda Almanya'nın Brezilya'yı 7-1 yendiği maçta Almanya'nın en erken iki golünü kimler attı?", "secenekler": { "A": "Müller ve Klose", "B": "Kroos ve Klose", "C": "Müller ve Kroos", "D": "Özil ve Schürrle" }, "dogru_cevap": "C" },
+        { "id": 518, "soru": "2014 Dünya Kupası yarı finalinde Almanya'nın Brezilya'ya karşı 5-0'a ulaşması kaç dakika sürdü?", "secenekler": { "A": "18 dakika", "B": "25 dakika", "C": "29 dakika", "D": "35 dakika" }, "dogru_cevap": "C" },
+        { "id": 519, "soru": "2018 Dünya Kupası finalinde Hırvatistan'ın golünü kim attı?", "secenekler": { "A": "Ivan Perišić", "B": "Mario Mandžukić", "C": "Luka Modrić", "D": "Ante Rebić" }, "dogru_cevap": "B" },
+        { "id": 520, "soru": "2022 Dünya Kupası finalinde Arjantin'in normal süredeki ikinci golünü kim attı?", "secenekler": { "A": "Lionel Messi", "B": "Ángel Di María", "C": "Julián Álvarez", "D": "Lautaro Martínez" }, "dogru_cevap": "B" }
+      ]
+    },
+    {
+      "kategori_id": 53,
+      "kategori_adi": "Türk Futbolu Zor Sorular",
+      "kategori_ikon": "👑",
+      "gereken_yildiz": 170,
+      "sorular": [
+        { "id": 521, "soru": "2002 Dünya Kupası'nda Türkiye'nin yarı finalde karşılaştığı Brezilya'nın golünü kim attı?", "secenekler": { "A": "Rivaldo", "B": "Ronaldinho", "C": "Ronaldo", "D": "Kaká" }, "dogru_cevap": "C" },
+        { "id": 522, "soru": "2002 Dünya Kupası'nda Türkiye ile Güney Kore arasındaki üçüncülük maçında Türkiye'nin ilk golünü kim attı?", "secenekler": { "A": "Hakan Şükür", "B": "İlhan Mansız", "C": "Hasan Şaş", "D": "Ümit Davala" }, "dogru_cevap": "A" },
+        { "id": 523, "soru": "Türkiye'nin Avrupa Şampiyonası tarihindeki ilk galibiyeti hangi turnuvada geldi?", "secenekler": { "A": "Euro 1996", "B": "Euro 2000", "C": "Euro 2008", "D": "Euro 2016" }, "dogru_cevap": "C" },
+        { "id": 524, "soru": "Türkiye'nin Euro 2008'de Çekya'yı 3-2 yendiği maçta son golü kim attı?", "secenekler": { "A": "Nihat Kahveci", "B": "Arda Turan", "C": "Semih Şentürk", "D": "Hamit Altıntop" }, "dogru_cevap": "A" },
+        { "id": 525, "soru": "Euro 2008 yarı finalinde Türkiye'yi eleyen Almanya'nın ilk golünü kim attı?", "secenekler": { "A": "Miroslav Klose", "B": "Bastian Schweinsteiger", "C": "Philipp Lahm", "D": "Lukas Podolski" }, "dogru_cevap": "B" },
+        { "id": 526, "soru": "Euro 2008'de Türkiye'nin Hırvatistan'ı penaltılarla elediği maçta penaltı kurtaran Türk kaleci kimdi?", "secenekler": { "A": "Rüştü Reçber", "B": "Volkan Demirel", "C": "Mert Günok", "D": "Sinan Bolat" }, "dogru_cevap": "A" },
+        { "id": 527, "soru": "Türk futbol tarihinde Avrupa kupalarında final oynayan ilk Türk kulübü hangisidir?", "secenekler": { "A": "Galatasaray", "B": "Fenerbahçe", "C": "Beşiktaş", "D": "Trabzonspor" }, "dogru_cevap": "A" },
+        { "id": 528, "soru": "1999 UEFA Kupası finalinde Galatasaray'ın penaltılarla yendiği Arsenal'in penaltısını kaçıran oyunculardan biri kimdi?", "secenekler": { "A": "Dennis Bergkamp", "B": "Davor Šuker", "C": "Patrick Vieira", "D": "Tony Adams" }, "dogru_cevap": "B" },
+        { "id": 529, "soru": "Galatasaray'ın 2000 UEFA Kupası finalinde Arsenal'e karşı penaltı atışlarında son penaltıyı gole çeviren futbolcu kimdi?", "secenekler": { "A": "Gheorghe Hagi", "B": "Gheorghe Popescu", "C": "Ümit Davala", "D": "Bülent Korkmaz" }, "dogru_cevap": "B" },
+        { "id": 530, "soru": "2000 UEFA Kupası finalinde Galatasaray adına kırmızı kart gören futbolcu kimdi?", "secenekler": { "A": "Hagi", "B": "Bülent Korkmaz", "C": "Ümit Davala", "D": "Emre Belözoğlu" }, "dogru_cevap": "A" }
+      ]
+    },
+    {
+      "kategori_id": 54,
+      "kategori_adi": "Avrupa Şampiyonası Zor Sorular",
+      "kategori_ikon": "👑",
+      "gereken_yildiz": 175,
+      "sorular": [
+        { "id": 531, "soru": "1992 Avrupa Şampiyonası'nı Yugoslavya'nın yerine turnuvaya katılarak kazanan ülke hangisidir?", "secenekler": { "A": "Danimarka", "B": "İsveç", "C": "Norveç", "D": "Belçika" }, "dogru_cevap": "A" },
+        { "id": 532, "soru": "1992 Avrupa Şampiyonası finalinde Danimarka'nın rakibi hangi ülkeydi?", "secenekler": { "A": "Almanya", "B": "Hollanda", "C": "İsveç", "D": "Fransa" }, "dogru_cevap": "A" },
+        { "id": 533, "soru": "1996 Avrupa Şampiyonası'nda Panenka tarzı penaltısıyla ünlü olan Çek futbolcu kimdir?", "secenekler": { "A": "Pavel Nedvěd", "B": "Karel Poborský", "C": "Patrik Berger", "D": "Vladimír Šmicer" }, "dogru_cevap": "B" },
+        { "id": 534, "soru": "Euro 2000 finalinde Fransa'nın uzatma dakikalarında attığı altın golün sahibi kimdir?", "secenekler": { "A": "David Trezeguet", "B": "Thierry Henry", "C": "Zinedine Zidane", "D": "Sylvain Wiltord" }, "dogru_cevap": "A" },
+        { "id": 535, "soru": "Euro 1984 finalinde Fransa'nın İspanya'yı yendiği maçta frikikten gol atan futbolcu kimdir?", "secenekler": { "A": "Michel Platini", "B": "Alain Giresse", "C": "Jean Tigana", "D": "Jean-Marc Ferreri" }, "dogru_cevap": "A" },
+        { "id": 536, "soru": "Euro 2000'de Hollanda adına Yugoslavya'ya karşı dört gol atan futbolcu kimdir?", "secenekler": { "A": "Patrick Kluivert", "B": "Dennis Bergkamp", "C": "Ruud van Nistelrooy", "D": "Marc Overmars" }, "dogru_cevap": "A" },
+        { "id": 537, "soru": "Euro 2016 finalinde Portekiz'in Fransa'yı yenmesini sağlayan golü kim attı?", "secenekler": { "A": "Cristiano Ronaldo", "B": "Nani", "C": "Éder", "D": "Ricardo Quaresma" }, "dogru_cevap": "C" },
+        { "id": 538, "soru": "Euro 1988 finalinde Hollanda'nın Sovyetler Birliği'ni yendiği maçta meşhur vole golünü atan futbolcu kimdir?", "secenekler": { "A": "Ruud Gullit", "B": "Marco van Basten", "C": "Frank Rijkaard", "D": "Ronald Koeman" }, "dogru_cevap": "B" },
+        { "id": 539, "soru": "1992 Avrupa Şampiyonası finalinde Danimarka'nın kalecisi kimdi?", "secenekler": { "A": "Peter Schmeichel", "B": "Kasper Schmeichel", "C": "Thomas Sørensen", "D": "Jesper Olsen" }, "dogru_cevap": "A" },
+        { "id": 540, "soru": "1984 Avrupa Şampiyon Kulüpler Kupası finalinde Roma'yı penaltılarla yenen takım hangisidir?", "secenekler": { "A": "Liverpool", "B": "Juventus", "C": "Bayern Münih", "D": "Nottingham Forest" }, "dogru_cevap": "A" }
+      ]
+    },
+    {
+      "kategori_id": 55,
+      "kategori_adi": "Premier Lig Zor Sorular",
+      "kategori_ikon": "👑",
+      "gereken_yildiz": 180,
+      "sorular": [
+        { "id": 541, "soru": "Liverpool'un 1984 Avrupa Kupası finalinde Roma'ya karşı kazandığı penaltı atışlarında önemli kurtarış yapan kaleci kimdi?", "secenekler": { "A": "Bruce Grobbelaar", "B": "Ray Clemence", "C": "Bob Paisley", "D": "Chris Woods" }, "dogru_cevap": "A" },
+        { "id": 542, "soru": "İngiltere Premier League tarihinde bir maçta 5 gol atan ilk oyuncu kimdir?", "secenekler": { "A": "Alan Shearer", "B": "Andy Cole", "C": "Jermain Defoe", "D": "Sergio Agüero" }, "dogru_cevap": "B" },
+        { "id": 543, "soru": "Premier League tarihinde bir maçta 5 gol atan en genç oyuncu kimdir?", "secenekler": { "A": "Michael Owen", "B": "Erling Haaland", "C": "Raheem Sterling", "D": "Harry Kane" }, "dogru_cevap": "B" },
+        { "id": 544, "soru": "Premier League tarihinin ilk golünü atan futbolcu kimdir?", "secenekler": { "A": "Eric Cantona", "B": "Brian Deane", "C": "Alan Shearer", "D": "Ian Wright" }, "dogru_cevap": "B" },
+        { "id": 545, "soru": "Premier League'in ilk sezonunda şampiyon olan takım hangisidir?", "secenekler": { "A": "Blackburn Rovers", "B": "Arsenal", "C": "Manchester United", "D": "Liverpool" }, "dogru_cevap": "C" },
+        { "id": 546, "soru": "Premier League tarihinde gol kralı olan ilk Afrikalı futbolcu kimdir?", "secenekler": { "A": "Didier Drogba", "B": "Emmanuel Adebayor", "C": "Mohamed Salah", "D": "Nwankwo Kanu" }, "dogru_cevap": "A" },
+        { "id": 547, "soru": "Leicester City'nin 2015-16 Premier League şampiyonluğunda takımın en golcü oyuncusu kimdi?", "secenekler": { "A": "Jamie Vardy", "B": "Riyad Mahrez", "C": "Shinji Okazaki", "D": "Leonardo Ulloa" }, "dogru_cevap": "A" },
+        { "id": 548, "soru": "2015-16 sezonunda Leicester City'nin Yılın Oyuncusu ödülünü kazanan futbolcu kimdi?", "secenekler": { "A": "Jamie Vardy", "B": "N'Golo Kanté", "C": "Riyad Mahrez", "D": "Wes Morgan" }, "dogru_cevap": "C" },
+        { "id": 549, "soru": "İtalya Serie A tarihinde bir sezonda 36 gol atarak rekor kıran Gonzalo Higuaín hangi kulüpte bu başarıyı elde etti?", "secenekler": { "A": "Napoli", "B": "Juventus", "C": "Roma", "D": "Milan" }, "dogru_cevap": "A" },
+        { "id": 550, "soru": "İspanya La Liga tarihinde 38 maçlık sezonda 50 gol atan futbolcu kimdir?", "secenekler": { "A": "Cristiano Ronaldo", "B": "Lionel Messi", "C": "Luis Suárez", "D": "Karim Benzema" }, "dogru_cevap": "B" }
+      ]
+    },
+    {
+      "kategori_id": 56,
+      "kategori_adi": "Efsane Futbolcular Zor Sorular",
+      "kategori_ikon": "👑",
+      "gereken_yildiz": 185,
+      "sorular": [
+        { "id": 551, "soru": "Lionel Messi'nin Barcelona formasıyla resmi olarak ilk golünü attığı rakip hangi takımdır?", "secenekler": { "A": "Real Madrid", "B": "Albacete", "C": "Valencia", "D": "Sevilla" }, "dogru_cevap": "B" },
+        { "id": 552, "soru": "Cristiano Ronaldo'nun Manchester United'daki ilk forma numarası hangisiydi?", "secenekler": { "A": "7", "B": "9", "C": "17", "D": "28" }, "dogru_cevap": "B" },
+        { "id": 553, "soru": "Ronaldinho'nun Barcelona'da kullandığı forma numarası hangisiydi?", "secenekler": { "A": "7", "B": "10", "C": "11", "D": "19" }, "dogru_cevap": "B" },
+        { "id": 554, "soru": "Zinedine Zidane, Real Madrid'de futbolcu olarak Şampiyonlar Ligi'ni hangi ülkeden gelen teknik direktörle kazandı?", "secenekler": { "A": "İspanya", "B": "İtalya", "C": "Fransa", "D": "Almanya" }, "dogru_cevap": "B" },
+        { "id": 555, "soru": "Ronaldo Nazário, Real Madrid'e transfer olmadan önce hangi İtalyan kulübünde oynadı?", "secenekler": { "A": "Juventus", "B": "Inter", "C": "Milan", "D": "Roma" }, "dogru_cevap": "B" },
+        { "id": 556, "soru": "Thierry Henry, Arsenal'den ayrıldıktan sonra hangi kulübe transfer oldu?", "secenekler": { "A": "Barcelona", "B": "Real Madrid", "C": "Inter", "D": "Chelsea" }, "dogru_cevap": "A" },
+        { "id": 557, "soru": "Luis Suárez, Barcelona'ya transfer olmadan önce hangi İngiliz kulübünde oynuyordu?", "secenekler": { "A": "Chelsea", "B": "Liverpool", "C": "Arsenal", "D": "Manchester City" }, "dogru_cevap": "B" },
+        { "id": 558, "soru": "Andrea Pirlo, kariyerinin son döneminde MLS'te hangi takımda oynadı?", "secenekler": { "A": "LA Galaxy", "B": "New York City FC", "C": "Inter Miami", "D": "Toronto FC" }, "dogru_cevap": "B" },
+        { "id": 559, "soru": "Johan Cruyff, Barcelona'ya futbolcu olarak gelmeden önce hangi Hollanda kulübünde oynadı?", "secenekler": { "A": "PSV", "B": "Ajax", "C": "Feyenoord", "D": "AZ Alkmaar" }, "dogru_cevap": "B" },
+        { "id": 560, "soru": "Franz Beckenbauer, futbolculuk kariyerinin büyük bölümünü hangi kulüpte geçirdi?", "secenekler": { "A": "Bayern Münih", "B": "Hamburg", "C": "Schalke 04", "D": "Borussia Dortmund" }, "dogru_cevap": "A" }
+      ]
+    },
+    {
+      "kategori_id": 57,
+      "kategori_adi": "Ballon d'Or Zor Sorular",
+      "kategori_ikon": "👑",
+      "gereken_yildiz": 190,
+      "sorular": [
+        { "id": 561, "soru": "George Best, Manchester United ile Avrupa Şampiyon Kulüpler Kupası'nı hangi yıl kazandı?", "secenekler": { "A": "1965", "B": "1967", "C": "1968", "D": "1970" }, "dogru_cevap": "C" },
+        { "id": 562, "soru": "Eusébio'nun lakabı hangisiydi?", "secenekler": { "A": "Kara İnci", "B": "Panter", "C": "Kara Panter", "D": "Altın Çocuk" }, "dogru_cevap": "C" },
+        { "id": 563, "soru": "Garrincha hangi ülkenin efsane futbolcusudur?", "secenekler": { "A": "Brezilya", "B": "Arjantin", "C": "Uruguay", "D": "Şili" }, "dogru_cevap": "A" },
+        { "id": 564, "soru": "Lev Yashin'in kazandığı Ballon d'Or ödülü hangi yıldadır?", "secenekler": { "A": "1958", "B": "1960", "C": "1963", "D": "1966" }, "dogru_cevap": "C" },
+        { "id": 565, "soru": "Ballon d'Or kazanan ilk Afrikalı futbolcu kimdir?", "secenekler": { "A": "George Weah", "B": "Samuel Eto'o", "C": "Didier Drogba", "D": "Yaya Touré" }, "dogru_cevap": "A" },
+        { "id": 566, "soru": "Ballon d'Or kazanan ilk Fransız futbolcu kimdir?", "secenekler": { "A": "Michel Platini", "B": "Raymond Kopa", "C": "Zinedine Zidane", "D": "Jean-Pierre Papin" }, "dogru_cevap": "B" },
+        { "id": 567, "soru": "Üç kez Ballon d'Or kazanan ilk futbolcu kimdir?", "secenekler": { "A": "Johan Cruyff", "B": "Michel Platini", "C": "Marco van Basten", "D": "Franz Beckenbauer" }, "dogru_cevap": "A" },
+        { "id": 568, "soru": "Bir kaleci tarafından atılan en fazla gol konusunda dünya futbolunda en çok hangi isim öne çıkar?", "secenekler": { "A": "José Luis Chilavert", "B": "Rogério Ceni", "C": "Jorge Campos", "D": "René Higuita" }, "dogru_cevap": "B" },
+        { "id": 569, "soru": "José Luis Chilavert hangi ülkenin milli takım kalecisiydi?", "secenekler": { "A": "Paraguay", "B": "Şili", "C": "Uruguay", "D": "Bolivya" }, "dogru_cevap": "A" },
+        { "id": 570, "soru": "René Higuita'nın meşhur kurtarış hareketinin adı nedir?", "secenekler": { "A": "Akrep Vuruşu", "B": "Makas Kurtarışı", "C": "Kartal Kurtarışı", "D": "Panter Sıçrayışı" }, "dogru_cevap": "A" }
+      ]
+    },
+    {
+      "kategori_id": 58,
+      "kategori_adi": "Panenka ve Penaltılar",
+      "kategori_ikon": "👑",
+      "gereken_yildiz": 195,
+      "sorular": [
+        { "id": 571, "soru": "Futbol tarihinin en ünlü 'Panenka' penaltısı hangi oyuncunun adıyla özdeşleşmiştir?", "secenekler": { "A": "Antonín Panenka", "B": "Pavel Nedvěd", "C": "Karel Poborský", "D": "Josef Masopust" }, "dogru_cevap": "A" },
+        { "id": 572, "soru": "Antonín Panenka'nın meşhur penaltısı hangi turnuvanın finalinde atılmıştır?", "secenekler": { "A": "1976 Avrupa Şampiyonası", "B": "1978 Dünya Kupası", "C": "1980 Avrupa Şampiyonası", "D": "1974 Dünya Kupası" }, "dogru_cevap": "A" },
+        { "id": 573, "soru": "2006 Dünya Kupası'nda İtalya'nın kaptanı kimdi?", "secenekler": { "A": "Fabio Cannavaro", "B": "Gianluigi Buffon", "C": "Andrea Pirlo", "D": "Francesco Totti" }, "dogru_cevap": "A" },
+        { "id": 574, "soru": "2006 Dünya Kupası finalinde İtalya adına ilk penaltıyı kim gole çevirdi?", "secenekler": { "A": "Andrea Pirlo", "B": "Francesco Totti", "C": "Fabio Grosso", "D": "Alessandro Del Piero" }, "dogru_cevap": "A" },
+        { "id": 575, "soru": "2018 Dünya Kupası finalinde Fransa'nın Hırvatistan'ı yenmesinin ardından Fransa kaçıncı kez dünya şampiyonu oldu?", "secenekler": { "A": "İlk", "B": "İkinci", "C": "Üçüncü", "D": "Dördüncü" }, "dogru_cevap": "B" },
+        { "id": 576, "soru": "2022 Dünya Kupası finalinde Fransa'nın uzatma dakikalarındaki golünü kim attı?", "secenekler": { "A": "Olivier Giroud", "B": "Kylian Mbappé", "C": "Kingsley Coman", "D": "Antoine Griezmann" }, "dogru_cevap": "B" },
+        { "id": 577, "soru": "2022 Dünya Kupası finalinde Arjantin adına penaltı atışlarında kaçıran oyuncu kimdi?", "secenekler": { "A": "Paulo Dybala", "B": "Enzo Fernández", "C": "Rodrigo De Paul", "D": "Hiçbiri" }, "dogru_cevap": "D" },
+        { "id": 578, "soru": "2002 Dünya Kupası finalinde Brezilya'nın iki golünü de atan futbolcu kimdir?", "secenekler": { "A": "Rivaldo", "B": "Ronaldo", "C": "Ronaldinho", "D": "Cafu" }, "dogru_cevap": "B" },
+        { "id": 579, "soru": "1998 Dünya Kupası finalinde Brezilya'nın ilk 11'inde yer alması beklenirken son anda kadrodan çıkarılan yıldız oyuncu kimdi?", "secenekler": { "A": "Ronaldo", "B": "Romário", "C": "Bebeto", "D": "Rivaldo" }, "dogru_cevap": "A" },
+        { "id": 580, "soru": "1982 Dünya Kupası'nda Brezilya'nın teknik direktörü kimdi?", "secenekler": { "A": "Telê Santana", "B": "Carlos Alberto Parreira", "C": "Mario Zagallo", "D": "Vanderlei Luxemburgo" }, "dogru_cevap": "A" }
+      ]
+    },
+    {
+      "kategori_id": 59,
+      "kategori_adi": "Unutulmaz Dünya Kupası Anları",
+      "kategori_ikon": "👑",
+      "gereken_yildiz": 200,
+      "sorular": [
+        { "id": 581, "soru": "1982 Dünya Kupası'nda İtalya'nın Brezilya'yı 3-2 yendiği maçta üç golü de kim attı?", "secenekler": { "A": "Paolo Rossi", "B": "Roberto Baggio", "C": "Bruno Conti", "D": "Marco Tardelli" }, "dogru_cevap": "A" },
+        { "id": 582, "soru": "1986 Dünya Kupası'nda İngiltere'ye karşı iki gol atan Maradona'nın ilk golü hangi nedenle tarihe geçti?", "secenekler": { "A": "Orta sahadan atıldığı için", "B": "Elle atıldığı için", "C": "Frikikten atıldığı için", "D": "Kendi kalesine olduğu için" }, "dogru_cevap": "B" },
+        { "id": 583, "soru": "1986 Dünya Kupası'nda Maradona'nın İngiltere'ye attığı ikinci gol kaç İngiliz oyuncuyu geçerek geldi?", "secenekler": { "A": "3", "B": "5", "C": "6", "D": "8" }, "dogru_cevap": "C" },
+        { "id": 584, "soru": "1986 Dünya Kupası finalinde Arjantin'in kaptanı kimdi?", "secenekler": { "A": "Jorge Burruchaga", "B": "Diego Maradona", "C": "Jorge Valdano", "D": "Claudio Caniggia" }, "dogru_cevap": "B" },
+        { "id": 585, "soru": "Futbol tarihinde 'Libero' pozisyonunu dünya çapında en çok özdeşleştiren oyunculardan biri kimdir?", "secenekler": { "A": "Franz Beckenbauer", "B": "Gerd Müller", "C": "Ruud Gullit", "D": "George Best" }, "dogru_cevap": "A" },
+        { "id": 586, "soru": "Arsène Wenger, Arsenal'in başına geçmeden önce hangi Japon kulübünü çalıştırdı?", "secenekler": { "A": "Gamba Osaka", "B": "Nagoya Grampus Eight", "C": "Kashima Antlers", "D": "Yokohama Marinos" }, "dogru_cevap": "B" },
+        { "id": 587, "soru": "José Mourinho'nun Şampiyonlar Ligi'ndeki ilk şampiyonluğu hangi kulüple geldi?", "secenekler": { "A": "Chelsea", "B": "Inter", "C": "Porto", "D": "Real Madrid" }, "dogru_cevap": "C" },
+        { "id": 588, "soru": "Pep Guardiola'nın teknik direktör olarak ilk Şampiyonlar Ligi şampiyonluğu hangi kulüple geldi?", "secenekler": { "A": "Bayern Münih", "B": "Barcelona", "C": "Manchester City", "D": "Manchester United" }, "dogru_cevap": "B" },
+        { "id": 589, "soru": "Carlo Ancelotti'nin teknik direktör olarak Şampiyonlar Ligi'ndeki ilk şampiyonluğu hangi kulüple geldi?", "secenekler": { "A": "Real Madrid", "B": "AC Milan", "C": "Chelsea", "D": "Paris Saint-Germain" }, "dogru_cevap": "B" },
+        { "id": 590, "soru": "Jürgen Klopp, Borussia Dortmund ile Bundesliga şampiyonluğunu ilk kez hangi sezonda kazandı?", "secenekler": { "A": "2009-10", "B": "2010-11", "C": "2011-12", "D": "2012-13" }, "dogru_cevap": "B" }
+      ]
+    },
+    {
+      "kategori_id": 60,
+      "kategori_adi": "Real Madrid Efsaneleri",
+      "kategori_ikon": "👑",
+      "gereken_yildiz": 210,
+      "sorular": [
+        { "id": 591, "soru": "Avrupa futbolunda 'La Quinta del Buitre' adı verilen Real Madrid kuşağının lakabındaki 'Buitre' hangi futbolcuyu ifade eder?", "secenekler": { "A": "Emilio Butragueño", "B": "Michel", "C": "Manuel Sanchís", "D": "Martín Vázquez" }, "dogru_cevap": "A" },
+        { "id": 592, "soru": "Real Madrid'in 1980'lerdeki ünlü 'La Quinta del Buitre' kuşağında yer alan futbolculardan biri hangisidir?", "secenekler": { "A": "Fernando Hierro", "B": "Emilio Butragueño", "C": "Raúl González", "D": "Iker Casillas" }, "dogru_cevap": "B" },
+        { "id": 593, "soru": "Real Madrid formasıyla 5 kez üst üste Şampiyon Kulüpler Kupası kazanan efsanevi Arjantinli/İspanyol futbolcu kimdir?", "secenekler": { "A": "Ferenc Puskas", "B": "Alfredo Di Stefano", "C": "Francisco Gento", "D": "Raymond Kopa" }, "dogru_cevap": "B" },
+        { "id": 594, "soru": "Real Madrid ile 6 kez Şampiyon Kulüpler Kupası kazanan tek futbolcu kimdir?", "secenekler": { "A": "Alfredo Di Stefano", "B": "Francisco Gento", "C": "Ferenc Puskas", "D": "José María Zárraga" }, "dogru_cevap": "B" },
+        { "id": 595, "soru": "Real Madrid'in efsanevi başkanı Santiago Bernabéu'nun adını taşıyan stadyum hangi şehirdedir?", "secenekler": { "A": "Barselona", "B": "Madrid", "C": "Valensiya", "D": "Sevilla" }, "dogru_cevap": "B" },
+        { "id": 596, "soru": "Real Madrid'in Şampiyonlar Ligi'nde üst üste 3 kez şampiyon olduğu dönemde takımın başında bulunan Fransız teknik direktör kimdi?", "secenekler": { "A": "Didier Deschamps", "B": "Zinedine Zidane", "C": "Arsene Wenger", "D": "Laurent Blanc" }, "dogru_cevap": "B" },
+        { "id": 597, "soru": "2014 Şampiyonlar Ligi finalinde Real Madrid'in Atletico Madrid'e karşı 93. dakikada beraberlik golünü atan futbolcu kimdir?", "secenekler": { "A": "Cristiano Ronaldo", "B": "Sergio Ramos", "C": "Gareth Bale", "D": "Karim Benzema" }, "dogru_cevap": "B" },
+        { "id": 598, "soru": "Real Madrid formasıyla 5 Ballon d'Or kazanan Portekizli süper yıldız kimdir?", "secenekler": { "A": "Luis Figo", "B": "Eusébio", "C": "Cristiano Ronaldo", "D": "Rui Costa" }, "dogru_cevap": "C" },
+        { "id": 599, "soru": "Real Madrid ile Şampiyonlar Ligi'ni 5 kez kazanan İtalyan teknik direktör kimdir?", "secenekler": { "A": "Massimiliano Allegri", "B": "Carlo Ancelotti", "C": "Antonio Conte", "D": "Luciano Spalletti" }, "dogru_cevap": "B" },
+        { "id": 600, "soru": "Real Madrid'in 2023-2024 sezonunda Şampiyonlar Ligi'ni kazanmasıyla bu kupayı en çok kazanan teknik direktör olan isim kimdir?", "secenekler": { "A": "Zinedine Zidane", "B": "Carlo Ancelotti", "C": "Pep Guardiola", "D": "Alex Ferguson" }, "dogru_cevap": "B" }
+      ]
+    }
+  ]
+}
