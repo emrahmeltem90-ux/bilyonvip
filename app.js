@@ -1,7 +1,7 @@
 'use strict';
 
 /* ============================================================
-   SKORLAB QUIZ · app.js (REKLAM ENTEGRELİ TAM SÜRÜM)
+   SKORLAB QUIZ · app.js (MONETAG + ADSGRAM + TÜM ÖZELLİKLER)
    ============================================================ */
 
 let TG = null;
@@ -47,31 +47,15 @@ function muzikToggle() {
 }
 
 /* ============================================================
-   REKLAM İZLE KAZAN (Adsgram) - BlockID: 53759
+   REKLAM İZLE KAZAN (Monetag) - Zone ID: 12026248
    ============================================================ */
-let adController = null;
-
-function reklamBaslat() {
-  if (typeof window.Adsgram === 'undefined') {
-    console.warn('Adsgram yüklenmemiş');
+function monetagReklamIzle() {
+  if (typeof window.show_12026248 !== 'function') {
+    toast('📺 Reklam sistemi yükleniyor, tekrar dene');
     return;
   }
   try {
-    adController = window.Adsgram.init({ blockId: "53759" });
-    console.log('✅ Adsgram hazır');
-  } catch (e) {
-    console.error('Adsgram init hatası:', e);
-  }
-}
-
-async function reklamIzle() {
-  if (!adController) {
-    reklamBaslat();
-    if (!adController) { toast('📺 Reklam sistemi yükleniyor, tekrar dene'); return; }
-  }
-  try {
-    const result = await adController.show();
-    if (result && result.done) {
+    window.show_12026248().then(() => {
       user.coin += 50;
       persistUser();
       ustBarGuncelle();
@@ -80,18 +64,14 @@ async function reklamIzle() {
       titreşim(100);
       toast('🎉 +50 Coin kazandın!');
       ucanPuan('+50 💰', 'var(--gold)');
-    } else {
+    }).catch(() => {
       toast('⚠️ Reklam tamamlanmadı');
-    }
+    });
   } catch (e) {
-    console.error('Reklam hatası:', e);
-    toast('⚠️ Reklam yüklenemedi veya atlandı');
+    console.error('Monetag hatası:', e);
+    toast('⚠️ Reklam yüklenemedi');
   }
 }
-
-window.addEventListener('load', () => {
-  setTimeout(() => reklamBaslat(), 2000);
-});
 
 /* ============================================================
    YARDIMCI FONKSİYONLAR
@@ -1583,4 +1563,4 @@ async function bilgiGoster() {
    ============================================================ */
 function closeModal(id) {
   document.getElementById(id)?.classList.remove('aktif');
-   }
+     }
