@@ -8,12 +8,11 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="style.css?v=24">
+<link rel="stylesheet" href="style.css?v=25">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
 
-<!-- ÜST PROFİL BARI -->
 <header class="profil-bar">
   <div class="pb-avatar" id="pbAvatar">👤</div>
   <div class="pb-bilgi">
@@ -26,18 +25,19 @@
   </div>
 </header>
 
-<!-- TAB MENÜ -->
 <nav class="tabs">
   <button type="button" class="tab active" onclick="switchTab(1,this)">🎰 Toto</button>
   <button type="button" class="tab" onclick="switchTab(2,this)">⚽ Tahmin</button>
   <button type="button" class="tab" onclick="switchTab(3,this)">💾 Kuponlar</button>
-  <button type="button" class="tab" onclick="switchTab(4,this)">🏆 Sıralama</button>
-  <button type="button" class="tab" onclick="switchTab(5,this)">👑 VIP</button>
+  <button type="button" class="tab" onclick="switchTab(4,this)">🎯 Sezon</button>
+  <button type="button" class="tab" onclick="switchTab(5,this)">👤 Profil</button>
+  <button type="button" class="tab" onclick="switchTab(6,this)">🏆 Sıralama</button>
+  <button type="button" class="tab" onclick="switchTab(7,this)">👑 VIP</button>
 </nav>
 
 <main>
 
-<!-- SAYFA 1: TOTO (KLASİK) -->
+<!-- SAYFA 1: TOTO -->
 <section id="page-1" class="page active">
   <div class="kasa-kart">
     <div class="kasa-baslik">💰 KASAM</div>
@@ -89,8 +89,22 @@
   </div>
 </section>
 
-<!-- SAYFA 4: SIRALAMA -->
+<!-- SAYFA 4: SEZON -->
 <section id="page-4" class="page">
+  <div class="card" style="border:2px solid var(--gold)">
+    <div class="result-title" style="color:var(--gold)">🎯 SEZON TAHMİNLERİ</div>
+    <div class="muted" style="font-size:.72rem;margin-bottom:12px">İleriye dönük tahminler · Sezon sonu çözülür</div>
+  </div>
+  <div id="sezonListesi"></div>
+</section>
+
+<!-- SAYFA 5: PROFİL -->
+<section id="page-5" class="page">
+  <div id="profilListesi"></div>
+</section>
+
+<!-- SAYFA 6: SIRALAMA -->
+<section id="page-6" class="page">
   <div class="card">
     <div class="result-title">🏆 LİDERLİK</div>
     <div id="siralamaListesi"></div>
@@ -101,14 +115,13 @@
   </div>
 </section>
 
-<!-- SAYFA 5: VIP -->
-<section id="page-5" class="page">
+<!-- SAYFA 7: VIP -->
+<section id="page-7" class="page">
   <div id="vipListesi"></div>
 </section>
 
 </main>
 
-<!-- ALT KUPON ÇUBUĞU -->
 <div class="kupon-cubugu" id="kuponCubugu">
   <div class="kc-info">
     <div class="kc-satir"><span>Bahis</span><b id="kcToto">0</b></div>
@@ -164,6 +177,17 @@
   </div>
 </div>
 
+<!-- MODAL: PROFİL DÜZENLE -->
+<div class="modal" id="profilDuzenleModal">
+  <div class="modal-content">
+    <div class="modal-head">
+      <span>⚙️ PROFİLİ DÜZENLE</span>
+      <button type="button" onclick="closeModal('profilDuzenleModal')">✖</button>
+    </div>
+    <div class="modal-body" id="profilDuzenleBody"></div>
+  </div>
+</div>
+
 <!-- MODAL: TOAST -->
 <div class="modal" id="toastModal">
   <div class="modal-content small">
@@ -176,11 +200,10 @@
   </div>
 </div>
 
-<!-- ANİMASYON KATMANLARI -->
 <div id="konfetiKatman" class="konfeti-katman"></div>
 <div id="ucanKatman" class="ucan-katman"></div>
 
-<script src="app.js?v=24"></script>
+<script src="app.js?v=25"></script>
 <script>
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(() => {});
