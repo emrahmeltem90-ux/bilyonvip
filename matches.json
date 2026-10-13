@@ -20,8 +20,7 @@
   ],
   "ligler": {
     "premier": {
-      "isim": "Premier League",
-      "bayrak": "🇬🇧",
+      "isim": "Premier League", "bayrak": "🇬🇧",
       "maclar": [
         { "mac_id": 101, "ev": "Everton", "dep": "Chelsea", "saat": "14:30", "sonuc": null },
         { "mac_id": 102, "ev": "Fulham", "dep": "Hull City", "saat": "17:00", "sonuc": null },
@@ -35,8 +34,7 @@
       ]
     },
     "laliga": {
-      "isim": "La Liga",
-      "bayrak": "🇪🇸",
+      "isim": "La Liga", "bayrak": "🇪🇸",
       "maclar": [
         { "mac_id": 201, "ev": "Deportivo", "dep": "Levante", "saat": "22:00", "sonuc": null },
         { "mac_id": 202, "ev": "Espanyol", "dep": "Atl. Madrid", "saat": "15:00", "sonuc": null },
@@ -51,8 +49,7 @@
       ]
     },
     "seriea": {
-      "isim": "Serie A",
-      "bayrak": "🇮🇹",
+      "isim": "Serie A", "bayrak": "🇮🇹",
       "maclar": [
         { "mac_id": 301, "ev": "Frosinone", "dep": "Sassuolo", "saat": "21:45", "sonuc": null },
         { "mac_id": 302, "ev": "Venezia", "dep": "Napoli", "saat": "16:00", "sonuc": null },
@@ -67,8 +64,7 @@
       ]
     },
     "superlig": {
-      "isim": "Trendyol Süper Lig",
-      "bayrak": "🇹🇷",
+      "isim": "Trendyol Süper Lig", "bayrak": "🇹🇷",
       "maclar": [
         { "mac_id": 401, "ev": "Çorum FK", "dep": "Ç. Rizespor", "saat": "20:00", "sonuc": null },
         { "mac_id": 402, "ev": "Erzurumspor", "dep": "Eyüpspor", "saat": "13:30", "sonuc": null },
@@ -82,8 +78,7 @@
       ]
     },
     "sampiyonlar": {
-      "isim": "UEFA Şampiyonlar Ligi",
-      "bayrak": "🏆",
+      "isim": "UEFA Şampiyonlar Ligi", "bayrak": "🏆",
       "maclar": [
         { "mac_id": 501, "ev": "Sabah", "dep": "Slavia Prag", "saat": "19:45", "sonuc": null },
         { "mac_id": 502, "ev": "Lens", "dep": "Sporting CP", "saat": "19:45", "sonuc": null },
@@ -106,8 +101,7 @@
       ]
     },
     "avrupa": {
-      "isim": "UEFA Avrupa Ligi",
-      "bayrak": "🥈",
+      "isim": "UEFA Avrupa Ligi", "bayrak": "🥈",
       "maclar": [
         { "mac_id": 601, "ev": "Lyon", "dep": "Crystal Palace", "saat": "19:45", "sonuc": null },
         { "mac_id": 602, "ev": "Lech Poznan", "dep": "Leverkusen", "saat": "19:45", "sonuc": null },
@@ -128,6 +122,179 @@
         { "mac_id": 617, "ev": "NEC Nijmegen", "dep": "Levski Sofia", "saat": "22:00", "sonuc": null },
         { "mac_id": 618, "ev": "Bournemouth", "dep": "Sturm Graz", "saat": "22:00", "sonuc": null }
       ]
+    }
+  },
+  "sezon": {
+    "superlig_sampiyon": {
+      "baslik": "🇹🇷 Süper Lig Şampiyonu",
+      "tip": "tek_secim",
+      "secenekler": [
+        { "isim": "Galatasaray", "oran": 2.20 },
+        { "isim": "Fenerbahçe", "oran": 2.80 },
+        { "isim": "Beşiktaş", "oran": 5.00 },
+        { "isim": "Trabzonspor", "oran": 6.50 },
+        { "isim": "Başakşehir", "oran": 15.00 },
+        { "isim": "Samsunspor", "oran": 25.00 },
+        { "isim": "Konyaspor", "oran": 50.00 }
+      ],
+      "sonuc": null
+    },
+    "superlig_dusenler": {
+      "baslik": "📉 Süper Lig'den Düşen 4 Takım",
+      "tip": "coklu_secim",
+      "kacSecim": 4,
+      "secenekler": [
+        { "isim": "Çorum FK", "oran": 1.50 },
+        { "isim": "Erzurumspor", "oran": 1.80 },
+        { "isim": "Amed Sportif", "oran": 2.00 },
+        { "isim": "Kasımpaşa", "oran": 2.50 },
+        { "isim": "Kocaelispor", "oran": 3.00 },
+        { "isim": "Göztepe", "oran": 4.00 }
+      ],
+      "sonuc": null
+    },
+    "superlig_gol_krali": {
+      "baslik": "⚽ Süper Lig Gol Kralı",
+      "tip": "tek_secim",
+      "secenekler": [
+        { "isim": "Muhammed Salah", "oran": 1.80 },
+        { "isim": "Gift Orban", "oran": 2.50 },
+        { "isim": "Vedat Muriç", "oran": 3.00 },
+        { "isim": "Victor Osimhen", "oran": 3.00 },
+        { "isim": "Eldor Shomurodov", "oran": 3.50 },
+        { "isim": "Dusan Vlahovic", "oran": 4.50 },
+        { "isim": "Mason Greenwood", "oran": 6.00 },
+        { "isim": "Adrian Benedyczak", "oran": 8.00 }
+      ],
+      "sonuc": null
+    },
+    "premier_sampiyon": {
+      "baslik": "🇬🇧 Premier Lig Şampiyonu",
+      "tip": "tek_secim",
+      "secenekler": [
+        { "isim": "Man. City", "oran": 1.80 },
+        { "isim": "Arsenal", "oran": 3.00 },
+        { "isim": "Liverpool", "oran": 4.00 },
+        { "isim": "Chelsea", "oran": 8.00 },
+        { "isim": "Man. United", "oran": 12.00 },
+        { "isim": "Tottenham", "oran": 20.00 }
+      ],
+      "sonuc": null
+    },
+    "premier_gol_krali": {
+      "baslik": "⚽ Premier Lig Gol Kralı",
+      "tip": "tek_secim",
+      "secenekler": [
+        { "isim": "Erling Haaland", "oran": 1.60 },
+        { "isim": "João Pedro", "oran": 4.00 },
+        { "isim": "Rayan Cherki", "oran": 5.00 },
+        { "isim": "Alexander Isak", "oran": 5.00 },
+        { "isim": "Morgan Rogers", "oran": 6.00 },
+        { "isim": "Bukayo Saka", "oran": 8.00 }
+      ],
+      "sonuc": null
+    },
+    "laliga_sampiyon": {
+      "baslik": "🇪🇸 La Liga Şampiyonu",
+      "tip": "tek_secim",
+      "secenekler": [
+        { "isim": "Real Madrid", "oran": 1.70 },
+        { "isim": "Barcelona", "oran": 2.50 },
+        { "isim": "Atl. Madrid", "oran": 5.00 },
+        { "isim": "Athletic Club", "oran": 12.00 },
+        { "isim": "Villarreal", "oran": 20.00 }
+      ],
+      "sonuc": null
+    },
+    "laliga_gol_krali": {
+      "baslik": "⚽ La Liga Gol Kralı",
+      "tip": "tek_secim",
+      "secenekler": [
+        { "isim": "Raphinha", "oran": 1.40 },
+        { "isim": "Kylian Mbappé", "oran": 3.00 },
+        { "isim": "Lamine Yamal", "oran": 3.50 },
+        { "isim": "Sergio Camello", "oran": 4.00 },
+        { "isim": "Yassir Zabiri", "oran": 6.00 },
+        { "isim": "Robert Lewandowski", "oran": 8.00 }
+      ],
+      "sonuc": null
+    },
+    "seriea_sampiyon": {
+      "baslik": "🇮🇹 Serie A Şampiyonu",
+      "tip": "tek_secim",
+      "secenekler": [
+        { "isim": "Inter", "oran": 1.90 },
+        { "isim": "Milan", "oran": 3.50 },
+        { "isim": "Juventus", "oran": 4.00 },
+        { "isim": "Napoli", "oran": 6.00 },
+        { "isim": "Roma", "oran": 10.00 }
+      ],
+      "sonuc": null
+    },
+    "seriea_gol_krali": {
+      "baslik": "⚽ Serie A Gol Kralı",
+      "tip": "tek_secim",
+      "secenekler": [
+        { "isim": "Donyell Malen", "oran": 2.00 },
+        { "isim": "Lautaro Martinez", "oran": 2.50 },
+        { "isim": "Antonio Raimondo", "oran": 4.00 },
+        { "isim": "Gustavo Varela", "oran": 5.00 },
+        { "isim": "Gonçalo Ramos", "oran": 6.00 },
+        { "isim": "Dusan Vlahovic", "oran": 8.00 }
+      ],
+      "sonuc": null
+    },
+    "sl_sampiyon": {
+      "baslik": "🏆 Şampiyonlar Ligi Şampiyonu",
+      "tip": "tek_secim",
+      "secenekler": [
+        { "isim": "Real Madrid", "oran": 3.50 },
+        { "isim": "Man. City", "oran": 4.00 },
+        { "isim": "Bayern Münih", "oran": 5.00 },
+        { "isim": "Barcelona", "oran": 6.00 },
+        { "isim": "Arsenal", "oran": 8.00 },
+        { "isim": "Inter", "oran": 10.00 },
+        { "isim": "PSG", "oran": 12.00 },
+        { "isim": "Liverpool", "oran": 14.00 },
+        { "isim": "Dortmund", "oran": 20.00 }
+      ],
+      "sonuc": null
+    },
+    "sl_ilk8": {
+      "baslik": "🎯 ŞL İlk 8'e Çıkan Takımlar",
+      "tip": "coklu_secim",
+      "kacSecim": 8,
+      "secenekler": [
+        { "isim": "Real Madrid", "oran": 1.30 },
+        { "isim": "Man. City", "oran": 1.40 },
+        { "isim": "Bayern Münih", "oran": 1.50 },
+        { "isim": "Barcelona", "oran": 1.80 },
+        { "isim": "Inter", "oran": 1.90 },
+        { "isim": "Arsenal", "oran": 2.00 },
+        { "isim": "PSG", "oran": 2.20 },
+        { "isim": "Liverpool", "oran": 2.50 },
+        { "isim": "Dortmund", "oran": 3.00 },
+        { "isim": "Atl. Madrid", "oran": 3.50 },
+        { "isim": "Juventus", "oran": 4.00 },
+        { "isim": "Porto", "oran": 5.00 },
+        { "isim": "Benfica", "oran": 6.00 },
+        { "isim": "Ajax", "oran": 8.00 }
+      ],
+      "sonuc": null
+    },
+    "sl_gol_krali": {
+      "baslik": "⚽ ŞL Gol Kralı",
+      "tip": "tek_secim",
+      "secenekler": [
+        { "isim": "Ermedin Demirović", "oran": 2.00 },
+        { "isim": "Ferran Torres", "oran": 2.50 },
+        { "isim": "Erling Haaland", "oran": 3.00 },
+        { "isim": "Raphinha", "oran": 4.00 },
+        { "isim": "Ousmane Dembélé", "oran": 5.00 },
+        { "isim": "Serhou Guirassy", "oran": 6.00 },
+        { "isim": "Michael Olise", "oran": 8.00 }
+      ],
+      "sonuc": null
     }
   }
 }
