@@ -47,46 +47,76 @@
 </header>
 
 <!-- ANA MENÜ -->
-<div id="menuEkran" class="ekran aktif" style="display:none">
+<div id="menuEkran" class="ekran aktif">
   <div class="menu-icerik">
-    <div class="menu-logo">
-      <div class="menu-logo-ikon">🏆</div>
-      <h1 class="menu-logo-yazi">SKORLAB<br><span>QUIZ</span></h1>
+
+    <div class="menu-karsilama">
+      <div class="mk-isim">Merhaba, <b id="menuIsim">Oyuncu</b>! 👋</div>
+      <div class="mk-alt">Bugün hangi kategoriyi fethediyorsun?</div>
     </div>
-    <div class="menu-butonlar">
-      <button class="menu-btn btn-yesil" onclick="oyunaBasla()">
-        <span class="mb-ikon">▶️</span>
-        <span class="mb-yazi">OYUNA BAŞLA</span>
+
+    <button class="menu-buyuk-btn" onclick="oyunaBasla()">
+      <div class="mbb-sol">
+        <div class="mbb-ikon">⚽</div>
+        <div class="mbb-yazi">
+          <div class="mbb-ust">OYUNA BAŞLA</div>
+          <div class="mbb-alt">600 soru · 60 kategori</div>
+        </div>
+      </div>
+      <div class="mbb-ok">▶</div>
+    </button>
+
+    <div class="menu-grid">
+      <button class="menu-grid-btn" onclick="gunlukOdulAc()">
+        <div class="mgb-ikon">🎁</div>
+        <div class="mgb-yazi">Günlük</div>
+        <div class="mgb-badge" id="gunlukBadge">🔴</div>
       </button>
-      <button class="menu-btn btn-altin" onclick="gunlukOdulAc()">
-        <span class="mb-ikon">🎁</span>
-        <span class="mb-yazi">GÜNLÜK ÖDÜL</span>
+      <button class="menu-grid-btn" onclick="carkifelekAc()">
+        <div class="mgb-ikon">🎡</div>
+        <div class="mgb-yazi">Çark</div>
+        <div class="mgb-badge" id="carkBadge">🔴</div>
       </button>
-      <button class="menu-btn btn-turuncu" onclick="carkifelekAc()">
-        <span class="mb-ikon">🎡</span>
-        <span class="mb-yazi">ÇARKIFELEK</span>
+      <button class="menu-grid-btn" onclick="basarimlarAc()">
+        <div class="mgb-ikon">🏆</div>
+        <div class="mgb-yazi">Başarım</div>
       </button>
-      <button class="menu-btn btn-mor" onclick="basarimlarAc()">
-        <span class="mb-ikon">🏆</span>
-        <span class="mb-yazi">BAŞARIMLAR</span>
+      <button class="menu-grid-btn" onclick="magazaAc()">
+        <div class="mgb-ikon">🛒</div>
+        <div class="mgb-yazi">Mağaza</div>
       </button>
-      <button class="menu-btn btn-mavi" onclick="magazaAc()">
-        <span class="mb-ikon">🛒</span>
-        <span class="mb-yazi">MAĞAZA</span>
+      <button class="menu-grid-btn" onclick="profilAc()">
+        <div class="mgb-ikon">👤</div>
+        <div class="mgb-yazi">Profil</div>
       </button>
-      <button class="menu-btn btn-pembe" onclick="profilAc()">
-        <span class="mb-ikon">👤</span>
-        <span class="mb-yazi">PROFİL</span>
-      </button>
-      <button class="menu-btn btn-kirmizi" onclick="vipAc()">
-        <span class="mb-ikon">👑</span>
-        <span class="mb-yazi">VIP</span>
-      </button>
-      <button class="menu-btn btn-gri" onclick="ayarlarAc()">
-        <span class="mb-ikon">⚙️</span>
-        <span class="mb-yazi">AYARLAR</span>
+      <button class="menu-grid-btn menu-vip" onclick="vipAc()">
+        <div class="mgb-ikon">👑</div>
+        <div class="mgb-yazi">VIP</div>
       </button>
     </div>
+
+    <div class="menu-stat-grid">
+      <div class="menu-stat">
+        <div class="ms-ikon">⭐</div>
+        <div class="ms-deger" id="menuYildiz">0</div>
+        <div class="ms-lbl">YILDIZ</div>
+      </div>
+      <div class="menu-stat">
+        <div class="ms-ikon">🎯</div>
+        <div class="ms-deger" id="menuDogru">0</div>
+        <div class="ms-lbl">DOĞRU</div>
+      </div>
+      <div class="menu-stat">
+        <div class="ms-ikon">🏆</div>
+        <div class="ms-deger" id="menuBasarim">0</div>
+        <div class="ms-lbl">BAŞARIM</div>
+      </div>
+    </div>
+
+    <button class="menu-ayar-btn" onclick="ayarlarAc()">
+      ⚙️ Ayarlar
+    </button>
+
   </div>
 </div>
 
