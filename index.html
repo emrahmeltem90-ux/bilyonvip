@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>SkorLab Quiz</title>
-<link rel="stylesheet" href="style.css?v=3">
+<link rel="stylesheet" href="style.css?v=5">
+<script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 </head>
 <body>
 
@@ -83,7 +84,18 @@
       <div class="mbb-ust">Ayarlar</div>
     </button>
   </div>
-  <div class="menu-istatistik">
+
+  <!-- REKLAM İZLE KAZAN BUTONU -->
+  <button class="menu-buyuk-btn" onclick="reklamIzle()" style="background:linear-gradient(135deg,#ff9f1c,#e67e00);margin-top:10px;box-shadow:0 8px 30px rgba(255,159,28,.3)">
+    <span class="mbb-ikon">📺</span>
+    <div class="mbb-icerik">
+      <div class="mbb-ust">REKLAM İZLE KAZAN</div>
+      <div class="mbb-alt">+50 💰 Coin kazan</div>
+    </div>
+    <span class="mbb-ok">▶</span>
+  </button>
+
+  <div class="menu-istatistik" style="margin-top:20px">
     <div class="mi-kart">
       <div class="mi-ikon">⭐</div>
       <div class="mi-deger" id="menuYildiz">0</div>
@@ -404,6 +416,6 @@
 <!-- UÇAN PUAN -->
 <div id="ucanKatman" class="ucan-katman"></div>
 
-<script src="app.js?v=3"></script>
+<script src="app.js?v=5"></script>
 </body>
 </html>
