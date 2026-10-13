@@ -1,4 +1,43 @@
 /* ============================================================
+   ARKA PLAN MÜZİĞİ (muzik.mp3)
+   ============================================================ */
+let muzikObj = null;
+let muzikCalıyor = false;
+
+function muzikBaslat() {
+  if (muzikCalıyor || !user.muzik) return;
+  try {
+    if (!muzikObj) {
+      muzikObj = new Audio('muzik.mp3');
+      muzikObj.loop = true;
+      muzikObj.volume = 0.35;
+    }
+    muzikObj.play().then(() => { muzikCalıyor = true; }).catch(() => {});
+  } catch (e) {}
+}
+
+function muzikDurdur() {
+  if (!muzikObj) return;
+  try {
+    muzikObj.pause();
+    muzikObj.currentTime = 0;
+    muzikCalıyor = false;
+  } catch (e) {}
+}
+
+function muzikToggle() {
+  user.muzik = !user.muzik;
+  persistUser();
+  if (user.muzik) {
+    muzikBaslat();
+    toast('🎵 Müzik açık');
+  } else {
+    muzikDurdur();
+    toast('🔇 Müzik kapalı');
+  }
+}
+
+/* ============================================================
    SKORLAB QUIZ · app.js (TAM SÜRÜM)
    ============================================================ */
 'use strict';
