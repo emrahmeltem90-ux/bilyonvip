@@ -1,0 +1,785 @@
+{
+  "bolum": "VIP_EFSANELER_PAKET_2",
+  "kategoriler": [
+    {
+      "kategori_id": 911,
+      "kategori_adi": "👑 Şampiyonluk Skandalları ve Son Düzlük Dramaları",
+      "kategori_ikon": "🏆",
+      "gereken_yildiz": 0,
+      "sorular": [
+        {
+          "id": 101,
+          "soru": "2011-2012 Süper Lig sezonunda şampiyonun Süper Final maçında Kadıköy'de karanlıkta kupayı kaldırması olayında ışıklar neden kapatılmıştır?",
+          "secenekler": { "A": "Fenerbahçe yönetiminin protestosu ve stadyum güvenliği gerekçesiyle", "B": "Elektrikler kesildiği için", "C": "TFF emrettiği için", "D": "Havai fişek gösterisi için" },
+          "dogru": "A",
+          "aciklama": "0-0 biten maçın ardından Galatasaray karanlığa bürünen Kadıköy çimlerinde kupayı kaldırarak tarihe geçmiştir."
+        },
+        {
+          "id": 102,
+          "soru": "2010 yılında Kadıköy'de Trabzonspor ile 1-1 berabere kalan Fenerbahçe taraftarının birkaç dakika boyunca kendilerini şampiyon sanmasının sebebi neydi?",
+          "secenekler": { "A": "Stat anonsçusunun 'Bursa'da maç 2-2 bitti' şeklinde sahte anons yapması", "B": "Hakemin yanlış düdük çalması", "C": "Puan tablosunun yanlış hesaplanması", "D": "Bursa maçının iptal edildiğinin sanılması" },
+          "dogru": "A",
+          "aciklama": "Yanlış anons yüzünden Kadıköy'de sahadaki futbolcular ve taraftarlar tura başlamış, gerçek kısa süre sonra anlaşılmıştır."
+        },
+        {
+          "id": 103,
+          "soru": "2012 Premier League son haftasında Manchester City'nin 90+4'te QPR'a attığı golle mucize şampiyonluk getiren efsanevi forvet kimdir?",
+          "secenekler": { "A": "Sergio Agüero", "B": "Edin Dzeko", "C": "Mario Balotelli", "D": "Carlos Tevez" },
+          "dogru": "A",
+          "aciklama": "Spikerin 'AGÜEROOOOO!' nidasıyla özdeşleşen bu gol, Premier League tarihinin en dramatik şampiyonluk anıdır."
+        },
+        {
+          "id": 104,
+          "soru": "2000-2001 sezonunda Leverkusen, Bundesliga şampiyonluğu için son hafta Unterhaching'e yenilip kupayı kaçırınca Michael Ballack ne yapmıştır?",
+          "secenekler": { "A": "Kendi kalesine gol atarak şampiyonluğun gitmesine sebep olmuştur", "B": "Kırmızı kart görmüştür", "C": "Penaltı kaçırmıştır", "D": "Hakemle kavga etmiştir" },
+          "dogru": "A",
+          "aciklama": "Ballack'ın kendi kalesine attığı talihsiz gol yüzünden Leverkusen şampiyonluğu Bayern Münih'e kaptırmış ve 'Neverkusen' unvanını almıştır."
+        },
+        {
+          "id": 105,
+          "soru": "2014 yılında Liverpool şampiyonluğa koşarken Chelsea maçında ayağı kayıp topu Demba Ba'ya kaptıran ve şampiyonluğu veren efsane kaptan kimdir?",
+          "secenekler": { "A": "Steven Gerrard", "B": "Jamie Carragher", "C": "Jordan Henderson", "D": "Daniel Agger" },
+          "dogru": "A",
+          "aciklama": "Gerrard'ın talihsiz ayağının kayması sonucu Demba Ba golü atmış ve Liverpool ilk Premier League şampiyonluğunu o yıl kaçırmıştır."
+        },
+        {
+          "id": 106,
+          "soru": "2002'de Serie A son haftasına lider giren Inter, Lazio'ya 4-2 yenilip 3. sıraya gerileyince kulübede hüngür hüngür ağlayan efsane kimdir?",
+          "secenekler": { "A": "Ronaldo (Fenomen)", "B": "Christian Vieri", "C": "Javier Zanetti", "D": "Alvaro Recoba" },
+          "dogru": "A",
+          "aciklama": "Ronaldo'nun kulübede gözyaşlarına boğulduğu o anlar '5 Mayıs Trajedisi' olarak İtalyan futbol tarihine kazınmıştır."
+        },
+        {
+          "id": 107,
+          "soru": "2021 Süper Lig son haftasında Beşiktaş, Galatasaray ile aynı puanda girdiği son maçta averajla şampiyon olurken iki takım arasındaki genel averaj farkı kaç goldü?",
+          "secenekler": { "A": "Sadece 1 gol", "B": "3 gol", "C": "5 gol", "D": "Averaj eşit, atılan golle" },
+          "dogru": "A",
+          "aciklama": "Beşiktaş Göztepe'yi 2-1, Galatasaray Malatyaspor'u 3-1 yenmiş ve Beşiktaş +1 averaj farkıyla şampiyon olmuştur."
+        },
+        {
+          "id": 108,
+          "soru": "1989'da İngiltere Ligi son maçında Arsenal'ın şampiyon olması için Anfield'da Liverpool'u en az 2 farkla yenmesi gerekiyordu. Şampiyonluk golü kaçıncı dakikada geldi?",
+          "secenekler": { "A": "90+1. Dakikada (Michael Thomas)", "B": "85. Dakikada", "C": "90+5. Dakikada", "D": "78. Dakikada" },
+          "dogru": "A",
+          "aciklama": "Michael Thomas son saniyede attığı golle skoru 2-0 yapmış ve kupayı averajla Liverpool'un elinden söküp almıştır."
+        },
+        {
+          "id": 109,
+          "soru": "2023 yılında Bundesliga son haftasına lider giren Borussia Dortmund, kendi sahasında hangi takımla 2-2 berabere kalarak şampiyonluğu Bayern'e ikram etmiştir?",
+          "secenekler": { "A": "Mainz 05", "B": "Köln", "C": "Schalke 04", "D": "Wolfsburg" },
+          "dogru": "A",
+          "aciklama": "Dortmund kazanırsa şampiyon olacağı maçta Mainz ile 2-2 berabere kalmış ve Bayern 89. dakikadaki Musiala golüyle şampiyon olmuştur."
+        },
+        {
+          "id": 110,
+          "soru": "1992 yılında Süper Lig'de Beşiktaş mağlubiyetsiz şampiyon olurken lig boyunca kaç galibiyet kaç beraberlik almıştır?",
+          "secenekler": { "A": "23 Galibiyet, 7 Beraberlik", "B": "25 Galibiyet, 5 Beraberlik", "C": "20 Galibiyet, 10 Beraberlik", "D": "28 Galibiyet, 2 Beraberlik" },
+          "dogru": "A",
+          "aciklama": "Gordon Milne yönetimindeki Beşiktaş 30 maçta 23 galibiyet 7 beraberlikle Türkiye'nin ilk ve tek namaglup şampiyonu olmuştur."
+        }
+      ]
+    },
+    {
+      "kategori_id": 912,
+      "kategori_adi": "👕 Forma, Uğur ve Garip Moda Tercihleri",
+      "kategori_ikon": "🎽",
+      "gereken_yildiz": 0,
+      "sorular": [
+        {
+          "id": 111,
+          "soru": "1996 yılında Manchester United, Southampton maçının ilk yarısını 3-0 geride kapatınca Sir Alex Ferguson devre arasında oyunculara ne yaptırmıştır?",
+          "secenekler": { "A": "Gri olan deplasman formalarını çıkarttırıp mavi-beyaz yedek formayı giydirdi", "B": "Tüm kramponları değiştirtti", "C": "Oyuncuları azarlayıp taktiği sıfırladı", "D": "Sahaya çıkmama kararı aldı" },
+          "dogru": "A",
+          "aciklama": "Ferguson gri renk yüzünden oyuncuların sahada birbirini göremediğini iddia etmiş ve devre arasında forma değiştirmiştir."
+        },
+        {
+          "id": 112,
+          "soru": "Meksikalı efsanevi kaleci Jorge Campos'un 1990'lardaki Dünya Kupası maçlarında tüm dünyanın dikkatini çeken özelliği neydi?",
+          "secenekler": { "A": "Kendi tasarladığı cırtlak renkli, devasa ve fosforlu kaleci kazakları", "B": "Kask takması", "C": "Şortsuz oynaması", "D": "Sadece siyah giymesi" },
+          "dogru": "A",
+          "aciklama": "Campos kendi çizdiği rengarenk kaleci kıyafetleriyle turnuvanın en çok konuşulan figürü olmuştur."
+        },
+        {
+          "id": 113,
+          "soru": "1998 Dünya Kupası'nda Kolombiya forması giyen Carlos Valderrama'nın sahadaki en ikonik ve unutulmaz fiziksel özelliği neydi?",
+          "secenekler": { "A": "Devasa kıvırcık sarı saçları ve bileklikleri", "B": "Uzun sakalı", "C": "Dövmeleri", "D": "Siyah göz bandı" },
+          "dogru": "A",
+          "aciklama": "Valderrama kabarık sarı bonus saçlarıyla dünya futbol tarihinin en tanınan simalarından biri haline gelmiştir."
+        },
+        {
+          "id": 114,
+          "soru": "2002 Dünya Kupası öncesi saçlarının önünü yarım ay şeklinde kestirip arkasını tamamen kazıtan Ronaldo (Fenomen) bunu niye yapmıştır?",
+          "secenekler": { "A": "Medyadaki sakatlık dedikodularını unutturup dikkatleri saçına çekmek için", "B": "Bahsi kaybettiği için", "C": "Oğlunun isteği üzerine", "D": "Şans getirdiğine inandığı için" },
+          "dogru": "A",
+          "aciklama": "Ronaldo bacak sakatlığının konuşulmasından bıkmış, odağı değiştirmek için bu komik saç modelini kestirmiştir."
+        },
+        {
+          "id": 115,
+          "soru": "Kamerun Milli Takımı 2002 Afrika Uluslar Kupası'na giyerek katıldığı ve FIFA tarafından yasaklanan garip forma tasarımı neydi?",
+          "secenekler": { "A": "Kolsuz (Atlet şeklinde) formalar", "B": "Fermuarlı formalar", "C": "Şortsuz tulum forma", "D": "Şeffaf kumaşlı forma" },
+          "dogru": "A",
+          "aciklama": "Kamerun basketbol forması gibi kolsuz formayla oynamış, FIFA kural dışı sayarak Dünya Kupası'nda kollara siyah kumaş diktirmiştir."
+        },
+        {
+          "id": 116,
+          "soru": "İtalyan kulübü Fiorentina'nın 1992-93 sezonunda ürettiği deplasman forması hangi skandal görsel detay yüzünden toplatılmıştır?",
+          "secenekler": { "A": "Formanın desenlerinde farkında olmadan Gamalı Haç (Nazi sembolü) oluşması", "B": "İçini göstermesi", "C": "Sponsor logosunun hatalı olması", "D": "Renklerin kararması" },
+          "dogru": "A",
+          "aciklama": "Desenlerin birleştiği noktada gamalı haç motifleri fark edilince kulüp formayı acilen piyasadan çekip özür dilemiştir."
+        },
+        {
+          "id": 117,
+          "soru": "İspanyol takımı CD Palencia'nın 2016 yılında tanıttığı ve dünya basınında 'en çirkin forma' seçilen konsept neydi?",
+          "secenekler": { "A": "İnsan kas ve damar sistemini gösteren tulum şeklinde forma", "B": "Pizza desenli forma", "C": "Garson kıyafeti şeklinde forma", "D": "İskelet baskılı forma" },
+          "dogru": "A",
+          "aciklama": "Palencia oyuncuları sahaya derisi yüzülmüş insan kas anatomisi baskılı pembe formalarla çıkmıştır."
+        },
+        {
+          "id": 118,
+          "soru": "Inter'de 18 numaralı formayı giyen Iván Zamorano, 9 numarayı Ronaldo alınca formasına nasıl bir yaratıcı çözüm bulmuştur?",
+          "secenekler": { "A": "Formasına '1+8' yazdırarak toplama işaretiyle 9 yapması", "B": "99 numara giymesi", "C": "İsminin yanına 9 eklemesi", "D": "09 yazdırtması" },
+          "dogru": "A",
+          "aciklama": "Zamorano '1+8' yazılı formasıyla futbol tarihinin en ikonik forma numarası zekalarından birini sergilemiştir."
+        },
+        {
+          "id": 119,
+          "soru": "2004 yılında İtalyan Perugia takımı başkanı Luciano Gaucci'nin kulübe kadın futbolcu transfer etme girişiminde hedefindeki isim kimdi?",
+          "secenekler": { "A": "Hanna Ljungberg", "B": "Marta", "C": "Mia Hamm", "D": "Birgit Prinz" },
+          "dogru": "A",
+          "aciklama": "Çılgın başkan Gaucci İsveçli kadın futbolcu Ljungberg'i erkekler liginde oynatmak istemiş ancak Serie A yönetimi engellemiştir."
+        },
+        {
+          "id": 120,
+          "soru": "Süper Lig'de Gençlerbirliği efsane başkanı İlhan Cavcav'ın sakal bırakan futbolculara koyduğu ilginç ceza neydi?",
+          "secenekler": { "A": "25 Bin TL Para Cezası", "B": "Kadro dışı bırakma", "C": "Sakal tıraşı ettirme", "D": "Antrenmana almama" },
+          "dogru": "A",
+          "aciklama": "İlhan Cavcav 'Burası imam hatip mi, spor kulübü!' diyerek sakal bırakan futbolcularına para cezası yağdırmıştır."
+        }
+      ]
+    },
+    {
+      "kategori_id": 913,
+      "kategori_adi": "🤝 İhanetler, Unutulmaz Transfer Kazıkları ve Skandallar",
+      "kategori_ikon": "🐍",
+      "gereken_yildiz": 0,
+      "sorular": [
+        {
+          "id": 121,
+          "soru": "2000 yılında Barcelona'dan Real Madrid'e transfer olarak yüzyılın ihanetine imza atan Luís Figo'ya Camp Nou'daki ilk maçında ne fırlatılmıştır?",
+          "secenekler": { "A": "Kesik Domuz Kafası", "B": "Şişe", "C": "Golf topu", "D": "Telefon" },
+          "dogru": "A",
+          "aciklama": "Barça taraftarı Figo korner kullanırken sahaya pişmiş pişmiş kesik domuz kafası fırlatarak nefreti göstermiştir."
+        },
+        {
+          "id": 122,
+          "soru": "2010 yılında İngiltere Milli Takımı kaptanı John Terry'nin skandal bir şekilde takım arkadaşı Wayne Bridge ile ilgili yaşadığı olay neydi?",
+          "secenekler": { "A": "Wayne Bridge'in eski sevgilisiyle gizli ilişki yaşaması", "B": "Parasını çalması", "C": "Evini yakması", "D": "Arabasını çizmesi" },
+          "dogru": "A",
+          "aciklama": "Olay ortaya çıkınca Terry'nin kaptanlığı alınmış, Wayne Bridge de maçta Terry'nin elini sıkmamıştır."
+        },
+        {
+          "id": 123,
+          "soru": "Mauro Icardi'nin Sampdoria'da oynarken takım arkadaşı Maxi Lopez'in eşi Wanda Nara ile evlenmesi sonrası Arjantin medyasındaki skandal olaya ne ad verilir?",
+          "secenekler": { "A": "Wanda-Gate / Icardi İhaneti", "B": "Lopez Skandalı", "C": "Copa Wanda", "D": "Sampdoria Krizi" },
+          "dogru": "A",
+          "aciklama": "Maxi Lopez maçlarda Icardi'nin elini sıkmamış, Diego Maradona bile Icardi'nin milli takıma alınmaması gerektiğini savunmuştur."
+        },
+        {
+          "id": 124,
+          "soru": "2001 yılında Arsenal kaptanı iken sözleşmesi bitince ezeli rakip Tottenham'a bedelsiz giden ve Tottenham taraftarlarınca 'Judas' (Hain) ilan edilen stoper kimdir?",
+          "secenekler": { "A": "Sol Campbell", "B": "Ashley Cole", "C": "William Gallas", "D": "Emmanuel Adebayor" },
+          "dogru": "A",
+          "aciklama": "Sol Campbell 'Asla Arsenal'e gitmem' dedikten haftalar sonra Tottenham'dan ayrılıp Arsenal'e imza atmıştır."
+        },
+        {
+          "id": 125,
+          "soru": "Arsenal'dan Manchester City'ye transfer olan Emmanuel Adebayor'un Arsenal'a gol attıktan sonra yaptığı olay hareket neydi?",
+          "secenekler": { "A": "Bütün sahayı deparla koşup Arsenal taraftarlarının önünde kayarak sevinmesi", "B": "Formasını çıkartıp fırlatması", "C": "Kulübeye koşması", "D": "Armayı öpmesi" },
+          "dogru": "A",
+          "aciklama": "Adebayor 90 metre koşup eski taraftarlarının önünde dizlerinin üzerinde kaymış ve sahaya maddeler yağmıştır."
+        },
+        {
+          "id": 126,
+          "soru": "2011 yılında Atletico Madrid'den Real Madrid'e gitmeyeceğini söyleyip Chelsea üzerinden dön dolaş Real Madrid'e imza atan kaleci kimdir?",
+          "secenekler": { "A": "Thibaut Courtois", "B": "David de Gea", "C": "Kepa Arrizabalaga", "D": "Keylor Navas" },
+          "dogru": "A",
+          "aciklama": "Courtois Real Madrid'e imza atınca Atletico Madrid taraftarları stadyumdaki plaketini tahrip etmiştir."
+        },
+        {
+          "id": 127,
+          "soru": "1997 yılında Fenerbahçe'den Galatasaray'a transfer olan ve 'Ali Kırca ile Siyaset Meydanı' programında canlı yayında formayı giyen milli futbolcu kimdir?",
+          "secenekler": { "A": "Elvir Bolić / Ceyhun Eriş", "B": "Sergen Yalçın", "C": "Emre Belözoğlu", "D": "Haim Revivo" },
+          "dogru": "A",
+          "aciklama": "Revivo ve Ceyhun Eriş dönemlerinde ezeli rakip transferleri Türkiye'de magazin ve siyaset programlarına konu olmuştur."
+        },
+        {
+          "id": 128,
+          "soru": "2012'de Borussia Dortmund'dan Bayern Münih'e transferi Şampiyonlar Ligi finali öncesi açıklanan ve Dortmund taraftarını yıkan Alman yıldız kimdir?",
+          "secenekler": { "A": "Mario Götze", "B": "Robert Lewandowski", "C": "Mats Hummels", "D": "Manuel Neuer" },
+          "dogru": "A",
+          "aciklama": "Götze'nin serbest kalma bedeli ödenerek Bayern'e transfer olması Dortmund taraftarlarında büyük bir travma yaratmıştır."
+        },
+        {
+          "id": 129,
+          "soru": "2006'da Juventus küme düşürülünce takımı bırakmayıp B Ligi'nde oynayan efsanevi sadık oyunculardan biri kimdir?",
+          "secenekler": { "A": "Alessandro Del Piero / Buffon", "B": "Zlatan Ibrahimovic", "C": "Patrick Vieira", "D": "Fabio Cannavaro" },
+          "dogru": "A",
+          "aciklama": "Del Piero 'Bir centilmen kadınını asla terk etmez' diyerek Juve ile Serie B'de oynamış ve taraftarın sevgilisi olmuştur."
+        },
+        {
+          "id": 130,
+          "soru": "Beşiktaş'tan Fenerbahçe'ye transfer olduktan sonra Kadıköy'deki ilk derbide gol atıp Kadıköy panolarına koşan golcü kimdir?",
+          "secenekler": { "A": "Mert Nobre / Tümer Metin", "B": "Mamadou Niang", "C": "Jose Fernandao", "D": "Batshuayi" },
+          "dogru": "A",
+          "aciklama": "Tümer Metin ve Mert Nobre'nin Beşiktaş'tan Fenerbahçe'ye geçişi iki kulüp arasında uzun süre gerginlik yaratmıştır."
+        }
+      ]
+    },
+    {
+      "kategori_id": 914,
+      "kategori_adi": "🔊 Stadyum Anonsları, Tezahüratlar ve Tribün Geyikleri",
+      "kategori_ikon": "📣",
+      "gereken_yildiz": 0,
+      "sorular": [
+        {
+          "id": 131,
+          "soru": "Millwall taraftarlarının İngiltere'de kendilerinden herkesin nefret etmesi üzerine söylediği meşhur tezahürat nedir?",
+          "secenekler": { "A": "'No one likes us, we don't care' (Kimse bizi sevmiyor, umrumuzda değil)", "B": "'We are the kings'", "C": "'Always Millwall'", "D": "'Fear us'" },
+          "dogru": "A",
+          "aciklama": "Millwall tribünleri bu sloganı kulübün resmi marşı haline getirmiş ve dünyaya yaymıştır."
+        },
+        {
+          "id": 132,
+          "soru": "Liverpool'un efsanevi 'You'll Never Walk Alone' (Asla Yalnız Yürümeyeceksin) marşı aslında hangi müzikalden uyarlanmıştır?",
+          "secenekler": { "A": "Carousel Müzikali (Gerry and the Pacemakers)", "B": "The Beatles", "C": "Les Misérables", "D": "Phantom of the Opera" },
+          "dogru": "A",
+          "aciklama": "1945 yapımı Carousel müzikalinden çıkan şarkı 1960'larda Kop tribününün vazgeçilmez marşı olmuştur."
+        },
+        {
+          "id": 133,
+          "soru": "Beşiktaş İnönü Stadyumu'nda 2013 yılındaki Gençlerbirliği maçında ölçülen ve Guinness Rekorlar Kitabı'na giren ses rekoru kaç desibeldir?",
+          "secenekler": { "A": "141 dB", "B": "132 dB", "C": "120 dB", "D": "150 dB" },
+          "dogru": "A",
+          "aciklama": "Çarşı grubu ve Beşiktaş taraftarı 141 desibele ulaşarak bir stadyumda ulaşılan en yüksek tezahürat rekorunu kırmıştır."
+        },
+        {
+          "id": 134,
+          "soru": "İzlanda Milli Takımı'nın 2016 Avrupa Şampiyonası'nda tüm dünyayı kasıp kavuran elleri baş üstünde çırpma tezahüratının adı nedir?",
+          "secenekler": { "A": "Viking Alkışı (Viking Clap)", "B": "Thor Çekiçi", "C": "Buz Dansı", "D": "Skol Tezahüratı" },
+          "dogru": "A",
+          "aciklama": "İzlandalı taraftarların ritmik 'HU!' nidasıyla yaptığı bu şov turnuvanın en çok taklit edilen hareketi olmuştur."
+        },
+        {
+          "id": 135,
+          "soru": "Galatasaray'ın Ali Sami Yen Stadyumu'ndaki Şampiyonlar Ligi maçlarında tünel çıkışına astığı ve rakipleri baskı altına alan ünlü pankart neydi?",
+          "secenekler": { "A": "'Welcome to Hell' (Cehenneme Hoş Geldiniz)", "B": "'No Way Out'", "C": "'This is Ali Sami Yen'", "D": "'Lions Den'" },
+          "dogru": "A",
+          "aciklama": "1993 Manchester United maçında açılan bu pankart ve meşaleler Avrupa basınında günlerce konuşulmuştur."
+        },
+        {
+          "id": 136,
+          "soru": "Fenerbahçe tribünlerinin Kadıköy'de efsaneleşen 'Sarı Lacivert / Şampiyon Fener' tezahüratı başlarken tribünlerin yaptığı hareket nedir?",
+          "secenekler": { "A": "Mabette Omuz Omuza / Dört Tribün Karşılıklı Anons", "B": "Meksika Dalgası", "C": "Sırt dönme", "D": "Atkı şov" },
+          "dogru": "A",
+          "aciklama": "Maraton, Okul Açık, Migros ve Fenerium tribünlerinin sırayla bağırması Kadıköy atmosferinin klasiğidir."
+        },
+        {
+          "id": 137,
+          "soru": "Trabzonspor taraftarlarının her maçın 61. dakikasında stadyumda gerçekleştirdiği geleneksel görsel şov nedir?",
+          "secenekler": { "A": "Konfeti, meşale ve Bordo-Mavi balon şovu", "B": "Meksika dalgası", "C": "Sessizlik protestosu", "D": "Koltuk sallama" },
+          "dogru": "A",
+          "aciklama": "Trabzon'un plaka kodu olan 61. dakikada stadyum bayram yerine döner ve havai fişekler patlatılır."
+        },
+        {
+          "id": 138,
+          "soru": "Manchester City taraftarlarının deplasman maçlarında tribünde şişirip havada gezdirdikleri peluş/plastik oyuncak neydi?",
+          "secenekler": { "A": "Şişme Muz (Inflatable Bananas)", "B": "Plastik Ördek", "C": "Koyun", "D": "Yunus" },
+          "dogru": "A",
+          "aciklama": "1980'lerde başlayan bu gelenek City taraftarlarının mizahi deplasman kimliğinin bir parçası olmuştur."
+        },
+        {
+          "id": 139,
+          "soru": "Eskişehirspor taraftarlarının tribünde oluşturduğu ve bando aletleriyle maç boyunca canlı müzik yapan efsanevi grubun adı nedir?",
+          "secenekler": { "A": "Bando Es-Es", "B": "Kırmızı Şimşekler Bando", "C": "Anadolu Bando", "D": "Es-Es Orkestra" },
+          "dogru": "A",
+          "aciklama": "Bando Es-Es, trompet ve davullarla stadyumda festival havası yaratan ilk ve en ünlü tribün bandosudur."
+        },
+        {
+          "id": 140,
+          "soru": "Süper Lig'de tribünlerde 'Taktik maktik yok, bam bam bam!' cümlesi hangi teknik adama ait bir replik olarak caps'lere konu olmuştur?",
+          "secenekler": { "A": "Fatih Terim", "B": "Yılmaz Vural", "C": "Sergen Yalçın", "D": "Aykut Kocaman" },
+          "dogru": "A",
+          "aciklama": "Fatih Terim'in hücum futbolunu betimlemek için söylenen bu mizahi replik internet kültürüne kazınmıştır."
+        }
+      ]
+    },
+    {
+      "kategori_id": 915,
+      "kategori_adi": "⚡ Kurallar, VAR Skandalları ve Çizgi Olayları",
+      "kategori_ikon": "🖥️",
+      "gereken_yildiz": 0,
+      "sorular": [
+        {
+          "id": 141,
+          "soru": "2018 Dünya Kupası'nda ilk kez uygulanan VAR (Video Yardımcı Hakem) sisteminde VAR incelemesiyle verilen ilk penaltı hangi maçta atılmıştır?",
+          "secenekler": { "A": "Fransa - Avustralya (Griezmann)", "B": "Brezilya - İsviçre", "C": "İspanya - Portekiz", "D": "Almanya - Meksika" },
+          "dogru": "A",
+          "aciklama": "Hakem Andres Cunha VAR ekranına gidip pozisyonu izlemiş ve Fransa lehine penaltı noktasını göstermiştir."
+        },
+        {
+          "id": 142,
+          "soru": "2022 Dünya Kupası'nda Japonya'nın İspanya'yı 2-1 yendiği maçta topun dışarıdan çevrilip çevrilmediği milimetrelerle ölçülen olayda topun çizgide kalma oranı neydi?",
+          "secenekler": { "A": "Topun izdüşümünün sadece 1.88 milimetresi çizgi üzerindeydi", "B": "Tamamı dışarıdaydı", "C": "1 santim içindeydi", "D": "Yarısı dışarıdaydı" },
+          "dogru": "A",
+          "aciklama": "Sensörlü top ve çip teknolojisi sayesinde topun milimetrik olarak çizgiyi terk etmediği kanıtlanmıştır."
+        },
+        {
+          "id": 143,
+          "soru": "2010 Dünya Kupası'nda İngiltere - Almanya maçında Frank Lampard'ın üst direğe çarpıp kale çizgisini yarım metre geçmesine rağmen verilmeyen golü neye yol açmıştır?",
+          "secenekler": { "A": "Futbolda Çizgi Teknolojisi (Goal-line technology) ve VAR'ın gelmesinin hızlanmasına", "B": "Hakemin meslekten atılmasına", "C": "Maçın tekrar edilmesine", "D": "İngiltere'nin maçı protesto etmesine" },
+          "dogru": "A",
+          "aciklama": "Skandal karar sonrası FIFA başkanı Sepp Blatter özür dilemiş ve teknolojiye onay vermek zorunda kalmıştır."
+        },
+        {
+          "id": 144,
+          "soru": "1966 Dünya Kupası finalinde İngiliz Geoff Hurst'ün uzatmalarda Almanya'ya attığı ve topun çizgiyi geçip geçmediği hala tartışılan golün yardımcı hakemi nereliydi?",
+          "secenekler": { "A": "Azerbaycan / SSCB (Tevfik Behramov)", "B": "Brezilya", "C": "Fransa", "D": "İtalya" },
+          "dogru": "A",
+          "aciklama": "Tevfik Behramov orta hakeme topun çizgiyi geçtiğini işaret etmiş ve İngiltere dünya şampiyonu olmuştur."
+        },
+        {
+          "id": 145,
+          "soru": "Futbol kurallarına göre bir takım sahada kaç kişiden az kalırsa maç hakem tarafından tatil edilir ve hükmen mağlup sayılır?",
+          "secenekler": { "A": "7 Kişiden az (6 kişi kalırsa)", "B": "8 Kişiden az", "C": "5 Kişiden az", "D": "9 Kişiden az" },
+          "dogru": "A",
+          "aciklama": "Bir takım kırmızı kartlar veya sakatlıklar nedeniyle sahada 7 kişiden az kalırsa maç oynanamaz."
+        },
+        {
+          "id": 146,
+          "soru": "2023 yılında Premier League'de Tottenham - Liverpool maçında Luis Diaz'ın buz gibi golünün VAR tarafından ofsayt diye iptal edilmesindeki skandal neydi?",
+          "secenekler": { "A": "VAR hakeminin sahada gol kararı verildiğini sanıp 'Kontrol tamamlandı' demesi", "B": "Çizginin yanlış çekilmesi", "C": "Kameranın bozulması", "D": "Hakemin saati unutması" },
+          "dogru": "A",
+          "aciklama": "Hakemler arasındaki iletişim kopukluğu yüzünden temiz gol güme gitmiş ve ses kayıtları yayınlanmıştır."
+        },
+        {
+          "id": 147,
+          "soru": "Penaltı atışında top direkten dönüp tekrar penaltıyı atan futbolcunun önüne gelirse futbolcu doğrudan şut çekebilir mi?",
+          "secenekler": { "A": "Hayır, başka biri dokunmadan vurursa 'Çift Vuruş' olur", "B": "Evet vurabilir", "C": "Sadece kafa vurabilir", "D": "Penaltı tekrarlanır" },
+          "dogru": "A",
+          "aciklama": "Top kaleciye değmeden doğrudan direkten dönerse atışı yapan oyuncu topa ikinci kez dokunamaz."
+        },
+        {
+          "id": 148,
+          "soru": "Bir kaleci kendi ceza sahası içindeki aut atışından doğrudan rakip kaleye gol atarsa bu gol geçerli sayılır mı?",
+          "secenekler": { "A": "Evet, aut atışından doğrudan atılan gol geçerlidir", "B": "Hayır, ofsayt olur", "C": "Hayır, enis vuruş gerekir", "D": "Topun taşa çıkması gerekir" },
+          "dogru": "A",
+          "aciklama": "Aut atışından veya kaleci degajından rakip kaleye giden top doğrudan gol değeri taşır."
+        },
+        {
+          "id": 149,
+          "soru": "Taç atışından doğrudan rakip kaleye giden top kimseye değmeden ağlarla buluşursa ne karar verilir?",
+          "secenekler": { "A": "Gol sayılmaz, Aut (Kale vuruşu) kullanılır", "B": "Gol sayılır", "C": "Taç tekrarlanır", "D": "Korner olur" },
+          "dogru": "A",
+          "aciklama": "Taç atışından doğrudan gol atılamaz. Top kimseye değmeden kaleye girerse oyun autla başlar."
+        },
+        {
+          "id": 150,
+          "soru": "2022'de Süper Lig'de Sivasspor - Galatasaray maçında iptal edilen ve kamuoyunda 'Offsideimsi' olarak bilinen VAR skandalında ne olmuştu?",
+          "secenekler": { "A": "TFF hakem konuşmalarını yayınlamış ve hakemin net bir gerekçe sunamadığı ortaya çıkmıştır", "B": "Çizgi çekilmemiştir", "C": "Kamera açısı yoktur", "D": "Hakem maçı erken bitirmiştir" },
+          "dogru": "A",
+          "aciklama": "TFF tarihi bir kararla VAR konuşmalarını açıklamış ve hakem Erkan Özdamar'ın mesleği bırakmasına kadar giden süreç yaşanmıştır."
+        }
+      ]
+    },
+    {
+      "kategori_id": 916,
+      "kategori_adi": "💸 Bonkör Başkanlar, Fiyasko Yatırımlar ve Kulüp İflasları",
+      "kategori_ikon": "🏢",
+      "gereken_yildiz": 0,
+      "sorular": [
+        {
+          "id": 151,
+          "soru": "2011 yılında Dağıstan takımı Anzhi Makhachkala'yı satın alıp Samuel Eto'o'ya yıllık 20 milyon Euro maaş ödeyen Rus milyarder kimdir?",
+          "secenekler": { "A": "Suleyman Kerimov", "B": "Roman Abramovich", "C": "Alisher Usmanov", "D": "Dmitry Rybolovlev" },
+          "dogru": "A",
+          "aciklama": "Kerimov Roberto Carlos, Willian ve Eto'o gibi yıldızları toplamış ancak birkaç yıl sonra projeyi aniden kapatmıştır."
+        },
+        {
+          "id": 152,
+          "soru": "Malaga kulübünü 2010'da satın alıp Şampiyonlar Ligi'nde çeyrek finale çıkaran ama sonra parasını çekip takımı küme düşüren Katarlı şeyh kimdir?",
+          "secenekler": { "A": "Şeyh Abdullah Al Thani", "B": "Nasser Al-Khelaifi", "C": "Şeyh Mansour", "D": "Turki Al-Sheikh" },
+          "dogru": "A",
+          "aciklama": "Al Thani belediyeyle liman projesinde anlaşamayınca musluğu kesmiş ve Malaga alt liglere kadar gerilemiştir."
+        },
+        {
+          "id": 153,
+          "soru": "Parma kulübü 2015 yılında iflas ettiğinde borçları yüzünden kulübün eşyaları icradan satılırken açık artırmaya çıkarılan garip şey neydi?",
+          "secenekler": { "A": "Soyunma odasındaki duş başlıkları ve kulüp tezgahı", "B": "Çim biçme makinesi", "C": "Futbolcu otobüsü", "D": "Kulüp kupaları" },
+          "dogru": "A",
+          "aciklama": "Parma borç batağına saplanınca stadyumdaki koltuklardan soyunma odasındaki tezgah ve duşlara kadar her şey icrayla satılmıştır."
+        },
+        {
+          "id": 154,
+          "soru": "2003 yılında batma noktasına gelen Chelsea'yi satın alarak dünya futbolundaki 'Zengin Dükkan' devrini başlatan Rus oligark kimdir?",
+          "secenekler": { "A": "Roman Abramovich", "B": "Oleg Deripaska", "C": "Mikhail Prokhorov", "D": "Mikhail Khodorkovsky" },
+          "dogru": "A",
+          "aciklama": "Abramovich Chelsea'yi satın alıp yüzlerce milyon sterlin harcayarak kulübe 5 Premier League ve 2 Şampiyonlar Ligi kazandırmıştır."
+        },
+        {
+          "id": 155,
+          "soru": "2017 yılında PSG'nin Barcelona'dan Neymar'ın serbest kalma bedelini ödeyerek kırdığı dünya transfer rekoru kaç milyon Euro'dur?",
+          "secenekler": { "A": "222 Milyon Euro", "B": "180 Milyon Euro", "C": "150 Milyon Euro", "D": "300 Milyon Euro" },
+          "dogru": "A",
+          "aciklama": "PSG 222 milyon Euro nakit parayı yatırarak futbol tarihinin kırılması zor bonservis rekoruna imza atmıştır."
+        },
+        {
+          "id": 156,
+          "soru": "Çin Ligi ekiplerinden Shanghai Shenhua, 2016 yılında Carlos Tevez'e haftalık kaç para ödeyerek onu dünyanın en çok kazanan futbolcusu yapmıştır?",
+          "secenekler": { "A": "Haftalık 615 Bin Sterlin", "B": "Haftalık 200 Bin Sterlin", "C": "Haftalık 1 Milyon Sterlin", "D": "Haftalık 400 Bin Sterlin" },
+          "dogru": "A",
+          "aciklama": "Tevez Çin'de servet kazanmış ancak sürekli tatil yapıp 'Çin futbolu 50 yıl geride' diyerek Arjantin'e dönmüştür."
+        },
+        {
+          "id": 157,
+          "soru": "1990'larda İtalya'nın gıda devi Parmalat'ın sahibi olan ve Parma'yı Şampiyon Kulüpler seviyesine çıkarıp sonra holding batınca hapse giren başkan kimdir?",
+          "secenekler": { "A": "Calisto Tanzi", "B": "Sergio Cragnotti", "C": "Luciano Gaucci", "D": "Massimo Moratti" },
+          "dogru": "A",
+          "aciklama": "Parmalat sahtekarlık skandalıyla batınca Parma kulübü de tarihinin en büyük mali krizine sürüklenmiştir."
+        },
+        {
+          "id": 158,
+          "soru": "Süper Lig'de Kardemir Karabükspor'un 2018 yılında Avrupa Kupaları oynadıktan hemen sonra borç krizine girip amatör lige kadar düşmesinin sebebi neydi?",
+          "secenekler": { "A": "Kontrolsüz yabancı transferleri ve mali yönetimsizlik", "B": "Stadyumun yıkılması", "C": "Şike cezası", "D": "Taraftarın maça gelmemesi" },
+          "dogru": "A",
+          "aciklama": "Karabükspor kısa sürede yüksek maaşlı yabancılar transfer etmiş, borç ödenemeyince kulüp alt liglere sürüklenmiştir."
+        },
+        {
+          "id": 159,
+          "soru": "Glasgow Rangers kulübü 2012 yılında vergi borçları nedeniyle iflas edince İskoçya Futbol Federasyonu takımı hangi lige düşürmüştür?",
+          "secenekler": { "A": "4. Lig (En alt profesyonel lig)", "B": "2. Lig", "C": "3. Lig", "D": "Amatör Lig" },
+          "dogru": "A",
+          "aciklama": "Efsanevi Rangers 4. lige düşürülmüş, basamakları tek tek tırmanarak yıllar sonra yeniden şampiyon olmuştur."
+        },
+        {
+          "id": 160,
+          "soru": "2000'lerin başında Leeds United'ın Şampiyonlar Ligi yarı finali oynadıktan sonra yüksek banka kredilerini ödeyemeyip batmasına verilen iktisadi terim nedir?",
+          "secenekler": { "A": "Doing a Leeds (Leedsleşmek / Leeds Sendromu)", "B": "Leeds Effect", "C": "English Collapse", "D": "Premier Crash" },
+          "dogru": "A",
+          "aciklama": "İngiliz futbolunda kontrolsüz harcama yapıp batan kulüpler için 'Doing a Leeds' deyimi kullanılmaktadır."
+        }
+      ]
+    },
+    {
+      "kategori_id": 917,
+      "kategori_adi": "🐶 Sahaya Dalan Hayvanlar ve Nesneler",
+      "kategori_ikon": "🐶",
+      "gereken_yildiz": 0,
+      "sorular": [
+        {
+          "id": 161,
+          "soru": "1962 Dünya Kupası'nda Brezilya - İngiltere maçında sahaya dalan sokak köpeğini yakalayıp evine evlat edinen Brezilyalı efsane kimdir?",
+          "secenekler": { "A": "Garrincha", "B": "Pele", "C": "Vava", "D": "Didi" },
+          "dogru": "A",
+          "aciklama": "Garrincha sahaya giren ve Jimmy Greaves'in üzerine çiş yapan köpeğe hayran kalıp onu Brezilya'ya yanında götürmüştür."
+        },
+        {
+          "id": 162,
+          "soru": "2014 yılında Rosario Central - River Plate maçında sahaya giren köpek kale sahasında ne yaparak maçı durdurmuştur?",
+          "secenekler": { "A": "Ceza sahası içine büyük tuvaletini yapması", "B": "Topu patlatması", "C": "Kaleciyi ısırması", "D": "Korner bayrağını kemirmesi" },
+          "dogru": "A",
+          "aciklama": "Köpek rahat tavırlarla ceza sahasına pislemiş, görevliler kürekle sahayı temizledikten sonra maç devam etmiştir."
+        },
+        {
+          "id": 163,
+          "soru": "2009'da Hertha Berlin - Hannover maçında sahaya uçup kale ağlarına takılan ve maçı durduran hayvan neydi?",
+          "secenekler": { "A": "Vahşi bir Şahin / Yırtıcı Kuş", "B": "Kedi", "C": "Köpek", "D": "Yarasaların istilası" },
+          "dogru": "A",
+          "aciklama": "Kuş kale ağlarına takılmış, kaleci ve görevliler kuşu kurtardıktan sonra oyun başlamıştır."
+        },
+        {
+          "id": 164,
+          "soru": "Süper Lig'de Beşiktaş - Bayern Münih Şampiyonlar Ligi maçında (Vodafone Park) sahaya dalıp maçı durduran sevimli hayvan neydi?",
+          "secenekler": { "A": "Tekir Kedi", "B": "Sokak Köpeği", "C": "Martı", "D": "Tavşan" },
+          "dogru": "A",
+          "aciklama": "Kedi sahada depar atmış, hakem maçı durdurmuş ve UEFA Beşiktaş'a 'sahaya hayvan girmesi' nedeniyle komik bir para cezası kesmiştir."
+        },
+        {
+          "id": 165,
+          "soru": "2018'de Everton - Hajduk Split maçında sahaya giren devasa Siyah Kedi çizgi boyunca kaç metre koşmuştur?",
+          "secenekler": { "A": "Tüm sahayı baştan sona (Yaklaşık 100 metre)", "B": "20 metre", "C": "50 metre", "D": "Sadece ceza sahası" },
+          "dogru": "A",
+          "aciklama": "Kedi saha içinde tur atmış, Everton taraftarları kedinin her deparında 'Olé' çekmiştir."
+        },
+        {
+          "id": 166,
+          "soru": "1970'lerde İngiltere'de bir maçta sahaya giren ve kalecinin degajını havada yakalayan hayvan hangisidir?",
+          "secenekler": { "A": "Bir Polisin Arama Köpeği", "B": "Kuş", "C": "Kedi", "D": "Maymun" },
+          "dogru": "A",
+          "aciklama": "Saha kenarındaki polis köpeği fırlatılan topu canlı av sanıp sahaya fırlamış ve topu ağzıyla yakalamıştır."
+        },
+        {
+          "id": 167,
+          "soru": "2001 yılında UEFA Kupası maçında Alaves - Liverpool finalinde sahaya atılan en ilginç yabancı madde neydi?",
+          "secenekler": { "A": "Devasa bir Plastik Şişme Kadın", "B": "Koltuk", "C": "Televizyon", "D": "Ayakkabı" },
+          "dogru": "A",
+          "aciklama": "İspanyol taraftarlar sahaya şişme kadın fırlatmış, güvenlik görevlileri nesneyi dışarı taşımıştır."
+        },
+        {
+          "id": 168,
+          "soru": "İnönü Stadyumu'nda oynanan Beşiktaş - Çaykur Rizespor maçında sahaya giren ve Beşiktaşlı futbolcuların yakalamaya çalıştığı hayvan hangisidir?",
+          "secenekler": { "A": "Martı", "B": "Horoz", "C": "Kedi", "D": "Köpek" },
+          "dogru": "A",
+          "aciklama": "Saha çimlerine konan yaralı martıyı futbolcular kenara taşımış ve seyirciden alkış almıştır."
+        },
+        {
+          "id": 169,
+          "soru": "2020'de Bolivya Ligi'nde oynanan maçta sahaya giren ve kramponla oynayan sevimli sokak köpeğini daha sonra ne olmuştu?",
+          "secenekler": { "A": "O takımdaki futbolculardan biri köpeği sahiplenip evine götürmüştür", "B": "Barınağa verilmiştir", "C": "Kaçmıştır", "D": "Kulüp maskotu olmuştur" },
+          "dogru": "A",
+          "aciklama": "Futbolcu Raul Castro sahaya giren köpeğe aşık olmuş ve maçtan sonra onu sahiplenmiştir."
+        },
+        {
+          "id": 170,
+          "soru": "2013'te Thun - Zurich maçında sahaya dalan sansarı eliyle yakalamak isterken parmağı ısırılan futbolcu kimdir?",
+          "secenekler": { "A": "Loris Benito", "B": "Granit Xhaka", "C": "Yann Sommer", "D": "Xherdan Shaqiri" },
+          "dogru": "A",
+          "aciklama": "Loris Benito sahada koşan hızlı sansarı uçarak yakalamış ama sansır parmağını kenetleyip ısırmıştır."
+        }
+      ]
+    },
+    {
+      "kategori_id": 918,
+      "kategori_adi": "🧠 Unutulmaz Taktiksel Zekalar ve Zirve Anlar",
+      "kategori_ikon": "🧠",
+      "gereken_yildiz": 0,
+      "sorular": [
+        {
+          "id": 171,
+          "soru": "1970'lerde Hollanda Milli Takımı ve Ajax ile 'Total Futbol' felsefesini dünyaya öğreten efsanevi teknik adam kimdir?",
+          "secenekler": { "A": "Rinus Michels", "B": "Johan Cruyff", "C": "Louis van Gaal", "D": "Guus Hiddink" },
+          "dogru": "A",
+          "aciklama": "Rinus Michels herkesin her mevkide oynayabildiği Total Futbol felsefesinin babası kabul edilir."
+        },
+        {
+          "id": 172,
+          "soru": "2014 Dünya Kupası çeyrek finalinde Hollanda teknik direktörü Louis van Gaal'in 120. dakikada yaptığı unutulmaz kaleci değişikliği neydi?",
+          "secenekler": { "A": "Penaltılar için Cillessen'i çıkarıp Tim Krul'u oyuna sokması ve Krul'un 2 penaltı kurtarması", "B": "Yedek oyuncuyu kaleye koyması", "C": "Kalecisiz oynaması", "D": "Forveti kaleye alması" },
+          "dogru": "A",
+          "aciklama": "Van Gaal tarihe geçen bir hamleyle Krul'u sokmuş, Krul Kosta Rika penaltılarını kurtarıp turu getirmiştir."
+        },
+        {
+          "id": 173,
+          "soru": "Jose Mourinho'nun Inter ile 2010 Şampiyonlar Ligi yarı finalinde Barcelona'ya karşı uyguladığı ve basının 'Otobüsü Kale Önüne Çekmek' dediği taktik neydi?",
+          "secenekler": { "A": "Park the Bus (Aşırı Katı Savunma)", "B": "Tiki-Taka", "C": "Gegenpressing", "D": "Catenaccio" },
+          "dogru": "A",
+          "aciklama": "10 kişi kalan Inter Camp Nou'da efsanevi bir savunma yapmış, Mourinho 'Otobüsü çekmedik, uçağı park ettik' demiştir."
+        },
+        {
+          "id": 174,
+          "soru": "Pep Guardiola'nın Barcelona'da Messi'yi kanattan alıp santrafor pozisyonuna çekerek icat ettiği taktiksel rolün adı nedir?",
+          "secenekler": { "A": "Sahte Dokuz (False 9)", "B": "Oyun Kurucu", "C": "Hedef Santrafor", "D": "Kanat Forvet" },
+          "dogru": "A",
+          "aciklama": "Messi'nin 'Sahte 9' olarak oynaması Bernabeu'daki 6-2'lik Real Madrid galibiyetinin anahtarı olmuştur."
+        },
+        {
+          "id": 175,
+          "soru": "Jürgen Klopp'un Borussia Dortmund ve Liverpool'da efsaneleştirdiği, top kaybedildiği an topu şok baskıyla geri alma sisteminin adı nedir?",
+          "secenekler": { "A": "Gegenpressing (Karşı Baskı)", "B": "Tiki-Taka", "C": "Catenaccio", "D": "Samba Futbolu" },
+          "dogru": "A",
+          "aciklama": "Klopp 'En iyi oyun kurucu Gegenpressing'dir' diyerek modern futbolun en popüler taktiğini yaratmıştır."
+        },
+        {
+          "id": 176,
+          "soru": "İtalyan futbolunun geçmişteki efsanevi 'Kilit' anlamına gelen, katı alan savunması ve kontratak sisteminin adı nedir?",
+          "secenekler": { "A": "Catenaccio", "B": "Tiki-Taka", "C": "Total Futbol", "D": "Verkaik" },
+          "dogru": "A",
+          "aciklama": "Helenio Herrera'nın Inter'de zirveye çıkardığı Catenaccio, İtalyan futbolunun yıllarca değişmez kimliği olmuştur."
+        },
+        {
+          "id": 177,
+          "soru": "2019 Şampiyonlar Ligi yarı finalinde Liverpool'un Barcelona'yı 4-0 yendiği maçta Trent Alexander-Arnold'ın attığı efsane korner taktiği nedir?",
+          "secenekler": { "A": "'Corner taken quickly... ORIGI!' (Barça uyurken hızlı korner)", "B": "Paslaşarak kullanma", "C": "Ön direğe kesme", "D": "Rövaşata pası" },
+          "dogru": "A",
+          "aciklama": "Alexander-Arnold arkasını döner gibi yapıp aniden korneri kullanmış ve Origi bomboş durumda 4. golü atmıştır."
+        },
+        {
+          "id": 178,
+          "soru": "Marcelo Bielsa'nın futbol dünyasında 'El Loco' (Çılgın) olarak anılmasına yol açan taktiksel takıntısı nedir?",
+          "secenekler": { "A": "Binlerce saat rakip analizi yapıp antrenmanda sahsayı karelere bölerek 3-3-1-3 oynatması", "B": "Duran top kullanmaması", "C": "Kaleciyle oyun kurmaması", "D": "Sadece gençlerle oynaması" },
+          "dogru": "A",
+          "aciklama": "Bielsa Guardiola ve Pochettino gibi dev isimlerin 'Futbol idolüm' dediği analiz takıntılı bir dahi hocadır."
+        },
+        {
+          "id": 179,
+          "soru": "2016 yılında Leicester City Premier League şampiyonu olurken Claudio Ranieri'nin kullandığı kontratak odaklı klasik diziliş neydi?",
+          "secenekler": { "A": "4-4-2", "B": "4-3-3", "C": "3-5-2", "D": "4-2-3-1" },
+          "dogru": "A",
+          "aciklama": "Ranieri basit ama kusursuz çalışan 4-4-2 sistemi, Kante'nin alan kapatması ve Vardy'nin deparlarıyla tarih yazmıştır."
+        },
+        {
+          "id": 180,
+          "soru": "2004 yılında Yunanistan Şampiyonlar Ligi (EURO 2004) şampiyonu olurken Otto Rehhagel'in uygulattığı aşırı katı savunma tarzına ne denmiştir?",
+          "secenekler": { "A": "Yunan Otobüsü / Defansif Disiplin", "B": "Tiki-Taka", "C": "Samba", "D": "Gegenpress" },
+          "dogru": "A",
+          "aciklama": "Yunanistan tüm maçları 1-0 kazanarak ve korner/duran top golleriyle tarihin en sürpriz şampiyonluğunu almıştır."
+        }
+      ]
+    },
+    {
+      "kategori_id": 919,
+      "kategori_adi": "🔥 Derbiler, Rekabetler ve Ateşli Şehirler",
+      "kategori_ikon": "🔥",
+      "gereken_yildiz": 0,
+      "sorular": [
+        {
+          "id": 181,
+          "soru": "İskoçya'da Celtic (Katolik) ile Rangers (Protestan) arasındaki tarihi ve dini rekabetin adlandırıldığı derbi ismi nedir?",
+          "secenekler": { "A": "Old Firm Derbisi", "B": "Superclásico", "C": "El Clásico", "D": "The Big Match" },
+          "dogru": "A",
+          "aciklama": "Old Firm dünya futbolunun en sert, en siyasi ve en köklü derbi rekabetlerinden biridir."
+        },
+        {
+          "id": 182,
+          "soru": "Arjantin'in başkenti Buenos Aires'te Boca Juniors ile River Plate arasındaki dünyaca ünlü nefes kesen derbinin adı nedir?",
+          "secenekler": { "A": "Superclásico", "B": "El Clásico", "C": "Derby della Madonnina", "D": "Fla-Flu" },
+          "dogru": "A",
+          "aciklama": "Superclásico izlenmesi gereken 50 spor olayının başında gösterilen çıldırtıcı bir atmosferdir."
+        },
+        {
+          "id": 183,
+          "soru": "İtalya'nın Milano kentinde AC Milan ile Inter arasında oynanan ve adını Meryem Ana heykelinden alan derbi hangisidir?",
+          "secenekler": { "A": "Derby della Madonnina", "B": "Derby della Mole", "C": "Derby della Capitale", "D": "Derby d'Italia" },
+          "dogru": "A",
+          "aciklama": "San Siro / Giuseppe Meazza stadyumunda oynanan bu maç İtalyan futbolunun kalbidir."
+        },
+        {
+          "id": 184,
+          "soru": "Sırbistan'ın Belgrad kentinde Kızılyıldız ile Partizan arasındaki meşhur derbiye ne ad verilir?",
+          "secenekler": { "A": "Ebedi Derbi (Eternal Derby)", "B": "Balkan Savaşı", "C": "Kutsal Derbi", "D": "Kızıl Derbi" },
+          "dogru": "A",
+          "aciklama": "Ebedi Derbi meşaleler, sis bombaları ve tribün şovlarıyla bilinen en ateşli derbilerdendir."
+        },
+        {
+          "id": 185,
+          "soru": "Yunanistan'da Panathinaikos ile Olympiakos arasındaki rekabete verilen ve 'Tüm Düşmanlıkların Anası' anlamına gelen isim nedir?",
+          "secenekler": { "A": "Derby of the Eternal Enemies (Ezeli Düşmanlar Derbisi)", "B": "Atina Savaşı", "C": "Greko Derbi", "D": "Olimpos Derbisi" },
+          "dogru": "A",
+          "aciklama": "Sınıf farkından doğan bu rekabet Yunan sporu tarihindeki en gergin karşılaşmadır."
+        },
+        {
+          "id": 186,
+          "soru": "Mısır'ın Kahire kentinde El Ahly ile Zamalek arasındaki maçlar o kadar olaylı geçer ki maçları yönetmesi için ne yapılır?",
+          "secenekler": { "A": "Yabancı tarafsız hakemler ülkeye davet edilir", "B": "Seyircisiz oynanır", "C": "Taraftarlar şehre alınmaz", "D": "Gece oynatılır" },
+          "dogru": "A",
+          "aciklama": "Mısır Futbol Federasyonu tarafsızlığı sağlamak için Kahire derbisine sürekli Avrupalı üst düzey hakemler getirir."
+        },
+        {
+          "id": 187,
+          "soru": "Brezilya'da Rio de Janeiro'nun iki devi Flamengo ile Fluminense arasındaki efsanevi derbinin takma adı nedir?",
+          "secenekler": { "A": "Fla-Flu", "B": "Clássico dos Millões", "C": "Samba Derbisi", "D": "Rio Clásico" },
+          "dogru": "A",
+          "aciklama": "1963'teki Fla-Flu maçını Maracana Stadyumu'nda tam 194.603 biletli seyirci izleyerek rekor kırmıştır."
+        },
+        {
+          "id": 188,
+          "soru": "İspanya'da Sevilla ile Real Betis arasındaki Endülüs derbisine ne ad verilir?",
+          "secenekler": { "A": "El Clásico Sevillano (Derbi Sevillano)", "B": "Güney Derbisi", "C": "Betis Clásico", "D": "Andalucia Cup" },
+          "dogru": "A",
+          "aciklama": "Sevilla şehrini ikiye bölen bu derbi İspanya'nın en tutkulu ve gürültülü maçlarından biridir."
+        },
+        {
+          "id": 189,
+          "soru": "Almanya'da Borussia Dortmund ile Schalke 04 arasındaki Ruhr bölgesi derbisinin adı nedir?",
+          "secenekler": { "A": "Revierderby (Ruhr Derbisi)", "B": "Maden Derbisi", "C": "Kuzey Derbisi", "D": "Bavaria Derbisi" },
+          "dogru": "A",
+          "aciklama": "İşçi sınıfı ve madencilerin bölgesi olan Ruhr vadisindeki bu maç Almanya'nın en büyük derbisidir."
+        },
+        {
+          "id": 190,
+          "soru": "Türkiye'de 'Kıtalararası Derbi' olarak adlandırılan ve dünyaca ünlü olan maç hangisidir?",
+          "secenekler": { "A": "Fenerbahçe - Galatasaray", "B": "Beşiktaş - Galatasaray", "C": "Fenerbahçe - Beşiktaş", "D": "Trabzonspor - Fenerbahçe" },
+          "dogru": "A",
+          "aciklama": "Asya ile Avrupa kıtalarını birleştiren İstanbul'un bu iki devinin maçı 'Intercontinental Derby' olarak dünyada anılır."
+        }
+      ]
+    },
+    {
+      "kategori_id": 920,
+      "kategori_adi": "🌟 Dünya Kupaları, Unutulmaz Sürprizler ve Efsane Anlar",
+      "kategori_ikon": "🌍",
+      "gereken_yildiz": 0,
+      "sorular": [
+        {
+          "id": 191,
+          "soru": "1950 Dünya Kupası finalinde Brezilya'nın Maracana'da Uruguay'a 2-1 yenilip kupayı kaybetmesi sonucu yaşanan tarihi travmanın adı nedir?",
+          "secenekler": { "A": "Maracanazo (Maracana Felaketi)", "B": "Brezilya Matemi", "C": "Uruguay Şoku", "D": "Rio Faciası" },
+          "dogru": "A",
+          "aciklama": "200 bin kişinin izlediği maçta Brezilya kaybedince ülkede ulusal yas ilan edilmiş ve forma rengi beyazdan sarı-yeşile çevrilmiştir."
+        },
+        {
+          "id": 192,
+          "soru": "2014 Dünya Kupası yarı finalinde Almanya'nın ev sahibi Brezilya'yı 7-1 yendiği tarihi maç hangi stadyumda oynanmıştır?",
+          "secenekler": { "A": "Mineirão Stadyumu (Mineirazo)", "B": "Maracana", "C": "Arena Corinthians", "D": "Mané Garrincha" },
+          "dogru": "A",
+          "aciklama": "Brezilya futbol tarihinin en ağır yenilgisini aldığı bu maç 'Mineirazo' olarak tarihe geçmiştir."
+        },
+        {
+          "id": 193,
+          "soru": "Dünya Kupası tarihinde şampiyonluğu kazanan ilk ülke hangi yıl ve hangisidir?",
+          "secenekler": { "A": "1930 - Uruguay", "B": "1934 - İtalya", "C": "1950 - Brezilya", "D": "1928 - Arjantin" },
+          "dogru": "A",
+          "aciklama": "İlk Dünya Kupası 1930'da Uruguay'da düzenlenmiş ve finalde Arjantin'i 4-2 yenen Uruguay şampiyon olmuştur."
+        },
+        {
+          "id": 194,
+          "soru": "2002 Dünya Kupası açılış maçında son şampiyon Fransa'yı 1-0 yenerek büyük sürpriz yapan Afrika takımı hangisidir?",
+          "secenekler": { "A": "Senegal", "B": "Kamerun", "C": "Nijerya", "D": "Gana" },
+          "dogru": "A",
+          "aciklama": "Papa Bouba Diop'un attığı golle Senegal Fransa'yı devirmiş ve çeyrek finale kadar yürümüştür."
+        },
+        {
+          "id": 195,
+          "soru": "1990 Dünya Kupası'nda Kamerun'u 38 yaşında çeyrek finale taşıyan ve gol sevinci danslarıyla tanınan efsane kimdir?",
+          "secenekler": { "A": "Roger Milla", "B": "Samuel Eto'o", "C": "Patrick M'Boma", "D": "Francois Omam-Biyik" },
+          "dogru": "A",
+          "aciklama": "Roger Milla yedek girip attığı gollerle Kamerun'u çeyrek finale çıkaran ilk Afrika takımı yapmıştır."
+        },
+        {
+          "id": 196,
+          "soru": "Dünya Kupası tarihinde en çok şampiyonluk kazanan ülke (5 Kez) hangisidir?",
+          "secenekler": { "A": "Brezilya", "B": "Almanya", "C": "İtalya", "D": "Arjantin" },
+          "dogru": "A",
+          "aciklama": "Brezilya 1958, 1962, 1970, 1994 ve 2002 yıllarında kupayı kaldırarak 'Beş Kez Şampiyon' (Pentacampeão) unvanını almıştır."
+        },
+        {
+          "id": 197,
+          "soru": "2010 Dünya Kupası'nda çeyrek finalde Uruguaylı Luis Suarez'in Gana maçının 120. dakikasında elenmeyi önlemek için yaptığı hareket neydi?",
+          "secenekler": { "A": "Çizgi üzerindeki giden topu voleybolcu gibi eliyle kesmesi ve kırmızı kart görmesi", "B": "Kaleciye kafa atması", "C": "Rakibi ısırması", "D": "Formasını çıkarması" },
+          "dogru": "A",
+          "aciklama": "Suarez kırmızıyı yemiş, Gana penaltıyı kaçırmış ve Seri penaltılarda Uruguay yarı finale çıkmıştır."
+        },
+        {
+          "id": 198,
+          "soru": "Dünya Kupaları tarihinde 16 golle en çok gol atan futbolcu rekoru kime aittir?",
+          "secenekler": { "A": "Miroslav Klose", "B": "Ronaldo (Fenomen)", "C": "Gerd Müller", "D": "Kylian Mbappé" },
+          "dogru": "A",
+          "aciklama": "Alman golcü Klose 2014'te Brezilya'ya attığı golle Ronaldo'nun 15 gollük rekorunu kırıp 16 golle zirveye yerleşmiştir."
+        },
+        {
+          "id": 199,
+          "soru": "2022 Dünya Kupası'nda Katar'da Şampiyon olan Arjantin'in kalecisi Emiliano Martinez'in kupa törenindeki olay hareketi neydi?",
+          "secenekler": { "A": "En İyi Kaleci (Altın Eldiven) ödülünü kasık bölgesine tutarak sevinmesi", "B": "Kupayı düşürmesi", "C": "Madalyasını fırlatması", "D": "Formasını yırtması" },
+          "dogru": "A",
+          "aciklama": "'Dibu' Martinez'in ödülle yaptığı bu sevinç günlerce dünya basınında tartışılmıştır."
+        },
+        {
+          "id": 200,
+          "soru": "2022 Dünya Kupası'nda Yarı Final oynayarak Dünya Kupası tarihinde ilk kez yarı finale yükselen Afrika / Arap ülkesi hangisidir?",
+          "secenekler": { "A": "Fas", "B": "Cezayir", "C": "Mısır", "D": "Senegal" },
+          "dogru": "A",
+          "aciklama": "Fas İspanya ve Portekiz'i eleyerek yarı finale çıkmış ve Afrika futbol tarihinin en büyük başarısına imza atmıştır."
+        }
+      ]
+    }
+  ]
+}
