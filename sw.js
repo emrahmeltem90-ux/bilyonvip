@@ -1,4 +1,3 @@
-// SkorLab SW v24 - Cache Kırıcı
 self.addEventListener('install', e => self.skipWaiting());
 self.addEventListener('activate', e => {
   e.waitUntil(
