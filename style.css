@@ -189,10 +189,11 @@ input{font-family:inherit}
 .pause-butonlar{display:flex;flex-direction:column;gap:10px}
 
 /* ============================================================
-   SONUÇ EKRANI
+   SONUÇ EKRANI (DÜZELTİLDİ: Sadece .aktif olduğunda görünür)
    ============================================================ */
-#sonucEkran{display:flex;align-items:center;justify-content:center}
-#sonucEkran.aktif{display:flex}
+#sonucEkran { display: none; }
+#sonucEkran.aktif { display: flex; align-items: center; justify-content: center; }
+
 .sonuc-icerik{text-align:center;width:100%;max-width:400px}
 .sonuc-yildizlar{font-size:4rem;color:var(--gold);text-shadow:0 0 30px rgba(255,215,0,.8);animation:zipla 1.5s infinite alternate}
 .sonuc-skor{font-size:2rem;font-weight:900;color:#fff;margin:12px 0}
@@ -226,12 +227,12 @@ input{font-family:inherit}
 .buyuk-btn:disabled{background:#374151;box-shadow:0 5px 0 #1f2937;cursor:not-allowed;opacity:.6}
 
 /* ============================================================
-   ÇARK
+   ÇARK (DÜZELTİLDİ: Çakışan sabit boyutlar kaldırıldı)
    ============================================================ */
 .cark-icerik{display:flex;flex-direction:column;align-items:center;gap:20px;padding:20px 0}
 .cark-wrap{position:relative}
 .cark-pointer{position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-size:2rem;color:var(--gold);z-index:10;filter:drop-shadow(0 0 10px rgba(255,215,0,.8))}
-#carkCanvas{border-radius:50%;border:8px solid #b8860b;box-shadow:0 0 40px rgba(255,215,0,.6);background:#0b111c;transition:transform 4s cubic-bezier(.17,.67,.12,.99);display:block}
+#carkCanvas{border-radius:50%;border:8px solid #b8860b;box-shadow:0 0 40px rgba(255,215,0,.6);background:#0b111c;transition:transform 4s cubic-bezier(.17,.67,.12,.99);display:block;max-width:100%;height:auto}
 .cark-bilgi{font-size:.75rem;color:var(--muted2);text-align:center}
 
 /* ============================================================
@@ -324,5 +325,4 @@ input:checked + .slider:before{transform:translateX(24px)}
   .mgb-yazi{font-size:.65rem}
   .ms-deger{font-size:1.1rem}
   .quiz-soru{font-size:.95rem;padding:18px 14px}
-  #carkCanvas{width:280px;height:280px}
-                                     }
+}
