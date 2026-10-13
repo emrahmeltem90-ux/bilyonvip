@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#05070d">
 <title>SkorLab Quiz</title>
-<link rel="stylesheet" href="style.css?v=1">
+<link rel="stylesheet" href="style.css?v=999">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
@@ -140,7 +140,10 @@
   <div class="quiz-ust">
     <button class="quiz-geri" onclick="quizIptal()">✖</button>
     <div class="quiz-sayac"><span id="quizSayac">1/10</span></div>
-    <div class="quiz-timer" id="quizTimer">15s</div>
+    <div class="quiz-sag">
+      <div class="quiz-timer" id="quizTimer">15s</div>
+      <button class="quiz-pause" onclick="quizPauseAc()">⏸️</button>
+    </div>
   </div>
   <div class="quiz-progress"><div class="quiz-progress-dolu" id="quizProgress"></div></div>
   <div class="quiz-combo" id="quizCombo" style="display:none">🔥 <span id="comboText">2x</span> COMBO</div>
@@ -154,6 +157,18 @@
     <button class="joker-btn" onclick="jokerKullan('cut')"><span>✂️</span><small>30💰</small></button>
     <button class="joker-btn" onclick="jokerKullan('answer')"><span>🎯</span><small>70💰</small></button>
     <button class="joker-btn" onclick="jokerKullan('heart')"><span>❤️</span><small>50💰</small></button>
+  </div>
+</div>
+
+<!-- MODAL: PAUSE -->
+<div class="modal-overlay" id="pauseModal">
+  <div class="modal-content">
+    <h2 class="modal-baslik">⏸️ OYUN DURDURULDU</h2>
+    <div class="pause-butonlar">
+      <button class="menu-btn btn-yesil" onclick="quizPauseKapat()">▶️ DEVAM ET</button>
+      <button class="menu-btn btn-altin" onclick="quizPauseYeniden()">🔄 BAŞTAN BAŞLA</button>
+      <button class="menu-btn btn-kirmizi" onclick="quizPauseCik()">🏠 ANA MENÜ</button>
+    </div>
   </div>
 </div>
 
@@ -289,7 +304,7 @@
 <div id="konfetiKatman" class="konfeti-katman"></div>
 <div id="ucanKatman" class="ucan-katman"></div>
 
-<script src="app.js?v=1"></script>
+<script src="app.js?v=999"></script>
 <script>
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(() => {});
