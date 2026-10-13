@@ -2,382 +2,396 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#05070d">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>SkorLab Quiz</title>
-<link rel="stylesheet" href="style.css?v=1">
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
 
 <!-- SPLASH -->
 <div id="splash" class="splash">
-  <div class="splash-logo">S</div>
-  <div class="splash-marka">SKORLAB</div>
+  <div class="splash-logo">⚽</div>
+  <div class="splash-isim">SKORLAB</div>
   <div class="splash-alt">FUTBOL QUIZ</div>
-  <div class="splash-bar"><div class="splash-bar-dolu"></div></div>
+  <div class="splash-loader"></div>
 </div>
 
-<!-- ONBOARDING -->
-<div id="onboarding" class="onboarding">
-  <div class="ob-icerik">
-    <div class="ob-ikon">⚽</div>
-    <h1 class="ob-baslik">HOŞ GELDİN!</h1>
-    <p class="ob-alt">Futbol bilgini test et. 600 soru, 60 kategori, sonsuz eğlence.</p>
-    <div class="ob-kutu">
-      <div class="ob-satir"><span>💰 Başlangıç</span><b>500 Coin</b></div>
-      <div class="ob-satir"><span>⭐ Başlangıç</span><b>0 Yıldız</b></div>
-      <div class="ob-satir"><span>🎯 Soru başına</span><b>+5 Coin</b></div>
-      <div class="ob-satir"><span>🏆 Kategori bitirme</span><b>+50 Coin</b></div>
-    </div>
-    <button class="ob-btn" onclick="onboardingBitir()">⚡ BAŞLA</button>
-    <div class="ob-not">Reklamsız · Ücretsiz · Türkçe</div>
-  </div>
-</div>
-
-<!-- ÜST BAR -->
-<header class="ust-bar" id="ustBar" style="display:none">
-  <div class="ub-sol" onclick="anaEkranaDon()">
-    <span class="ub-logo">⚽ SKORLAB</span>
+<!-- UST BAR -->
+<div id="ustBar" class="ust-bar" style="display:none">
+  <div class="ub-sol">
+    <span class="ub-logo">⚽</span>
+    <span class="ub-isim">SKORLAB</span>
   </div>
   <div class="ub-sag">
-    <div class="ub-kutu"><span>⭐</span><b id="ubYildiz">0</b></div>
-    <div class="ub-kutu"><span>💰</span><b id="ubCoin">500</b></div>
+    <div class="ub-rozet"><span class="ub-ikon">⭐</span><span id="ubYildiz">0</span></div>
+    <div class="ub-rozet"><span class="ub-ikon">💰</span><span id="ubCoin">0</span></div>
   </div>
-</header>
+</div>
 
 <!-- ANA MENÜ -->
 <div id="menuEkran" class="ekran aktif">
-  <div class="menu-icerik">
-    <div class="menu-karsilama">
-      <div class="mk-isim">Merhaba, <b id="menuIsim">Oyuncu</b>! 👋</div>
-      <div class="mk-alt">Bugün hangi kategoriyi fethediyorsun?</div>
+  <div class="menu-ust">
+    <div class="menu-isim">Merhaba, <span id="menuIsim" style="color:var(--green)">Oyuncu</span>! 👋</div>
+    <div class="menu-alt">Bugün hangi kategoriyi fethediyorsun?</div>
+  </div>
+  <button class="menu-buyuk-btn" onclick="oyunaBasla()">
+    <span class="mbb-ikon">⚽</span>
+    <div class="mbb-icerik">
+      <div class="mbb-ust">OYUNA BAŞLA</div>
+      <div class="mbb-alt">600 soru · 60 kategori</div>
     </div>
-    <button class="menu-buyuk-btn" onclick="oyunaBasla()">
-      <div class="mbb-sol">
-        <div class="mbb-ikon">⚽</div>
-        <div class="mbb-yazi">
-          <div class="mbb-ust">OYUNA BAŞLA</div>
-          <div class="mbb-alt">600 soru · 60 kategori</div>
-        </div>
-      </div>
-      <div class="mbb-ok">▶</div>
+    <span class="mbb-ok">▶</span>
+  </button>
+  <div class="menu-grid">
+    <button class="mbb" onclick="gununAc()">
+      <div class="mbb-ikon">📅</div>
+      <div class="mbb-ust">Günün</div>
+      <span class="mbb-badge" id="gununBadge"></span>
     </button>
-    <div class="menu-grid">
-      <button class="menu-grid-btn menu-gunun" onclick="gununAc()">
-        <div class="mgb-ikon">📅</div>
-        <div class="mgb-yazi">Günün</div>
-        <div class="mgb-badge" id="gununBadge">🔴</div>
-      </button>
-      <button class="menu-grid-btn" onclick="gunlukOdulAc()">
-        <div class="mgb-ikon">🎁</div>
-        <div class="mgb-yazi">Günlük</div>
-        <div class="mgb-badge" id="gunlukBadge">🔴</div>
-      </button>
-      <button class="menu-grid-btn" onclick="carkifelekAc()">
-        <div class="mgb-ikon">🎡</div>
-        <div class="mgb-yazi">Çark</div>
-        <div class="mgb-badge" id="carkBadge">🔴</div>
-      </button>
-      <button class="menu-grid-btn" onclick="basarimlarAc()">
-        <div class="mgb-ikon">🏆</div>
-        <div class="mgb-yazi">Başarım</div>
-      </button>
-      <button class="menu-grid-btn" onclick="magazaAc()">
-        <div class="mgb-ikon">🛒</div>
-        <div class="mgb-yazi">Mağaza</div>
-      </button>
-      <button class="menu-grid-btn menu-tarih" onclick="tarihAc()">
-        <div class="mgb-ikon">📜</div>
-        <div class="mgb-yazi">Tarih</div>
-      </button>
-      <button class="menu-grid-btn" onclick="profilAc()">
-        <div class="mgb-ikon">👤</div>
-        <div class="mgb-yazi">Profil</div>
-      </button>
-      <button class="menu-grid-btn menu-vip" onclick="vipAc()">
-        <div class="mgb-ikon">👑</div>
-        <div class="mgb-yazi">VIP</div>
-      </button>
-      <button class="menu-grid-btn" onclick="ayarlarAc()">
-        <div class="mgb-ikon">⚙️</div>
-        <div class="mgb-yazi">Ayarlar</div>
-      </button>
+    <button class="mbb" onclick="gunlukOdulAc()">
+      <div class="mbb-ikon">🎁</div>
+      <div class="mbb-ust">Günlük</div>
+      <span class="mbb-badge" id="gunlukBadge"></span>
+    </button>
+    <button class="mbb" onclick="carkifelekAc()">
+      <div class="mbb-ikon">🎡</div>
+      <div class="mbb-ust">Çark</div>
+      <span class="mbb-badge" id="carkBadge"></span>
+    </button>
+    <button class="mbb" onclick="basarimlarAc()">
+      <div class="mbb-ikon">🏆</div>
+      <div class="mbb-ust">Başarım</div>
+    </button>
+    <button class="mbb" onclick="magazaAc()">
+      <div class="mbb-ikon">🛒</div>
+      <div class="mbb-ust">Mağaza</div>
+    </button>
+    <button class="mbb" onclick="tarihAc()">
+      <div class="mbb-ikon">🧠</div>
+      <div class="mbb-ust">Biliyor Muydun?</div>
+    </button>
+    <button class="mbb" onclick="profilAc()">
+      <div class="mbb-ikon">👤</div>
+      <div class="mbb-ust">Profil</div>
+    </button>
+    <button class="mbb mbb-vip" onclick="vipAc()">
+      <div class="mbb-ikon">👑</div>
+      <div class="mbb-ust">VIP</div>
+    </button>
+    <button class="mbb" onclick="ayarlarAc()">
+      <div class="mbb-ikon">⚙️</div>
+      <div class="mbb-ust">Ayarlar</div>
+    </button>
+  </div>
+  <div class="menu-istatistik">
+    <div class="mi-kart">
+      <div class="mi-ikon">⭐</div>
+      <div class="mi-deger" id="menuYildiz">0</div>
+      <div class="mi-lbl">YILDIZ</div>
     </div>
-    <div class="menu-stat-grid">
-      <div class="menu-stat">
-        <div class="ms-ikon">⭐</div>
-        <div class="ms-deger" id="menuYildiz">0</div>
-        <div class="ms-lbl">YILDIZ</div>
-      </div>
-      <div class="menu-stat">
-        <div class="ms-ikon">🎯</div>
-        <div class="ms-deger" id="menuDogru">0</div>
-        <div class="ms-lbl">DOĞRU</div>
-      </div>
-      <div class="menu-stat">
-        <div class="ms-ikon">🏆</div>
-        <div class="ms-deger" id="menuBasarim">0</div>
-        <div class="ms-lbl">BAŞARIM</div>
-      </div>
+    <div class="mi-kart">
+      <div class="mi-ikon">🎯</div>
+      <div class="mi-deger" id="menuDogru">0</div>
+      <div class="mi-lbl">DOĞRU</div>
+    </div>
+    <div class="mi-kart">
+      <div class="mi-ikon">🏆</div>
+      <div class="mi-deger" id="menuBasarim">0</div>
+      <div class="mi-lbl">BAŞARIM</div>
     </div>
   </div>
 </div>
 
-<!-- KATEGORİ SEÇİM -->
+<!-- KATEGORİ EKRANI -->
 <div id="kategoriEkran" class="ekran">
-  <div class="ekran-baslik">
+  <div class="ekran-ust">
     <button class="geri-btn" onclick="anaEkranaDon()">←</button>
-    <h2>Kategori Seç</h2>
-    <div class="baslik-yildiz">⭐ <span id="katYildiz">0</span></div>
+    <div class="ekran-baslik">Kategori Seç</div>
+    <div class="ub-rozet"><span class="ub-ikon">⭐</span><span id="katYildiz">0</span></div>
   </div>
-  <div class="bolum-secici">
-    <button class="bolum-tab aktif" onclick="bolumSec('NORMAL',this)">📚 NORMAL</button>
-    <button class="bolum-tab" onclick="bolumSec('SAMPİYONLAR',this)">⭐ ŞL</button>
-    <button class="bolum-tab" onclick="bolumSec('EFSANELER',this)">👑 EFSANELER</button>
+  <div class="bolum-tablar">
+    <button class="bolum-tab aktif" onclick="bolumSec('NORMAL', this)">📚 NORMAL</button>
+    <button class="bolum-tab" onclick="bolumSec('SAMPİYONLAR', this)">⭐ ŞL</button>
+    <button class="bolum-tab" onclick="bolumSec('EFSANELER', this)">👑 EFSANELER</button>
   </div>
-  <div id="kategoriListesi" class="kategori-liste"></div>
+  <div id="kategoriListesi" class="kategori-listesi"></div>
 </div>
 
 <!-- QUIZ EKRANI -->
 <div id="quizEkran" class="ekran">
   <div class="quiz-ust">
-    <button class="quiz-geri" onclick="quizIptal()">✖</button>
-    <div class="quiz-sayac"><span id="quizSayac">1/10</span></div>
-    <div class="quiz-sag">
-      <div class="quiz-timer" id="quizTimer">15s</div>
-      <button class="quiz-pause" onclick="quizPauseAc()">⏸️</button>
-    </div>
+    <button class="quiz-iptal" onclick="quizIptal()">✕</button>
+    <div class="quiz-sayac" id="quizSayac">1/10</div>
+    <div class="quiz-timer" id="quizTimer">15s</div>
+    <button class="quiz-pause" onclick="quizPauseAc()">⏸</button>
   </div>
-  <div class="quiz-progress"><div class="quiz-progress-dolu" id="quizProgress"></div></div>
-  <div class="quiz-combo" id="quizCombo" style="display:none">🔥 <span id="comboText">2x</span> COMBO</div>
-  <div class="quiz-soru" id="quizSoru">Soru yükleniyor...</div>
+  <div class="quiz-progress-bar">
+    <div class="quiz-progress-dolu" id="quizProgress"></div>
+  </div>
+  <div class="quiz-combo" id="quizCombo" style="display:none">
+    🔥 <span id="comboText">2x</span> COMBO
+  </div>
+  <div class="quiz-soru-kart">
+    <div class="quiz-soru" id="quizSoru">Soru yükleniyor...</div>
+  </div>
   <div class="quiz-secenekler" id="quizSecenekler"></div>
   <div class="quiz-aciklama" id="quizAciklama" style="display:none">
     <div class="qa-baslik">💡 Açıklama</div>
     <div class="qa-text" id="qaText"></div>
   </div>
   <div class="quiz-jokerler">
-    <button class="joker-btn" onclick="jokerKullan('cut')"><span>✂️</span><small>30💰</small></button>
-    <button class="joker-btn" onclick="jokerKullan('answer')"><span>🎯</span><small>70💰</small></button>
-    <button class="joker-btn" onclick="jokerKullan('heart')"><span>❤️</span><small>50💰</small></button>
-  </div>
-</div>
-
-<!-- MODAL: PAUSE -->
-<div class="modal-overlay" id="pauseModal">
-  <div class="modal-content">
-    <h2 class="modal-baslik">⏸️ OYUN DURDURULDU</h2>
-    <div class="pause-butonlar">
-      <button class="menu-btn btn-yesil" onclick="quizPauseKapat()">▶️ DEVAM ET</button>
-      <button class="menu-btn btn-altin" onclick="quizPauseYeniden()">🔄 BAŞTAN BAŞLA</button>
-      <button class="menu-btn btn-kirmizi" onclick="quizPauseCik()">🏠 ANA MENÜ</button>
-    </div>
+    <button class="joker-btn" onclick="jokerKullan('cut')">
+      <span class="joker-ikon">✂️</span>
+      <span class="joker-fiyat">30</span>
+    </button>
+    <button class="joker-btn" onclick="jokerKullan('answer')">
+      <span class="joker-ikon">🎯</span>
+      <span class="joker-fiyat">70</span>
+    </button>
+    <button class="joker-btn" onclick="jokerKullan('heart')">
+      <span class="joker-ikon">❤️</span>
+      <span class="joker-fiyat">50</span>
+    </button>
   </div>
 </div>
 
 <!-- SONUÇ EKRANI -->
 <div id="sonucEkran" class="ekran">
-  <div class="sonuc-icerik">
+  <div class="sonuc-kart">
     <div class="sonuc-yildizlar" id="sonucYildizlar">⭐⭐⭐</div>
+    <div class="sonuc-baslik">TEBRİKLER!</div>
     <div class="sonuc-skor" id="sonucSkor">1000 PUAN</div>
     <div class="sonuc-detay" id="sonucDetay">8/10 doğru</div>
     <div class="sonuc-kazanc" id="sonucKazanc">+40 💰</div>
-    <div class="sonuc-butonlar">
-      <button class="menu-btn btn-yesil" onclick="tekrarOyna()">🔄 TEKRAR OYNA</button>
-      <button class="menu-btn btn-mavi" onclick="paylasKartGoster()">📤 PAYLAŞ</button>
-      <button class="menu-btn btn-altin" onclick="anaEkranaDon()">🏠 ANA MENÜ</button>
+    <div class="sonuc-btnler">
+      <button class="btn-yesil" onclick="tekrarOyna()">🔄 Tekrar Oyna</button>
+      <button class="btn-mavi" onclick="paylasKartGoster()">📤 Paylaş</button>
+      <button class="btn-gri" onclick="kategoriyeDon()">📚 Kategoriler</button>
     </div>
   </div>
 </div>
 
-<!-- GÜNÜN 10 SORUSU -->
+<!-- GÜNÜN EKRANI -->
 <div id="gununEkran" class="ekran">
-  <div class="ekran-baslik">
+  <div class="ekran-ust">
     <button class="geri-btn" onclick="anaEkranaDon()">←</button>
-    <h2>📅 Günün 10 Sorusu</h2>
-    <div class="baslik-yildiz">🔥 <span id="gununSeri">0</span></div>
+    <div class="ekran-baslik">📅 Günün 10 Sorusu</div>
+    <div></div>
   </div>
-  <div class="gunun-icerik">
-    <div class="gunun-kart">
-      <div class="gk-ikon">📅</div>
-      <div class="gk-baslik">Bugünün Mücadelesi</div>
-      <div class="gk-aciklama" id="gununTarih">Her gün 10 yeni soru</div>
-      <div class="gk-seri">
-        <span>🔥 Seri:</span>
-        <b id="gununSeriBuyuk">0 gün</b>
-      </div>
-      <button class="menu-buyuk-btn" onclick="gununBasla()" id="gununBtn">
-        <div class="mbb-sol">
-          <div class="mbb-ikon">▶️</div>
-          <div class="mbb-yazi">
-            <div class="mbb-ust">GÜNÜN SORULARINI ÇÖZ</div>
-            <div class="mbb-alt">10 soru · +100 coin · +1 yıldız</div>
-          </div>
-        </div>
-        <div class="mbb-ok">▶</div>
-      </button>
-      <div class="gk-bilgi" id="gununBilgi">Bugün henüz çözmedin</div>
+  <div class="gunun-kart">
+    <div class="gunun-ust">
+      <div class="gunun-ikon">📅</div>
+      <div class="gunun-tarih" id="gununTarih"></div>
     </div>
+    <div class="gunun-seri">
+      🔥 Seri: <span id="gununSeri">0</span> gün
+    </div>
+    <div class="gunun-bilgi" id="gununBilgi">Bugün henüz çözmedin</div>
+    <button class="menu-buyuk-btn" id="gununBtn" onclick="gununBasla()">
+      <div class="mbb-icerik">
+        <div class="mbb-ust">GÜNÜN SORULARINI ÇÖZ</div>
+        <div class="mbb-alt">10 soru · +100 coin · +1 yıldız</div>
+      </div>
+    </button>
     <div class="gunun-oduller">
       <div class="go-baslik">🎁 ÖDÜLLER</div>
-      <div class="go-satir"><span>✅ Tamamlama</span><b>+100 💰</b></div>
-      <div class="go-satir"><span>🔥 3 gün seri</span><b>+2 ⭐</b></div>
-      <div class="go-satir"><span>🔥 7 gün seri</span><b>+5 ⭐ + Rozet</b></div>
-      <div class="go-satir"><span>🔥 30 gün seri</span><b>+20 ⭐ + Kupa</b></div>
+      <div class="go-satir">✅ Tamamlama: +100 💰</div>
+      <div class="go-satir">🔥 3 gün seri: +2 ⭐</div>
+      <div class="go-satir">🔥 7 gün seri: +5 ⭐ + Rozet</div>
+      <div class="go-satir">🔥 30 gün seri: +20 ⭐ + Kupa</div>
     </div>
   </div>
 </div>
 
-<!-- BUGÜN FUTBOL TARİHİNDE -->
-<div id="tarihEkran" class="ekran">
-  <div class="ekran-baslik">
-    <button class="geri-btn" onclick="anaEkranaDon()">←</button>
-    <h2>📜 Bugün Futbol Tarihinde</h2>
-  </div>
-  <div class="tarih-icerik" id="tarihIcerik">
-    <div class="tarih-yukleniyor">Yükleniyor...</div>
-  </div>
-</div>
-
-<!-- GÜNLÜK ÖDÜL -->
+<!-- GÜNLÜK ÖDÜL EKRANI -->
 <div id="gunlukEkran" class="ekran">
-  <div class="ekran-baslik">
+  <div class="ekran-ust">
     <button class="geri-btn" onclick="anaEkranaDon()">←</button>
-    <h2>🎁 Günlük Ödül</h2>
+    <div class="ekran-baslik">🎁 Günlük Ödül</div>
+    <div></div>
   </div>
   <div class="gunluk-grid" id="gunlukGrid"></div>
-  <button class="buyuk-btn btn-altin" id="gunlukAlBtn" onclick="gunlukAl()">ÖDÜLÜ AL 🎁</button>
+  <button class="btn-yesil btn-buyuk" id="gunlukAlBtn" onclick="gunlukAl()">ÖDÜLÜ AL 🎁</button>
 </div>
 
-<!-- ÇARKIFELEK -->
+<!-- ÇARK EKRANI -->
 <div id="carkEkran" class="ekran">
-  <div class="ekran-baslik">
+  <div class="ekran-ust">
     <button class="geri-btn" onclick="anaEkranaDon()">←</button>
-    <h2>🎡 Çarkıfelek</h2>
+    <div class="ekran-baslik">🎡 Çarkıfelek</div>
+    <div></div>
   </div>
-  <div class="cark-icerik">
-    <div class="cark-wrap">
-      <div class="cark-pointer">▼</div>
-      <canvas id="carkCanvas" width="320" height="320"></canvas>
-    </div>
-    <button class="buyuk-btn btn-altin" id="carkBtn" onclick="carkCevir()">ÇEVİR 🎡</button>
-    <div class="cark-bilgi" id="carkBilgi">Günde 1 ücretsiz çevirme hakkın var</div>
+  <div class="cark-container">
+    <canvas id="carkCanvas"></canvas>
+    <div class="cark-ok">▼</div>
   </div>
+  <div class="cark-bilgi" id="carkBilgi">Günde 1 ücretsiz çevirme hakkın var</div>
+  <button class="btn-yesil btn-buyuk" id="carkBtn" onclick="carkCevir()">ÇEVİR 🎡</button>
 </div>
 
-<!-- BAŞARIMLAR -->
+<!-- BAŞARIM EKRANI -->
 <div id="basarimEkran" class="ekran">
-  <div class="ekran-baslik">
+  <div class="ekran-ust">
     <button class="geri-btn" onclick="anaEkranaDon()">←</button>
-    <h2>🏆 Başarımlar</h2>
+    <div class="ekran-baslik">🏆 Başarımlar</div>
+    <div></div>
   </div>
-  <div class="basarim-liste" id="basarimListe"></div>
+  <div id="basarimListe" class="basarim-liste"></div>
 </div>
 
-<!-- MAĞAZA -->
+<!-- MAĞAZA EKRANI -->
 <div id="magazaEkran" class="ekran">
-  <div class="ekran-baslik">
+  <div class="ekran-ust">
     <button class="geri-btn" onclick="anaEkranaDon()">←</button>
-    <h2>🛒 Mağaza</h2>
+    <div class="ekran-baslik">🛒 Mağaza</div>
+    <div class="ub-rozet"><span class="ub-ikon">💰</span><span id="magazaCoin">0</span></div>
   </div>
-  <div class="magaza-liste" id="magazaListe"></div>
+  <div id="magazaListe" class="magaza-liste"></div>
 </div>
 
-<!-- PROFİL -->
+<!-- PROFİL EKRANI -->
 <div id="profilEkran" class="ekran">
-  <div class="ekran-baslik">
+  <div class="ekran-ust">
     <button class="geri-btn" onclick="anaEkranaDon()">←</button>
-    <h2>👤 Profil</h2>
+    <div class="ekran-baslik">👤 Profil</div>
+    <div></div>
   </div>
-  <div class="profil-icerik">
-    <div class="profil-kart">
-      <div class="profil-avatar">👤</div>
-      <input type="text" id="profilIsim" class="profil-isim-input" placeholder="İsmini yaz" maxlength="15">
-      <button class="menu-btn btn-yesil" onclick="profilKaydet()">KAYDET ✅</button>
+  <div class="profil-kart">
+    <div class="profil-avatar">👤</div>
+    <div class="profil-isim-satir">
+      <input type="text" id="profilIsim" class="profil-input" placeholder="İsmini gir">
+      <button class="btn-kaydet" onclick="profilKaydet()">Kaydet</button>
     </div>
-    <div class="profil-istatistik" id="profilIstatistik"></div>
   </div>
+  <div class="profil-istatistik" id="profilIstatistik"></div>
 </div>
 
-<!-- VIP -->
+<!-- VIP EKRANI -->
 <div id="vipEkran" class="ekran">
-  <div class="ekran-baslik">
+  <div class="ekran-ust">
     <button class="geri-btn" onclick="anaEkranaDon()">←</button>
-    <h2>👑 VIP</h2>
+    <div class="ekran-baslik">👑 VIP</div>
+    <div></div>
   </div>
-  <div class="vip-icerik">
-    <div class="vip-kart">
-      <div class="vip-ikon">👑</div>
-      <div class="vip-baslik">VIP SKORLAB</div>
-      <div class="vip-fiyat">100 ⭐ / ay</div>
-      <div class="vip-ozellikler">
-        <div>✅ Sınırsız joker (ücretsiz)</div>
-        <div>✅ Reklamsız deneyim</div>
-        <div>✅ Tüm kategoriler açık</div>
-        <div>✅ Günlük 500 coin bonus</div>
-        <div>✅ Özel VIP rozeti</div>
-        <div>✅ Öncelikli destek</div>
-      </div>
-      <button class="buyuk-btn btn-altin" onclick="vipSatinAl()">👑 VIP'A GEÇ</button>
+  <div class="vip-kart">
+    <div class="vip-ikon">👑</div>
+    <div class="vip-baslik">VIP SKORLAB</div>
+    <div class="vip-fiyat">100 ⭐ / ay</div>
+    <div class="vip-ozellikler">
+      <div class="vip-ozellik">✅ Sınırsız joker (ücretsiz)</div>
+      <div class="vip-ozellik">✅ Reklamsız deneyim</div>
+      <div class="vip-ozellik">✅ Tüm kategoriler açık</div>
+      <div class="vip-ozellik">✅ Günlük 500 coin bonus</div>
+      <div class="vip-ozellik">✅ Özel VIP rozeti</div>
+      <div class="vip-ozellik">✅ Öncelikli destek</div>
     </div>
+    <button class="btn-altin btn-buyuk" onclick="vipSatinAl()">VIP OL 👑</button>
   </div>
 </div>
 
-<!-- AYARLAR -->
+<!-- AYARLAR EKRANI -->
 <div id="ayarlarEkran" class="ekran">
-  <div class="ekran-baslik">
+  <div class="ekran-ust">
     <button class="geri-btn" onclick="anaEkranaDon()">←</button>
-    <h2>⚙️ Ayarlar</h2>
+    <div class="ekran-baslik">⚙️ Ayarlar</div>
+    <div></div>
   </div>
   <div class="ayar-liste">
-    <div class="ayar-item">
-      <span>🎵 Müzik</span>
+    <div class="ayar-satir">
+      <div class="ayar-sol">🎵 Müzik</div>
       <label class="switch"><input type="checkbox" id="ayarMuzik" onchange="muzikToggle()"><span class="slider"></span></label>
     </div>
-    <div class="ayar-item">
-      <span>🔊 Ses</span>
-      <label class="switch"><input type="checkbox" id="ayarSes" onchange="sesToggle()" checked><span class="slider"></span></label>
+    <div class="ayar-satir">
+      <div class="ayar-sol">🔊 Ses</div>
+      <label class="switch"><input type="checkbox" id="ayarSes" onchange="sesToggle()"><span class="slider"></span></label>
     </div>
-    <div class="ayar-item">
-      <span>📳 Titreşim</span>
-      <label class="switch"><input type="checkbox" id="ayarTitresim" onchange="titresimToggle()" checked><span class="slider"></span></label>
+    <div class="ayar-satir">
+      <div class="ayar-sol">📳 Titreşim</div>
+      <label class="switch"><input type="checkbox" id="ayarTitresim" onchange="titresimToggle()"><span class="slider"></span></label>
     </div>
-    <div class="ayar-item">
-      <span>🗑️ Verileri Sıfırla</span>
-      <button class="kucuk-btn btn-kirmizi" onclick="verileriSifirla()">SIFIRLA</button>
-    </div>
+    <button class="btn-kirmizi btn-buyuk" onclick="verileriSifirla()">🗑️ Verileri Sıfırla</button>
   </div>
 </div>
 
-<!-- MODAL: GİZEMLİ KUTU -->
-<div class="modal-overlay" id="kutuModal">
-  <div class="modal-content kutu-icerik">
+<!-- TARİH / BİLGİ EKRANI -->
+<div id="tarihEkran" class="ekran">
+  <div class="ekran-ust">
+    <button class="geri-btn" onclick="anaEkranaDon()">←</button>
+    <div class="ekran-baslik">🧠 Biliyor Muydun?</div>
+    <div></div>
+  </div>
+  <div id="tarihIcerik" class="tarih-icerik"></div>
+</div>
+
+<!-- PAUSE MODAL -->
+<div class="modal" id="pauseModal">
+  <div class="modal-icerik">
+    <div class="modal-baslik">⏸ DURAKLATILDI</div>
+    <button class="btn-yesil btn-buyuk" onclick="quizPauseKapat()">▶ Devam Et</button>
+    <button class="btn-mavi btn-buyuk" onclick="quizPauseYeniden()">🔄 Yeniden Başlat</button>
+    <button class="btn-gri btn-buyuk" onclick="quizPauseCik()">🏠 Ana Menü</button>
+  </div>
+</div>
+
+<!-- KUTU MODAL -->
+<div class="modal" id="kutuModal">
+  <div class="modal-icerik" style="text-align:center">
     <div class="kutu-ikon" id="kutuIkon">📦</div>
-    <h2 class="kutu-baslik" id="kutuBaslik">GİZEMLİ KUTU!</h2>
+    <div class="modal-baslik" id="kutuBaslik">GİZEMLİ KUTU!</div>
     <div class="kutu-aciklama" id="kutuAciklama">Kutuyu açmak için dokun</div>
     <div class="kutu-odul" id="kutuOdul" style="display:none">+100 💰</div>
-    <button class="buyuk-btn btn-altin" id="kutuBtn" onclick="kutuAcKontrol()">📦 AÇ</button>
+    <button class="btn-altin btn-buyuk" id="kutuBtn">📦 AÇ</button>
   </div>
 </div>
 
-<!-- MODAL: SONUÇ KARTI PAYLAŞ -->
-<div class="modal-overlay" id="paylasModal">
-  <div class="modal-content paylas-icerik">
-    <h2 class="paylas-baslik">📤 SONUCUNU PAYLAŞ</h2>
-    <div class="paylas-kart" id="paylasKart">
-      <div class="pk-ust">⚽ SKORLAB QUIZ</div>
+<!-- PAYLAŞ MODAL -->
+<div class="modal" id="paylasModal">
+  <div class="modal-icerik" style="text-align:center">
+    <div class="paylas-kart">
+      <div class="pk-logo">⚽ SKORLAB</div>
       <div class="pk-skor" id="pkSkor">1000 PUAN</div>
       <div class="pk-yildiz" id="pkYildiz">⭐⭐⭐</div>
       <div class="pk-detay" id="pkDetay">8/10 doğru</div>
-      <div class="pk-alt">Sen de beni geçebilir misin?</div>
-      <div class="pk-logo">⚽ SkorLab</div>
     </div>
-    <div class="paylas-butonlar">
-      <button class="menu-btn btn-mavi" onclick="telegramPaylas()">📤 TELEGRAM'DA PAYLAŞ</button>
-      <button class="menu-btn btn-gri" onclick="kopyalaPaylas()">📋 KOPYALA</button>
-      <button class="menu-btn btn-kirmizi" onclick="closeModal('paylasModal')">✖ KAPAT</button>
+    <button class="btn-mavi btn-buyuk" onclick="telegramPaylas()">📤 Telegram'da Paylaş</button>
+    <button class="btn-gri btn-buyuk" onclick="kopyalaPaylas()">📋 Panoya Kopyala</button>
+    <button class="btn-gri btn-buyuk" onclick="closeModal('paylasModal')">Kapat</button>
+  </div>
+</div>
+
+<!-- KİLİT MODAL -->
+<div class="modal" id="kilitModal">
+  <div class="modal-icerik" style="text-align:center;">
+    <div class="modal-baslik" id="kilitModalBaslik">Kategori Adı</div>
+    <p style="color:var(--muted);font-size:14px;margin-bottom:15px;">Bu kategoriyi açmak için:</p>
+    <div class="kilit-secenekler">
+      <button class="kilit-btn" id="kilitYildizBtn" onclick="kilitYildizlaAc()">
+        <span class="kilit-fiyat" id="kilitModalYildiz">⭐ 0</span>
+        <span class="kilit-tur">Yıldız ile Aç</span>
+      </button>
+      <button class="kilit-btn" id="kilitCoinBtn" onclick="kilitCoinleAc()">
+        <span class="kilit-fiyat" id="kilitModalCoin">💰 0</span>
+        <span class="kilit-tur">Coin ile Aç</span>
+      </button>
     </div>
+    <button class="kilit-kapat-btn" onclick="kilitKapat()">Vazgeç</button>
+  </div>
+</div>
+
+<!-- ONBOARDING -->
+<div id="onboarding" class="onboarding">
+  <div class="onboarding-icerik">
+    <div class="ob-logo">⚽</div>
+    <div class="ob-baslik">HOŞ GELDİN!</div>
+    <div class="ob-aciklama">Futbol bilgini test et. 600 soru, 60 kategori, sonsuz eğlence.</div>
+    <div class="ob-ozellikler">
+      <div class="ob-ozellik">💰 Başlangıç: <b>500 Coin</b></div>
+      <div class="ob-ozellik">⭐ Başlangıç: <b>0 Yıldız</b></div>
+      <div class="ob-ozellik">🎯 Soru başına: <b>+5 Coin</b></div>
+      <div class="ob-ozellik">🏆 Kategori bitirme: <b>+50 Coin</b></div>
+    </div>
+    <div class="ob-alt">Reklamsız · Ücretsiz · Türkçe</div>
+    <button class="btn-yesil btn-buyuk" onclick="onboardingBitir()">BAŞLA 🚀</button>
   </div>
 </div>
 
@@ -386,18 +400,10 @@
 
 <!-- KONFETİ -->
 <div id="konfetiKatman" class="konfeti-katman"></div>
+
+<!-- UÇAN PUAN -->
 <div id="ucanKatman" class="ucan-katman"></div>
 
-<script src="app.js?v=1"></script>
-<script>
-  // Service Worker'ı kaldır (cache sorunu için)
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(function(registrations) {
-      for (let registration of registrations) {
-        registration.unregister();
-      }
-    });
-  }
-</script>
+<script src="app.js?v=2"></script>
 </body>
 </html>
