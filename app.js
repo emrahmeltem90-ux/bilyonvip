@@ -1,15 +1,11 @@
 /* ============================================================
-   SKORLAB QUIZ · app.js Bölüm A
-   Veri + Ses + Yardımcı + Başlat
+   SKORLAB QUIZ · app.js
    ============================================================ */
 'use strict';
 
 let TG = null;
 const $ = id => document.getElementById(id);
 
-/* ============================================================
-   YARDIMCI
-   ============================================================ */
 function safeReadJSON(key, fallback) {
   try { const raw = localStorage.getItem(key); return raw == null ? fallback : JSON.parse(raw); }
   catch (e) { return fallback; }
@@ -21,9 +17,6 @@ function safeSaveJSON(key, value) {
 function bugun() { return new Date().toISOString().split('T')[0]; }
 function formatSayi(n) { return Number(n || 0).toLocaleString('tr-TR'); }
 
-/* ============================================================
-   TELEGRAM
-   ============================================================ */
 function initTelegram() {
   if (!window.Telegram?.WebApp) return;
   TG = window.Telegram.WebApp;
@@ -33,12 +26,8 @@ function initTelegram() {
   } catch (e) {}
 }
 
-/* ============================================================
-   TİTREŞİM
-   ============================================================ */
 let titreşimAktif = safeReadJSON('skorlab_titresim', true);
 let sesAktif = safeReadJSON('skorlab_ses', true);
-let muzikAktif = safeReadJSON('skorlab_muzik', false);
 
 function titreşim(ms = 30) {
   if (!titreşimAktif) return;
@@ -48,9 +37,6 @@ function titreşim(ms = 30) {
   } catch (e) {}
 }
 
-/* ============================================================
-   SES
-   ============================================================ */
 let audioCtx = null;
 function getCtx() {
   if (!audioCtx) {
@@ -83,39 +69,18 @@ function sesCal(tur) {
   } catch (e) {}
 }
 
-/* ============================================================
-   OYUN VERİLERİ
-   ============================================================ */
 let user = safeReadJSON('skorlab_user', {
-  isim: 'Oyuncu',
-  coin: 500,
-  yildiz: 0,
-  toplamDogru: 0,
-  toplamYanlis: 0,
-  toplamPuan: 0,
-  enYuksekPuan: 0,
-  tamPuanLevel: 0,
-  seri: 0,
-  sonGiris: '',
-  gunlukSonAlim: 0,
-  gunlukSeri: 0,
-  sonCark: 0,
-  toplamCark: 0,
-  toplamJoker: 0,
-  basarimlar: [],
-  kategoriler: {},       // { kategori_id: { yildiz, enYuksekPuan, tamamlandi } }
-  ozelTema: 'default',
-  avatar: '👤',
-  vip: false,
-  vipBitis: 0,
-  muzik: false,
-  ses: true,
-  titresim: true,
-  aciklama: true,
+  isim: 'Oyuncu', coin: 500, yildiz: 0,
+  toplamDogru: 0, toplamYanlis: 0, toplamPuan: 0,
+  enYuksekPuan: 0, tamPuanLevel: 0,
+  seri: 0, sonGiris: '', gunlukSonAlim: 0, gunlukSeri: 0,
+  sonCark: 0, toplamCark: 0, toplamJoker: 0,
+  basarimlar: [], kategoriler: {},
+  ozelTema: 'default', avatar: '👤',
+  vip: false, vipBitis: 0,
+  muzik: false, ses: true, titresim: true, aciklama: true,
   toplamOynanan: 0
 });
-
-// Eksik alanları doldur
 if (typeof user.coin !== 'number') user.coin = 500;
 if (typeof user.yildiz !== 'number') user.yildiz = 0;
 if (!user.kategoriler || typeof user.kategoriler !== 'object') user.kategoriler = {};
@@ -124,14 +89,7 @@ if (typeof user.isim !== 'string') user.isim = 'Oyuncu';
 
 function persistUser() { safeSaveJSON('skorlab_user', user); }
 
-/* ============================================================
-   SORULAR (3 bölüm)
-   ============================================================ */
-let sorularData = {
-  NORMAL: [],
-  SAMPİYONLAR: [],
-  EFSANELER: []
-};
+let sorularData = { NORMAL: [], SAMPİYONLAR: [], EFSANELER: [] };
 let sorularYuklendi = false;
 
 async function sorulariYukle() {
@@ -165,10 +123,7 @@ async function sorulariYukle() {
   }
 }
 
-function aktifSorular() {
-  // Aktif bölümdeki kategorileri döndür
-  return sorularData[aktifBolum] || [];
-}
+function aktifSorular() { return sorularData[aktifBolum] || []; }
 
 function kategoriBul(id) {
   for (const bolum of Object.keys(sorularData)) {
@@ -178,9 +133,6 @@ function kategoriBul(id) {
   return null;
 }
 
-/* ============================================================
-   EKRAN YÖNETİMİ
-   ============================================================ */
 let aktifBolum = 'NORMAL';
 let aktifKategori = null;
 let quizSorular = [];
@@ -214,9 +166,6 @@ function ustBarGuncelle() {
   if ($('katYildiz')) $('katYildiz').textContent = formatSayi(user.yildiz);
 }
 
-/* ============================================================
-   TOAST + ANİMASYON
-   ============================================================ */
 function toast(mesaj) {
   const t = $('toast');
   if (!t) return;
@@ -251,9 +200,6 @@ function ucanPuan(metin, renk = 'var(--green)') {
   setTimeout(() => el.remove(), 1600);
 }
 
-/* ============================================================
-   BAŞLAT
-   ============================================================ */
 window.addEventListener('DOMContentLoaded', async () => {
   initTelegram();
   await sorulariYukle();
@@ -261,13 +207,13 @@ window.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function splashBitir() {
-  // Splash 1.5 saniye göster
   await new Promise(r => setTimeout(r, 1500));
   const splash = $('splash');
   if (splash) splash.classList.add('gizle');
   setTimeout(() => {
+    const ub = $('ustBar');
+    if (ub) ub.style.display = 'flex';
     if (!user || !user.gunlukSonAlim) {
-      // İlk giriş → Onboarding
       $('onboarding')?.classList.add('aktif');
     } else {
       anaEkranaDon();
@@ -284,32 +230,33 @@ function onboardingBitir() {
 
 function anaEkranaDon() {
   ekranGoster('menuEkran');
+  const ub = $('ustBar');
+  if (ub) ub.style.display = 'flex';
   ustBarGuncelle();
   menuGuncelle();
 }
 
-/* ============================================================
-   MENÜ GÜNCELLE (günlük ödül hatırlatıcı)
-   ============================================================ */
 function menuGuncelle() {
-  const btn = document.querySelector('.menu-btn.btn-altin');
-  if (!btn) return;
-  const simdi = Date.now();
-  const gecen = simdi - (user.gunlukSonAlim || 0);
-  if (gecen >= 24 * 60 * 60 * 1000) {
-    btn.innerHTML = '<span class="mb-ikon">🎁</span><span class="mb-yazi">GÜNLÜK ÖDÜL 🔴</span>';
-  } else {
-    btn.innerHTML = '<span class="mb-ikon">🎁</span><span class="mb-yazi">GÜNLÜK ÖDÜL</span>';
+  if ($('menuIsim')) $('menuIsim').textContent = user.isim || 'Oyuncu';
+  if ($('menuYildiz')) $('menuYildiz').textContent = formatSayi(user.yildiz);
+  if ($('menuDogru')) $('menuDogru').textContent = formatSayi(user.toplamDogru);
+  if ($('menuBasarim')) $('menuBasarim').textContent = formatSayi(user.basarimlar.length);
+
+  const gunlukBadge = $('gunlukBadge');
+  if (gunlukBadge) {
+    const gecen = Date.now() - (user.gunlukSonAlim || 0);
+    if (gecen >= 24 * 60 * 60 * 1000 || !user.gunlukSonAlim) gunlukBadge.classList.add('aktif');
+    else gunlukBadge.classList.remove('aktif');
+  }
+  const carkBadge = $('carkBadge');
+  if (carkBadge) {
+    const gecen = Date.now() - (user.sonCark || 0);
+    if (gecen >= 4 * 60 * 60 * 1000 || !user.sonCark) carkBadge.classList.add('aktif');
+    else carkBadge.classList.remove('aktif');
   }
 }
 
-/* ============================================================
-   BÖLÜM B — Menü + Kategori + Quiz Motoru
-   ============================================================ */
-
-/* ============================================================
-   KATEGORİ LİSTESİ
-   ============================================================ */
+/* KATEGORİ */
 function oyunaBasla() {
   aktifBolum = 'NORMAL';
   ekranGoster('kategoriEkran');
@@ -360,9 +307,6 @@ function kategoriListesiniGuncelle() {
   ustBarGuncelle();
 }
 
-/* ============================================================
-   KATEGORİ BAŞLAT
-   ============================================================ */
 function kategoriSec(id) {
   const kat = kategoriBul(id);
   if (!kat) { toast('Kategori bulunamadı'); return; }
@@ -375,19 +319,11 @@ function kategoriSec(id) {
   quizBaslat();
 }
 
-/* ============================================================
-   QUIZ BAŞLAT
-   ============================================================ */
 function quizBaslat() {
   if (!aktifKategori || !aktifKategori.sorular) { toast('Soru yok'); return; }
-  // Soruları karıştır
   quizSorular = [...aktifKategori.sorular].sort(() => Math.random() - 0.5).slice(0, 10);
-  quizIndex = 0;
-  quizSkor = 0;
-  quizDogru = 0;
-  quizYanlis = 0;
-  quizCombo = 0;
-  quizEnIyiCombo = 0;
+  quizIndex = 0; quizSkor = 0; quizDogru = 0; quizYanlis = 0;
+  quizCombo = 0; quizEnIyiCombo = 0;
   quizJoker = { cut: false, answer: false, heart: false };
   quizCiftHak = false;
   user.toplamOynanan = (user.toplamOynanan || 0) + 1;
@@ -396,39 +332,24 @@ function quizBaslat() {
   soruGoster();
 }
 
-/* ============================================================
-   SORU GÖSTER
-   ============================================================ */
 function soruGoster() {
-  if (quizIndex >= quizSorular.length) {
-    quizBitir();
-    return;
-  }
+  if (quizIndex >= quizSorular.length) { quizBitir(); return; }
   const soru = quizSorular[quizIndex];
   quizCevaplandi = false;
   quizCiftHak = false;
-
-  // Sayac
   if ($('quizSayac')) $('quizSayac').textContent = `${quizIndex + 1}/${quizSorular.length}`;
-  // Progress
   if ($('quizProgress')) $('quizProgress').style.width = ((quizIndex / quizSorular.length) * 100) + '%';
-  // Combo
   const comboEl = $('quizCombo');
   if (comboEl) {
     if (quizCombo >= 2) {
       comboEl.style.display = 'block';
       if ($('comboText')) $('comboText').textContent = quizCombo + 'x';
-    } else {
-      comboEl.style.display = 'none';
-    }
+    } else comboEl.style.display = 'none';
   }
-  // Soru
   if ($('quizSoru')) $('quizSoru').textContent = soru.soru;
-  // Şıklar
   const secEl = $('quizSecenekler');
   if (secEl) {
     secEl.innerHTML = '';
-    const harfler = ['A', 'B', 'C', 'D'];
     const secenekler = soru.secenekler;
     const siralama = ['A', 'B', 'C', 'D'].filter(h => secenekler[h] !== undefined);
     siralama.forEach(h => {
@@ -440,20 +361,14 @@ function soruGoster() {
       secEl.appendChild(btn);
     });
   }
-  // Açıklama kapat
   if ($('quizAciklama')) $('quizAciklama').style.display = 'none';
-  // Jokerler sıfırla
   document.querySelectorAll('.joker-btn').forEach(b => {
     b.disabled = false;
     b.classList.remove('kullanildi');
   });
-  // Timer
   timerBaslat();
 }
 
-/* ============================================================
-   TIMER
-   ============================================================ */
 function timerBaslat() {
   clearInterval(quizTimer);
   quizTimerKalan = 15;
@@ -461,16 +376,11 @@ function timerBaslat() {
   quizTimer = setInterval(() => {
     quizTimerKalan--;
     timerGuncelle();
-    if (quizTimerKalan <= 5) {
-      $('quizTimer')?.classList.add('uyari');
-    }
+    if (quizTimerKalan <= 5) $('quizTimer')?.classList.add('uyari');
     if (quizTimerKalan <= 0) {
       clearInterval(quizTimer);
       if (!quizCevaplandi) {
-        // Süre bitti
-        quizCevaplandi = true;
-        quizYanlis++;
-        quizCombo = 0;
+        quizCevaplandi = true; quizYanlis++; quizCombo = 0;
         sesCal('hata'); titreşim(150);
         dogruCevabiGoster();
         setTimeout(sonrakiSoru, 2000);
@@ -486,16 +396,11 @@ function timerGuncelle() {
   }
 }
 
-/* ============================================================
-   CEVAP VER
-   ============================================================ */
 function cevapVer(harf, btn) {
   if (quizCevaplandi) return;
   const soru = quizSorular[quizIndex];
   const dogru = soru.dogru_cevap;
-
   if (harf === dogru) {
-    // Doğru
     quizCevaplandi = true;
     clearInterval(quizTimer);
     btn.classList.add('dogru');
@@ -507,22 +412,17 @@ function cevapVer(harf, btn) {
     quizSkor += puan;
     user.toplamDogru++;
     user.toplamPuan += puan;
-    // Coin
     const coin = 5 + (quizCombo > 1 ? quizCombo : 0);
     user.coin += coin;
-    user.toplamJoker = user.toplamJoker || 0;
-    persistUser();
-    ustBarGuncelle();
+    persistUser(); ustBarGuncelle();
     sesCal('kazanc'); titreşim(50);
     ucanPuan('+' + puan, 'var(--green)');
     if (quizCombo >= 2) ucanPuan('🔥 ' + quizCombo + 'x COMBO', 'var(--orange)');
-    // Açıklama göster
     aciklamaGoster(soru.aciklama);
     tumSeceneklerKapat();
     setTimeout(sonrakiSoru, 1800);
   } else {
     if (quizCiftHak) {
-      // Çift hak → yanlış hakkı yak, devam et
       quizCiftHak = false;
       btn.classList.add('yanlis');
       btn.disabled = true;
@@ -530,7 +430,6 @@ function cevapVer(harf, btn) {
       toast('❤️ Çift hak kullanıldı, tekrar dene');
       return;
     }
-    // Yanlış
     quizCevaplandi = true;
     clearInterval(quizTimer);
     btn.classList.add('yanlis');
@@ -548,7 +447,6 @@ function cevapVer(harf, btn) {
 function tumSeceneklerKapat() {
   document.querySelectorAll('.quiz-secenek').forEach(b => b.disabled = true);
 }
-
 function dogruCevabiGoster() {
   const soru = quizSorular[quizIndex];
   document.querySelectorAll('.quiz-secenek').forEach(b => {
@@ -556,55 +454,36 @@ function dogruCevabiGoster() {
     if (b.dataset.harf === soru.dogru_cevap) b.classList.add('dogru');
   });
 }
-
 function aciklamaGoster(metin) {
   if (!metin) return;
   const box = $('quizAciklama');
   const txt = $('qaText');
-  if (box && txt) {
-    txt.textContent = metin;
-    box.style.display = 'block';
-  }
+  if (box && txt) { txt.textContent = metin; box.style.display = 'block'; }
 }
-
 function sonrakiSoru() {
   quizIndex++;
-  if (quizIndex >= quizSorular.length) {
-    quizBitir();
-  } else {
-    soruGoster();
-  }
+  if (quizIndex >= quizSorular.length) quizBitir();
+  else soruGoster();
 }
 
-/* ============================================================
-   JOKER
-   ============================================================ */
 const JOKER_FIYAT = { cut: 30, answer: 70, heart: 50 };
-
 function jokerKullan(tip) {
   if (quizCevaplandi) return;
   if (quizJoker[tip]) { toast('Bu joker kullanıldı'); return; }
-  if (user.vip) {
-    // VIP → ücretsiz
-  } else {
+  if (!user.vip) {
     if (user.coin < JOKER_FIYAT[tip]) {
-      toast('❌ Yetersiz coin!');
-      sesCal('hata'); titreşim(100);
+      toast('❌ Yetersiz coin!'); sesCal('hata'); titreşim(100);
       return;
     }
     user.coin -= JOKER_FIYAT[tip];
   }
   quizJoker[tip] = true;
   user.toplamJoker = (user.toplamJoker || 0) + 1;
-  persistUser();
-  ustBarGuncelle();
+  persistUser(); ustBarGuncelle();
   sesCal('tik'); titreşim(20);
-
   const btn = document.querySelector(`.joker-btn[onclick*="${tip}"]`);
   if (btn) { btn.disabled = true; btn.classList.add('kullanildi'); }
-
   if (tip === 'cut') {
-    // 2 yanlış şıkkı gizle
     const soru = quizSorular[quizIndex];
     const yanlislar = ['A', 'B', 'C', 'D'].filter(h => h !== soru.dogru_cevap && soru.secenekler[h] !== undefined);
     yanlislar.sort(() => Math.random() - 0.5);
@@ -613,65 +492,46 @@ function jokerKullan(tip) {
       if (b) b.classList.add('gizli');
     });
   } else if (tip === 'answer') {
-    // Doğru cevabı göster
     const soru = quizSorular[quizIndex];
     const b = document.querySelector(`.quiz-secenek[data-harf="${soru.dogru_cevap}"]`);
     if (b) b.classList.add('dogru');
   } else if (tip === 'heart') {
-    // Çift hak
     quizCiftHak = true;
     toast('❤️ Çift hak aktif!');
   }
 }
 
-/* ============================================================
-   QUIZ BİTİR
-   ============================================================ */
 function quizBitir() {
   clearInterval(quizTimer);
-  // Yıldız hesapla
   const toplamSoru = quizSorular.length;
   const yuzde = (quizDogru / toplamSoru) * 100;
   let yildiz = 0;
   if (yuzde >= 100) yildiz = 3;
   else if (yuzde >= 70) yildiz = 2;
   else if (yuzde >= 30) yildiz = 1;
-  // Coin ödülü
   const coinOdul = quizDogru * 5 + (yildiz === 3 ? 50 : yildiz === 2 ? 30 : yildiz === 1 ? 15 : 0);
   user.coin += coinOdul;
   if (yildiz > 0) user.yildiz += yildiz;
-  // Kategori kaydet
   const katId = aktifKategori.kategori_id;
   const mevcut = user.kategoriler[katId] || { yildiz: 0, enYuksekPuan: 0, tamamlandi: false };
   if (quizSkor > mevcut.enYuksekPuan) mevcut.enYuksekPuan = quizSkor;
   if (yildiz > mevcut.yildiz) mevcut.yildiz = yildiz;
   mevcut.tamamlandi = true;
   user.kategoriler[katId] = mevcut;
-  // En yüksek puan
   if (quizSkor > user.enYuksekPuan) user.enYuksekPuan = quizSkor;
   if (yildiz === 3) user.tamPuanLevel = (user.tamPuanLevel || 0) + 1;
-  user.toplamPuan += 0; // zaten eklendi
-  persistUser();
-  ustBarGuncelle();
-
-  // Sonuç ekranı
+  persistUser(); ustBarGuncelle();
   const yildizStr = yildiz === 1 ? '⭐☆☆' : yildiz === 2 ? '⭐⭐☆' : yildiz === 3 ? '⭐⭐⭐' : '☆☆☆';
   if ($('sonucYildizlar')) $('sonucYildizlar').textContent = yildizStr;
   if ($('sonucSkor')) $('sonucSkor').textContent = quizSkor + ' PUAN';
   if ($('sonucDetay')) $('sonucDetay').textContent = `${quizDogru}/${toplamSoru} doğru · En iyi combo: ${quizEnIyiCombo}x`;
   if ($('sonucKazanc')) $('sonucKazanc').textContent = `+${coinOdul} 💰  +${yildiz} ⭐`;
   ekranGoster('sonucEkran');
-
   if (yildiz === 3) { konfetiGoster(60); sesCal('kupa'); titreşim(200); }
   else if (yildiz > 0) { konfetiGoster(30); sesCal('kazanc'); titreşim(100); }
-
-  // Başarım kontrol
   basarimKontrol();
 }
 
-/* ============================================================
-   QUIZ İPTAL / TEKRAR
-   ============================================================ */
 function quizIptal() {
   if (!confirm('Quizi iptal etmek istiyor musun?')) return;
   clearInterval(quizTimer);
@@ -687,20 +547,11 @@ function kategoriyeDon() {
   kategoriListesiniGuncelle();
 }
 
-/* ============================================================
-   BÖLÜM C — Günlük + Çark + Başarım + Mağaza + Profil + VIP + Ayarlar
-   ============================================================ */
-
-/* ============================================================
-   GÜNLÜK ÖDÜL
-   ============================================================ */
+/* GÜNLÜK ÖDÜL */
 const GUNLUK_ODULLER = [
-  { gun: 1, coin: 50, yildiz: 0 },
-  { gun: 2, coin: 100, yildiz: 0 },
-  { gun: 3, coin: 150, yildiz: 1 },
-  { gun: 4, coin: 200, yildiz: 0 },
-  { gun: 5, coin: 250, yildiz: 1 },
-  { gun: 6, coin: 300, yildiz: 1 },
+  { gun: 1, coin: 50, yildiz: 0 }, { gun: 2, coin: 100, yildiz: 0 },
+  { gun: 3, coin: 150, yildiz: 1 }, { gun: 4, coin: 200, yildiz: 0 },
+  { gun: 5, coin: 250, yildiz: 1 }, { gun: 6, coin: 300, yildiz: 1 },
   { gun: 7, coin: 500, yildiz: 3 }
 ];
 const GUN_MS = 24 * 60 * 60 * 1000;
@@ -709,24 +560,17 @@ function gunlukAlinabilirMi() {
   const gecen = Date.now() - (user.gunlukSonAlim || 0);
   return gecen >= GUN_MS || !user.gunlukSonAlim;
 }
-
 function gunlukSeriHesapla() {
   const gecen = Date.now() - (user.gunlukSonAlim || 0);
-  if (gecen > 2 * GUN_MS) {
-    user.gunlukSeri = 0;
-    persistUser();
-  }
+  if (gecen > 2 * GUN_MS) { user.gunlukSeri = 0; persistUser(); }
   return user.gunlukSeri || 0;
 }
-
 function gunlukOdulAc() {
   ekranGoster('gunlukEkran');
   gunlukGridGuncelle();
 }
-
 function gunlukGridGuncelle() {
-  const grid = $('gunlukGrid');
-  if (!grid) return;
+  const grid = $('gunlukGrid'); if (!grid) return;
   const seri = gunlukSeriHesapla();
   const alinabilir = gunlukAlinabilirMi();
   let html = '';
@@ -740,10 +584,8 @@ function gunlukGridGuncelle() {
   grid.innerHTML = html;
   const btn = $('gunlukAlBtn');
   if (btn) {
-    if (alinabilir) {
-      btn.disabled = false;
-      btn.textContent = 'ÖDÜLÜ AL 🎁';
-    } else {
+    if (alinabilir) { btn.disabled = false; btn.textContent = 'ÖDÜLÜ AL 🎁'; }
+    else {
       btn.disabled = true;
       const kalan = GUN_MS - (Date.now() - user.gunlukSonAlim);
       const saat = Math.floor(kalan / 3600000);
@@ -752,7 +594,6 @@ function gunlukGridGuncelle() {
     }
   }
 }
-
 function gunlukAl() {
   if (!gunlukAlinabilirMi()) { toast('⏰ Bugün aldın'); return; }
   let seri = gunlukSeriHesapla();
@@ -763,8 +604,7 @@ function gunlukAl() {
   user.gunlukSeri = seri + 1;
   user.gunlukSonAlim = Date.now();
   user.sonGiris = bugun();
-  persistUser();
-  ustBarGuncelle();
+  persistUser(); ustBarGuncelle();
   konfetiGoster(40); sesCal('kupa'); titreşim(150);
   ucanPuan(`+${odul.coin} 💰`, 'var(--gold)');
   if (odul.yildiz > 0) ucanPuan(`+${odul.yildiz} ⭐`, 'var(--gold)');
@@ -773,9 +613,7 @@ function gunlukAl() {
   menuGuncelle();
 }
 
-/* ============================================================
-   ÇARKIFELEK
-   ============================================================ */
+/* ÇARK */
 const CARK_DILIMLER = [
   { yazi: '50💰', tip: 'coin', deger: 50, renk: '#00d97e' },
   { yazi: '100💰', tip: 'coin', deger: 100, renk: '#ff9f1c' },
@@ -786,7 +624,6 @@ const CARK_DILIMLER = [
   { yazi: 'JOKER', tip: 'joker', deger: 1, renk: '#a855f7' },
   { yazi: '1000💰', tip: 'coin', deger: 1000, renk: '#00b894' }
 ];
-
 let carkDonuyor = false;
 let carkAci = 0;
 
@@ -795,10 +632,8 @@ function carkifelekAc() {
   carkCiz();
   carkDurumGuncelle();
 }
-
 function carkCiz() {
-  const canvas = $('carkCanvas');
-  if (!canvas) return;
+  const canvas = $('carkCanvas'); if (!canvas) return;
   const ctx = canvas.getContext('2d');
   const cx = canvas.width / 2, cy = canvas.height / 2;
   const r = canvas.width / 2 - 8;
@@ -807,33 +642,21 @@ function carkCiz() {
   CARK_DILIMLER.forEach((d, i) => {
     const bas = i * aci - Math.PI / 2;
     const bit = bas + aci;
-    ctx.beginPath();
-    ctx.moveTo(cx, cy);
-    ctx.arc(cx, cy, r, bas, bit);
-    ctx.closePath();
-    ctx.fillStyle = d.renk;
-    ctx.fill();
-    ctx.strokeStyle = '#fff';
-    ctx.lineWidth = 2;
-    ctx.stroke();
-    // Yazı
-    ctx.save();
-    ctx.translate(cx, cy);
-    ctx.rotate(bas + aci / 2);
-    ctx.textAlign = 'right';
-    ctx.fillStyle = '#fff';
-    ctx.font = 'bold 15px sans-serif';
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, r, bas, bit); ctx.closePath();
+    ctx.fillStyle = d.renk; ctx.fill();
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+    ctx.save(); ctx.translate(cx, cy); ctx.rotate(bas + aci / 2);
+    ctx.textAlign = 'right'; ctx.fillStyle = '#fff'; ctx.font = 'bold 15px sans-serif';
     ctx.fillText(d.yazi, r - 15, 6);
     ctx.restore();
   });
 }
-
 function carkDurumGuncelle() {
   const btn = $('carkBtn');
   const bilgi = $('carkBilgi');
   const gecen = Date.now() - (user.sonCark || 0);
-  const bekleme = 4 * 60 * 60 * 1000; // 4 saat
-  if (gecen >= bekleme) {
+  const bekleme = 4 * 60 * 60 * 1000;
+  if (gecen >= bekleme || !user.sonCark) {
     if (btn) { btn.disabled = false; btn.textContent = 'ÇEVİR 🎡'; }
     if (bilgi) bilgi.textContent = 'Ücretsiz çevirme hakkın hazır!';
   } else {
@@ -844,32 +667,22 @@ function carkDurumGuncelle() {
     if (bilgi) bilgi.textContent = `Yeni hak: ${saat}s ${dk}dk sonra`;
   }
 }
-
 function carkCevir() {
   if (carkDonuyor) return;
   const gecen = Date.now() - (user.sonCark || 0);
-  if (gecen < 4 * 60 * 60 * 1000 && user.sonCark) {
-    toast('⏰ Henüz hazır değil');
-    return;
-  }
+  if (gecen < 4 * 60 * 60 * 1000 && user.sonCark) { toast('⏰ Henüz hazır değil'); return; }
   carkDonuyor = true;
-  const btn = $('carkBtn');
-  if (btn) btn.disabled = true;
+  const btn = $('carkBtn'); if (btn) btn.disabled = true;
   const canvas = $('carkCanvas');
-  // Rastgele dilim seç
   const index = Math.floor(Math.random() * CARK_DILIMLER.length);
   const aciPerSlice = 360 / CARK_DILIMLER.length;
   const hedef = 360 * 5 + (360 - (index * aciPerSlice + aciPerSlice / 2));
   carkAci += hedef;
-  if (canvas) {
-    canvas.style.transform = `rotate(${carkAci}deg)`;
-  }
+  if (canvas) canvas.style.transform = `rotate(${carkAci}deg)`;
   sesCal('cark'); titreşim(30);
-  // Ses efektleri (dönüş)
   let sayac = 0;
   const sesInterval = setInterval(() => {
-    sesCal('cark'); titreşim(5);
-    sayac++;
+    sesCal('cark'); titreşim(5); sayac++;
     if (sayac > 20) clearInterval(sesInterval);
   }, 150);
   setTimeout(() => {
@@ -878,28 +691,16 @@ function carkCevir() {
     user.sonCark = Date.now();
     user.toplamCark = (user.toplamCark || 0) + 1;
     const d = CARK_DILIMLER[index];
-    if (d.tip === 'coin') {
-      user.coin += d.deger;
-      ucanPuan(`+${d.deger} 💰`, 'var(--gold)');
-      toast(`🎡 +${d.deger} coin!`);
-    } else if (d.tip === 'yildiz') {
-      user.yildiz += d.deger;
-      ucanPuan(`+${d.deger} ⭐`, 'var(--gold)');
-      toast(`🎡 +${d.deger} yıldız!`);
-    } else if (d.tip === 'joker') {
-      toast('🎡 1 joker kazandın!');
-    }
-    persistUser();
-    ustBarGuncelle();
+    if (d.tip === 'coin') { user.coin += d.deger; ucanPuan(`+${d.deger} 💰`, 'var(--gold)'); toast(`🎡 +${d.deger} coin!`); }
+    else if (d.tip === 'yildiz') { user.yildiz += d.deger; ucanPuan(`+${d.deger} ⭐`, 'var(--gold)'); toast(`🎡 +${d.deger} yıldız!`); }
+    else if (d.tip === 'joker') { toast('🎡 1 joker kazandın!'); }
+    persistUser(); ustBarGuncelle();
     konfetiGoster(50); sesCal('kupa'); titreşim(150);
-    carkDurumGuncelle();
-    menuGuncelle();
+    carkDurumGuncelle(); menuGuncelle();
   }, 4000);
 }
 
-/* ============================================================
-   BAŞARIMLAR
-   ============================================================ */
+/* BAŞARIMLAR */
 const BASARIMLAR = [
   { id: 'ilk_dogru', ikon: '🩸', isim: 'İlk Kan', desc: 'İlk doğru cevabını ver', kontrol: () => user.toplamDogru >= 1 },
   { id: 'on_dogru', ikon: '🥉', isim: 'Çaylak', desc: '10 doğru cevap', kontrol: () => user.toplamDogru >= 10 },
@@ -923,10 +724,8 @@ function basarimlarAc() {
   ekranGoster('basarimEkran');
   basarimListeGuncelle();
 }
-
 function basarimListeGuncelle() {
-  const liste = $('basarimListe');
-  if (!liste) return;
+  const liste = $('basarimListe'); if (!liste) return;
   let html = '';
   BASARIMLAR.forEach(b => {
     const alindi = user.basarimlar.includes(b.id);
@@ -942,7 +741,6 @@ function basarimListeGuncelle() {
   });
   liste.innerHTML = html;
 }
-
 function basarimKontrol() {
   let yeni = [];
   BASARIMLAR.forEach(b => {
@@ -962,9 +760,7 @@ function basarimKontrol() {
   }
 }
 
-/* ============================================================
-   MAĞAZA
-   ============================================================ */
+/* MAĞAZA */
 const MAGAZA_URUNLERI = [
   { id: 'tema_altin', ikon: '🟡', isim: 'Altın Tema', desc: 'Altın renk teması', fiyat: 500, tip: 'tema' },
   { id: 'tema_mor', ikon: '🟣', isim: 'Mor Tema', desc: 'Mor renk teması', fiyat: 400, tip: 'tema' },
@@ -979,10 +775,8 @@ function magazaAc() {
   ekranGoster('magazaEkran');
   magazaListeGuncelle();
 }
-
 function magazaListeGuncelle() {
-  const liste = $('magazaListe');
-  if (!liste) return;
+  const liste = $('magazaListe'); if (!liste) return;
   let html = '';
   MAGAZA_URUNLERI.forEach(u => {
     const sahip = user.ozelTema === u.id || user.avatar === u.ikon;
@@ -998,12 +792,10 @@ function magazaListeGuncelle() {
   });
   liste.innerHTML = html;
 }
-
 function magazaSatinAl(id) {
   const u = MAGAZA_URUNLERI.find(x => x.id === id);
   if (!u) return;
   if (user.ozelTema === id || user.avatar === u.ikon) {
-    // Zaten sahip → aktifleştir
     if (u.tip === 'tema') user.ozelTema = id;
     else user.avatar = u.ikon;
     persistUser();
@@ -1015,25 +807,20 @@ function magazaSatinAl(id) {
   user.coin -= u.fiyat;
   if (u.tip === 'tema') user.ozelTema = id;
   else user.avatar = u.ikon;
-  persistUser();
-  ustBarGuncelle();
+  persistUser(); ustBarGuncelle();
   konfetiGoster(30); sesCal('kupa'); titreşim(100);
   toast(`✅ ${u.isim} satın alındı!`);
   magazaListeGuncelle();
 }
 
-/* ============================================================
-   PROFİL
-   ============================================================ */
+/* PROFİL */
 function profilAc() {
   ekranGoster('profilEkran');
   if ($('profilIsim')) $('profilIsim').value = user.isim || 'Oyuncu';
   profilIstatistikGuncelle();
 }
-
 function profilIstatistikGuncelle() {
-  const el = $('profilIstatistik');
-  if (!el) return;
+  const el = $('profilIstatistik'); if (!el) return;
   const toplam = (user.toplamDogru || 0) + (user.toplamYanlis || 0);
   const yuzde = toplam > 0 ? Math.round((user.toplamDogru / toplam) * 100) : 0;
   const katSayi = Object.keys(user.kategoriler).length;
@@ -1046,39 +833,30 @@ function profilIstatistikGuncelle() {
     <div class="ist-kart"><div class="ist-ikon">🏆</div><div class="ist-deger">${user.basarimlar.length}</div><div class="ist-lbl">Başarım</div></div>
   `;
 }
-
 function profilKaydet() {
   const val = $('profilIsim')?.value.trim() || 'Oyuncu';
   user.isim = val;
   persistUser();
   toast('✅ İsim kaydedildi');
   sesCal('ok'); titreşim(50);
+  menuGuncelle();
 }
 
-/* ============================================================
-   VIP
-   ============================================================ */
-function vipAc() {
-  ekranGoster('vipEkran');
-}
-
+/* VIP */
+function vipAc() { ekranGoster('vipEkran'); }
 function vipSatinAl() {
   if (user.vip) { toast('👑 Zaten VIP\'sin'); return; }
-  // Telegram Stars entegrasyonu yerine basit mesaj
   toast('👑 Telegram Stars ile ödeme yakında!');
   sesCal('tik');
 }
 
-/* ============================================================
-   AYARLAR
-   ============================================================ */
+/* AYARLAR */
 function ayarlarAc() {
   ekranGoster('ayarlarEkran');
   if ($('ayarMuzik')) $('ayarMuzik').checked = !!user.muzik;
   if ($('ayarSes')) $('ayarSes').checked = !!user.ses;
   if ($('ayarTitresim')) $('ayarTitresim').checked = !!user.titresim;
 }
-
 function muzikToggle() {
   user.muzik = !user.muzik;
   persistUser();
@@ -1097,7 +875,7 @@ function titresimToggle() {
   toast(user.titresim ? '📳 Titreşim açık' : '📴 Titreşim kapalı');
 }
 function verileriSifirla() {
-  if (!confirm('Tüm veriler silinsin mi? (Coin, yıldız, ilerleme)')) return;
+  if (!confirm('Tüm veriler silinsin mi?')) return;
   localStorage.removeItem('skorlab_user');
   location.reload();
-               }
+       }
