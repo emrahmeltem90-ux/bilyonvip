@@ -1,0 +1,177 @@
+{
+  "quiz_adi": "SkorLab Quiz",
+  "paket": "301-400",
+  "bolum": "NORMAL",
+  "kategoriler": [
+    {
+      "kategori_id": 31,
+      "kategori_adi": "Süper Lig Şampiyonları",
+      "kategori_ikon": "🏆",
+      "sorular": [
+        { "id": 301, "soru": "Türkiye Süper Lig tarihinde en çok şampiyonluk kazanan takım hangisidir?", "secenekler": { "A": "Fenerbahçe", "B": "Beşiktaş", "C": "Galatasaray", "D": "Trabzonspor" }, "dogru_cevap": "C" },
+        { "id": 302, "soru": "Süper Lig tarihinde 25 şampiyonluğa ulaşarak armasına beşinci yıldızı takma hakkı kazanan ilk kulüp hangisidir?", "secenekler": { "A": "Fenerbahçe", "B": "Galatasaray", "C": "Beşiktaş", "D": "Trabzonspor" }, "dogru_cevap": "B" },
+        { "id": 303, "soru": "İstanbul'un Üç Büyükleri dışında Süper Lig şampiyonluğu kazanan ilk Anadolu kulübü hangisidir?", "secenekler": { "A": "Bursaspor", "B": "Trabzonspor", "C": "İstanbul Başakşehir", "D": "Kocaelispor" }, "dogru_cevap": "B" },
+        { "id": 304, "soru": "2009-2010 sezonunda Ertuğrul Sağlam yönetiminde Süper Lig şampiyonu olan Anadolu kulübü hangisidir?", "secenekler": { "A": "Trabzonspor", "B": "Bursaspor", "C": "Sivasspor", "D": "Gençlerbirliği" }, "dogru_cevap": "B" },
+        { "id": 305, "soru": "Süper Lig tarihinde şampiyonluk kazanmış toplam farklı kulüp sayısı kaçtır?", "secenekler": { "A": "5", "B": "6", "C": "7", "D": "8" }, "dogru_cevap": "B" },
+        { "id": 306, "soru": "İstanbul Başakşehir, Süper Lig'deki ilk şampiyonluğunu hangi sezonda kazanmıştır?", "secenekler": { "A": "2018-2019", "B": "2019-2020", "C": "2020-2021", "D": "2021-2022" }, "dogru_cevap": "B" },
+        { "id": 307, "soru": "Süper Lig'de bir sezonda en yüksek puan toplamı rekorunu elinde bulunduran takım hangisidir?", "secenekler": { "A": "Galatasaray", "B": "Fenerbahçe", "C": "Beşiktaş", "D": "Trabzonspor" }, "dogru_cevap": "A" },
+        { "id": 308, "soru": "Türk futbolunda kulüplerin her 5 şampiyonluğu için armasına eklemesine izin verilen simge nedir?", "secenekler": { "A": "Taç", "B": "Yıldız", "C": "Çelenk", "D": "Bayrak" }, "dogru_cevap": "B" },
+        { "id": 309, "soru": "Süper Lig tarihinde üst üste 4 kez şampiyonluk kazanan ilk ve tek kulüp hangisidir?", "secenekler": { "A": "Fenerbahçe", "B": "Galatasaray", "C": "Beşiktaş", "D": "Trabzonspor" }, "dogru_cevap": "B" },
+        { "id": 310, "soru": "Bursaspor'un en bilinen takma adı hangisidir?", "secenekler": { "A": "Kırmızı Şimşekler", "B": "Timsahlar", "C": "Anadolu Kartalları", "D": "Kaplanlar" }, "dogru_cevap": "B" }
+      ]
+    },
+    {
+      "kategori_id": 32,
+      "kategori_adi": "Türk Milli Takımı Tarihi",
+      "kategori_ikon": "🇹🇷",
+      "sorular": [
+        { "id": 311, "soru": "A Milli Futbol Takımı tarihindeki en büyük Dünya Kupası derecesi hangi yılda elde edilmiştir?", "secenekler": { "A": "1996", "B": "2000", "C": "2002", "D": "2008" }, "dogru_cevap": "C" },
+        { "id": 312, "soru": "A Milli Futbol Takımımızın 2002 FIFA Dünya Kupası'ndaki teknik direktörü kimdir?", "secenekler": { "A": "Fatih Terim", "B": "Şenol Güneş", "C": "Mustafa Denizli", "D": "Sepp Piontek" }, "dogru_cevap": "B" },
+        { "id": 313, "soru": "Türkiye A Milli Futbol Takımı ilk resmi maçını hangi ülkeye karşı oynamıştır?", "secenekler": { "A": "Romanya", "B": "Bulgaristan", "C": "Macaristan", "D": "Yunanistan" }, "dogru_cevap": "A" },
+        { "id": 314, "soru": "Türkiye'yi EURO 2008'de yarı finale taşıyan teknik direktör kimdir?", "secenekler": { "A": "Şenol Güneş", "B": "Fatih Terim", "C": "Mustafa Denizli", "D": "Vincenzo Montella" }, "dogru_cevap": "B" },
+        { "id": 315, "soru": "A Milli Takım formasıyla en çok resmi maça çıkan futbolcu kimdir?", "secenekler": { "A": "Hakan Şükür", "B": "Rüştü Reçber", "C": "Bülent Korkmaz", "D": "Emre Belözoğlu" }, "dogru_cevap": "B" },
+        { "id": 316, "soru": "EURO 2008 çeyrek finalinde Hırvatistan karşısında 119. dakikada attığı golle Türkiye'yi yarı finale taşıyan futbolcu kimdir?", "secenekler": { "A": "Alpay Özalan", "B": "Servet Çetin", "C": "Semih Şentürk", "D": "Nihat Kahveci" }, "dogru_cevap": "C" },
+        { "id": 317, "soru": "A Milli Takımımızın ilk kez Avrupa Futbol Şampiyonası finallerine katıldığı yıl hangisidir?", "secenekler": { "A": "1992", "B": "1996", "C": "2000", "D": "2004" }, "dogru_cevap": "B" },
+        { "id": 318, "soru": "Türkiye'nin Dünya Kupası tarihindeki ilk golünü 1954'te Güney Kore'ye karşı atan futbolcu kimdir?", "secenekler": { "A": "Suat Mamat", "B": "Lefter Küçükandonyadis", "C": "Burhan Sargın", "D": "Metin Oktay" }, "dogru_cevap": "A" },
+        { "id": 319, "soru": "Türkiye, A Milli takım düzeyinde FIFA Dünya Kupası veya Avrupa Şampiyonası'na ev sahipliği yapmış mıdır?", "secenekler": { "A": "Evet, 2002 Dünya Kupası", "B": "Hayır, henüz yapmadı; EURO 2032'yi İtalya ile ortak düzenleyecek", "C": "Evet, EURO 2008", "D": "Evet, EURO 2016" }, "dogru_cevap": "B" },
+        { "id": 320, "soru": "A Milli Takım formasıyla en çok gol atan futbolcu kimdir?", "secenekler": { "A": "Burak Yılmaz", "B": "Hakan Şükür", "C": "Lefter Küçükandonyadis", "D": "Tuncay Şanlı" }, "dogru_cevap": "B" }
+      ]
+    },
+    {
+      "kategori_id": 33,
+      "kategori_adi": "Galatasaray Tarihi",
+      "kategori_ikon": "🦁",
+      "sorular": [
+        { "id": 321, "soru": "Galatasaray Spor Kulübü hangi yıl kurulmuştur?", "secenekler": { "A": "1903", "B": "1905", "C": "1907", "D": "1910" }, "dogru_cevap": "B" },
+        { "id": 322, "soru": "Galatasaray'ın UEFA Kupası ve UEFA Süper Kupa'yı kazandığı yıl hangisidir?", "secenekler": { "A": "1998", "B": "2000", "C": "2002", "D": "1996" }, "dogru_cevap": "B" },
+        { "id": 323, "soru": "Galatasaray'ın 'Taçsız Kral' lakaplı efsanevi futbolcusu kimdir?", "secenekler": { "A": "Hakan Şükür", "B": "Metin Oktay", "C": "Arif Erdem", "D": "Ümit Karan" }, "dogru_cevap": "B" },
+        { "id": 324, "soru": "Galatasaray'ın 2000 yılında Arsenal'i penaltılarla yenerek UEFA Kupası'nı kazandığı finalde takımın teknik direktörü kimdi?", "secenekler": { "A": "Mustafa Denizli", "B": "Fatih Terim", "C": "Mircea Lucescu", "D": "Gheorghe Hagi" }, "dogru_cevap": "B" },
+        { "id": 325, "soru": "Galatasaray'ın 2000 UEFA Süper Kupa finalinde mağlup ettiği kulüp hangisidir?", "secenekler": { "A": "AC Milan", "B": "Real Madrid", "C": "Barcelona", "D": "Bayern Münih" }, "dogru_cevap": "B" },
+        { "id": 326, "soru": "Galatasaray'ın 'Karpatların Maradonası' olarak bilinen Rumen futbolcusu kimdir?", "secenekler": { "A": "Gheorghe Popescu", "B": "Gheorghe Hagi", "C": "Adrian Ilie", "D": "Dan Petrescu" }, "dogru_cevap": "B" },
+        { "id": 327, "soru": "Galatasaray, 2025-2026 sezonu sonunda Süper Lig'de toplam kaç şampiyonluğa ulaşmıştır?", "secenekler": { "A": "23", "B": "24", "C": "25", "D": "26" }, "dogru_cevap": "C" },
+        { "id": 328, "soru": "Galatasaray'ın uzun yıllar maçlarını oynadığı ve Avrupa'daki birçok unutulmaz maça ev sahipliği yapan eski stadyumunun adı nedir?", "secenekler": { "A": "Ali Sami Yen Stadyumu", "B": "İnönü Stadyumu", "C": "Şükrü Saracoğlu Stadyumu", "D": "Ankara 19 Mayıs Stadyumu" }, "dogru_cevap": "A" },
+        { "id": 329, "soru": "Galatasaray'ın 2000 UEFA Kupası finalinde son penaltıyı gole çeviren Rumen futbolcu kimdir?", "secenekler": { "A": "Gheorghe Hagi", "B": "Gheorghe Popescu", "C": "Adrian Ilie", "D": "Claudiu Răducanu" }, "dogru_cevap": "B" },
+        { "id": 330, "soru": "Galatasaray Spor Kulübü'nün kuruluşundaki ilk renkleri hangileriydi?", "secenekler": { "A": "Kırmızı-Beyaz", "B": "Siyah-Beyaz", "C": "Sarı-Lacivert", "D": "Kırmızı-Lacivert" }, "dogru_cevap": "A" }
+      ]
+    },
+    {
+      "kategori_id": 34,
+      "kategori_adi": "Fenerbahçe Tarihi",
+      "kategori_ikon": "⚡",
+      "sorular": [
+        { "id": 331, "soru": "Fenerbahçe Spor Kulübü hangi yıl kurulmuştur?", "secenekler": { "A": "1901", "B": "1903", "C": "1907", "D": "1910" }, "dogru_cevap": "C" },
+        { "id": 332, "soru": "Fenerbahçe'nin 'Ordinaryüs' lakaplı efsanevi futbolcusu kimdir?", "secenekler": { "A": "Cemil Turan", "B": "Lefter Küçükandonyadis", "C": "Zeki Rıza Sporel", "D": "Aykut Kocaman" }, "dogru_cevap": "B" },
+        { "id": 333, "soru": "Fenerbahçe'nin stadına adını veren Şükrü Saracoğlu kimdir?", "secenekler": { "A": "Eski kulüp başkanı ve Türkiye'nin eski başbakanlarından biri", "B": "Eski teknik direktör", "C": "Eski futbolcu", "D": "Kulübün kurucularından biri" }, "dogru_cevap": "A" },
+        { "id": 334, "soru": "Fenerbahçe'nin 'Ver Lefter'e, yaz deftere' tezahüratıyla özdeşleşen efsanevi futbolcusu kimdir?", "secenekler": { "A": "Lefter Küçükandonyadis", "B": "Can Bartu", "C": "Fikret Kırcan", "D": "Naci Erdem" }, "dogru_cevap": "A" },
+        { "id": 335, "soru": "Fenerbahçe'de hem futbol hem basketbol oynayan efsanevi sporcu kimdir?", "secenekler": { "A": "Can Bartu", "B": "Tuncay Şanlı", "C": "Rıdvan Dilmen", "D": "Tanju Çolak" }, "dogru_cevap": "A" },
+        { "id": 336, "soru": "Fenerbahçe'nin Şampiyonlar Ligi'nde çeyrek finale yükseldiği sezon hangisidir?", "secenekler": { "A": "2004-2005", "B": "2007-2008", "C": "2010-2011", "D": "2012-2013" }, "dogru_cevap": "B" },
+        { "id": 337, "soru": "Fenerbahçe'nin 2007-2008 sezonunda Şampiyonlar Ligi çeyrek finaline yükseldiği dönemde takımın teknik direktörü kimdi?", "secenekler": { "A": "Zico", "B": "Carlos Alberto Parreira", "C": "Luiz Felipe Scolari", "D": "Vítor Pereira" }, "dogru_cevap": "A" },
+        { "id": 338, "soru": "Fenerbahçe armasındaki yeşil renk neyi simgeler?", "secenekler": { "A": "Neşeyi", "B": "Başarı gerekliliğini", "C": "Barışı", "D": "Toprağı" }, "dogru_cevap": "B" },
+        { "id": 339, "soru": "Fenerbahçe'nin Kadıköy'deki stadyumunun resmi adı nedir?", "secenekler": { "A": "Dereağzı Lefter Küçükandonyadis Tesisleri", "B": "Ülker Stadyumu Fenerbahçe Şükrü Saracoğlu Spor Kompleksi", "C": "Florya Metin Oktay Tesisleri", "D": "Nevzat Demir Tesisleri" }, "dogru_cevap": "B" },
+        { "id": 340, "soru": "Fenerbahçe'nin Brezilyalı efsanevi sol beki kimdir?", "secenekler": { "A": "Alex de Souza", "B": "Roberto Carlos", "C": "Appiah", "D": "Anelka" }, "dogru_cevap": "B" }
+      ]
+    },
+    {
+      "kategori_id": 35,
+      "kategori_adi": "Beşiktaş Tarihi",
+      "kategori_ikon": "🦅",
+      "sorular": [
+        { "id": 341, "soru": "Beşiktaş Jimnastik Kulübü hangi yıl kurulmuştur?", "secenekler": { "A": "1901", "B": "1903", "C": "1905", "D": "1907" }, "dogru_cevap": "B" },
+        { "id": 342, "soru": "Beşiktaş'ın uzun yıllar maçlarını oynadığı, Boğaz'ın kıyısındaki eski stadın adı neydi?", "secenekler": { "A": "Ali Sami Yen Stadyumu", "B": "İnönü Stadyumu", "C": "Fenerbahçe Şükrü Saracoğlu Stadyumu", "D": "Atatürk Olimpiyat Stadyumu" }, "dogru_cevap": "B" },
+        { "id": 343, "soru": "Beşiktaş'ın namağlup şampiyon olduğu sezon hangisidir?", "secenekler": { "A": "1989-1990", "B": "1991-1992", "C": "1994-1995", "D": "2002-2003" }, "dogru_cevap": "B" },
+        { "id": 344, "soru": "Beşiktaş'ın 'Baba' lakaplı efsanevi futbolcusu kimdir?", "secenekler": { "A": "Hakkı Yeten", "B": "Şükrü Gülesin", "C": "Süleyman Seba", "D": "Recep Çetin" }, "dogru_cevap": "A" },
+        { "id": 345, "soru": "Beşiktaş'ın uzun yıllar başkanlığını yapan efsanevi başkanı kimdir?", "secenekler": { "A": "Yıldırım Demirören", "B": "Süleyman Seba", "C": "Fikret Orman", "D": "Ahmet Nur Çebi" }, "dogru_cevap": "B" },
+        { "id": 346, "soru": "Beşiktaş'ın 100. kuruluş yılı olan 2002-2003 sezonunda takımın önemli golcülerinden biri kimdi?", "secenekler": { "A": "Sergen Yalçın", "B": "İlhan Mansız", "C": "Pascal Nouma", "D": "Ahmed Hassan" }, "dogru_cevap": "B" },
+        { "id": 347, "soru": "Beşiktaş'ın 2017-2018 sezonunda Şampiyonlar Ligi grubunu 14 puanla lider tamamladığı dönemde takımın teknik direktörü kimdi?", "secenekler": { "A": "Slaven Bilić", "B": "Şenol Güneş", "C": "Sergen Yalçın", "D": "Abdullah Avcı" }, "dogru_cevap": "B" },
+        { "id": 348, "soru": "Beşiktaş'ın kuruluş dönemindeki ilk forma renklerinin kırmızı-beyaz olduğu kabul edilir. Daha sonra hangi renklere geçilmiştir?", "secenekler": { "A": "Siyah-Beyaz", "B": "Sarı-Kırmızı", "C": "Mavi-Beyaz", "D": "Yeşil-Beyaz" }, "dogru_cevap": "A" },
+        { "id": 349, "soru": "Beşiktaş taraftar kültürüyle özdeşleşen ünlü taraftar grubu hangisidir?", "secenekler": { "A": "Karaköy - Kapalı", "B": "Çarşı", "C": "Genç Fenerbahçeliler", "D": "ultrAslan" }, "dogru_cevap": "B" },
+        { "id": 350, "soru": "Beşiktaş formasıyla futbolcu, daha sonra teknik direktör olarak da Süper Lig şampiyonluğu yaşayan 10 numara kimdir?", "secenekler": { "A": "Tümer Metin", "B": "Sergen Yalçın", "C": "Oktay Derelioğlu", "D": "Ertuğrul Sağlam" }, "dogru_cevap": "B" }
+      ]
+    },
+    {
+      "kategori_id": 36,
+      "kategori_adi": "Trabzonspor Tarihi",
+      "kategori_ikon": "⚓",
+      "sorular": [
+        { "id": 351, "soru": "Trabzonspor kulübü hangi yıl kurulmuştur?", "secenekler": { "A": "1960", "B": "1967", "C": "1970", "D": "1974" }, "dogru_cevap": "B" },
+        { "id": 352, "soru": "İstanbul takımlarının şampiyonluk hakimiyetini kırarak ilk kez Süper Lig şampiyonu olan Anadolu kulübü hangisidir?", "secenekler": { "A": "Bursaspor", "B": "Trabzonspor", "C": "Göztepe", "D": "Eskişehirspor" }, "dogru_cevap": "B" },
+        { "id": 353, "soru": "Trabzonspor'un 1970'li yıllardaki altın döneminde kulüp başkanı olarak öne çıkan isim kimdir?", "secenekler": { "A": "Şamil Ekinci", "B": "Mehmet Ali Yılmaz", "C": "Sadri Şener", "D": "Ahmet Ağaoğlu" }, "dogru_cevap": "A" },
+        { "id": 354, "soru": "Trabzonspor'un ilk Süper Lig şampiyonluğunu kazandığı 1975-1976 sezonunda takımın teknik direktörü kimdi?", "secenekler": { "A": "Ahmet Suat Özyazıcı", "B": "Özkan Sümer", "C": "Şenol Güneş", "D": "Abdullah Avcı" }, "dogru_cevap": "A" },
+        { "id": 355, "soru": "Trabzonspor'un efsanevi kalecisi ve daha sonra teknik direktör olarak da görev yapan isim kimdir?", "secenekler": { "A": "Şenol Güneş", "B": "Metin Aktaş", "C": "Onur Kıvrak", "D": "Uğurcan Çakır" }, "dogru_cevap": "A" },
+        { "id": 356, "soru": "Trabzonspor'un 38 yıllık şampiyonluk hasretini sona erdirdiği sezon hangisidir?", "secenekler": { "A": "2019-2020", "B": "2021-2022", "C": "2022-2023", "D": "2023-2024" }, "dogru_cevap": "B" },
+        { "id": 357, "soru": "Trabzonspor'un Türk futbolundaki en bilinen lakabı hangisidir?", "secenekler": { "A": "Karadeniz Fırtınası", "B": "Anadolu Kaplanı", "C": "Karadeniz Kartalı", "D": "Bordo-Mavi Şimşekler" }, "dogru_cevap": "A" },
+        { "id": 358, "soru": "Trabzonspor'un günümüzde maçlarını oynadığı stadyumun adı nedir?", "secenekler": { "A": "Hüseyin Avni Aker Stadyumu", "B": "Papara Park", "C": "Kazım Karabekir Stadyumu", "D": "Atatürk Stadyumu" }, "dogru_cevap": "B" },
+        { "id": 359, "soru": "Trabzonspor, Süper Lig'de toplam kaç kez şampiyon olmuştur?", "secenekler": { "A": "6", "B": "7", "C": "8", "D": "9" }, "dogru_cevap": "B" },
+        { "id": 360, "soru": "Trabzonspor'un 1970'li yıllardaki başarılarında hem futbolcu hem teknik direktör olarak önemli rol oynayan isim kimdir?", "secenekler": { "A": "Özkan Sümer", "B": "Gündüz Tekin Onay", "C": "Ahmet Suat Özyazıcı", "D": "Ünal Karaman" }, "dogru_cevap": "A" }
+      ]
+    },
+    {
+      "kategori_id": 37,
+      "kategori_adi": "Avrupa'da Türk Futbolcular",
+      "kategori_ikon": "🇪🇺",
+      "sorular": [
+        { "id": 361, "soru": "Şampiyonlar Ligi finalinde forma giyen ilk Türk futbolcu kimdir?", "secenekler": { "A": "Yıldıray Baştürk", "B": "Hamit Altıntop", "C": "Nuri Şahin", "D": "Hakan Çalhanoğlu" }, "dogru_cevap": "A" },
+        { "id": 362, "soru": "Real Madrid formasıyla Şampiyonlar Ligi kupasını kazanan ilk Türk futbolcu kimdir?", "secenekler": { "A": "Arda Güler", "B": "Hamit Altıntop", "C": "Nuri Şahin", "D": "Mesut Özil" }, "dogru_cevap": "A" },
+        { "id": 363, "soru": "Barcelona forması giyen ilk Türkiye A Milli Takım futbolcusu kimdir?", "secenekler": { "A": "Arda Turan", "B": "Rüştü Reçber", "C": "Nihat Kahveci", "D": "Mevlüt Erdinç" }, "dogru_cevap": "A" },
+        { "id": 364, "soru": "Manchester City formasıyla Premier League şampiyonluğu yaşayan Türk asıllı Alman milli futbolcu kimdir?", "secenekler": { "A": "İlkay Gündoğan", "B": "Emre Can", "C": "Mesut Özil", "D": "Yıldıray Baştürk" }, "dogru_cevap": "A" },
+        { "id": 365, "soru": "2000 UEFA Kupası finalinde Arsenal karşısında Galatasaray adına gol atan futbolcu kimdir?", "secenekler": { "A": "Hakan Şükür", "B": "Arda Turan", "C": "Hakan Çalhanoğlu", "D": "Yıldıray Baştürk" }, "dogru_cevap": "A" },
+        { "id": 366, "soru": "Real Sociedad formasıyla La Liga'da başarılı bir dönem geçirerek golcülüğüyle öne çıkan Türk futbolcu kimdir?", "secenekler": { "A": "Nihat Kahveci", "B": "Arda Turan", "C": "Tayfun Korkut", "D": "Mehmet Aurelio" }, "dogru_cevap": "A" },
+        { "id": 367, "soru": "Bayern Münih forması giyen ve kulübün Şampiyonlar Ligi dönemlerinde önemli rol oynayan Türk milli futbolcu kimdir?", "secenekler": { "A": "Hamit Altıntop", "B": "Mehmet Ekici", "C": "Sergen Yalçın", "D": "Ali Güneş" }, "dogru_cevap": "A" },
+        { "id": 368, "soru": "Lille formasıyla 2020-2021 sezonunda Ligue 1 şampiyonluğu yaşayan Türk forvet kimdir?", "secenekler": { "A": "Burak Yılmaz", "B": "Mevlüt Erdinç", "C": "Umut Bulut", "D": "Yusuf Yazıcı" }, "dogru_cevap": "A" },
+        { "id": 369, "soru": "Juventus forması giyen ilk Türkiye A Milli Takım futbolcusu kimdir?", "secenekler": { "A": "Merih Demiral", "B": "Kaan Ayhan", "C": "Ozan Kabak", "D": "Çağlar Söyüncü" }, "dogru_cevap": "A" },
+        { "id": 370, "soru": "Bayer Leverkusen ile 2002 UEFA Şampiyonlar Ligi finalinde forma giyen Türk futbolcu kimdir?", "secenekler": { "A": "Yıldıray Baştürk", "B": "Tugay Kerimoğlu", "C": "Okan Buruk", "D": "Ergün Penbe" }, "dogru_cevap": "A" }
+      ]
+    },
+    {
+      "kategori_id": 38,
+      "kategori_adi": "Futbol ve Teknoloji (VAR)",
+      "kategori_ikon": "📺",
+      "sorular": [
+        { "id": 371, "soru": "FIFA Dünya Kupası'nda VAR sistemi ilk kez hangi turnuvada kullanılmıştır?", "secenekler": { "A": "2014 FIFA Dünya Kupası", "B": "2016 Avrupa Şampiyonası", "C": "2018 FIFA Dünya Kupası", "D": "2022 FIFA Dünya Kupası" }, "dogru_cevap": "C" },
+        { "id": 372, "soru": "Türkiye Süper Lig'de VAR sistemi hangi sezondan itibaren resmi olarak uygulanmaya başlanmıştır?", "secenekler": { "A": "2016-2017", "B": "2017-2018", "C": "2018-2019", "D": "2019-2020" }, "dogru_cevap": "C" },
+        { "id": 373, "soru": "Topun tamamının gol çizgisini geçip geçmediğini tespit eden teknolojiye ne ad verilir?", "secenekler": { "A": "Gol Çizgisi Teknolojisi", "B": "Sensör Top", "C": "Akıllı Kale", "D": "Lazer Çizgi" }, "dogru_cevap": "A" },
+        { "id": 374, "soru": "VAR protokolüne göre hakem hangi tür durumlarda saha kenarındaki ekranı kullanarak inceleme yapabilir?", "secenekler": { "A": "Her taç atışında", "B": "Açık ve bariz hata veya gözden kaçırılan ciddi olaylarda", "C": "Tüm faullerde", "D": "Her korner kararında" }, "dogru_cevap": "B" },
+        { "id": 375, "soru": "Ofsayt pozisyonlarının daha hızlı ve hassas biçimde belirlenmesine yardımcı olan teknoloji hangisidir?", "secenekler": { "A": "Yarı Otomatik Ofsayt Teknolojisi", "B": "Manuel Çizgi", "C": "Kamera Ofsayt Asistanı", "D": "GPS Takibi" }, "dogru_cevap": "A" },
+        { "id": 376, "soru": "Hakemlerin VAR incelemesi sonrasında kararlarını stadyumdaki seyircilere ve televizyon izleyicilerine mikrofonla açıklaması ilk kez hangi FIFA turnuvasında uygulanmıştır?", "secenekler": { "A": "2022 FIFA Dünya Kupası", "B": "2023 FIFA Kulüpler Dünya Kupası", "C": "2023 FIFA Kadınlar Dünya Kupası", "D": "2024 Avrupa Şampiyonası" }, "dogru_cevap": "B" },
+        { "id": 377, "soru": "Gol Çizgisi Teknolojisi FIFA Dünya Kupası'nda ilk kez hangi turnuvada kullanılmıştır?", "secenekler": { "A": "2010 FIFA Dünya Kupası", "B": "2014 FIFA Dünya Kupası", "C": "2012 Avrupa Şampiyonası", "D": "2016 Avrupa Şampiyonası" }, "dogru_cevap": "B" },
+        { "id": 378, "soru": "Futbolcuların maç sırasında koşu mesafesi ve hız gibi fiziksel verilerini takip etmek için kullanılan sistemlerin genel adı nedir?", "secenekler": { "A": "EPTS", "B": "GPS Tracker", "C": "Statik Veri", "D": "Aksiyon Kamerası" }, "dogru_cevap": "A" },
+        { "id": 379, "soru": "VAR odasında video görüntülerini inceleyen ana hakeme ne ad verilir?", "secenekler": { "A": "Yardımcı Hakem", "B": "VAR Hakemi", "C": "Gözlemci", "D": "Dördüncü Hakem" }, "dogru_cevap": "B" },
+        { "id": 380, "soru": "Akıllı top teknolojisi, FIFA Dünya Kupası'nda ilk kez hangi turnuvada kullanılmıştır?", "secenekler": { "A": "2018 FIFA Dünya Kupası", "B": "2022 FIFA Dünya Kupası", "C": "2020 Avrupa Şampiyonası", "D": "2024 Avrupa Şampiyonası" }, "dogru_cevap": "B" }
+      ]
+    },
+    {
+      "kategori_id": 39,
+      "kategori_adi": "Kadın Futbolu",
+      "kategori_ikon": "👩‍⚽",
+      "sorular": [
+        { "id": 381, "soru": "FIFA Kadınlar Dünya Kupası ilk kez hangi yıl düzenlenmiştir?", "secenekler": { "A": "1982", "B": "1991", "C": "1999", "D": "2003" }, "dogru_cevap": "B" },
+        { "id": 382, "soru": "FIFA Kadınlar Dünya Kupası'nı en çok kazanan ülke hangisidir?", "secenekler": { "A": "Almanya", "B": "Brezilya", "C": "Amerika Birleşik Devletleri", "D": "İsveç" }, "dogru_cevap": "C" },
+        { "id": 383, "soru": "Ballon d'Or Féminin ödülü ilk kez hangi yıl verilmiştir?", "secenekler": { "A": "2010", "B": "2015", "C": "2018", "D": "2021" }, "dogru_cevap": "C" },
+        { "id": 384, "soru": "UEFA Kadınlar Şampiyonlar Ligi'ni en çok kazanan kulüp hangisidir?", "secenekler": { "A": "Barcelona", "B": "Lyon", "C": "Wolfsburg", "D": "Frankfurt" }, "dogru_cevap": "B" },
+        { "id": 385, "soru": "Türkiye'de kadın futbolunun en üst düzey lig organizasyonunun günümüzdeki adı nedir?", "secenekler": { "A": "Kadınlar Süper Ligi", "B": "1. Kadın Ligi", "C": "Kadınlar 1. Futbol Ligi", "D": "W-Lig Türkiye" }, "dogru_cevap": "A" },
+        { "id": 386, "soru": "Brezilyalı yıldız Marta, FIFA tarafından yılın kadın futbolcusu ödülünü kaç kez kazanmıştır?", "secenekler": { "A": "3", "B": "5", "C": "6", "D": "8" }, "dogru_cevap": "C" },
+        { "id": 387, "soru": "2023 FIFA Kadınlar Dünya Kupası'nı finalde İngiltere'yi yenerek kazanan ülke hangisidir?", "secenekler": { "A": "İspanya", "B": "ABD", "C": "İsveç", "D": "Avustralya" }, "dogru_cevap": "A" },
+        { "id": 388, "soru": "Türkiye A Kadın Milli Futbol Takımı'nın mücadele ettiği UEFA organizasyonu hangisidir?", "secenekler": { "A": "UEFA Kadınlar Uluslar Ligi", "B": "Akdeniz Kupası", "C": "Balkan Kupası", "D": "Avrupa Konferans Ligi" }, "dogru_cevap": "A" },
+        { "id": 389, "soru": "Barcelona kadın futbol takımıyla Ballon d'Or Féminin ödülünü üst üste kazanan İspanyol yıldız kimdir?", "secenekler": { "A": "Alexia Putellas", "B": "Megan Rapinoe", "C": "Sam Kerr", "D": "Vivianne Miedema" }, "dogru_cevap": "A" },
+        { "id": 390, "soru": "UEFA kadın futbolu tarihinde bir maçta en yüksek seyirci sayılarından birinin kaydedildiği Barcelona-Wolfsburg karşılaşması hangi stadyumda oynanmıştır?", "secenekler": { "A": "Camp Nou", "B": "Wembley", "C": "San Mamés", "D": "Stamford Bridge" }, "dogru_cevap": "A" }
+      ]
+    },
+    {
+      "kategori_id": 40,
+      "kategori_adi": "Dünya Kupası Ev Sahipleri ve Gelecek Yıldızlar",
+      "kategori_ikon": "🌟",
+      "sorular": [
+        { "id": 391, "soru": "2026 FIFA Dünya Kupası hangi ülkeler tarafından ortaklaşa düzenlenmiştir?", "secenekler": { "A": "ABD - Kanada - Meksika", "B": "İspanya - Portekiz - Fas", "C": "Arjantin - Uruguay - Şili", "D": "Güney Kore - Japonya" }, "dogru_cevap": "A" },
+        { "id": 392, "soru": "2030 FIFA Dünya Kupası'nın ana ev sahipleri hangi ülkelerdir?", "secenekler": { "A": "İspanya, Portekiz ve Fas", "B": "Suudi Arabistan, Mısır ve Yunanistan", "C": "İngiltere, İskoçya ve Galler", "D": "Avustralya ve Yeni Zelanda" }, "dogru_cevap": "A" },
+        { "id": 393, "soru": "2026 FIFA Dünya Kupası'ndan itibaren turnuvaya kaç takım katılmaktadır?", "secenekler": { "A": "32 takım", "B": "40 takım", "C": "48 takım", "D": "64 takım" }, "dogru_cevap": "C" },
+        { "id": 394, "soru": "2034 FIFA Dünya Kupası'na ev sahipliği yapması kesinleşen ülke hangisidir?", "secenekler": { "A": "Suudi Arabistan", "B": "Katar", "C": "Çin", "D": "Avustralya" }, "dogru_cevap": "A" },
+        { "id": 395, "soru": "Tarihte ilk kez Kasım-Aralık aylarında düzenlenen FIFA Dünya Kupası'na hangi ülke ev sahipliği yapmıştır?", "secenekler": { "A": "Rusya", "B": "Katar", "C": "Birleşik Arap Emirlikleri", "D": "Güney Afrika" }, "dogru_cevap": "B" },
+        { "id": 396, "soru": "2022 FIFA Dünya Kupası'nı kazanan ülke hangisidir?", "secenekler": { "A": "Fransa", "B": "Arjantin", "C": "Brezilya", "D": "Hırvatistan" }, "dogru_cevap": "B" },
+        { "id": 397, "soru": "Real Madrid'e transfer olan genç Türk futbolcu kimdir?", "secenekler": { "A": "Kenan Yıldız", "B": "Arda Güler", "C": "Semih Kılıçsoy", "D": "Yasin Özcan" }, "dogru_cevap": "B" },
+        { "id": 398, "soru": "Juventus'ta forma giyen genç Türk milli futbolcu kimdir?", "secenekler": { "A": "Kenan Yıldız", "B": "Arda Güler", "C": "Kerem Aktürkoğlu", "D": "Orkun Kökçü" }, "dogru_cevap": "A" },
+        { "id": 399, "soru": "2022 FIFA Dünya Kupası'nda En İyi Genç Oyuncu ödülünü kazanan Arjantinli futbolcu kimdir?", "secenekler": { "A": "Julián Álvarez", "B": "Enzo Fernández", "C": "Alexis Mac Allister", "D": "Thiago Almada" }, "dogru_cevap": "B" },
+        { "id": 400, "soru": "FIFA Dünya Kupası tarihinde ilk kez üç farklı kıtada maçların oynanacağı turnuva hangi yıldadır?", "secenekler": { "A": "2026", "B": "2030", "C": "2034", "D": "2038" }, "dogru_cevap": "B" }
+      ]
+    }
+  ]
+}
