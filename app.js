@@ -878,4 +878,53 @@ function verileriSifirla() {
   if (!confirm('Tüm veriler silinsin mi?')) return;
   localStorage.removeItem('skorlab_user');
   location.reload();
-       }
+}
+/* ============================================================
+   PAUSE SİSTEMİ
+   ============================================================ */
+let quizPauseAktif = false;
+
+function quizPauseAc() {
+  if (quizCevaplandi) { toast('Bu soru cevaplandı'); return; }
+  quizPauseAktif = true;
+  clearInterval(quizTimer);
+  $('pauseModal')?.classList.add('aktif');
+  sesCal('tik'); titreşim(20);
+}
+
+function quizPauseKapat() {
+  quizPauseAktif = false;
+  $('pauseModal')?.classList.remove('aktif');
+  if (!quizCevaplandi && quizTimerKalan > 0) {
+    quizTimer = setInterval(() => {
+      if (quizPauseAktif) return;
+      quizTimerKalan--;
+      timerGuncelle();
+      if (quizTimerKalan <= 5) $('quizTimer')?.classList.add('uyari');
+      if (quizTimerKalan <= 0) {
+        clearInterval(quizTimer);
+        if (!quizCevaplandi) {
+          quizCevaplandi = true; quizYanlis++; quizCombo = 0;
+          sesCal('hata'); titreşim(150);
+          dogruCevabiGoster();
+          setTimeout(sonrakiSoru, 2000);
+        }
+      }
+    }, 1000);
+  }
+  sesCal('tik'); titreşim(20);
+}
+
+function quizPauseYeniden() {
+  quizPauseAktif = false;
+  $('pauseModal')?.classList.remove('aktif');
+  clearInterval(quizTimer);
+  quizBaslat();
+}
+
+function quizPauseCik() {
+  quizPauseAktif = false;
+  $('pauseModal')?.classList.remove('aktif');
+  clearInterval(quizTimer);
+  anaEkranaDon();
+}
