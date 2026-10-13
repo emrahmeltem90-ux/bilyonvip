@@ -1,0 +1,785 @@
+{
+  "bolum": "VIP_EFSANELER_PAKET_1",
+  "kategoriler": [
+    {
+      "kategori_id": 901,
+      "kategori_adi": "🤡 Absürt Transferler & Dümenciler",
+      "kategori_ikon": "🎭",
+      "gereken_yildiz": 0,
+      "sorular": [
+        {
+          "id": 1,
+          "soru": "1996'da kendisini efsane futbolcu George Weah'ın kuzeni olarak tanıtıp Southampton teknik direktörünü kandırarak Premier League maçına çıkan sahtekar kimdir?",
+          "secenekler": { "A": "Ali Dia", "B": "Carlos Kaiser", "C": "Bebe", "D": "Taribo West" },
+          "dogru": "A",
+          "aciklama": "Ali Dia maça girdikten 50 dakika sonra ne kadar yeteneksiz olduğu anlaşılınca oyundan çıkarılmış ve ertesi gün otelden kaçmıştır."
+        },
+        {
+          "id": 2,
+          "soru": "Brezilyalı Carlos Kaiser, 20 yıllık futbol kariyerinde onlarca büyük kulübe transfer olmasına rağmen hiç resmi maça çıkmamayı nasıl başarmıştır?",
+          "secenekler": { "A": "Sürekli sahte sakatlık raporu alıp gazetecilerle anlaşarak kendisini yıldız gibi gösterdi", "B": "Kulüp başkanlarının hepsine akrabaydı", "C": "Maç günleri bilerek ortadan kayboluyordu", "D": "Sadece antrenman maçı sözleşmesi yapıyordu" },
+          "dogru": "A",
+          "aciklama": "Kaiser, sahte haberler ve doktor arkadaşlarıyla kurguladığı sahte sakatlıklarla topa bile vurmadan yıllarca profesyonel para kazanmıştır."
+        },
+        {
+          "id": 3,
+          "soru": "2002'de Inter'den Milan'a transfer olan Taribo West'in yıllar sonra gerçek yaşıyla ilgili ortaya çıkan bomba gerçek neydi?",
+          "secenekler": { "A": "28 yaşında olduğunu söylerken aslında 40 yaşında olduğu anlaşıldı", "B": "Aslında futbolcu değil atlet olduğu ortaya çıktı", "C": "Lisansında ikiz kardeşinin fotoğrafını kullandığı anlaşıldı", "D": "Doğum tarihini 10 yıl küçük yazdırmıştı" },
+          "dogru": "A",
+          "aciklama": "Partizan başkanı, West'in kulübe imza atarken 28 değil aslında 40 yaşında olduğunu yıllar sonra basın toplantısında itiraf etmiştir."
+        },
+        {
+          "id": 4,
+          "soru": "2010 yılında Togo Milli Takımı adıyla Bahreyn'e gidip özel maç yapan ve 3-0 yenilen takımın arkasındaki gerçek neydi?",
+          "secenekler": { "A": "Sahte bir menajerin sokaktan topladığı sıradan kişilere milli takım forması giydirmesi", "B": "Togo'nun amatör lig şampiyonu olması", "C": "Oyuncuların hepsinin basketbolcu olması", "D": "Togo'nun U-15 takımıyla gitmesi" },
+          "dogru": "A",
+          "aciklama": "Togo Futbol Federasyonu olaydan habersiz olduğunu açıklamış, sahte menajerin organizasyon parası için sahte takım kurduğu anlaşılmıştır."
+        },
+        {
+          "id": 5,
+          "soru": "Sunderland'de oynarken kendisini PSG ve Real Madrid altyapısında yetişmiş gibi gösterip sahte internet sitesiyle transfer olan sahtekar kimdir?",
+          "secenekler": { "A": "Gregoire Akcelrod", "B": "Ali Dia", "C": "Xisco", "D": "Bebe" },
+          "dogru": "A",
+          "aciklama": "Akcelrod, sahte bir web sitesi hazırlayıp kendisini yıldız gibi göstererek CSKA Sofya ile sözleşme imzalama aşamasına kadar gelmiştir."
+        },
+        {
+          "id": 6,
+          "soru": "İskoç efsane Paul Gascoigne (Gazza), hakem Paul Durkin'in maçta yere düşürdüğü sarı kartı görünce ne yapmıştır?",
+          "secenekler": { "A": "Sarı kartı yerden alıp şaka amaçlı hakeme göstermiş, ardından kendisi sarı kart görmüştür", "B": "Kartı cebine atıp kaçmıştır", "C": "Kartı yırtıp atmıştır", "D": "Hakeme kırmızı kart aratmıştır" },
+          "dogru": "A",
+          "aciklama": "Gazza esprili bir şekilde hakeme sarı kart göstermiş ancak espri anlayışı olmayan hakem Gazza'ya anında gerçek sarı kartı çıkarmıştır."
+        },
+        {
+          "id": 7,
+          "soru": "2006 Dünya Kupası'nda hakem Graham Poll, Hırvat oyuncu Josip Simunic'e kırmızı kart göstermek için kaç tane sarı kart çıkarmıştır?",
+          "secenekler": { "A": "3 Sarı Kart", "B": "2 Sarı Kart", "C": "4 Sarı Kart", "D": "5 Sarı Kart" },
+          "dogru": "A",
+          "aciklama": "Hakem Poll, ilk sarı kartı not alırken Simunic'in Avustralya aksanı yüzünden karıştırıp 2. sarıdan sonra kırmızı çıkarmayı unutmuş, 3. sarı kartta oyundan atmıştır."
+        },
+        {
+          "id": 8,
+          "soru": "Eski Beşiktaşlı Pascal Nouma'nın 2003'te Fenerbahçe'ye attığı golden sonra yaptığı ve kulüple ilişiğinin kesilmesine yol açan gol sevinci neydi?",
+          "secenekler": { "A": "Elini şortunun içine sokup sevinmesi", "B": "Fenerbahçe kulübesine koşması", "C": "Formasını hakeme atması", "D": "Pano arkasındaki kamerayı kırması" },
+          "dogru": "A",
+          "aciklama": "Nouma'nın 'tombala' olarak adlandırılan sevinci büyük tepki çekmiş ve Beşiktaş sözleşmesini tek taraflı feshetmiştir."
+        },
+        {
+          "id": 9,
+          "soru": "Aston Villa oyuncusu Darius Vassell, ayak başparmağındaki su toplanmasını patlatmak için evde hangi matrak ve tehlikeli yöntemi denemiştir?",
+          "secenekler": { "A": "Matkapla parmağını delmeye çalışması", "B": "Mutfak bıçağını ısıtıp basması", "C": "Çekiçle vurması", "D": "Elektrik süpürgesiyle çekmeye çalışması" },
+          "dogru": "A",
+          "aciklama": "Vassell evdeki elektrikli matkapla tırnağını delmeye çalışırken parmağını enfekte etmiş ve ameliyat olmak zorunda kalmıştır."
+        },
+        {
+          "id": 10,
+          "soru": "Arjantinli kaleci Carlos Roa, 1999'da Mallorca ile kariyerinin zirvesindeyken neden aniden futbolu bıraktığını açıklamıştır?",
+          "secenekler": { "A": "2000 yılında dünyanın sonunun (kıyametin) geleceğine inandığı için dini inzivaya çekildi", "B": "Aşçı olmaya karar verdiği için", "C": "Sinema oyuncusu olmak istediği için", "D": "Uzay araştırmalarına katıldığı için" },
+          "dogru": "A",
+          "aciklama": "Dini bir tarikata katılan Roa, kıyamet kopacak diye futbolu bırakıp dağ köyüne çekilmiş, kıyamet kopmayınca futbola geri dönmüştür."
+        }
+      ]
+    },
+    {
+      "kategori_id": 902,
+      "kategori_adi": "🚑 Garip Sakatlıklar ve Trajikomik Kazalar",
+      "kategori_ikon": "🏥",
+      "gereken_yildiz": 0,
+      "sorular": [
+        {
+          "id": 11,
+          "soru": "İspanyol kaleci Santiago Cañizares, 2002 Dünya Kupası öncesi kadrodan çıkarılmasına yol açan talihsiz sakatlığı nasıl yaşamıştır?",
+          "secenekler": { "A": "Banyoda ayağına tıraş losyonu şişesi düşüp tenten tendonunu kesmesiyle", "B": "Köpeğiyle oynarken parmağını kırmasıyla", "C": "Arabadan inerken kapıya parmağını sıkıştırmasıyla", "D": "Otelde yataktan düşmesiyle" },
+          "dogru": "A",
+          "aciklama": "Cañizares banyoda düşürdüğü cam tıraş losyonu şişesini ayağıyla tutmaya çalışırken başparmak tendonunu kesmiştir."
+        },
+        {
+          "id": 12,
+          "soru": "İngiliz Rio Ferdinand, Leeds United'da oynarken diz bağlarını sakatlayıp haftalarca sahalardan uzak kalmasına yol açan garip hareketi neydi?",
+          "secenekler": { "A": "Sehpaya ayağını uzatıp saatlerce uzaktan kumandayla PlayStation oynamak", "B": "Araba sürerken ters hareket yapmak", "C": "Dans ederken bileğini burkmak", "D": "Balkondan aşağı bakarken düşmek" },
+          "dogru": "A",
+          "aciklama": "Ferdinand ayağını saatlerce sehpadan kaldırmadan konsol oyunu oynamış ve diz tendonunu ciddi şekilde zorlamıştır."
+        },
+        {
+          "id": 13,
+          "soru": "İtalyan efsane Alessandro Nesta, 2005 yılında hangi ilginç alışkanlığı yüzünden el bileğinden ameliyat olmak zorunda kalmıştır?",
+          "secenekler": { "A": "Günde 8 saat PlayStation (FIFA) oynamaktan tendonlarını yırtması", "B": "Boks antrenmanı yapması", "C": "İmza dağıtırken elini incitmesi", "D": "Yemek yaparken elini kesmesi" },
+          "dogru": "A",
+          "aciklama": "Nesta koyu bir PlayStation tutkunuydu ve başparmak kontrolcüsünü aşırı kullanmaktan ameliyat edilmiştir."
+        },
+        {
+          "id": 14,
+          "soru": "Milli futbolcu Servet Çetin'in Sivasspor'da oynarken maç sırasında burnu kırılınca sağlık heyetinden istediği ilginç müdahale neydi?",
+          "secenekler": { "A": "'Burnumu sahada elimle düzelteyim, tampon koyup devam edeyim'", "B": "Yüz nakli istemesi", "C": "Maçı maskesiz bitirmem demesi", "D": "Hakeme burnunu gösterip rakibi attırması" },
+          "dogru": "A",
+          "aciklama": "Servet Çetin tam bir 'Sivas Kangalı' lakabının hakkını vererek kırık burnunu kenarda eliyle oturtup oyuna devam etmiştir."
+        },
+        {
+          "id": 15,
+          "soru": "Fransız futbolcu Philippe Mexès, AC Milan'da oynarken gözünde oluşan ciddi enfeksiyon yüzünden haftalarca sahalardan niye uzak kalmıştır?",
+          "secenekler": { "A": "Aşırı solaryuma girip gözlük takmayı unutması", "B": "Gözüne şampuan kaçması", "C": "Lazer tutulması", "D": "Havuz klorundan zehirlenmesi" },
+          "dogru": "A",
+          "aciklama": "Bronzlaşma takıntısı olan Mexès, solaryum cihazında koruyucu gözlük takmadığı için göz mukozasını yakmıştır."
+        },
+        {
+          "id": 16,
+          "soru": "Arjantinli Martin Palermo, Villarreal forması giyerken attığı golden sonra taraftarlara koştuğunda nasıl sakatlanmıştır?",
+          "secenekler": { "A": "Sevinç sırasında tribün duvarı üzerine çöküp kaval kemiğini kırmıştır", "B": "Reklam panosuna takılıp düşmüştür", "C": "Takım arkadaşı üstüne atlayınca omzu çıkmıştır", "D": "Takla atarken boynunu incitmiştir" },
+          "dogru": "A",
+          "aciklama": "Palermo gol sevincinde alçak beton duvara koşmuş, taraftarların yüklenmesiyle duvar yıkılıp bacağını kırmıştır."
+        },
+        {
+          "id": 17,
+          "soru": "Alman kaleci Michael Rensing, Bayern Münih'te oynarken maça saatler kala nasıl sakatlanıp kadrodan çıkarılmıştır?",
+          "secenekler": { "A": "Çorabını giyerken belini incitmesi", "B": "Krampon bağ bağlarken parmağını burkması", "C": "Otobüs kapısına sıkışması", "D": "Isınırken top toplaması" },
+          "dogru": "A",
+          "aciklama": "Rensing soyunma odasında çorabını çekerken belinde ani bir spazm oluşmuş ve maça çıkamamıştır."
+        },
+        {
+          "id": 18,
+          "soru": "Norveçli futbolcu Svein Grøndalen, milli takım kampında yürüyüş yaparken neye çarparak sakatlanmış ve maçı kaçırmıştır?",
+          "secenekler": { "A": "Ormanda koşan bir Geyiğe çarparak", "B": "Ağaç dalına kafasını vurarak", "C": "Park halindeki bisiklete takılarak", "D": "Sokak köpeğinden kaçarken" },
+          "dogru": "A",
+          "aciklama": "Grøndalen ormanda koşu yaparken aniden önüne çıkan bir geyikle çarpışmış ve sakatlanmıştır."
+        },
+        {
+          "id": 19,
+          "soru": "İspanyol futbolcu Marco Asensio, Real Madrid'deyken Şampiyonlar Ligi maçını hangi ilginç gerekçeyle kaçırmıştır?",
+          "secenekler": { "A": "Bacak kıllarını tıraş ederken enfeksiyon kapıp çorap giyememesi", "B": "Kullandığı jölenin alerji yapması", "C": "Dövme yaptırıp enfeksiyon kapması", "D": "Sivilce sıktığı için yüzünün şişmesi" },
+          "dogru": "A",
+          "aciklama": "Asensio bacak kıllarını jiletle alırken kıl dönmesi/enfeksiyon olmuş, çorap bile giyemeyecek kadar canı yandığı için maçı kaçırmıştır."
+        },
+        {
+          "id": 20,
+          "soru": "Eski İngiliz kaleci David Seaman, evde koltukta otururken hangi hareketi yapınca sırt kasını yırtmıştır?",
+          "secenekler": { "A": "Televizyon kumandasına uzanmaya çalışırken", "B": "Koltuktan kalkarken", "C": "Halıyı kaldırırken", "D": "Köpeğini kucağına alırken" },
+          "dogru": "A",
+          "aciklama": "Koca kaleci Seaman, sehpadaki kumandaya ters uzanınca sırt kasını yırtıp günlerce yatakta yatmıştır."
+        }
+      ]
+    },
+    {
+      "kategori_id": 903,
+      "kategori_adi": "🟨 Komik Kırmızı Kartlar ve Hakem Matrakları",
+      "kategori_ikon": "🎴",
+      "gereken_yildiz": 0,
+      "sorular": [
+        {
+          "id": 21,
+          "soru": "2015 yılında İsveç Ligi'nde oynayan Adam Lindin Ljungkvist, maç sırasında hakem tarafından neden ikinci sarıdan kırmızı kartla atılmıştır?",
+          "secenekler": { "A": "Saha içinde çok yüksek sesle gaz çıkarması (osurması) ve hakemin bunu 'sportmenlik dışı' sayması", "B": "Hakeme dil çıkarması", "C": "Formasını tersten giymesi", "D": "Kendi takım arkadaşına bağırması" },
+          "dogru": "A",
+          "aciklama": "Hakem olayı 'kasıtlı provokasyon ve edepsizlik' olarak değerlendirip oyuncuya kırmızı kartı basmıştır."
+        },
+        {
+          "id": 22,
+          "soru": "İngiltere'de 1998'de hakem Martin Sylvester, maç sırasında oyuncular kavga edince ne yapıp kendisine kırmızı kart göstermiştir?",
+          "secenekler": { "A": "Sinirlerine hakim olamayıp bir futbolcuya yumruk attığı için kendisini oyundan ihraç etti", "B": "Düdüğünü yuttuğu için", "C": "Yanlış karar verdiği için", "D": "Maçı unuttuğu için" },
+          "dogru": "A",
+          "aciklama": "Hakem Sylvester sabrı taşınca futbolcuya vurmuş, ardından profesyonellik gereği kırmızı kartı kendisine çıkarıp maçı yardımcı hakeme devretmiştir."
+        },
+        {
+          "id": 23,
+          "soru": "2017'de PSG - Nantes maçında hakem Tony Chapron, kendisine yanlışlıkla çarpan Nantes'lı Diego Carlos'a ne yapmıştır?",
+          "secenekler": { "A": "Yerdeyken oyuncunun bacağına çelme takıp ardından kırmızı kart gösterdi", "B": "Oyuncuyu kafa atıp düşürdü", "C": "Oyuncudan özür diledi", "D": "Sarı kart verip devam etti" },
+          "dogru": "A",
+          "aciklama": "Hakem Chapron sinirlenip yerde yatan futbolcuya çelme atmış, kalkınca da kırmızı kart verip oyundan atmıştır."
+        },
+        {
+          "id": 24,
+          "soru": "2008'de İngiltere'de Peterborough maçında kaleci Jamie Cumming ceza sahasında ne yaptığı için kırmızı kart görmüştür?",
+          "secenekler": { "A": "Kale direğinin arkasına geçip tuvaletini yaparken yakalandığı için", "B": "Su şişesiyle hakeme su sıktığı için", "C": "Kalenin filesini yırttığı için", "D": "Taraftara el salladığı için" },
+          "dogru": "A",
+          "aciklama": "Sıkışan kaleci reklam panolarının arkasına geçip ihtiyacını giderirken hakem durumu görüp kırmızı kartla ihraç etmiştir."
+        },
+        {
+          "id": 25,
+          "soru": "1993'te Türkiye'de Trabzonspor - Beşiktaş maçında hakem Erman Toroğlu, tribünlerden sahaya hıyar (salatalık) atılınca ne yapmıştır?",
+          "secenekler": { "A": "Salatalığı alıp 'Bakın taze mübarek' diyerek ısırıp yemiştir", "B": "Salatalığı polise vermiştir", "C": "Maçı tatil etmiştir", "D": "Tribüne geri fırlatmıştır" },
+          "dogru": "A",
+          "aciklama": "Erman Toroğlu sahaya atılan hıyarı yerden alıp kameralara göstermiş, canlı yayında tadına bakmıştır."
+        },
+        {
+          "id": 26,
+          "soru": "Palermo oyuncusu Edinson Cavani, Napoli'de oynarken attığı golden sonra hakemden neden sarı kart görmüştür?",
+          "secenekler": { "A": "Gol sevincinde hakemin kafasını öptüğü için", "B": "Tribün çitine tırmandığı için", "C": "Formasını kafasına geçirdiği için", "D": "Saha dışına çıktığı için" },
+          "dogru": "A",
+          "aciklama": "Sevinçten ne yapacağını bilemeyen Cavani koşup maçı yöneten hakemin kel kafasını öpmüş ve sarı kartı yemiştir."
+        },
+        {
+          "id": 27,
+          "soru": "2002'de Celta Vigo - Barcelona maçında Hristov, attığı golden sonra formasını çıkarınca neden ikinci sarı karttan kırmızı görmüştür?",
+          "secenekler": { "A": "Zaten sarı kartı varken kuralı unutup formasını çıkardığı için", "B": "Formanın altında atlet olmadığı için", "C": "Formayı hakeme fırlattığı için", "D": "Formayı ters giydiği için" },
+          "dogru": "A",
+          "aciklama": "O dönem yeni gelen 'forma çıkarma sarı karttır' kuralını unutan Hristov, sevinçten formasını fırlatıp kırmızı kartla oyundan atılmıştır."
+        },
+        {
+          "id": 28,
+          "soru": "Real Madridli Mario Hermoso, Getafe maçında 90+2'de gol atıp 90+4'te niye kırmızı kart görmüştür?",
+          "secenekler": { "A": "Sevinirken rakip tribüne takıldığı ve ardından rakiple kavga ettiği için 2 dakikada 2 sarı kart gördü", "B": "Hakeme sövdüğü için", "C": "Sert faul yaptığı için", "D": "Zaman çaldığı için" },
+          "dogru": "A",
+          "aciklama": "Hermoso sevinç abartısı ve hemen ardından çıkan itiş kakış yüzünden 2 dakika içinde takımını 10 kişi bırakmıştır."
+        },
+        {
+          "id": 29,
+          "soru": "İskoçya'da 2005 yılında yardımcı hakem (yan hakem), maçın ortasında ne yaptığı için orta hakem tarafından kırmızı kartla saha dışına gönderilmiştir?",
+          "secenekler": { "A": "Saha kenarına kusarak maçı engelttiği için", "B": "Taraftarla kavga ettiği için", "C": "Bayrağını kırdığı için", "D": "Ofsaytı yanlış kaldırdığı için" },
+          "dogru": "A",
+          "aciklama": "Aşırı rahatsız olan yardımcı hakem çizgi kenarına kusmaya başlayınca orta hakem maçı durdurup arkadaşına kırmızı kart göstermiştir."
+        },
+        {
+          "id": 30,
+          "soru": "Kariyerinde 46 kırmızı kartla dünya futbol tarihinin rekorunu kıran Kolombiyalı stoper kimdir?",
+          "secenekler": { "A": "Gerardo Bedoya", "B": "Sergio Ramos", "C": "Paolo Montero", "D": "Felipe Melo" },
+          "dogru": "A",
+          "aciklama": "'Canavar' lakaplı Bedoya, kariyerinde tam 46 kez kırmızı kart görerek kırılması imkansız bir rekora imza atmıştır."
+        }
+      ]
+    },
+    {
+      "kategori_id": 904,
+      "kategori_adi": "🎙️ Efsanevi Soyunma Odası & Basın Replikleri",
+      "kategori_ikon": "💬",
+      "gereken_yildiz": 0,
+      "sorular": [
+        {
+          "id": 31,
+          "soru": "Sir Alex Ferguson'un 2003'te Arsenal maçından sonra soyunma odasında öfkeyle fırlattığı krampon kime denk gelmiş ve kaşını açmıştır?",
+          "secenekler": { "A": "David Beckham", "B": "Ryan Giggs", "C": "Paul Scholes", "D": "Roy Keane" },
+          "dogru": "A",
+          "aciklama": "Ferguson yerdeki krampona tekmeyi basmış, krampon Beckham'ın sol kaşına gelip yaralanmasına neden olmuştur."
+        },
+        {
+          "id": 32,
+          "soru": "Yılmaz Vural'ın Elazığspor'u çalıştırırken 1-1 biten maç sonrasında canlı yayında söylediği unutulmaz sitemli söz nedir?",
+          "secenekler": { "A": "'Ağlamamak için kendimi zor tutuyorum, böyle futbola sokayım'", "B": "'Biz bittik beyler'", "C": "'Hakem maçı katletti'", "D": "'Futbolcularım oynamadı'" },
+          "dogru": "A",
+          "aciklama": "Yılmaz Vural'ın bu efsanevi basın toplantısı demeci Türk futbol tarihine popüler kültür ikonu olarak kazınmıştır."
+        },
+        {
+          "id": 33,
+          "soru": "Jose Mourinho'nun Chelsea'ye ilk geldiği 2004 yılındaki basın toplantısında kendisine taktığı ve olay olan lakap nedir?",
+          "secenekler": { "A": "The Special One (Özel Biri)", "B": "The Only One", "C": "The King", "D": "The Master" },
+          "dogru": "A",
+          "aciklama": "Mourinho gazetecilere: 'Lütfen küstah olduğumu düşünmeyin ama ben Porto ile Avrupa şampiyonu oldum. Ben Özel Biriyim' demiştir."
+        },
+        {
+          "id": 34,
+          "soru": "Zlatan Ibrahimovic'in PSG'de oynarken hakem kararlarına sinirlenip Fransız basınına söylediği olay söz neydi?",
+          "secenekler": { "A": "'15 yıldır futbol oynuyorum, böyle boktan bir ülke görmedim! PSG bile bu ülkeyi hak etmiyor!'", "B": "'Fransa futbolu bitmiştir'", "C": "'Hakemler rüşvetçi'", "D": "'Sadece ben varım'" },
+          "dogru": "A",
+          "aciklama": "Zlatan'ın bu lafı Fransa'da siyasi kriz çıkarmış, bakanlar özür dilemesini istemiştir."
+        },
+        {
+          "id": 35,
+          "soru": "Sergen Yalçın'ın Beşiktaş'ta oynarken teknik direktörü Jean Tigana ile yaşadığı iddia edilen efsane koşu/at yarışı diyaloğu nedir?",
+          "secenekler": { "A": "Tigana'nın 'Çok koşmalısın' demesine Sergen'in 'Hocam koşsam at olurdum' demesi", "B": "'Ben koşmam koştururum'", "C": "'Siz koşun ben atayım'", "D": "'Antrenman bana göre değil'" },
+          "dogru": "A",
+          "aciklama": "Sergen Yalçın'ın futbola bakışını özetleyen bu laf Türk futbol mizahının tepe noktalarından biridir."
+        },
+        {
+          "id": 36,
+          "soru": "Giovanni Trapattoni'nin Bayern Münih'i çalıştırırken düzenlediği efsanevi Almanca basın toplantısında masayı yumruklayarak kurduğu ünlü cümle nedir?",
+          "secenekler": { "A": "'WAS ERLAUBE STRUNZ?!' (Strunz ne hakla bunu yapar!)", "B": "'Strunz raus!'", "C": "'Strunz ist dumm'", "D": "'Nein Strunz!'" },
+          "dogru": "A",
+          "aciklama": "Trapattoni bozuk Almancasıyla 'Ich habe fertig!' (Bitirdim!) diyerek masayı yumruklamış ve efsane olmuştur."
+        },
+        {
+          "id": 37,
+          "soru": "Fatih Terim'in Fiorentina'yı çalıştırırken İtalyanca basın toplantısında gazetecilerin sorularına verdiği unutulmaz yanıt neydi?",
+          "secenekler": { "A": "'Biz ne yaptığımızı biliyoruz. Ne varsa sahada var!'", "B": "'No comment'", "C": "'Grande Terim'", "D": "'Taktik maktik yok'" },
+          "dogru": "A",
+          "aciklama": "Terim'in kendine has İtalyancası ve jestleri İtalya'da taraftarların sevgilisi olmasını sağlamıştır."
+        },
+        {
+          "id": 38,
+          "soru": "Arda Turan'ın Barcelona'da oynarken milli takım uçağında gazeteci Bilal Meşe'ye yaptığı skandal hareket neydi?",
+          "secenekler": { "A": "Boğazına sarılıp küfürler yağdırması", "B": "Üstüne su dökmesi", "C": "Kamerasını kırması", "D": "Uçaktan indirmeye çalışması" },
+          "dogru": "A",
+          "aciklama": "Arda Turan prim haberleri yüzünden uçakta gazetecinin üzerine yürümüş ve olay sonrası milli takımı bıraktığını açıklamıştır."
+        },
+        {
+          "id": 39,
+          "soru": "Roy Keane'in İrlanda Milli Takımı kampında teknik direktör Mick McCarthy'ye soyunma odasında söylediği olay ağır laf nedir?",
+          "secenekler": { "A": "'Sen ne futbolcusun ne hoca! Sen bir hiçsin, Dünya Kupası'nı da al kıçına sok!'", "B": "'Seni istemiyoruz'", "C": "'Takımı ben yöneteceğim'", "D": "'Sen İngiliz ajanı mısın?'" },
+          "dogru": "A",
+          "aciklama": "Roy Keane 2002 Dünya Kupası öncesi hocasıyla kapışıp kampı terk etmiş ve ülkeye geri dönmüştür."
+        },
+        {
+          "id": 40,
+          "soru": "Eski Fenerbahçeli Ümit Özat'ın teknik direktörken canlı yayında kadın yorumcuya söylediği tartışmalı söz neydi?",
+          "secenekler": { "A": "'Kadınlar futboldan anlamaz, kadınla erkek eşit değildir'", "B": "'Kadın hakem istemiyorum'", "C": "'Ofsaytı anlatamazlar'", "D": "'Futbol erkek oyunudur'" },
+          "dogru": "A",
+          "aciklama": "Ümit Özat'ın bu açıklaması canlı yayında Simge Fıstıkoğlu ile gerginlik yaşamasına ve stüdyoyu terk etmesine neden olmuştur."
+        }
+      ]
+    },
+    {
+      "kategori_id": 905,
+      "kategori_adi": "🧙‍♂️ Çılgın Ritüeller, Büyüler ve Batıl İnançlar",
+      "kategori_ikon": "🔮",
+      "gereken_yildiz": 0,
+      "sorular": [
+        {
+          "id": 41,
+          "soru": "Fransa'nın 1998 Dünya Kupası şampiyonluğunda stoper Laurent Blanc'ın her maç öncesi kaleci Fabien Barthez'e yaptığı uğurlu ritüel neydi?",
+          "secenekler": { "A": "Barthez'in kel kafasını öpmek", "B": "Eldivenlerini koklamak", "C": "Kramponlarını bağlamak", "D": "Sırtına vurmak" },
+          "dogru": "A",
+          "aciklama": "Blanc her maç öncesi Barthez'in kel kafasını öpmüş, bu hareket Fransa'nın turnuva boyunca efsanevi sembolü olmuştur."
+        },
+        {
+          "id": 42,
+          "soru": "Fransa teknik direktörü Raymond Domenech, milli takım kadrosunu oluştururken hangi garip takıntıya sahipti?",
+          "secenekler": { "A": "Astroloji ve burç analizlerine bakıp Akrep burçlarını kadroya almaması", "B": "Rüyasında gördüğü isimleri seçmesi", "C": "Zar atarak karar vermesi", "D": "Boy sırasına göre kadro kurması" },
+          "dogru": "A",
+          "aciklama": "Domenech Akrep burcu olan Pires gibi yıldızları 'uğursuz ve güvenilmez' bulduğu için kadroya dahil etmemiştir."
+        },
+        {
+          "id": 43,
+          "soru": "2002 Dünya Kupası'nda Senegal'in Fransa'yı 1-0 yendiği tarihi maç öncesi Senegal takımının yaptığı garip hazırlık neydi?",
+          "secenekler": { "A": "Yerel Juju büyücülerinin hazırladığı özel suyu sahanın çimlerine ve kale direklerine sürmeleri", "B": "Maçtan önce 24 saat uyumaları", "C": "Tüm formaları tersten giymeleri", "D": "Sahaya yalınayak çıkmaları" },
+          "dogru": "A",
+          "aciklama": "Senegal takımı geleneksel afrika inançlarına uyarak sahaya ve kaleye büyü suyu sürmüştür."
+        },
+        {
+          "id": 44,
+          "soru": "Pisa Başkanı Romeo Anconetani, takımının kazanması için maç başlamadan önce sahanın çimlerine ne serpiyordu?",
+          "secenekler": { "A": "Çuvalla Tuz", "B": "Un", "C": "Kutsal Su", "D": "Şeker" },
+          "dogru": "A",
+          "aciklama": "Anconetani uğur getirsin diye önemli maçlardan önce sahanın her yerine çuvalla tuz döktürüyordu."
+        },
+        {
+          "id": 45,
+          "soru": "İspanyol teknik direktör Luis Aragonés'in sarı renge karşı olan hastalıklı nefreti yüzünden yaptığı garip şey neydi?",
+          "secenekler": { "A": "Sarı forma giyen rakibe el sıkışmaması ve sarı renkteki her şeyi takımdan yasaklaması", "B": "Sarı kart gösteren hakemle konuşmaması", "C": "Sarı kramponlu oyuncuları oynatmaması", "D": "Otellerdeki sarı odaları reddetmesi" },
+          "dogru": "A",
+          "aciklama": "Aragonés sarı rengin uğursuzluğuna o kadar inanıyordu ki İspanya'nın sarı olan deplasman formasını bile değiştirtmiştir."
+        },
+        {
+          "id": 46,
+          "soru": "Kolombiyalı kaleci René Higuita'nın maç günleri şans getirsin diye giydiği vazgeçilmez kıyafeti ne renkti?",
+          "secenekler": { "A": "Kırmızı iç çamaşırı", "B": "Mavi çorap", "C": "Pembe şort", "D": "Sarı atlet" },
+          "dogru": "A",
+          "aciklama": "Higuita bir falcının tavsiyesiyle kariyeri boyunca tüm maçlara uğurlu kırmızı iç çamaşırıyla çıkmıştır."
+        },
+        {
+          "id": 47,
+          "soru": "Eski Chelsea kalecisi Petr Čech, kask takmaya başlamadan önce her maç öncesinde kale direklerine ne yapıyordu?",
+          "secenekler": { "A": "İki kale direğine ve üst direğe sırayla kafa vuruyordu", "B": "Direkleri öpüyordu", "C": "Direklere su döküyordu", "D": "Direklere sarılıyordu" },
+          "dogru": "A",
+          "aciklama": "Čech şans getirmesi için maç başlama düdüğünden önce direklere hafifçe kafasını dokundurmayı ritüel edinmişti."
+        },
+        {
+          "id": 48,
+          "soru": "Arjantinli teknik direktör Carlos Bilardo'nun 1986 Dünya Kupası'nı kazanırken takıma uygulattığı garip batıl inanç neydi?",
+          "secenekler": { "A": "Maç günleri otobüste sadece aynı şarkının dinlenmesi ve aynı koltuklarda oturulması", "B": "Hiç sakal tıraşı olmamak", "C": "Tavuk yemeyi yasaklamak", "D": "Her maç aynı çorabı giymek" },
+          "dogru": "A",
+          "aciklama": "Bilardo tam bir batıl inanç hastasıydı; turnuva boyunca her maç günü aynı otobüs rotasını ve aynı şarkıyı kullandırmıştır."
+        },
+        {
+          "id": 49,
+          "soru": "Süper Lig'de teknik direktör Hikmet Karaman'ın önemli maçlar öncesinde sahaya veya kulübeye koydurduğu uğurlu nesne neydi?",
+          "secenekler": { "A": "Özel Yeşillik / Dereotu ve Tuz", "B": "Nazar boncuğu", "C": "At nalı", "D": "Kırmızı havlu" },
+          "dogru": "A",
+          "aciklama": "Hikmet Karaman saha kenarında ve kulübede batıl inanç olarak tuz serpme ve yeşillik tutma ritüelleriyle tanınır."
+        },
+        {
+          "id": 50,
+          "soru": "Kamerunlu efsane Roger Milla'nın 1990 Dünya Kupası'nda attığı gollerden sonra korner direğinde yaptığı ünlü dansın adı nedir?",
+          "secenekler": { "A": "Makossa Dansı", "B": "Samba", "C": "Salsa", "D": "Rumba" },
+          "dogru": "A",
+          "aciklama": "38 yaşındaki Roger Milla her golden sonra korner direğine koşup Makossa dansı yaparak turnuvanın neşesi olmuştur."
+        }
+      ]
+    },
+    {
+      "kategori_id": 906,
+      "kategori_adi": "🍾 Unutulmaz Gece Hayatı & Alkol Vukuatları",
+      "kategori_ikon": "🍸",
+      "gereken_yildiz": 0,
+      "sorular": [
+        {
+          "id": 51,
+          "soru": "Paul Gascoigne'in (Gazza) EURO 96 öncesi Hong Kong kampında barda yaptığı efsanevi alkol olayının adı nedir?",
+          "secenekler": { "A": "Dentist's Chair (Dişçi Koltuğu) - Koltuğa yatıp ağzına içki döktürmesi", "B": "Barı yakması", "C": "Şişeleri kırması", "D": "Garsonu dövmesi" },
+          "dogru": "A",
+          "aciklama": "Gazza barda dişçi koltuğuna yatmış, arkadaşları ağzına viski boşaltmıştır. Gol atınca da bunu sahada canlandırmıştır."
+        },
+        {
+          "id": 52,
+          "soru": "İngiliz efsane George Best'in gece hayatı ve harcamaları üzerine söylediği ikonik tarihi söz nedir?",
+          "secenekler": { "A": "'Paralarımın çoğunu içki, kadınlar ve hızlı arabalara harcadım. Gerisini ise boşa harcadım.'", "B": "'Futbol gece başlar'", "C": "'Alkol olmasaydı 10 Ballon d'Or alırdım'", "D": "'Ben barda efsaneyim'" },
+          "dogru": "A",
+          "aciklama": "Best'in bu meşhur sözü spor tarihinin en unutulmaz hayat felsefesi itiraflarından biridir."
+        },
+        {
+          "id": 53,
+          "soru": "Arsenal'ın 'İçki Kulübü' başkanı kabul edilen efsane kaptanı Tony Adams, 1990'da ne sebebiyle 4 ay hapis yatmıştır?",
+          "secenekler": { "A": "Alkollü şekilde arabasıyla duvara girmesi", "B": "Barda kavga etmesi", "C": "Polise mukavemet", "D": "Trafik polisine rüşvet vermesi" },
+          "dogru": "A",
+          "aciklama": "Promil sınırının 4 katı alkollü olan Tony Adams, duvarı yıktığı kazadan sonra 4 ay hapis cezası çekmiştir."
+        },
+        {
+          "id": 54,
+          "soru": "Brezilyalı Adriano'nun zirvedeyken Inter'i bırakıp Rio de Janeiro'daki favelalara dönmesinin ana sebebi neydi?",
+          "secenekler": { "A": "Babasının ölümü sonrası girdiği ağır depresyon ve alkol bağımlılığı", "B": "Sakatlanması", "C": "Çete lideri olması", "D": "Parasının bitmesi" },
+          "dogru": "A",
+          "aciklama": "Babasını kaybeden 'İmparator' lakaplı Adriano kendisini alkole vermiş ve futbolu kafasında bitirmiştir."
+        },
+        {
+          "id": 55,
+          "soru": "2016'da Wayne Rooney'nin İngiltere milli takımı kampında sarhoş halde oteldeki bir düğünü basması olayında ne fotoğraflanmıştı?",
+          "secenekler": { "A": "Gözleri kaymış vaziyette damatla kırmızı şarap içmesi", "B": "Garsonla kavga etmesi", "C": "Düğün pastasını devirmesi", "D": "Gitar çalması" },
+          "dogru": "A",
+          "aciklama": "Rooney oteldeki bir düğüne sızıp sabahın ilk ışıklarına kadar şarap içmiş ve fotoğrafları basına sızmıştır."
+        },
+        {
+          "id": 56,
+          "soru": "Barcelona'nın efsane yıldızı Ronaldinho'nun antrenmanlara mahmurluğunu belli etmemek için bulduğu pratik taktik neydi?",
+          "secenekler": { "A": "'Kas ağrım var' diyerek salonda masaj yaptırıp uyumak", "B": "Sahaya hiç çıkmamak", "C": "Soğuk duş almak", "D": "Gözlük takmak" },
+          "dogru": "A",
+          "aciklama": "Ronaldinho geceden kalma olduğu günlerde kas ağrısı bahanesiyle antrenmana çıkmayıp salonda uyuyordu."
+        },
+        {
+          "id": 57,
+          "soru": "Arturo Vidal'ın 2015 Copa America oynanırken Şili'de geçirdiği kazada hangi lüks arabasını hurdaya çevirmiştir?",
+          "secenekler": { "A": "Ferrari", "B": "Lamborghini", "C": "Porsche", "D": "Bentley" },
+          "dogru": "A",
+          "aciklama": "Vidal kumarhaneden dönerken eşiyle Ferrari'sini hurdaya çevirmiş ama milli takımda oynamaya devam etmiştir."
+        },
+        {
+          "id": 58,
+          "soru": "Beşiktaşlı eski futbolcu Manuel Fernandes'in İstanbul gece hayatında kulüp yönetimiyle yaşadığı en meşhur sıkıntı neydi?",
+          "secenekler": { "A": "Sabaha kadar mekanda kalıp antrenmanlara geç kalması veya alkollü gelmesi", "B": "Kavga etmesi", "C": "Magazin muhabirinin kamerasını kırması", "D": "Taksi durağı işletmesi" },
+          "dogru": "A",
+          "aciklama": "Fernandes'in İstanbul gecelerindeki hızı ve sabah antrenmanlarına yetişememesi dönemin en çok konuşulan olayıydı."
+        },
+        {
+          "id": 59,
+          "soru": "Eski Beşiktaşlı Guti Hernandez'in İstanbul'a geldikten sonra geçirdiği trafik kazasında promil oranı kaç çıkmıştı?",
+          "secenekler": { "A": "2.71 Promil (Ters yöne girmişti)", "B": "1.00 Promil", "C": "0.50 Promil", "D": "3.50 Promil" },
+          "dogru": "A",
+          "aciklama": "Guti gece kulübü dönüşü cipiyle ters yöne girip İETT otobüsüne çarpmış ve 2.71 promil alkollü çıkmıştır."
+        },
+        {
+          "id": 60,
+          "soru": "2012 yılında Engin Baytar'ın Galatasaray - Fenerbahçe Süper Kupa maçında hakem Cüneyt Çakır'a yaptığı hareket kaç maç ceza almasına yol açmıştır?",
+          "secenekler": { "A": "11 Maç Ceza (Hakemin yakasından çekip tartaklaması)", "B": "5 Maç", "C": "8 Maç", "D": "15 Maç" },
+          "dogru": "A",
+          "aciklama": "Engin Baytar kırmızı kart sonrası Cüneyt Çakır'ın yakasına sarılmış ve 11 maçlık rekor bir ceza almıştır."
+        }
+      ]
+    },
+    {
+      "kategori_id": 907,
+      "kategori_adi": "🥊 Saha İçi ve Soyunma Odası Kavgaları",
+      "kategori_ikon": "🤼",
+      "gereken_yildiz": 0,
+      "sorular": [
+        {
+          "id": 61,
+          "soru": "2005 yılında Newcastle United maçında aynı takımda oynayan Kieron Dyer ile Lee Bowyer neden kavgaya tutuşmuştur?",
+          "secenekler": { "A": "Dyer'ın Bowyer'a pas vermemesi yüzünden saha ortasında birbirlerini yumruklamaları", "B": "Penaltı atışı yüzünden", "C": "Forma numarası yüzünden", "D": "Birbirlerine küfretmeleri" },
+          "dogru": "A",
+          "aciklama": "İki takım arkadaşı pas vermeme yüzünden saha ortasında evire çevire birbirini dövmüş ve ikisi de kırmızı kart görmüştür."
+        },
+        {
+          "id": 62,
+          "soru": "Eric Cantona'nın 1995'te Crystal Palace taraftarı Matthew Simmons'a yaptığı ve futbol tarihine geçen efsanevi hareket neydi?",
+          "secenekler": { "A": "Reklam panolarının üzerinden uçarak taraftara kung-fu tekmesi atması", "B": "Kafa atması", "C": "Su şişesi fırlatması", "D": "Tükürmesi" },
+          "dogru": "A",
+          "aciklama": "Cantona kendisine laf atan taraftara karateci gibi uçan tekme atmış ve 9 ay futboldan men edilmiştir."
+        },
+        {
+          "id": 63,
+          "soru": "2006 Dünya Kupası finalinde Zinedine Zidane'ın İtalyan stoper Marco Materazzi'ye kafa atmasının sebebi neydi?",
+          "secenekler": { "A": "Materazzi'nin Zidane'ın kız kardeşine ağır laf etmesi", "B": "Materazzi'nin forma çekmesi", "C": "Sert faul yapması", "D": "Fransa'ya küfretmesi" },
+          "dogru": "A",
+          "aciklama": "Materazzi'nin laflarına dayanamayan Zidane, göğsüne kurşun gibi bir kafa atarak kariyerini kırmızı kartla bitirmiştir."
+        },
+        {
+          "id": 64,
+          "soru": "Wimbledon'ın 'Çılgın Çete' üyesi Vinnie Jones, Paul Gascoigne'i durdurmak için sahada ne yapmıştır?",
+          "secenekler": { "A": "Gascoigne'in hassas bölgesini (hayalarını) avuçlayıp sıkması", "B": "Formasını yırtması", "C": "Kulağını ısırması", "D": "Sert kafa atması" },
+          "dogru": "A",
+          "aciklama": "Vinnie Jones'un Gascoigne'i sıkıca yakaladığı o anın fotoğrafı futbol tarihinin en ikonik karelerinden biridir."
+        },
+        {
+          "id": 65,
+          "soru": "2010 Dünya Kupası finalinde Hollandalı Nigel de Jong'un İspanyol Xabi Alonso'ya yaptığı unutulmaz hamle neydi?",
+          "secenekler": { "A": "Göğsüne karateci gibi krampon çivileriyle uçan tekme atması", "B": "Kafa atması", "C": "Çelme takması", "D": "Yüzünü tırmalaması" },
+          "dogru": "A",
+          "aciklama": "De Jong tam göğüs kafesine tekme atmış ama garip bir şekilde hakem sadece sarı kart çıkarmıştır."
+        },
+        {
+          "id": 66,
+          "soru": "2021 yılında Galatasaray'da Kerem Aktürkoğlu ile saha ortasında tartışıp arkadaşına kafa ve yumruk atan Brezilyalı stoper kimdir?",
+          "secenekler": { "A": "Marcao", "B": "Luyindama", "C": "Maicon", "D": "Chedjou" },
+          "dogru": "A",
+          "aciklama": "Marcao saha ortasında koşturup kendi takım arkadaşı Kerem'e saldırmış ve kırmızı kart görerek ağır ceza almıştır."
+        },
+        {
+          "id": 67,
+          "soru": "2007'de Valencia - Inter maçından sonra çıkan dev kavgada Interli Burdisso'nun burnunu yumrukla kıran Valencialı kimdir?",
+          "secenekler": { "A": "David Navarro", "B": "Carlos Marchena", "C": "Santiago Cañizares", "D": "Roberto Ayala" },
+          "dogru": "A",
+          "aciklama": "Yedek kulübesinden fırlayan Navarro, Burdisso'ya arkadan uçup yumrukla burnunu kırmış ve soyunma odasına kaçmıştır."
+        },
+        {
+          "id": 68,
+          "soru": "Zlatan Ibrahimovic'in Milan antrenmanında takım arkadaşı Oguchi Onyewu ile girdiği kavgada Zlatan'a ne olmuştur?",
+          "secenekler": { "A": "Kaburgası kırılmıştır", "B": "Burnu kırılmıştır", "C": "Kaşı açılmıştır", "D": "Dişi kırılmıştır" },
+          "dogru": "A",
+          "aciklama": "İki dev isim antrenmanda ölümüne birbirine girmiş, Zlatan'ın kaburgası kırılmış ve antrenman iptal edilmiştir."
+        },
+        {
+          "id": 69,
+          "soru": "2013'te Dinamo Kiev antrenmanında Frank Temile ile birbirine giren ve boks maçı gibi dövüşen Türk futbolcu kimdir?",
+          "secenekler": { "A": "Taylan Eliaçık", "B": "Arda Turan", "C": "Gökdeniz Karadeniz", "D": "Serhat Akın" },
+          "dogru": "A",
+          "aciklama": "Sert müdahale sonrası iki futbolcu boksörler gibi yumruklaşmış ve güvenlik zor ayırmıştır."
+        },
+        {
+          "id": 70,
+          "soru": "2011 yılında Beşiktaş antrenmanında İbrahim Toraman ile Sezer Öztürk arasında çıkan kavganın sebebi neydi?",
+          "secenekler": { "A": "Yemekte 'terlik' ve pas verme tartışması", "B": "Forma numarası", "C": "Kaptanlık pazubendi", "D": "Araba park yeri" },
+          "dogru": "A",
+          "aciklama": "İbrahim Toraman ile Sezer Öztürk terlik ve antrenman ciddiyeti yüzünden kavga etmiş ve ikisi de kadro dışı kalmıştır."
+        }
+      ]
+    },
+    {
+      "kategori_id": 908,
+      "kategori_adi": "🇹🇷 Türk Futbolunun Matrak ve Unutulmaz Anları",
+      "kategori_ikon": "🇹🇷",
+      "gereken_yildiz": 0,
+      "sorular": [
+        {
+          "id": 71,
+          "soru": "1996 yılında Galatasaray teknik direktörü Graeme Souness'ın Kadıköy'de Türkiye Kupası'nı kazandıktan sonra saha ortasına diktiği şey neydi?",
+          "secenekler": { "A": "Devasa Galatasaray Bayrağı", "B": "Atkı", "C": "Forma", "D": "Kupa" },
+          "dogru": "A",
+          "aciklama": "Souness Kadıköy'ün ortasına dev G.Saray bayrağını dikerek 'Ulubatlı Souness' lakabını almıştır."
+        },
+        {
+          "id": 72,
+          "soru": "2006 yılında Denizli'de Denizlispor - Fenerbahçe maçında sahaya atılan konfetiler yüzünden maç kaç dakika uzamıştır?",
+          "secenekler": { "A": "16 dakika", "B": "8 dakika", "C": "25 dakika", "D": "30 dakika" },
+          "dogru": "A",
+          "aciklama": "Olaylı maç 16 dakika durmuş ve Fenerbahçe şampiyonluğu Galatasaray'a kaptırmıştır."
+        },
+        {
+          "id": 73,
+          "soru": "1998'de Trabzonspor - Fenerbahçe maçında Trabzonlu taraftarın attığı taş sırtına gelince yere düşen ve maçı tatil ettiren teknik direktör kimdir?",
+          "secenekler": { "A": "Otto Bariç", "B": "Christoph Daum", "C": "Guus Hiddink", "D": "Zdenek Zeman" },
+          "dogru": "A",
+          "aciklama": "Otto Bariç'in sırtına taş gelmiş, Bariç kendisini yere atmış ve Fenerbahçe sahadan çekilmiştir."
+        },
+        {
+          "id": 74,
+          "soru": "2000 yılında Galatasaray UEFA Kupası'nı kazanırken Arsenal ile oynanan final maçının penaltılarında son golü atan efsane kimdir?",
+          "secenekler": { "A": "Gheorghe Popescu", "B": "Gheorghe Hagi", "C": "Hakan Şükür", "D": "Ümit Davala" },
+          "dogru": "A",
+          "aciklama": "Popescu soğukkanlılıkla topun başına geçmiş, golü atarak Türkiye'ye ilk Avrupa kupasını getirtmiştir."
+        },
+        {
+          "id": 75,
+          "soru": "1993'te Ankaragücü'nü 8-0 yenerek Beşiktaş'ın önünde averajla şampiyon olan Galatasaray maçında Ankaragücü kalecisi kimdi?",
+          "secenekler": { "A": "Robi Zalec", "B": "Hayrettin Demirbaş", "C": "Rüştü Reçber", "D": "Engin İpekoğlu" },
+          "dogru": "A",
+          "aciklama": "Yenilen 8 gol ve Zalec'in yediği hatalı goller Türk futbolunda yıllarca tartışılmıştır."
+        },
+        {
+          "id": 76,
+          "soru": "2002 Dünya Kupası'nda İlhan Mansız'ın Brezilyalı efsane Roberto Carlos'a attığı unutulmaz çalımın adı nedir?",
+          "secenekler": { "A": "Gökkuşağı Çalımı (Rainbow Flick)", "B": "Rulet", "C": "Bacak Arası", "D": "Elastic" },
+          "dogru": "A",
+          "aciklama": "İlhan Mansız topu topuklarıyla Roberto Carlos'un kafasının üzerinden aşırarak dize getirtmiştir."
+        },
+        {
+          "id": 77,
+          "soru": "2008 Avrupa Şampiyonası'nda Hırvatistan maçının 120+2. dakikasında attığı mucize golle maçı penaltılara taşıyan kral kimdir?",
+          "secenekler": { "A": "Semih Şentürk", "B": "Nihat Kahveci", "C": "Arda Turan", "D": "Tuncay Şanlı" },
+          "dogru": "A",
+          "aciklama": "'Nöbetçi Golcü' Semih Şentürk son saniyede soluyla fırlattığı topla imkansızı başarmıştır."
+        },
+        {
+          "id": 78,
+          "soru": "Beşiktaş'ın 2005 yılında Kadıköy'de Fenerbahçe'yi 4-3 yendiği efsane maçta kaleci Cordoba kırmızı kart görünce kaleye geçen oyuncu kimdir?",
+          "secenekler": { "A": "Daniel Pancu", "B": "Koray Avcı", "C": "Rıza Çalımbay", "D": "Ibrahim Toraman" },
+          "dogru": "A",
+          "aciklama": "Pancu kaleci kazağını giyip devleşmiş, penaltıda köşeyi tahmin etmiş ve 'Kadıköy Panteri' unvanını almıştır."
+        },
+        {
+          "id": 79,
+          "soru": "Sabri Sarıoğlu'nun 2008 yılında kupa maçında attığı ve stadyum dışına çıkan şutundan sonra taraftarların taktığı lakap nedir?",
+          "secenekler": { "A": "Uzay Avcısı / Sabri Reyiz", "B": "Fırtına", "C": "Rüzgarın Oğlu", "D": "Mermi" },
+          "dogru": "A",
+          "aciklama": "Sabri'nin farklı dışarı giden şutları internet mizahının (caps) ilk efsane konularından biri olmuştur."
+        },
+        {
+          "id": 80,
+          "soru": "2011 yılında Eskişehirspor forması giyerken korner kenarında rakibin su şişesini içip kameraya göz kırpan renkli futbolcu kimdir?",
+          "secenekler": { "A": "Batuhan Karadeniz", "B": "Diomansy Kamara", "C": "Youla", "D": "Alper Potuk" },
+          "dogru": "A",
+          "aciklama": "Batuhan Karadeniz rahat tavırları ve matrak hareketleriyle Türk futbolunun en renkli karakterlerinden biriydi."
+        }
+      ]
+    },
+    {
+      "kategori_id": 909,
+      "kategori_adi": "⚽ Absürt Kurallar, Goller ve Saha Olayları",
+      "kategori_ikon": "⚽",
+      "gereken_yildiz": 0,
+      "sorular": [
+        {
+          "id": 81,
+          "soru": "149-0 biten SO l'Emyrne - AS Adema maçında tüm goller nasıl atılmıştır?",
+          "secenekler": { "A": "SO l'Emyrne oyuncuları hakemi protesto etmek için kendi kalelerine gol attı", "B": "AS Adema şov yaptı", "C": "Kaleci maça çıkmadı", "D": "Bahis çetesi emretti" },
+          "dogru": "A",
+          "aciklama": "Hakem kararlarına öfkelenen oyuncular santradan alıp kendi kalelerine 149 tane gol fırlatmıştır."
+        },
+        {
+          "id": 82,
+          "soru": "1974 Dünya Kupası'nda Zaireli Mwepu Ilunga, Brezilya serbest vuruş kullanacakken barajdan çıkıp ne yapmıştır?",
+          "secenekler": { "A": "Düdük çalmadan topa koşup ileriye doğru var gücüyle dikmiştir", "B": "Hakeme yumruk atmıştır", "C": "Topu elle tutup kaçmıştır", "D": "Formasını çıkartıp fırlatmıştır" },
+          "dogru": "A",
+          "aciklama": "Ilunga ülkedeki diktatörün '3-0'dan fazla yenilirseniz kurşuna dizileceksiniz' tehdidi yüzünden panikle zaman çalmaya çalışmıştır."
+        },
+        {
+          "id": 83,
+          "soru": "2009'da Sunderland - Liverpool maçında Darren Bent'in şutunda top kime çarpıp kaleye girmiş ve gol sayılmıştır?",
+          "secenekler": { "A": "Saha içine atılan kırmızı bir Plaj Topuna", "B": "Hakeme", "C": "Köpeğe", "D": "Martıya" },
+          "dogru": "A",
+          "aciklama": "Taraftarların sahaya attığı plaj topuna çarpan gerçek top yön değiştirip ağlara gitmiş ve hakem golü geçerli saymıştır."
+        },
+        {
+          "id": 84,
+          "soru": "1921'de Everton maçında Arsenal kalecisi sakatlanınca değişiklik hakkı olmadığı için kalede kim durmuştur?",
+          "secenekler": { "A": "Tribünden inen gönüllü bir taraftar", "B": "Teknik direktör", "C": "Top toplayıcı çocuk", "D": "Masör" },
+          "dogru": "A",
+          "aciklama": "O dönem oyuncu değişikliği kuralı olmadığı için tribündeki lisanslı eski bir kaleci taraftar aşağı inip kaleyi korumuştur."
+        },
+        {
+          "id": 85,
+          "soru": "1945'te Londra'da Arsenal ile Dinamo Moskova arasındaki efsanevi maç aşırı sis yüzünden oynanırken ne yaşanmıştır?",
+          "secenekler": { "A": "Dinamo Moskova çaktırmadan sahaya 12 kişi sürmüş ve sisten kimse fark etmemiştir", "B": "Maçta iki top kullanılmıştır", "C": "Seyirciler sahada oynamıştır", "D": "Kaleci kale çizgisini kaybetmiştir" },
+          "dogru": "A",
+          "aciklama": "Göz gözü görmeyen sisten faydalanan Moskova ekibi sahaya gizlice bir oyuncu daha sokup 12 kişi oynamıştır."
+        },
+        {
+          "id": 86,
+          "soru": "1986 Dünya Kupası'nda Maradona'nın İngiltere'ye elle attığı gol sonrası verdiği efsanevi röportaj demeci nedir?",
+          "secenekler": { "A": "'O gol biraz Maradona'nın kafası, biraz da Tanrı'nın eliydi'", "B": "'Elini görmeyen hakem utansın'", "C": "'Top elime çarptı'", "D": "'Golle gurur duyuyorum'" },
+          "dogru": "A",
+          "aciklama": "Maradona bu meşhur lafıyla futbol tarihinin en büyük polemiklerinden birine imza atmıştır."
+        },
+        {
+          "id": 87,
+          "soru": "1994 Caribbean Kupası'nda Barbados - Grenada maçında Barbados tur atlamak için 2 fark gerektiğinden ne yapmıştır?",
+          "secenekler": { "A": "Kendi kalesine gol atıp maçı uzatmaya götürdü (Uzatma golü 2 puan değerindeydi)", "B": "Rakip kaleciyi bayılttı", "C": "Maçı bıraktı", "D": "Topu sakladı" },
+          "dogru": "A",
+          "aciklama": "Turnuva kuralı gereği uzatmalarda atılan gol 2 gol sayılıyordu. Barbados maçı 2-2 yapmak için kendi kalesine gol atmıştır!"
+        },
+        {
+          "id": 88,
+          "soru": "2019'da Mısır Ligi'nde bir futbolcu boş kaleye gol atacakken çizgideki top toplayıcı çocuğun ne yapması olay olmuştur?",
+          "secenekler": { "A": "Sahaya girip topu çizgiden çıkarması", "B": "Alkışlaması", "C": "Ağlaması", "D": "Fotoğraf çekmesi" },
+          "dogru": "A",
+          "aciklama": "Gönül verdiği takım gol yemesin diye sahaya dalan çocuk topu bacağıyla engellemiştir."
+        },
+        {
+          "id": 89,
+          "soru": "1978'de River Plate maçında kaleci Ubaldo Fillol penaltı kurtarırken kalesine giren neydi?",
+          "secenekler": { "A": "Sahaya dalan bir Tavuk", "B": "Köpek", "C": "Kedi", "D": "Tavşan" },
+          "dogru": "A",
+          "aciklama": "Rakip taraftarların fırlattığı canlı tavuk kale çizgisinde uçuşurken Fillol penaltıyı çıkarmıştır."
+        },
+        {
+          "id": 90,
+          "soru": "1938 Dünya Kupası'nda Brezilyalı Leônidas, Polonya maçında saha çamur olunca kramponlarını çıkarıp ne yapmıştır?",
+          "secenekler": { "A": "Çoraplarıyla oynamak istemiş ancak hakem izin vermemiştir", "B": "Yalınayak gol atmıştır", "C": "Terlik giymiştir", "D": "Maçı terk etmiştir" },
+          "dogru": "A",
+          "aciklama": "Ağır çamurda kramponları batan Leônidas soyunup çorapla oynamak istemiş ama hakem reddetmiştir."
+        }
+      ]
+    },
+    {
+      "kategori_id": 910,
+      "kategori_adi": "👑 Efsaneler, Rekorlar ve Absürt İstatistikler",
+      "kategori_ikon": "🏆",
+      "gereken_yildiz": 0,
+      "sorular": [
+        {
+          "id": 91,
+          "soru": "Şampiyonlar Ligi tarihinde aynı takımla 3 kez üst üste kupayı kazanan ilk ve tek teknik direktör kimdir?",
+          "secenekler": { "A": "Zinedine Zidane", "B": "Carlo Ancelotti", "C": "Pep Guardiola", "D": "Jose Mourinho" },
+          "dogru": "A",
+          "aciklama": "Zidane, Real Madrid ile 2016, 2017 ve 2018 yıllarında üst üste 3 kez Şampiyonlar Ligi'ni kazanarak imkansızı başarmıştır."
+        },
+        {
+          "id": 92,
+          "soru": "Dünya futbol tarihinde kaleci olmasına rağmen kariyerinde 131 gol atarak rekor kıran efsane isim kimdir?",
+          "secenekler": { "A": "Rogério Ceni", "B": "José Luis Chilavert", "C": "René Higuita", "D": "Jorge Campos" },
+          "dogru": "A",
+          "aciklama": "Brezilyalı kaleci Rogério Ceni kullandığı frikik ve penaltılarla tam 131 gol atarak tarihe geçmiştir."
+        },
+        {
+          "id": 93,
+          "soru": "Bir Dünya Kupası maçında tek başına 5 gol atarak kırılması imkansız bir rekor kıran Rus futbolcu kimdir?",
+          "secenekler": { "A": "Oleg Salenko", "B": "Andrey Arshavin", "C": "Lev Yashin", "D": "Aleksandr Kerzhakov" },
+          "dogru": "A",
+          "aciklama": "1994 Dünya Kupası'nda Salenko, Rusya'nın Kamerun'u 6-1 yendiği maçta tam 5 gol atmıştır."
+        },
+        {
+          "id": 94,
+          "soru": "İngiltere Premier League tarihinde bir maçta oyuna sonradan girip 12 dakikada 4 gol atan efsane yedek kimdir?",
+          "secenekler": { "A": "Ole Gunnar Solskjær", "B": "Jermain Defoe", "C": "Nwankwo Kanu", "D": "Olivier Giroud" },
+          "dogru": "A",
+          "aciklama": "'Bebek Yüzlü Katil' Solskjær, 1999'da Nottingham Forest maçında oyuna girip 12 dakikada 4 gol fırlatmıştır."
+        },
+        {
+          "id": 95,
+          "soru": "Süper Lig tarihinde 29 golle bir sezonda en çok gol atan Yabancı Futbolcu rekoru kime aittir?",
+          "secenekler": { "A": "Mbaye Diagne / Enner Valencia", "B": "Alex de Souza", "C": "Mario Gomez", "D": "Bafétimbi Gomis" },
+          "dogru": "A",
+          "aciklama": "Diagne (2018-19) ve Valencia (2022-23) bir sezonda 29 gol atarak bu rekoru paylaşmaktadırlar."
+        },
+        {
+          "id": 96,
+          "soru": "2015 yılında Bayern Münih formasıyla Wolfsburg karşısında oyuna girip 9 dakikada 5 gol atan gol makinesi kimdir?",
+          "secenekler": { "A": "Robert Lewandowski", "B": "Thomas Müller", "C": "Mario Götze", "D": "Arjen Robben" },
+          "dogru": "A",
+          "aciklama": "Lewandowski yedek girip 89, 91, 92, 94 ve 95. dakikalarda 5 gol atarak Guinness Rekorlar Kitabı'na girmiştir."
+        },
+        {
+          "id": 97,
+          "soru": "Dünya Kupası finalleri tarihinde atılan en hızlı gol kaçıncı saniyede ve kim tarafından atılmıştır?",
+          "secenekler": { "A": "11. Saniye - Hakan Şükür (2002)", "B": "15. Saniye - Ronaldo", "C": "20. Saniye - Clint Dempsey", "D": "8. Saniye - Pele" },
+          "dogru": "A",
+          "aciklama": "Hakan Şükür 2002 Dünya Kupası üçüncülük maçında Güney Kore'ye 10.8. saniyede gol atarak dünya rekoru kırmıştır."
+        },
+        {
+          "id": 98,
+          "soru": "Kariyerinde hiç kırmızı kart görmeden emekli olan efsanevi Centilmen futbolculardan biri kimdir?",
+          "secenekler": { "A": "Philipp Lahm / Gary Lineker", "B": "Roy Keane", "C": "Sergio Ramos", "D": "Zinedine Zidane" },
+          "dogru": "A",
+          "aciklama": "Gary Lineker ve Philipp Lahm kariyerleri boyunca tek bir kırmızı kart bile görmemişlerdir."
+        },
+        {
+          "id": 99,
+          "soru": "Süper Lig tarihinde en hızlı gol atan futbolcu kimdir?",
+          "secenekler": { "A": "Muhammet Demir (7. saniye)", "B": "Diyadin (10. saniye)", "C": "Alex de Souza", "D": "Burak Yılmaz" },
+          "dogru": "A",
+          "aciklama": "Gaziantep FK forması giyen Muhammet Demir, 2021'de Başakşehir'e 7.06. saniyede gol atarak Süper Lig rekorunu kırmıştır."
+        },
+        {
+          "id": 100,
+          "soru": "Profesyonel futbol kariyerinde tam 1.000'den fazla resmi maça çıkan nadir efsane kalecilerden biri kimdir?",
+          "secenekler": { "A": "Gianluigi Buffon", "B": "Manuel Neuer", "C": "Iker Casillas", "D": "David de Gea" },
+          "dogru": "A",
+          "aciklama": "Efsane İtalyan kaleci Buffon kariyerinde 1.100'den fazla profesyonel maça çıkarak tarihe adını yazdırmıştır."
+        }
+      ]
+    }
+  ]
+}
