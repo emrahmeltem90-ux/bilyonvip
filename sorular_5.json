@@ -1,0 +1,187 @@
+{
+  "quiz_adi": "SkorLab Quiz",
+  "paket": "401-500",
+  "bolum": "SAMPİYONLAR",
+  "kategoriler": [
+    {
+      "kategori_id": 41,
+      "kategori_adi": "Dünya Kupası Derin Tarih",
+      "kategori_ikon": "⭐",
+      "gereken_yildiz": 60,
+      "sorular": [
+        { "id": 401, "soru": "1930 FIFA Dünya Kupası finalinde Arjantin ile Uruguay arasında hangi futbol topunun kullanılacağı konusunda anlaşmazlık çıkmış ve hangi çözüm uygulanmıştır?", "secenekler": { "A": "İlk yarıda Arjantin topu, ikinci yarıda Uruguay topu kullanıldı.", "B": "Tarafsız bir Avrupa ülkesinden getirilen ortak bir top kullanıldı.", "C": "Yazı tura atılarak maçın tamamında Uruguay topu kullanıldı.", "D": "FIFA Başkanı Jules Rimet kendi kişisel topunu sahaya sürdü." }, "dogru_cevap": "A" },
+        { "id": 402, "soru": "1950 Dünya Kupası'ndaki ünlü 'Maracanazo' maçında Brezilya'nın Uruguay'a karşı şampiyon olması için hangi sonuç yeterliydi?", "secenekler": { "A": "Sadece galibiyet", "B": "Beraberlik", "C": "Galibiyet ve en az 2 farklı skor", "D": "Uzatmalarda atılacak herhangi bir gol" }, "dogru_cevap": "B" },
+        { "id": 403, "soru": "1938 Dünya Kupası'nda Romanya ile Küba arasındaki çeyrek final eşleşmesinin tekrar maçında Romanya'yı eleyerek yarı finale yükselen takım hangisidir?", "secenekler": { "A": "İsveç", "B": "İsviçre", "C": "Macaristan", "D": "Çekoslovakya" }, "dogru_cevap": "B" },
+        { "id": 404, "soru": "1962 Dünya Kupası'ndaki 'Santiago Savaşı' olarak bilinen Şili-İtalya maçında hakemlik yapan Ken Aston, daha sonra futbol dünyasına hangi önemli uygulamanın getirilmesinde öncülük etmiştir?", "secenekler": { "A": "Sarı ve kırmızı kart uygulaması", "B": "Ofsayt çizgisi teknolojisi", "C": "Dördüncü hakem uygulaması", "D": "Gol çizgisi teknolojisi" }, "dogru_cevap": "A" },
+        { "id": 405, "soru": "1974 Dünya Kupası'nda Batı Almanya formasıyla finalde Hollanda'ya karşı oynayan ve kulüp kariyerinin büyük bölümünü hangi takımda geçiren Jürgen Grabowski hangi kulübün efsanesidir?", "secenekler": { "A": "Eintracht Frankfurt", "B": "VfB Stuttgart", "C": "Borussia Mönchengladbach", "D": "Hamburger SV" }, "dogru_cevap": "A" },
+        { "id": 406, "soru": "1954 Dünya Kupası'nda Macaristan'a karşı oynanan 8-3'lük maçta Ferenc Puskás'ı sakatlayan Batı Almanyalı futbolcu kimdir?", "secenekler": { "A": "Werner Liebrich", "B": "Fritz Walter", "C": "Helmut Rahn", "D": "Toni Turek" }, "dogru_cevap": "A" },
+        { "id": 407, "soru": "1982 Dünya Kupası'nda Macaristan'ın El Salvador'u 10-1 yendiği maçta oyuna sonradan girerek yalnızca birkaç dakika içinde hat-trick yapan futbolcu kimdir?", "secenekler": { "A": "László Kiss", "B": "Tibor Nyilasi", "C": "András Törőcsik", "D": "Gábor Pölöskei" }, "dogru_cevap": "A" },
+        { "id": 408, "soru": "1994 Dünya Kupası'nda Rusya'nın Kamerun'u 6-1 yendiği maçta 5 gol atan ve bir Dünya Kupası maçında en fazla gol atan oyuncu rekorunu elinde bulunduran futbolcu kimdir?", "secenekler": { "A": "Oleg Salenko", "B": "Dmitri Radchenko", "C": "Aleksandr Mostovoi", "D": "Valeri Karpin" }, "dogru_cevap": "A" },
+        { "id": 409, "soru": "1958 Dünya Kupası'nda Fransa formasıyla tek bir turnuvada 13 gol atarak Dünya Kupası tarihinin bir turnuvadaki en golcü oyuncusu olan Fransız futbolcu kimdir?", "secenekler": { "A": "Just Fontaine", "B": "Raymond Kopa", "C": "Jean Piantoni", "D": "Roger Piantoni" }, "dogru_cevap": "A" },
+        { "id": 410, "soru": "1934 ve 1938 Dünya Kupaları'nı İtalya ile kazanan ve iki Dünya Kupası şampiyonluğu yaşayan ilk teknik direktör kimdir?", "secenekler": { "A": "Vittorio Pozzo", "B": "Marcello Lippi", "C": "Giovanni Trapattoni", "D": "Nereo Rocco" }, "dogru_cevap": "A" }
+      ]
+    },
+    {
+      "kategori_id": 42,
+      "kategori_adi": "Şampiyonlar Ligi Efsaneleri",
+      "kategori_ikon": "⭐",
+      "gereken_yildiz": 70,
+      "sorular": [
+        { "id": 411, "soru": "Şampiyonlar Ligi adıyla düzenlenen organizasyonda bir sezonda en çok gol atma rekoru olan 17 gole hangi oyuncu ulaşmıştır?", "secenekler": { "A": "Cristiano Ronaldo (2013-14)", "B": "Lionel Messi (2011-12)", "C": "Robert Lewandowski (2019-20)", "D": "Karim Benzema (2021-22)" }, "dogru_cevap": "A" },
+        { "id": 412, "soru": "1992-93 sezonunda UEFA Şampiyonlar Ligi adını alan organizasyonun ilk şampiyonu olan Marsilya'nın aynı sezon Fransa ligindeki şampiyonluğu hangi skandal nedeniyle elinden alınmıştır?", "secenekler": { "A": "Valenciennes maçındaki şike skandalı", "B": "Finansal fair-play ihlali", "C": "Yasaklı madde kullanımı", "D": "Hakem rüşvet ağı" }, "dogru_cevap": "A" },
+        { "id": 413, "soru": "Şampiyonlar Ligi'ni Ajax, Real Madrid ve AC Milan olmak üzere üç farklı kulüple kazanan tek futbolcu kimdir?", "secenekler": { "A": "Clarence Seedorf", "B": "Carlo Ancelotti", "C": "Andrés Iniesta", "D": "Xavi Hernández" }, "dogru_cevap": "A" },
+        { "id": 414, "soru": "2003-04 Şampiyonlar Ligi çeyrek finalinde Deportivo La Coruña, ilk maçta 4-1 kaybettiği Milan'ı rövanşta hangi skorla yenerek tur atlamıştır?", "secenekler": { "A": "4-0", "B": "3-0", "C": "5-1", "D": "4-1" }, "dogru_cevap": "A" },
+        { "id": 415, "soru": "2005 Şampiyonlar Ligi finalinde Milan'ın Liverpool karşısında maçın 51. saniyesinde gol atan futbolcusu kimdir?", "secenekler": { "A": "Paolo Maldini", "B": "Hernán Crespo", "C": "Andrea Pirlo", "D": "Kaká" }, "dogru_cevap": "A" },
+        { "id": 416, "soru": "1999 Şampiyonlar Ligi finalinde Manchester United'ın Bayern Münih'i 2-1 yendiği maçta uzatma dakikalarında galibiyet golünü atan Norveçli futbolcu kimdir?", "secenekler": { "A": "Ole Gunnar Solskjær", "B": "Teddy Sheringham", "C": "Ronny Johnsen", "D": "Dwight Yorke" }, "dogru_cevap": "A" },
+        { "id": 417, "soru": "Şampiyonlar Ligi'nde bir maçta 5 gol atan oyunculardan biri olan ve bu başarısını Shakhtar Donetsk formasıyla BATE Borisov'a karşı gerçekleştiren Brezilyalı futbolcu kimdir?", "secenekler": { "A": "Luiz Adriano", "B": "Hulk", "C": "Jardel", "D": "Elano" }, "dogru_cevap": "A" },
+        { "id": 418, "soru": "2003-04 Şampiyonlar Ligi finalinde Porto, José Mourinho yönetiminde hangi takımı 3-0 yenerek kupayı kazanmıştır?", "secenekler": { "A": "Monaco", "B": "Bayer Leverkusen", "C": "Valencia", "D": "Deportivo La Coruña" }, "dogru_cevap": "A" },
+        { "id": 419, "soru": "2023 yılında Pepe tarafından geçilmeden önce Şampiyonlar Ligi tarihinin en yaşlı golcüsü olan ve 2014'te Roma formasıyla CSKA Moskova'ya gol atan futbolcu kimdi?", "secenekler": { "A": "Francesco Totti", "B": "Ryan Giggs", "C": "Paolo Maldini", "D": "Filippo Inzaghi" }, "dogru_cevap": "A" },
+        { "id": 420, "soru": "1991 Avrupa Şampiyon Kulüpler Kupası finalinde Red Star Belgrade ile Marsilya arasındaki penaltı atışlarında son penaltıyı gole çeviren futbolcu kimdir?", "secenekler": { "A": "Darko Pančev", "B": "Siniša Mihajlović", "C": "Dejan Savićević", "D": "Robert Prosinečki" }, "dogru_cevap": "A" }
+      ]
+    },
+    {
+      "kategori_id": 43,
+      "kategori_adi": "Türk Futbolu Derin Tarih",
+      "kategori_ikon": "⭐",
+      "gereken_yildiz": 80,
+      "sorular": [
+        { "id": 421, "soru": "Türkiye A Millî Takımı'nın tarihindeki ilk uluslararası maç hangi şehirde ve hangi skorla oynanmıştır?", "secenekler": { "A": "İstanbul - Türkiye 2-2 Romanya", "B": "Bükreş - Türkiye 2-2 Romanya", "C": "Paris - Türkiye 1-0 Fransa", "D": "Atina - Türkiye 0-0 Yunanistan" }, "dogru_cevap": "A" },
+        { "id": 422, "soru": "Türkiye lig tarihinde bir sezonda en fazla gol atan futbolcu olarak 1987-88 sezonunda 39 gole ulaşan oyuncu kimdir?", "secenekler": { "A": "Tanju Çolak", "B": "Metin Oktay", "C": "Alex de Souza", "D": "Mario Gómez" }, "dogru_cevap": "A" },
+        { "id": 423, "soru": "Türkiye'nin 1996 Avrupa Şampiyonası finallerine ilk kez katılmasını sağlayan A Millî Takım teknik direktörü kimdir?", "secenekler": { "A": "Fatih Terim", "B": "Mustafa Denizli", "C": "Sepp Piontek", "D": "Şenol Güneş" }, "dogru_cevap": "A" },
+        { "id": 424, "soru": "Metin Oktay, Galatasaray formasıyla Türkiye liginde kaç kez gol kralı olmuştur?", "secenekler": { "A": "6 kez", "B": "4 kez", "C": "5 kez", "D": "7 kez" }, "dogru_cevap": "A" },
+        { "id": 425, "soru": "1967 yılında Kayserispor ile Sivasspor arasındaki maçta yaşanan ve 43 kişinin hayatını kaybettiği büyük futbol faciası hangi stadyumda gerçekleşmiştir?", "secenekler": { "A": "Kayseri Atatürk Stadyumu", "B": "Sivas 4 Eylül Stadyumu", "C": "Ankara 19 Mayıs Stadyumu", "D": "İzmir Alsancak Stadyumu" }, "dogru_cevap": "A" },
+        { "id": 426, "soru": "Bursaspor'un 2009-10 sezonunda Süper Lig şampiyonu olduğu tarihi sezonda takımın teknik direktörü kimdi?", "secenekler": { "A": "Ertuğrul Sağlam", "B": "Samet Aybaba", "C": "Şenol Güneş", "D": "Christoph Daum" }, "dogru_cevap": "A" },
+        { "id": 427, "soru": "1988-89 sezonunda Fenerbahçe'yi 103 golle Süper Lig şampiyonu yapan teknik direktör kimdi?", "secenekler": { "A": "Todor Veselinović", "B": "Tomislav Ivić", "C": "Branko Stanković", "D": "Miroslav Blažević" }, "dogru_cevap": "A" },
+        { "id": 428, "soru": "Galatasaray'ın kurucularından, ilk başkanı ve kulübün kuruluşunda önemli rol oynayan isim kimdir?", "secenekler": { "A": "Ali Sami Yen", "B": "Emin Bülent Serdaroğlu", "C": "Celal İbrahim", "D": "Ahmet Roben" }, "dogru_cevap": "A" },
+        { "id": 429, "soru": "2002 Dünya Kupası'nda Güney Kore'ye karşı oynanan üçüncülük maçının henüz 11. saniyesinde gol atarak Dünya Kupası tarihinin en hızlı golünü atan Türk futbolcu kimdir?", "secenekler": { "A": "Hakan Şükür", "B": "İlhan Mansız", "C": "Hasan Şaş", "D": "Ümit Davala" }, "dogru_cevap": "A" },
+        { "id": 430, "soru": "1959'da başlayan Millî Lig'in tarihindeki ilk resmi golü atan futbolcu kimdir?", "secenekler": { "A": "Özcan Altuğ", "B": "Metin Oktay", "C": "Lefter Küçükandonyadis", "D": "Ahmet Özacar" }, "dogru_cevap": "A" }
+      ]
+    },
+    {
+      "kategori_id": 44,
+      "kategori_adi": "Efsane Futbolcuların İstatistikleri",
+      "kategori_ikon": "⭐",
+      "gereken_yildiz": 90,
+      "sorular": [
+        { "id": 431, "soru": "Pelé, resmi ve resmi olmayan maçları birlikte değerlendiren kendi kariyer hesabında toplam kaç gol attığını belirtmiş ve Guinness Dünya Rekorları'nda bu rakamla yer almıştır?", "secenekler": { "A": "1279 gol", "B": "1005 gol", "C": "1150 gol", "D": "1350 gol" }, "dogru_cevap": "A" },
+        { "id": 432, "soru": "Lionel Messi, 2012 takvim yılında resmi maçlarda kaç gol atarak Gerd Müller'in bir takvim yılındaki 85 gollük rekorunu geçmiştir?", "secenekler": { "A": "91 gol", "B": "85 gol", "C": "96 gol", "D": "88 gol" }, "dogru_cevap": "A" },
+        { "id": 433, "soru": "Kariyerinde resmi maçlarda 131 gol atan ve frikik ile penaltı golleriyle ünlü Brezilyalı kaleci kimdir?", "secenekler": { "A": "Rogério Ceni", "B": "José Luis Chilavert", "C": "René Higuita", "D": "Jorge Campos" }, "dogru_cevap": "A" },
+        { "id": 434, "soru": "Ferenc Puskás, Şampiyon Kulüpler Kupası finallerinde toplam kaç gol atmıştır?", "secenekler": { "A": "7 gol", "B": "4 gol", "C": "6 gol", "D": "5 gol" }, "dogru_cevap": "A" },
+        { "id": 435, "soru": "Portekiz formasıyla 130'un üzerinde uluslararası gol atan ve erkekler millî takım futbolunda tüm zamanların en golcü oyuncusu olan futbolcu kimdir?", "secenekler": { "A": "Cristiano Ronaldo", "B": "Ali Daei", "C": "Lionel Messi", "D": "Ferenc Puskás" }, "dogru_cevap": "A" },
+        { "id": 436, "soru": "1928-29 sezonunda Torino formasıyla 36 gol atan ve Serie A'nın tek grup döneminden önceki İtalya üst ligindeki önemli gol rekorlarından birine imza atan futbolcu kimdir?", "secenekler": { "A": "Gino Rossetti", "B": "Giuseppe Meazza", "C": "Silvio Piola", "D": "Gunnar Nordahl" }, "dogru_cevap": "A" },
+        { "id": 437, "soru": "38 maçlık Premier Lig formatında bir sezonda 36 gol atarak rekor kıran futbolcu kimdir?", "secenekler": { "A": "Erling Haaland", "B": "Mohamed Salah", "C": "Alan Shearer", "D": "Thierry Henry" }, "dogru_cevap": "A" },
+        { "id": 438, "soru": "Gerd Müller'in kulüp ve millî takım kariyerindeki toplam resmi gol sayısı yaklaşık kaçtır?", "secenekler": { "A": "735 gol", "B": "650 gol", "C": "810 gol", "D": "590 gol" }, "dogru_cevap": "A" },
+        { "id": 439, "soru": "Ronaldo Nazário'nun kulüp ve Brezilya Millî Takımı kariyerindeki toplam resmi gol sayısı yaklaşık kaçtır?", "secenekler": { "A": "414 gol", "B": "352 gol", "C": "480 gol", "D": "310 gol" }, "dogru_cevap": "A" },
+        { "id": 440, "soru": "Zinedine Zidane'ın kulüp ve Fransa Millî Takımı kariyerindeki toplam resmi gol sayısı yaklaşık kaçtır?", "secenekler": { "A": "156 gol", "B": "210 gol", "C": "95 gol", "D": "124 gol" }, "dogru_cevap": "A" }
+      ]
+    },
+    {
+      "kategori_id": 45,
+      "kategori_adi": "Futbol Tarihinde Unutulmaz Anlar",
+      "kategori_ikon": "⭐",
+      "gereken_yildiz": 100,
+      "sorular": [
+        { "id": 441, "soru": "1986 Dünya Kupası'nda Diego Maradona'nın İngiltere'ye attığı 'Tanrının Eli' golünde İngiltere'nin kalesini koruyan futbolcu kimdi?", "secenekler": { "A": "Peter Shilton", "B": "Ray Clemence", "C": "David Seaman", "D": "Gordon Banks" }, "dogru_cevap": "A" },
+        { "id": 442, "soru": "2006 Dünya Kupası finalinde Zinedine Zidane, Marco Materazzi'ye yaptığı kafa müdahalesi nedeniyle hangi dakikada kırmızı kart görmüştür?", "secenekler": { "A": "110. dakika", "B": "89. dakika", "C": "118. dakika", "D": "105. dakika" }, "dogru_cevap": "A" },
+        { "id": 443, "soru": "1999 UEFA Kupası finalinde Parma'nın Marsilya'yı 3-0 yendiği maçta Parma adına iki gol atan Arjantinli forvet kimdir?", "secenekler": { "A": "Hernán Crespo", "B": "Gabriel Batistuta", "C": "Claudio López", "D": "Abel Balbo" }, "dogru_cevap": "A" },
+        { "id": 444, "soru": "1970 Dünya Kupası yarı finalinde İtalya'nın Batı Almanya'yı 4-3 yendiği maçta uzatmalarda İtalya'nın galibiyet golünü atan futbolcu kimdir?", "secenekler": { "A": "Gianni Rivera", "B": "Luigi Riva", "C": "Roberto Boninsegna", "D": "Tarcisio Burgnich" }, "dogru_cevap": "A" },
+        { "id": 445, "soru": "1994 Dünya Kupası finalinde Brezilya ile İtalya arasındaki penaltı atışlarında son penaltıyı kaçıran İtalyan futbolcu kimdir?", "secenekler": { "A": "Roberto Baggio", "B": "Franco Baresi", "C": "Daniele Massaro", "D": "Paolo Maldini" }, "dogru_cevap": "A" },
+        { "id": 446, "soru": "EURO 2004 finalinde ev sahibi Portekiz'i 1-0 yenerek Avrupa şampiyonu olan ülke hangisidir?", "secenekler": { "A": "Yunanistan", "B": "Çek Cumhuriyeti", "C": "Danimarka", "D": "İsveç" }, "dogru_cevap": "A" },
+        { "id": 447, "soru": "1986 Dünya Kupası çeyrek finalinde Brezilya-Fransa maçında normal sürede penaltı kaçıran ve aynı maçın penaltı atışlarında da Fransa adına penaltı kullanan futbolcu kimdir?", "secenekler": { "A": "Zico", "B": "Michel Platini", "C": "Jean Tigana", "D": "Alain Giresse" }, "dogru_cevap": "A" },
+        { "id": 448, "soru": "2014 Dünya Kupası yarı finalinde Almanya'nın Brezilya'yı 7-1 yendiği maçta Brezilya'nın tek golünü kim atmıştır?", "secenekler": { "A": "Oscar", "B": "David Luiz", "C": "Fred", "D": "Paulinho" }, "dogru_cevap": "A" },
+        { "id": 449, "soru": "1978 Dünya Kupası finalinde Arjantin'in Hollanda'yı uzatmalarda 3-1 yenerek şampiyon olduğu maçta iki gol atan ve turnuvanın gol kralı olan futbolcu kimdir?", "secenekler": { "A": "Mario Kempes", "B": "Daniel Passarella", "C": "Leopoldo Luque", "D": "Osvaldo Ardiles" }, "dogru_cevap": "A" },
+        { "id": 450, "soru": "1954 Dünya Kupası finalinde Batı Almanya'nın kaptanlığını yapan ve 'Bern Mucizesi'nde takımını sahaya çıkaran futbolcu kimdir?", "secenekler": { "A": "Fritz Walter", "B": "Helmut Rahn", "C": "Hans Schäfer", "D": "Toni Turek" }, "dogru_cevap": "A" }
+      ]
+    },
+    {
+      "kategori_id": 46,
+      "kategori_adi": "Taktik ve Strateji Ustaları",
+      "kategori_ikon": "⭐",
+      "gereken_yildiz": 110,
+      "sorular": [
+        { "id": 451, "soru": "Total Football felsefesini Ajax ve Hollanda Millî Takımı ile 1970'lerde zirveye taşıyan teknik direktör kimdir?", "secenekler": { "A": "Rinus Michels", "B": "Helenio Herrera", "C": "Valeri Lobanovsky", "D": "Arrigo Sacchi" }, "dogru_cevap": "A" },
+        { "id": 452, "soru": "Inter Milan ile 1964 ve 1965 yıllarında Şampiyon Kulüpler Kupası'nı kazanan ve Catenaccio ile özdeşleşen Arjantin asıllı teknik direktör kimdir?", "secenekler": { "A": "Helenio Herrera", "B": "Nereo Rocco", "C": "Giovanni Trapattoni", "D": "Cesare Maldini" }, "dogru_cevap": "A" },
+        { "id": 453, "soru": "1980'lerin sonlarında AC Milan ile yoğun pres, kompakt alan savunması ve yüksek savunma çizgisini başarıyla uygulayan İtalyan teknik direktör kimdir?", "secenekler": { "A": "Arrigo Sacchi", "B": "Fabio Capello", "C": "Marcello Lippi", "D": "Carlo Ancelotti" }, "dogru_cevap": "A" },
+        { "id": 454, "soru": "Barcelona'nın 1990'larda 'Dream Team' döneminin teknik direktörü ve kulüpte Johan Cruyff futbol felsefesinin en önemli uygulayıcılarından biri kimdir?", "secenekler": { "A": "Johan Cruyff", "B": "Louis van Gaal", "C": "Frank Rijkaard", "D": "Guus Hiddink" }, "dogru_cevap": "A" },
+        { "id": 455, "soru": "Dinamo Kiev ve SSCB futbolunda bilimsel antrenman, veri analizi ve yoğun pres anlayışıyla tanınan teknik direktör kimdir?", "secenekler": { "A": "Valeri Lobanovsky", "B": "Viktor Maslov", "C": "Konstantin Beskov", "D": "Oleg Romantsev" }, "dogru_cevap": "A" },
+        { "id": 456, "soru": "1950'lerde Macaristan Millî Takımı'nın teknik direktörü olarak Nándor Hidegkuti'yi geri çekilen santrfor rolünde kullanan ve 1953'te Wembley'deki ünlü Macaristan zaferinin mimarlarından olan teknik direktör kimdir?", "secenekler": { "A": "Gusztáv Sebes", "B": "Béla Guttmann", "C": "Márton Bukovi", "D": "Jimmy Hogan" }, "dogru_cevap": "A" },
+        { "id": 457, "soru": "Barcelona'yı 2008-2012 arasında çalıştırarak pas oyunu ve topa sahip olma anlayışıyla özdeşleşen teknik direktör kimdir?", "secenekler": { "A": "Pep Guardiola", "B": "Xavi Hernández", "C": "Luis Enrique", "D": "Vicente del Bosque" }, "dogru_cevap": "A" },
+        { "id": 458, "soru": "Derby County ve Nottingham Forest ile başarılar kazanan, hayatı 'The Damned United' filmine konu olan İngiliz teknik direktör kimdir?", "secenekler": { "A": "Brian Clough", "B": "Don Revie", "C": "Bill Shankly", "D": "Bob Paisley" }, "dogru_cevap": "A" },
+        { "id": 459, "soru": "Avusturya ve Macaristan futbol ekollerinin gelişiminde önemli rol oynayan, kısa pas ve hareketliliğe dayalı futbol anlayışını Avrupa'ya taşıyan İngiliz teknik adam kimdir?", "secenekler": { "A": "Jimmy Hogan", "B": "Herbert Chapman", "C": "Vic Buckingham", "D": "Arthur Rowe" }, "dogru_cevap": "A" },
+        { "id": 460, "soru": "1958 Dünya Kupası'nda Arjantin Millî Takımı'nın teknik direktörü olan ve Çekoslovakya karşısındaki 6-1'lik yenilginin ardından görevinden ayrılan teknik direktör kimdir?", "secenekler": { "A": "Guillermo Stábile", "B": "César Luis Menotti", "C": "Carlos Bilardo", "D": "Marcelo Bielsa" }, "dogru_cevap": "A" }
+      ]
+    },
+    {
+      "kategori_id": 47,
+      "kategori_adi": "Futbol Rekorları ve İlginç Bilgiler",
+      "kategori_ikon": "⭐",
+      "gereken_yildiz": 120,
+      "sorular": [
+        { "id": 461, "soru": "2009 yılında Suudi Arabistan'da Al-Hilal formasıyla yaklaşık 2,4 saniyede gol attığı bildirilen futbolcu kimdir?", "secenekler": { "A": "Nawaf Al-Abed", "B": "Hakan Şükür", "C": "Nicklas Bendtner", "D": "Ricardo Oliveira" }, "dogru_cevap": "A" },
+        { "id": 462, "soru": "Madagaskar'da AS Adema ile SOE l'Emyrne arasında oynanan ve 149-0 biten maçta SOE l'Emyrne neden kendi kalesine sürekli gol atmıştır?", "secenekler": { "A": "Hakem kararlarını protesto etmek için", "B": "Rakip takım sahaya çıkmadığı için", "C": "Şampiyonluğu belirleyen penaltıyı protesto etmek için", "D": "Maçın uzatmaları nedeniyle" }, "dogru_cevap": "A" },
+        { "id": 463, "soru": "2006 Dünya Kupası'nda Hırvatistan-Avustralya maçında Josip Šimunić kaç sarı kart gördükten sonra oyundan ihraç edilmiştir?", "secenekler": { "A": "3 sarı kart", "B": "2 sarı kart", "C": "4 sarı kart", "D": "5 sarı kart" }, "dogru_cevap": "A" },
+        { "id": 464, "soru": "Resmi bir maçta kaydedilmiş en uzun mesafeli golün sahibi olan kaleci kimdir?", "secenekler": { "A": "Tom King (96,01 metre)", "B": "Asmir Begović (91,9 metre)", "C": "Tim Howard (93 metre)", "D": "René Higuita (75 metre)" }, "dogru_cevap": "A" },
+        { "id": 465, "soru": "1.000'den fazla profesyonel maça çıkan ve kariyerindeki resmi maç sayısıyla kaleciler arasında en dikkat çekici rekorlardan birine sahip İngiliz kaleci kimdir?", "secenekler": { "A": "Peter Shilton", "B": "Ray Clemence", "C": "Pat Jennings", "D": "Dino Zoff" }, "dogru_cevap": "A" },
+        { "id": 466, "soru": "2022 yılında İngiltere'de Washington ile Bedlington Terriers arasında oynanan ve 54 penaltının kullanıldığı maçta seri penaltıları hangi takım kazanmıştır?", "secenekler": { "A": "Washington", "B": "Bedlington Terriers", "C": "İki takım da kazanamadı", "D": "Maç tekrar oynandı" }, "dogru_cevap": "A" },
+        { "id": 467, "soru": "2001 yılında Avustralya'nın Amerikan Samoası'nı 31-0 yendiği maçta 13 gol atan futbolcu kimdir?", "secenekler": { "A": "Archie Thompson", "B": "David Zdrilic", "C": "Karim Benzema", "D": "Robert Lewandowski" }, "dogru_cevap": "A" },
+        { "id": 468, "soru": "2011 yılında Arjantin'in alt liglerinde Claypole ile Victoriano Arenas arasındaki maçta hakem Damian Rubino toplam kaç kırmızı kart göstermiştir?", "secenekler": { "A": "36", "B": "18", "C": "22", "D": "30" }, "dogru_cevap": "A" },
+        { "id": 469, "soru": "Bir Dünya Kupası maçında oyuna girdikten yalnızca 16 saniye sonra gol atarak turnuva tarihinin en hızlı yedek oyuncu golü rekorunu kıran futbolcu kimdir?", "secenekler": { "A": "Ebbe Sand", "B": "Hakan Şükür", "C": "Oliver Bierhoff", "D": "Marc Overmars" }, "dogru_cevap": "A" },
+        { "id": 470, "soru": "Premier Lig'de oyuna sonradan girerek yalnızca 6 saniye içinde gol atan ve bu alanda rekor kıran futbolcu kimdir?", "secenekler": { "A": "Nicklas Bendtner", "B": "Ebbe Sand", "C": "Ole Gunnar Solskjær", "D": "Jermain Defoe" }, "dogru_cevap": "A" }
+      ]
+    },
+    {
+      "kategori_id": 48,
+      "kategori_adi": "Alt Ligler ve Yükseliş Hikayeleri",
+      "kategori_ikon": "⭐",
+      "gereken_yildiz": 130,
+      "sorular": [
+        { "id": 471, "soru": "Leicester City'nin 2015-16 sezonunda Premier Lig şampiyonu olduğu tarihi sezonda takımın teknik direktörü kimdi?", "secenekler": { "A": "Claudio Ranieri", "B": "Nigel Pearson", "C": "Roberto Mancini", "D": "Antonio Conte" }, "dogru_cevap": "A" },
+        { "id": 472, "soru": "1997-98 sezonunda 2. Bundesliga'dan yükselip aynı sezon Bundesliga şampiyonu olan kulüp hangisidir?", "secenekler": { "A": "1. FC Kaiserslautern", "B": "RB Leipzig", "C": "Eintracht Frankfurt", "D": "VfB Stuttgart" }, "dogru_cevap": "A" },
+        { "id": 473, "soru": "Villarreal'in uzun yıllar başkanlığını yapan ve kulübün İspanya futbolundaki yükselişinde önemli rol oynayan iş insanı kimdir?", "secenekler": { "A": "Fernando Roig", "B": "Florentino Pérez", "C": "Joan Laporta", "D": "Manuel Llopis" }, "dogru_cevap": "A" },
+        { "id": 474, "soru": "Ryan Reynolds ve Rob McElhenney tarafından satın alındıktan sonra küresel çapta tanınan ve İngiliz profesyonel liglerine yükselen kulüp hangisidir?", "secenekler": { "A": "Wrexham AFC", "B": "Salford City", "C": "Notts County", "D": "Yeovil Town" }, "dogru_cevap": "A" },
+        { "id": 475, "soru": "2023-24 sezonunda 1. Lig play-off finalini kazanarak tarihinde ilk kez Süper Lig'e yükselen kulüp hangisidir?", "secenekler": { "A": "Bodrum FK", "B": "Pendikspor", "C": "Eyüpspor", "D": "Sakaryaspor" }, "dogru_cevap": "A" },
+        { "id": 476, "soru": "2016-17 sezonunda Ligue 1 şampiyonu olan ve Kylian Mbappé'nin de forma giydiği kulüp hangisidir?", "secenekler": { "A": "AS Monaco", "B": "OGC Nice", "C": "Lille OSC", "D": "Montpellier HSC" }, "dogru_cevap": "A" },
+        { "id": 477, "soru": "2000'lerde Serie A'da başarılı olup 2006-07 sezonunda UEFA Kupası'na katılan ve 'küçük kulüp mucizesi' ile özdeşleşen kulüp hangisidir?", "secenekler": { "A": "Chievo Verona", "B": "Atalanta", "C": "Sassuolo", "D": "Empoli" }, "dogru_cevap": "A" },
+        { "id": 478, "soru": "2009'da Bundesliga'ya yükselip kısa süre içinde Şampiyonlar Ligi'nde de mücadele eden Red Bull destekli Alman kulübü hangisidir?", "secenekler": { "A": "RB Leipzig", "B": "TSG 1899 Hoffenheim", "C": "FC Augsburg", "D": "Mainz 05" }, "dogru_cevap": "A" },
+        { "id": 479, "soru": "İngiltere Championship play-off finali, Premier Lig'e yükselmenin yüksek finansal getirisi nedeniyle hangi popüler ifadeyle anılır?", "secenekler": { "A": "Dünyanın en pahalı maçı", "B": "Kader maçı", "C": "Milyonluk düello", "D": "Altın bilet finali" }, "dogru_cevap": "A" },
+        { "id": 480, "soru": "Türkiye'de 2000'li yıllarda Süper Lig'de mücadele edip daha sonra profesyonel liglerde ciddi düşüş yaşayan köklü kulüplerden biri hangisidir?", "secenekler": { "A": "Eskişehirspor", "B": "Göztepe", "C": "Orduspor", "D": "Karabükspor" }, "dogru_cevap": "A" }
+      ]
+    },
+    {
+      "kategori_id": 49,
+      "kategori_adi": "Futbol Dünyasında İlkler",
+      "kategori_ikon": "⭐",
+      "gereken_yildiz": 140,
+      "sorular": [
+        { "id": 481, "soru": "1857 yılında kurulan ve FIFA tarafından dünyanın en eski futbol kulübü olarak kabul edilen kulüp hangisidir?", "secenekler": { "A": "Sheffield FC", "B": "Notts County", "C": "Crystal Palace", "D": "Cambridge University AFC" }, "dogru_cevap": "A" },
+        { "id": 482, "soru": "Dünya futbol tarihindeki ilk resmî uluslararası millî maç 1872 yılında hangi iki ülke arasında oynanmıştır?", "secenekler": { "A": "İskoçya - İngiltere", "B": "İngiltere - Galler", "C": "Arjantin - Uruguay", "D": "Fransa - Belçika" }, "dogru_cevap": "A" },
+        { "id": 483, "soru": "Sarı ve kırmızı kart uygulamasının Dünya Kupası'nda ilk kez kullanıldığı turnuva hangisidir?", "secenekler": { "A": "1970 Meksika Dünya Kupası", "B": "1966 İngiltere Dünya Kupası", "C": "1974 Batı Almanya Dünya Kupası", "D": "1968 Avrupa Şampiyonası" }, "dogru_cevap": "A" },
+        { "id": 484, "soru": "Şampiyon Kulüpler Kupası/Şampiyonlar Ligi'ni kazanan ilk İngiliz kulübü hangisidir?", "secenekler": { "A": "Manchester United", "B": "Liverpool", "C": "Nottingham Forest", "D": "Chelsea" }, "dogru_cevap": "A" },
+        { "id": 485, "soru": "1930 Dünya Kupası tarihinin ilk golünü Meksika'ya karşı atan futbolcu kimdir?", "secenekler": { "A": "Lucien Laurent", "B": "Héctor Castro", "C": "Guillermo Stábile", "D": "Bert Patenaude" }, "dogru_cevap": "A" },
+        { "id": 486, "soru": "Futbol tarihinde penaltı vuruşunun oyun kurallarına resmen eklendiği yıl hangisidir?", "secenekler": { "A": "1891", "B": "1863", "C": "1905", "D": "1882" }, "dogru_cevap": "A" },
+        { "id": 487, "soru": "UEFA tarafından düzenlenen ilk büyük Avrupa kulüpler turnuvası hangisidir?", "secenekler": { "A": "Şampiyon Kulüpler Kupası", "B": "Fuar Şehirleri Kupası", "C": "Mitropa Kupası", "D": "Latin Kupası" }, "dogru_cevap": "A" },
+        { "id": 488, "soru": "Ofsayt kuralında hücum oyuncusunun kale ile arasında en az iki rakip oyuncunun bulunması şartının getirildiği önemli değişiklik hangi yılda yapılmıştır?", "secenekler": { "A": "1925", "B": "1863", "C": "1902", "D": "1938" }, "dogru_cevap": "A" },
+        { "id": 489, "soru": "1905 yılında kurulan ve Türkiye'nin en köklü futbol kulüplerinden biri olan kulüp hangisidir?", "secenekler": { "A": "Galatasaray", "B": "Fenerbahçe", "C": "Beşiktaş", "D": "İstanbulspor" }, "dogru_cevap": "A" },
+        { "id": 490, "soru": "FIFA tarafından düzenlenen ilk Kadınlar Dünya Kupası hangi yıl ve hangi ülkede oynanmıştır?", "secenekler": { "A": "1991 - Çin", "B": "1985 - İtalya", "C": "1995 - İsveç", "D": "1999 - ABD" }, "dogru_cevap": "A" }
+      ]
+    },
+    {
+      "kategori_id": 50,
+      "kategori_adi": "Futbol Kültürü ve Taraftar Hikayeleri",
+      "kategori_ikon": "⭐",
+      "gereken_yildiz": 150,
+      "sorular": [
+        { "id": 491, "soru": "Boca Juniors'ın La Bombonera stadıyla ilgili taraftarların zıplamasıyla bağlantılı olarak kullanılan ünlü ifade hangisidir?", "secenekler": { "A": "La Bombonera no tiembla, late", "B": "La Bombonera nunca duerme", "C": "La Bombonera siempre gana", "D": "La Bombonera es oro" }, "dogru_cevap": "A" },
+        { "id": 492, "soru": "Celtic-Rangers rekabetinde tarihsel olarak Celtic taraftarlarının büyük bölümü hangi dinî gelenekle, Rangers taraftarlarının büyük bölümü ise hangi gelenekle ilişkilendirilmiştir?", "secenekler": { "A": "Katolik - Protestan", "B": "Sünni - Şii", "C": "Ortodoks - Katolik", "D": "Yahudi - Protestan" }, "dogru_cevap": "A" },
+        { "id": 493, "soru": "Almanya'da taraftarların kulüp üzerindeki etkisini korumayı amaçlayan ve çoğu kulüpte yatırımcının oy haklarının çoğunluğunu elde etmesini engelleyen düzenlemenin adı nedir?", "secenekler": { "A": "50+1 Kuralı", "B": "Fair-Play Kanunu", "C": "Bundesliga Tüzüğü", "D": "Hissedar Sınırı" }, "dogru_cevap": "A" },
+        { "id": 494, "soru": "'You'll Never Walk Alone' marşını taraftar kültürünün en önemli sembollerinden biri haline getiren İngiliz kulübü hangisidir?", "secenekler": { "A": "Liverpool", "B": "Celtic", "C": "Borussia Dortmund", "D": "Feyenoord" }, "dogru_cevap": "A" },
+        { "id": 495, "soru": "Brezilya'da organize taraftar grupları için yaygın olarak kullanılan ifade hangisidir?", "secenekler": { "A": "Torcida Organizada", "B": "Ultra Kültürü", "C": "Furia Roja", "D": "Barra Brava" }, "dogru_cevap": "A" },
+        { "id": 496, "soru": "Özellikle Arjantin ve Uruguay'da organize ve tutkulu taraftar grupları için kullanılan ifade hangisidir?", "secenekler": { "A": "Barra Brava", "B": "Ultras", "C": "Hooligans", "D": "Tifosi" }, "dogru_cevap": "A" },
+        { "id": 497, "soru": "Futbol tribünlerinde taraftarların hazırladığı büyük görsel koreografi, pankart ve karton şovlarına genel olarak ne ad verilir?", "secenekler": { "A": "Tifo", "B": "Striscioni", "C": "Curva", "D": "Derby" }, "dogru_cevap": "A" },
+        { "id": 498, "soru": "Hillsborough faciasının ardından İngiltere'deki futbol stadyumlarının güvenliği ve tribün düzenlemeleri üzerinde büyük etkisi olan rapor hangisidir?", "secenekler": { "A": "Taylor Raporu", "B": "Hillsborough Kanunu", "C": "Heysel Raporu", "D": "Premier Lig Yasası" }, "dogru_cevap": "A" },
+        { "id": 499, "soru": "İsveç futbolunda kulüplerin üye derneklerinin oy haklarının çoğunluğunu korumasını sağlayan ve genellikle '51% kuralı' olarak anılan uygulama hangi anlayışa dayanır?", "secenekler": { "A": "Kulüp üyelerinin en az %51 oy hakkını koruması", "B": "Devletin kulüplerin %51 hissesine sahip olması", "C": "Sponsorların %51 oy hakkı alması", "D": "Futbolcuların %51 hisseye sahip olması" }, "dogru_cevap": "A" },
+        { "id": 500, "soru": "Beşiktaş'ın dünyaca tanınan taraftar grubu hangisidir?", "secenekler": { "A": "Çarşı", "B": "Genç Fenerbahçeliler", "C": "ultrAslan", "D": "Teksas" }, "dogru_cevap": "A" }
+      ]
+    }
+  ]
+}
