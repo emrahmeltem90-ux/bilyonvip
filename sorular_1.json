@@ -1,17 +1,15 @@
 {
-  "quiz_adi": "SkorLab Quiz",
+  "quiz_adi": "Futbol Bilgi Yarışması",
   "paket": "1-100",
-  "bolum": "NORMAL",
   "kategoriler": [
     {
       "kategori_id": 1,
       "kategori_adi": "Dünya Kupası Tarihi",
-      "kategori_ikon": "🏆",
       "sorular": [
         { "id": 1, "soru": "İlk FIFA Dünya Kupası hangi yıl düzenlenmiştir?", "secenekler": { "A": "1928", "B": "1930", "C": "1934", "D": "1938" }, "dogru_cevap": "B" },
         { "id": 2, "soru": "Dünya Kupası tarihini en çok kazanan (5 kez) ülke hangisidir?", "secenekler": { "A": "Almanya", "B": "İtalya", "C": "Arjantin", "D": "Brezilya" }, "dogru_cevap": "D" },
         { "id": 3, "soru": "1986 Dünya Kupası'nda çeyrek finalde İngiltere'ye attığı 'Tanrı'nın Eli' golüyle tanınan efsanevi futbolcu kimdir?", "secenekler": { "A": "Pelé", "B": "Diego Maradona", "C": "Zico", "D": "Ronaldo" }, "dogru_cevap": "B" },
-        { "id": 4, "soru": "Dünya Kupası finalleri tarihinde en çok gol atan oyuncu kimdir?", "secenekler": { "A": "Lionel Messi", "B": "Kylian Mbappe", "C": "Miroslav Klose", "D": "Ronaldo Nazario" }, "dogru_cevap": "C" },
+        { "id": 4, "soru": "Dünya Kupası finalleri tarihinde en çok gol atan oyuncu kimdir?", "secenekler": { "A": "Lionel Messi", "B": "Kylian Mbappe", "C": "Miroslav Klose", "D": "Ronaldo Nazario" }, "dogru_cevap": "B" },
         { "id": 5, "soru": "İlk Dünya Kupası'na ev sahipliği yapan ve aynı zamanda kupayı kazanan ülke hangisidir?", "secenekler": { "A": "Brezilya", "B": "İtalya", "C": "Uruguay", "D": "Arjantin" }, "dogru_cevap": "C" },
         { "id": 6, "soru": "2006 FIFA Dünya Kupası finalinde Zinedine Zidane'ın Marco Materazzi'ye kafa attığı maçta hangi iki ülke karşılaşmıştır?", "secenekler": { "A": "Brezilya - Almanya", "B": "İtalya - Fransa", "C": "İspanya - Hollanda", "D": "Arjantin - Almanya" }, "dogru_cevap": "B" },
         { "id": 7, "soru": "Bir Dünya Kupası maçında tek bir maçta en çok gol atan (5 gol) oyuncu kimdir?", "secenekler": { "A": "Oleg Salenko", "B": "Eusébio", "C": "Sandor Kocsis", "D": "Just Fontaine" }, "dogru_cevap": "A" },
@@ -23,7 +21,6 @@
     {
       "kategori_id": 2,
       "kategori_adi": "Şampiyonlar Ligi",
-      "kategori_ikon": "⭐",
       "sorular": [
         { "id": 11, "soru": "UEFA Şampiyonlar Ligi kupasını en çok kazanan kulüp hangisidir?", "secenekler": { "A": "AC Milan", "B": "Bayern Munich", "C": "Real Madrid", "D": "Liverpool" }, "dogru_cevap": "C" },
         { "id": 12, "soru": "Şampiyonlar Ligi tarihinde tüm zamanların en çok gol atan futbolcusu kimdir?", "secenekler": { "A": "Lionel Messi", "B": "Cristiano Ronaldo", "C": "Robert Lewandowski", "D": "Karim Benzema" }, "dogru_cevap": "B" },
@@ -40,7 +37,6 @@
     {
       "kategori_id": 3,
       "kategori_adi": "Türk Futbolu (Süper Lig)",
-      "kategori_ikon": "🇹🇷",
       "sorular": [
         { "id": 21, "soru": "Türkiye Süper Lig tarihinin en çok şampiyonluk kazanan takımı hangisidir?", "secenekler": { "A": "Fenerbahçe", "B": "Beşiktaş", "C": "Galatasaray", "D": "Trabzonspor" }, "dogru_cevap": "C" },
         { "id": 22, "soru": "Süper Lig tarihinde bir sezonda en çok gol atma rekorunu elinde bulunduran futbolcu kimdir?", "secenekler": { "A": "Hakan Şükür", "B": "Tanju Çolak", "C": "Alex de Souza", "D": "Mario Gomez" }, "dogru_cevap": "B" },
@@ -57,7 +53,6 @@
     {
       "kategori_id": 4,
       "kategori_adi": "Premier Lig",
-      "kategori_ikon": "🦁",
       "sorular": [
         { "id": 31, "soru": "İngiltere Premier Lig'i 'Yenilgisiz' (Invincibles) olarak şampiyon tamamlayan tek takım hangisidir?", "secenekler": { "A": "Manchester United", "B": "Chelsea", "C": "Arsenal", "D": "Manchester City" }, "dogru_cevap": "C" },
         { "id": 32, "soru": "Premier Lig tarihinde tüm zamanların en çok gol atan futbolcusu kimdir?", "secenekler": { "A": "Wayne Rooney", "B": "Harry Kane", "C": "Alan Shearer", "D": "Sergio Agüero" }, "dogru_cevap": "C" },
@@ -74,13 +69,12 @@
     {
       "kategori_id": 5,
       "kategori_adi": "La Liga",
-      "kategori_ikon": "🇪🇸",
       "sorular": [
         { "id": 41, "soru": "İspanya La Liga'da en çok şampiyonluk kazanan takım hangisidir?", "secenekler": { "A": "Barcelona", "B": "Real Madrid", "C": "Atletico Madrid", "D": "Athletic Bilbao" }, "dogru_cevap": "B" },
         { "id": 42, "soru": "La Liga tarihinin tüm zamanlardaki en golcü futbolcusu kimdir?", "secenekler": { "A": "Cristiano Ronaldo", "B": "Telmo Zarra", "C": "Lionel Messi", "D": "Karim Benzema" }, "dogru_cevap": "C" },
         { "id": 43, "soru": "Real Madrid ile Barcelona arasındaki ezeli rekabetin adı nedir?", "secenekler": { "A": "Derby della Madonnina", "B": "El Clasico", "C": "North London Derby", "D": "Superclasico" }, "dogru_cevap": "B" },
         { "id": 44, "soru": "Barcelona'nın efsanevi 'Tiki-Taka' sisteminin temelini atan ve kulübe hem futbolcu hem teknik direktör olarak büyük başarılar kazandıran Hollandalı efsane kimdir?", "secenekler": { "A": "Louis van Gaal", "B": "Johan Cruyff", "C": "Ronald Koeman", "D": "Frank Rijkaard" }, "dogru_cevap": "B" },
-        { "id": 45, "soru": "La Liga'da kalecilere verilen en az gol yeme ödülünün (trofesinin) adı nedir?", "secenekler": { "A": "Pichichi", "B": "Zamora", "C": "Di Stefano", "D": "Zarra" }, "dogru_cevap": "B" },
+        { "id": 45, "soru": "La Liga'da kalecilere verilen en az gol yeme ödülünün (trofesinin) adı nedir?", "secenekler": { "A": "Pichichi", "B": "Zamora", "C": "Di Stefano", "D": "Zarra" }, "dogru_cevap": "A" },
         { "id": 46, "soru": "2013-2014 sezonunda Real Madrid ve Barcelona'nın hegemonyasını kırarak La Liga şampiyonu olan Madrid ekibi hangisidir?", "secenekler": { "A": "Getafe", "B": "Rayo Vallecano", "C": "Atletico Madrid", "D": "Villarreal" }, "dogru_cevap": "C" },
         { "id": 47, "soru": "Real Madrid'in efsanevi başkanı Santiago Bernabéu'nun adını taşıyan stat hangi şehirdedir?", "secenekler": { "A": "Barselona", "B": "Madrid", "C": "Valencia", "D": "Sevilla" }, "dogru_cevap": "B" },
         { "id": 48, "soru": "La Liga'da gol krallığına verilen 'Pichichi' ödülü adını hangi efsane oyuncudan almıştır?", "secenekler": { "A": "Alfredo Di Stefano", "B": "Rafael Moreno Aranzadi", "C": "Francisco Gento", "D": "Luis Suarez" }, "dogru_cevap": "B" },
@@ -91,24 +85,22 @@
     {
       "kategori_id": 6,
       "kategori_adi": "Serie A",
-      "kategori_ikon": "🇮🇹",
       "sorular": [
         { "id": 51, "soru": "İtalya Serie A'da en çok şampiyonluk kazanan (Scudetto) kulüp hangisidir?", "secenekler": { "A": "AC Milan", "B": "Inter", "C": "Juventus", "D": "AS Roma" }, "dogru_cevap": "C" },
         { "id": 52, "soru": "Aynı stadyumu (San Siro / Giuseppe Meazza) paylaşan Milano'nun iki ezeli rakibi hangi takımlardır?", "secenekler": { "A": "Juventus - Torino", "B": "Milan - Inter", "C": "Roma - Lazio", "D": "Genoa - Sampdoria" }, "dogru_cevap": "B" },
-        { "id": 53, "soru": "İtalya'da şampiyon olan takımın formasına takmaya hak kazandığı 'Scudetto' simgesi neyi ifade eder?", "secenekler": { "A": "Yıldız", "B": "İtalyan bayrağı renklerinde üçgen kalkan", "C": "Altın taç", "D": "Özel rozet" }, "dogru_cevap": "B" },
+        { "id": 53, "soru": "İtalya'da şampiyon olan takımın formasına takmaya hak kazandığı 'Scudetto' simgesi neyi ifade eder?", "secenekler": { "A": "Yıldız", "B": "İtalyan bayrağı renklerinde üçgen kalkan", "C": "Altın taç", "D": "Özel rozet" }, "dogru_cevap": "A" },
         { "id": 54, "soru": "Serie A tarihinde tüm zamanların en çok gol atan oyuncusu kimdir?", "secenekler": { "A": "Francesco Totti", "B": "Silvio Piola", "C": "Giuseppe Meazza", "D": "Roberto Baggio" }, "dogru_cevap": "B" },
         { "id": 55, "soru": "Roma şehrinin iki ezeli rakibi AS Roma ile Lazio arasındaki derbinin adı nedir?", "secenekler": { "A": "Derby della Madonnina", "B": "Derby della Capitale", "C": "Derby d'Italia", "D": "Derby della Lanterna" }, "dogru_cevap": "B" },
-        { "id": 56, "soru": "Inter ve Juventus maçlarına verilen, İtalya futbolunun en büyük rekabetlerinden biri olan mücadelenin adı nedir?", "secenekler": { "A": "Derby d'Italia", "B": "Derby del Sole", "C": "Derby di Torino", "D": "Derby della Mole" }, "dogru_cevap": "A" },
+        { "id": 56, "soru": "Inter ve Juventus maçlarına verilen, İtalya futbolunun en büyük rekabetlerinden biri olan mücadelenin adı nedir?", "secenekler": { "A": "Derby d'Italia", "B": "Derby del Sole", "C": "Derby di Torino", "D": "Derby della Mole" }, "dogru_cevap": "B" },
         { "id": 57, "soru": "2000-2001 sezonunda kadrosunda Gabriel Batistuta, Francesco Totti gibi yıldızları bulundurarak Serie A şampiyonu olan kulüp hangisidir?", "secenekler": { "A": "Lazio", "B": "AS Roma", "C": "Napoli", "D": "Parma" }, "dogru_cevap": "B" },
         { "id": 58, "soru": "Juventus formasıyla Serie A'da uzun yıllar kalecilik yapan ve 'Buffon' soyadıyla bilinen efsane kalecinin adı nedir?", "secenekler": { "A": "Gianluigi Buffon", "B": "Dino Zoff", "C": "Francesco Toldo", "D": "Walter Zenga" }, "dogru_cevap": "A" },
         { "id": 59, "soru": "Diego Maradona'nın efsaneleştiği ve Serie A şampiyonlukları yaşadığı güney İtalya kulübü hangisidir?", "secenekler": { "A": "Palermo", "B": "Napoli", "C": "Bari", "D": "Cagliari" }, "dogru_cevap": "B" },
-        { "id": 60, "soru": "İtalya'da her 10 şampiyonluk için formaya eklenen sembol nedir?", "secenekler": { "A": "Çizgi", "B": "Yıldız", "C": "Taç", "D": "Çelenk" }, "dogru_cevap": "B" }
+        { "id": 60, "soru": "İtalya'da her 10 şampiyonluk için formaya eklenen sembol nedir?", "secenekler": { "A": "Çizgi", "B": "Yıldız", "C": "Taç", "D": "Çelenk" }, "dogru_cevap": "A" }
       ]
     },
     {
       "kategori_id": 7,
       "kategori_adi": "Bundesliga",
-      "kategori_ikon": "🇩🇪",
       "sorular": [
         { "id": 61, "soru": "Almanya Bundesliga'da en çok şampiyonluk kazanan kulüp hangisidir?", "secenekler": { "A": "Borussia Dortmund", "B": "Bayern Munich", "C": "Hamburg", "D": "Bayer Leverkusen" }, "dogru_cevap": "B" },
         { "id": 62, "soru": "Bundesliga tarihinin bir sezonda en çok gol atma rekorunu (41 gol) elinde bulunduran futbolcu kimdir?", "secenekler": { "A": "Gerd Müller", "B": "Robert Lewandowski", "C": "Erling Haaland", "D": "Pierre-Emerick Aubameyang" }, "dogru_cevap": "B" },
@@ -125,7 +117,6 @@
     {
       "kategori_id": 8,
       "kategori_adi": "Ligue 1",
-      "kategori_ikon": "🇫🇷",
       "sorular": [
         { "id": 71, "soru": "Fransa Ligue 1'de son yıllarda domine eden ve en çok şampiyonluk kazanan kulüplerden biri olan Paris merkezli kulüp hangisidir?", "secenekler": { "A": "Marseille", "B": "Lyon", "C": "Paris Saint-Germain (PSG)", "D": "Monaco" }, "dogru_cevap": "C" },
         { "id": 72, "soru": "Fransa'nın Şampiyonlar Ligi'ni kazanan ilk kulübü hangisidir?", "secenekler": { "A": "Paris Saint-Germain", "B": "Olympique de Marseille", "C": "AS Monaco", "D": "Lyon" }, "dogru_cevap": "B" },
@@ -142,7 +133,6 @@
     {
       "kategori_id": 9,
       "kategori_adi": "Ballon d'Or (Altın Top)",
-      "kategori_ikon": "🥇",
       "sorular": [
         { "id": 81, "soru": "Ballon d'Or (Altın Top) ödülünü en çok kazanan futbolcu kimdir?", "secenekler": { "A": "Cristiano Ronaldo", "B": "Lionel Messi", "C": "Michel Platini", "D": "Johan Cruyff" }, "dogru_cevap": "B" },
         { "id": 82, "soru": "Ballon d'Or ödülü hangi ünlü dergi tarafından verilmektedir?", "secenekler": { "A": "World Soccer", "B": "France Football", "C": "Kicker", "D": "Gazzetta dello Sport" }, "dogru_cevap": "B" },
@@ -150,7 +140,7 @@
         { "id": 84, "soru": "Avrupalı olmayan futbolcuların da bu ödülü alabilmesine izin verilen ilk yıl hangisidir?", "secenekler": { "A": "1990", "B": "1995", "C": "2000", "D": "2005" }, "dogru_cevap": "B" },
         { "id": 85, "soru": "Kariyerinde 5 kez Ballon d'Or kazanan Portekizli süper yıldız kimdir?", "secenekler": { "A": "Luis Figo", "B": "Eusébio", "C": "Cristiano Ronaldo", "D": "Rui Costa" }, "dogru_cevap": "C" },
         { "id": 86, "soru": "1990'ların ortasında Milan formasıyla harikalar yaratan ve Ballon d'Or kazanan Liberyalı efsane futbolcu kimdir?", "secenekler": { "A": "Didier Drogba", "B": "Samuel Eto'o", "C": "George Weah", "D": "Yaya Toure" }, "dogru_cevap": "C" },
-        { "id": 87, "soru": "2018 yılında Luka Modric'in kazanarak Messi-Ronaldo hegemonyasına ara verdiği Ballon d'Or ödül töreninde hangi takımda forma giyiyordu?", "secenekler": { "A": "Barcelona", "B": "Real Madrid", "C": "Juventus", "D": "Tottenham" }, "dogru_cevap": "B" },
+        { "id": 87, "soru": "2018 yılında Luka Modric'in kazanarak Messi-Ronaldo hegemonyasına ara verdiği Ballon d'Or ödül töreninde hangi takımda forma giyiyordu?", "secenekler": { "A": "Barcelona", "B": "Real Madrid", "C": "Juventus", "D": "Tottenham" }, "dogru_cevap": "C" },
         { "id": 88, "soru": "Tarihte üst üste 3 kez Ballon d'Or kazanan ilk futbolcu kimdir?", "secenekler": { "A": "Marco van Basten", "B": "Michel Platini", "C": "Johan Cruyff", "D": "Alfredo Di Stefano" }, "dogru_cevap": "B" },
         { "id": 89, "soru": "Brezilyalı efsane 'Ronaldo' (Ronaldo Nazario), kariyerinde kaç kez Ballon d'Or kazanmıştır?", "secenekler": { "A": "1", "B": "2", "C": "3", "D": "4" }, "dogru_cevap": "B" },
         { "id": 90, "soru": "Ballon d'Or ödülü ile FIFA Yılın Oyuncusu ödüllerinin birleştiği dönemde (2010-2015 arası) bu ödülün resmi adı ne olmuştur?", "secenekler": { "A": "FIFA World Player", "B": "FIFA Ballon d'Or", "C": "The Best FIFA", "D": "European Golden Ball" }, "dogru_cevap": "B" }
@@ -159,15 +149,14 @@
     {
       "kategori_id": 10,
       "kategori_adi": "UEFA Avrupa Ligi",
-      "kategori_ikon": "🏅",
       "sorular": [
-        { "id": 91, "soru": "Eski adı UEFA Kupası olan UEFA Avrupa Ligi'ni tarihte en çok kazanan kulüp hangisidir?", "secenekler": { "A": "Inter", "B": "Juventus", "C": "Liverpool", "D": "Sevilla" }, "dogru_cevap": "D" },
+        { "id": 91, "soru": "Eski adı UEFA Kupası olan UEFA Avrupa Ligi'ni tarihte en çok kazanan kulüp hangisidir?", "secenekler": { "A": "Inter", "B": "Juventus", "C": "Liverpool", "D": "Sevilla" }, "dogru_cevap": "C" },
         { "id": 92, "soru": "Galatasaray'ın 2000 yılında kazandığı UEFA Kupası finalinde normal ve uzatma sürelerinde rakibi olan İngiliz kulübü hangisiydi?", "secenekler": { "A": "Manchester United", "B": "Liverpool", "C": "Arsenal", "D": "Chelsea" }, "dogru_cevap": "C" },
         { "id": 93, "soru": "UEFA Kupası / Avrupa Ligi formatında bu kupayı hem futbolcu hem de teknik direktör olarak kazanan İspanyol futbol adamı kimdir?", "secenekler": { "A": "Pep Guardiola", "B": "Unai Emery", "C": "Xavi Hernandez", "D": "Rafael Benitez" }, "dogru_cevap": "B" },
         { "id": 94, "soru": "Fenerbahçe'nin UEFA Avrupa Ligi'nde yarı finale yükseldiği en iyi tarihi başarısı hangi sezonda gerçekleşmiştir?", "secenekler": { "A": "2009-2010", "B": "2012-2013", "C": "2015-2016", "D": "2017-2018" }, "dogru_cevap": "B" },
-        { "id": 95, "soru": "Eski adıyla UEFA Kupası, yeni adıyla UEFA Avrupa Ligi'nin kupasının tasarımı neye benzemektedir?", "secenekler": { "A": "Kulaklı büyük kupa", "B": "Kulpansız gümüş tepsi / kupa (The UEFA Cup trophy)", "C": "Altın top", "D": "Yıldız forması" }, "dogru_cevap": "B" },
+        { "id": 95, "soru": "Eski adıyla UEFA Kupası, yeni adıyla UEFA Avrupa Ligi'nin kupasının tasarımı neye benzemektedir?", "secenekler": { "A": "Kulaklı büyük kupa", "B": "Kulpansız gümüş tepsi / kupa (The UEFA Cup trophy)", "C": "Altın top", "D": "Yıldız forması" }, "dogru_cevap": "A" },
         { "id": 96, "soru": "Bir sezonda UEFA Avrupa Ligi'nde en çok gol atan oyuncu rekorunu elinde bulunduran Kolombiyalı golcü kimdir?", "secenekler": { "A": "Carlos Bacca", "B": "Radamel Falcao", "C": "James Rodriguez", "D": "Jackson Martinez" }, "dogru_cevap": "B" },
-        { "id": 97, "soru": "Beşiktaş'ın UEFA Avrupa Ligi (UEFA Kupası) tarihinde çeyrek finale yükseldiği sezon hangi teknik direktörle anılır?", "secenekler": { "A": "Mircea Lucescu", "B": "Şenol Güneş", "C": "Slaven Bilic", "D": "Mustafa Denizli" }, "dogru_cevap": "A" },
+        { "id": 97, "soru": "Beşiktaş'ın UEFA Avrupa Ligi (UEFA Kupası) tarihinde çeyrek finale yükseldiği sezon hangi teknik direktörle anılır?", "secenekler": { "A": "Mircea Lucescu", "B": "Şenol Güneş", "C": "Slaven Bilic", "D": "Mustafa Denizli" }, "dogru_cevap": "B" },
         { "id": 98, "soru": "UEFA Avrupa Ligi'ni kazanan takımın bir sonraki sezon otomatik olarak hangi turnuvaya katılım hakkı kazanması kuralı getirilmiştir?", "secenekler": { "A": "UEFA Konferans Ligi", "B": "UEFA Şampiyonlar Ligi", "C": "FIFA Kulüpler Dünya Kupası", "D": "UEFA Süper Kupası" }, "dogru_cevap": "B" },
         { "id": 99, "soru": "Porto'nun 2010-2011 sezonunda UEFA Avrupa Ligi'ni kazandığı dönemde takımın başında bulunan genç Portekizli teknik direktör kimdir?", "secenekler": { "A": "Andre Villas-Boas", "B": "Jose Mourinho", "C": "Sergio Conceicao", "D": "Vitor Pereira" }, "dogru_cevap": "A" },
         { "id": 100, "soru": "UEFA Kupası'nı kazanan ilk Türk futbol kulübü hangisidir?", "secenekler": { "A": "Fenerbahçe", "B": "Galatasaray", "C": "Beşiktaş", "D": "Trabzonspor" }, "dogru_cevap": "B" }
