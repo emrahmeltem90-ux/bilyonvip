@@ -1,7 +1,7 @@
 'use strict';
 
 /* ============================================================
-   SKORLAB QUIZ · app.js (TAM SÜRÜM - DAVET + REKLAM + TÜM ÖZELLİKLER)
+   SKORLAB QUIZ · app.js (ADSGRAM REWARD - TAM SÜRÜM)
    ============================================================ */
 
 let TG = null;
@@ -47,15 +47,28 @@ function muzikToggle() {
 }
 
 /* ============================================================
-   REKLAM İZLE KAZAN (Monetag) - Zone ID: 12026248
+   REKLAM İZLE KAZAN (Adsgram Reward) - BlockID: 53759
    ============================================================ */
-function monetagReklamIzle() {
-  if (typeof window.show_12026248 !== 'function') {
-    toast('📺 Reklam sistemi yükleniyor, tekrar dene');
-    return;
+let adsgramController = null;
+
+function adsgramReklamBaslat() {
+  if (typeof window.Adsgram === 'undefined') return;
+  try {
+    adsgramController = window.Adsgram.init({ blockId: "53759" });
+    console.log('✅ Adsgram hazır');
+  } catch (e) {
+    console.error('Adsgram init hatası:', e);
+  }
+}
+
+async function reklamIzle() {
+  if (!adsgramController) {
+    adsgramReklamBaslat();
+    if (!adsgramController) { toast('📺 Reklam sistemi yükleniyor, tekrar dene'); return; }
   }
   try {
-    window.show_12026248().then(() => {
+    const result = await adsgramController.show();
+    if (result && result.done) {
       user.coin += 50;
       persistUser();
       ustBarGuncelle();
@@ -64,14 +77,18 @@ function monetagReklamIzle() {
       titreşim(100);
       toast('🎉 +50 Coin kazandın!');
       ucanPuan('+50 💰', 'var(--gold)');
-    }).catch(() => {
+    } else {
       toast('⚠️ Reklam tamamlanmadı');
-    });
+    }
   } catch (e) {
-    console.error('Monetag hatası:', e);
-    toast('⚠️ Reklam yüklenemedi');
+    console.error('Adsgram hatası:', e);
+    toast('⚠️ Reklam yüklenemedi veya atlandı');
   }
 }
+
+window.addEventListener('load', () => {
+  setTimeout(() => adsgramReklamBaslat(), 2000);
+});
 
 /* ============================================================
    DAVET ET KAZAN SİSTEMİ
@@ -1629,4 +1646,4 @@ async function bilgiGoster() {
    ============================================================ */
 function closeModal(id) {
   document.getElementById(id)?.classList.remove('aktif');
-                                            }
+                     }
