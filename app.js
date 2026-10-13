@@ -1,5 +1,5 @@
 /* ============================================================
-   SKORLAB QUIZ · app.js
+   SKORLAB QUIZ · app.js (TAM SÜRÜM)
    ============================================================ */
 'use strict';
 
@@ -105,7 +105,6 @@ async function sorulariYukle() {
         const data = await res.json();
         const kategoriler = data.kategoriler || [];
         kategoriler.forEach(k => { k.bolum = 'NORMAL'; sorularData.NORMAL.push(k); });
-        console.log('✅ ' + dosya + ': ' + kategoriler.length + ' kategori');
       } catch (e) { console.error('❌ ' + dosya + ':', e.message); }
     }
     try {
@@ -114,27 +113,19 @@ async function sorulariYukle() {
         const data = await res.json();
         const kategoriler = data.kategoriler || [];
         kategoriler.forEach(k => { k.bolum = 'SAMPİYONLAR'; sorularData.SAMPİYONLAR.push(k); });
-        console.log('✅ sorular_5.json: ' + kategoriler.length + ' kategori (ŞL)');
       }
-    } catch (e) { console.error('❌ sorular_5.json:', e.message); }
+    } catch (e) {}
     try {
       const res = await fetch('sorular_6.json');
       if (res.ok) {
         const data = await res.json();
         const kategoriler = data.kategoriler || [];
         kategoriler.forEach(k => { k.bolum = 'EFSANELER'; sorularData.EFSANELER.push(k); });
-        console.log('✅ sorular_6.json: ' + kategoriler.length + ' kategori (Efsaneler)');
       }
-    } catch (e) { console.error('❌ sorular_6.json:', e.message); }
-    console.log('📊 YÜKLENEN:', {
-      NORMAL: sorularData.NORMAL.length,
-      SAMPİYONLAR: sorularData.SAMPİYONLAR.length,
-      EFSANELER: sorularData.EFSANELER.length
-    });
+    } catch (e) {}
     sorularYuklendi = true;
     return true;
   } catch (e) {
-    console.error('Genel hata:', e);
     return false;
   }
 }
@@ -166,14 +157,10 @@ let quizPauseAktif = false;
 let gununModu = false;
 
 function ekranGoster(id) {
-  console.log('📺 Ekran:', id);
   const tumEkranlar = document.querySelectorAll('.ekran');
   tumEkranlar.forEach(e => e.classList.remove('aktif'));
   const el = document.getElementById(id);
-  if (!el) {
-    console.error('❌ EKRAN BULUNAMADI:', id);
-    return;
-  }
+  if (!el) return;
   el.classList.add('aktif');
   const ustBar = document.getElementById('ustBar');
   if (ustBar) {
@@ -187,6 +174,7 @@ function ustBarGuncelle() {
   if ($('ubYildiz')) $('ubYildiz').textContent = formatSayi(user.yildiz);
   if ($('ubCoin')) $('ubCoin').textContent = formatSayi(user.coin);
   if ($('katYildiz')) $('katYildiz').textContent = formatSayi(user.yildiz);
+  if ($('magazaCoin')) $('magazaCoin').textContent = formatSayi(user.coin);
 }
 
 function toast(mesaj) {
@@ -310,15 +298,41 @@ function kategoriListesiniGuncelle() {
     return;
   }
   let html = '';
-  kategoriler.forEach(kat => {
+  kategoriler.forEach((kat, index) => {
     const ilerleme = user.kategoriler[kat.kategori_id] || { yildiz: 0, enYuksekPuan: 0, tamamlandi: false };
     const yildizStr = ilerleme.yildiz === 1 ? '⭐☆☆' : ilerleme.yildiz === 2 ? '⭐⭐☆' : ilerleme.yildiz === 3 ? '⭐⭐⭐' : '☆☆☆';
     const toplamSoru = kat.sorular?.length || 10;
     const ilerlemeYuzde = Math.min(100, (ilerleme.enYuksekPuan / (toplamSoru * 100)) * 100) || 0;
-    const kilitli = kat.gereken_yildiz > 0 && user.yildiz < kat.gereken_yildiz;
-    const kilitInfo = kilitli
-      ? `<div class="kat-kilit"><div class="kat-kilit-info"><b>⭐ ${kat.gereken_yildiz}</b></div></div>`
-      : `<div class="kat-kilit">${ilerleme.yildiz === 3 ? '🏆' : '▶️'}</div>`;
+
+    let kilitli = false;
+    let kilitTipi = '';
+    let kilitMiktar = 0;
+
+    if (aktifBolum !== 'NORMAL') {
+      if (kat.gereken_yildiz > 0 && !ilerleme.tamamlandi) {
+        kilitli = true;
+        kilitTipi = 'yildiz';
+        kilitMiktar = kat.gereken_yildiz;
+      }
+    } else {
+      const oncekiKategori = index > 0 ? kategoriler[index - 1] : null;
+      const oncekiTamam = oncekiKategori ? (user.kategoriler[oncekiKategori.kategori_id]?.tamamlandi || false) : true;
+      if (!oncekiTamam && !ilerleme.tamamlandi) {
+        kilitli = true;
+        kilitTipi = 'coin';
+        kilitMiktar = 100;
+      }
+    }
+
+    let kilitInfo = '';
+    if (kilitli) {
+      kilitInfo = `<div class="kat-kilit" style="cursor:pointer" onclick="kilitAcModal(${kat.kategori_id}, '${kilitTipi}', ${kilitMiktar})">
+          <div class="kat-kilit-info"><span>${kilitTipi === 'yildiz' ? '⭐' : '💰'} ${kilitMiktar}</span></div>
+        </div>`;
+    } else {
+      kilitInfo = `<div class="kat-kilit">${ilerleme.yildiz === 3 ? '🏆' : '▶️'}</div>`;
+    }
+
     html += `
       <div class="kat-kart ${kilitli ? 'kilitli' : ''}" onclick="kategoriSec(${kat.kategori_id})">
         <div class="kat-ikon">${kat.kategori_ikon || '⚽'}</div>
@@ -337,14 +351,108 @@ function kategoriListesiniGuncelle() {
   ustBarGuncelle();
 }
 
+let kilitliKategoriId = null;
+let kilitliKategoriTip = null;
+let kilitliKategoriMiktar = 0;
+
+function kilitAcModal(id, tip, miktar) {
+  const kat = kategoriBul(id);
+  if (!kat) return;
+  kilitliKategoriId = id;
+  kilitliKategoriTip = tip;
+  kilitliKategoriMiktar = miktar;
+  const modal = $('kilitModal');
+  if (!modal) return;
+
+  $('kilitModalBaslik').textContent = kat.kategori_adi;
+
+  const yildizBtn = $('kilitYildizBtn');
+  const coinBtn = $('kilitCoinBtn');
+
+  if (tip === 'yildiz') {
+    yildizBtn.style.display = 'flex';
+    coinBtn.style.display = 'none';
+    $('kilitModalYildiz').textContent = `⭐ ${miktar}`;
+    if (user.yildiz >= miktar) {
+      yildizBtn.disabled = false;
+      yildizBtn.classList.remove('pasif');
+    } else {
+      yildizBtn.disabled = true;
+      yildizBtn.classList.add('pasif');
+    }
+  } else {
+    yildizBtn.style.display = 'none';
+    coinBtn.style.display = 'flex';
+    $('kilitModalCoin').textContent = `💰 ${miktar}`;
+    if (user.coin >= miktar) {
+      coinBtn.disabled = false;
+      coinBtn.classList.remove('pasif');
+    } else {
+      coinBtn.disabled = true;
+      coinBtn.classList.add('pasif');
+    }
+  }
+
+  modal.classList.add('aktif');
+  titreşim(20); sesCal('tik');
+}
+
+function kilitKapat() {
+  $('kilitModal')?.classList.remove('aktif');
+}
+
+function kilitYildizlaAc() {
+  const kat = kategoriBul(kilitliKategoriId);
+  if (!kat) return;
+  const gereken = kilitliKategoriMiktar;
+  if (user.yildiz < gereken) { toast('❌ Yetersiz yıldız!'); sesCal('hata'); return; }
+
+  user.yildiz -= gereken;
+  user.kategoriler[kat.kategori_id] = { yildiz: 0, enYuksekPuan: 0, tamamlandi: true };
+  persistUser(); ustBarGuncelle();
+  konfetiGoster(30); sesCal('kupa'); titreşim(100);
+  toast(`✅ ${kat.kategori_adi} yıldızla açıldı!`);
+  kilitKapat();
+  kategoriListesiniGuncelle();
+}
+
+function kilitCoinleAc() {
+  const kat = kategoriBul(kilitliKategoriId);
+  if (!kat) return;
+  const gereken = kilitliKategoriMiktar;
+  if (user.coin < gereken) { toast('❌ Yetersiz coin!'); sesCal('hata'); return; }
+
+  user.coin -= gereken;
+  user.kategoriler[kat.kategori_id] = { yildiz: 0, enYuksekPuan: 0, tamamlandi: true };
+  persistUser(); ustBarGuncelle();
+  konfetiGoster(30); sesCal('kupa'); titreşim(100);
+  toast(`✅ ${kat.kategori_adi} coinle açıldı!`);
+  kilitKapat();
+  kategoriListesiniGuncelle();
+}
+
 function kategoriSec(id) {
   const kat = kategoriBul(id);
   if (!kat) { toast('Kategori bulunamadı'); return; }
-  if (kat.gereken_yildiz > 0 && user.yildiz < kat.gereken_yildiz) {
-    toast(`🔒 ${kat.gereken_yildiz} yıldız gerekli`);
-    titreşim(100); sesCal('hata');
-    return;
+
+  const ilerleme = user.kategoriler[kat.kategori_id] || { tamamlandi: false };
+  const kategoriler = aktifSorular();
+  const index = kategoriler.findIndex(k => k.kategori_id == id);
+  const oncekiKategori = index > 0 ? kategoriler[index - 1] : null;
+  const oncekiTamam = oncekiKategori ? (user.kategoriler[oncekiKategori.kategori_id]?.tamamlandi || false) : true;
+
+  if (aktifBolum !== 'NORMAL') {
+    if (kat.gereken_yildiz > 0 && !ilerleme.tamamlandi) {
+      kilitAcModal(id, 'yildiz', kat.gereken_yildiz);
+      return;
+    }
+  } else {
+    if (!oncekiTamam && !ilerleme.tamamlandi) {
+      kilitAcModal(id, 'coin', 100);
+      return;
+    }
   }
+
   aktifKategori = kat;
   gununModu = false;
   quizBaslat();
@@ -555,7 +663,6 @@ function quizBitir() {
     if (quizSkor > user.enYuksekPuan) user.enYuksekPuan = quizSkor;
     if (yildiz === 3) user.tamPuanLevel = (user.tamPuanLevel || 0) + 1;
   } else {
-    // Günün modu bitti
     gununBitir();
   }
   persistUser(); ustBarGuncelle();
@@ -1045,16 +1152,20 @@ function gununDurumGuncelle() {
 async function gununSorulariYukle() {
   if (gununSorular.length) return gununSorular;
   try {
-    const res = await fetch('sorular_1.json');
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const data = await res.json();
     const tumSorular = [];
-    (data.kategoriler || []).forEach(kat => {
-      (kat.sorular || []).forEach(s => {
-        tumSorular.push({ ...s, kategori: kat.kategori_adi });
-      });
-    });
-    // Tarihe göre sabit 10 soru
+    for (const dosya of ['sorular_1.json', 'sorular_2.json', 'sorular_3.json', 'sorular_4.json']) {
+      try {
+        const res = await fetch(dosya);
+        if (!res.ok) continue;
+        const data = await res.json();
+        (data.kategoriler || []).forEach(kat => {
+          (kat.sorular || []).forEach(s => {
+            tumSorular.push({ ...s, kategori: kat.kategori_adi });
+          });
+        });
+      } catch (e) {}
+    }
+    if (!tumSorular.length) return [];
     const tarihKey = gununTarihKey();
     const seed = tarihKey.split('-').join('');
     let seedNum = 0;
@@ -1068,7 +1179,6 @@ async function gununSorulariYukle() {
     gununSorular = secilenler;
     return gununSorular;
   } catch (e) {
-    console.error('Günün soruları yüklenemedi:', e);
     return [];
   }
 }
@@ -1211,96 +1321,54 @@ function kopyalaPaylas() {
 }
 
 /* ============================================================
-   BUGÜN FUTBOL TARİHİNDE
+   BUNU BİLİYOR MUYDUN? (Her gün yeni bilgi)
    ============================================================ */
-let tarihData = null;
-let tarihCevapVerildi = false;
+let bilgilerData = null;
 
 async function tarihAc() {
   ekranGoster('tarihEkran');
-  await tarihGoster();
+  await bilgiGoster();
 }
 
-async function tarihGoster() {
+async function bilgiGoster() {
   const el = $('tarihIcerik');
   if (!el) return;
   el.innerHTML = '<div class="tarih-yukleniyor">Yükleniyor...</div>';
   try {
-    if (!tarihData) {
-      const res = await fetch('tarih.json');
+    if (!bilgilerData) {
+      const res = await fetch('bilgiler.json');
       if (!res.ok) throw new Error('HTTP ' + res.status);
-      tarihData = await res.json();
+      bilgilerData = await res.json();
     }
-    const bugunT = new Date();
-    const ay = bugunT.getMonth() + 1;
-    const gun = bugunT.getDate();
-    let olay = (tarihData.tarihler || []).find(t => t.ay === ay && t.gun === gun);
-    if (!olay) {
-      // Bugün için olay yoksa rastgele bir tane göster
-      const rastgele = (tarihData.tarihler || [])[Math.floor(Math.random() * (tarihData.tarihler || []).length)];
-      olay = rastgele;
-    }
-    if (!olay) {
-      el.innerHTML = '<div class="tarih-yukleniyor">Bugün için olay yok</div>';
+    const liste = bilgilerData.bilgiler || [];
+    if (!liste.length) {
+      el.innerHTML = '<div class="tarih-yukleniyor">Bilgi bulunamadı</div>';
       return;
     }
-    tarihCevapVerildi = false;
+    const bugunT = new Date();
+    const yil = bugunT.getFullYear();
+    const yilBasi = new Date(yil, 0, 0);
+    const gunSayisi = Math.floor((bugunT - yilBasi) / (1000 * 60 * 60 * 24));
+    const index = gunSayisi % liste.length;
+    const bilgi = liste[index];
+
     el.innerHTML = `
       <div class="tarih-kart">
-        <div class="tk-tarih">📅 ${gun} ${bugunT.toLocaleDateString('tr-TR', { month: 'long' })}</div>
-        <div class="tk-ikon">⚽</div>
-        <div class="tk-baslik">${olay.baslik}</div>
-        <div class="tk-aciklama">${olay.aciklama}</div>
-        <div class="tk-soru-baslik">❓ BUGÜNÜN SORUSU</div>
-        <div class="tk-soru">${olay.soru}</div>
-        <div class="tk-secenekler" id="tkSecenekler"></div>
+        <div class="tk-tarih">💡 BUNU BİLİYOR MUYDUN?</div>
+        <div class="tk-ikon">🧠</div>
+        <div class="tk-baslik">Günün Futbol Bilgisi</div>
+        <div class="tk-aciklama">${bilgi.bilgi}</div>
+        <div class="tk-sonuc" style="margin-top:20px;color:var(--green);font-weight:700;">
+          ✅ Yarın yeni bir bilgi geliyor!
+        </div>
       </div>`;
-    const secEl = $('tkSecenekler');
-    if (secEl && olay.secenekler) {
-      ['A', 'B', 'C', 'D'].forEach(h => {
-        if (olay.secenekler[h] === undefined) return;
-        const btn = document.createElement('button');
-        btn.className = 'tk-secenek';
-        btn.dataset.harf = h;
-        btn.textContent = h + ') ' + olay.secenekler[h];
-        btn.onclick = () => tarihCevap(h, olay.dogru_cevap, btn);
-        secEl.appendChild(btn);
-      });
-    }
   } catch (e) {
-    console.error('Tarih yüklenemedi:', e);
-    el.innerHTML = '<div class="tarih-yukleniyor">Tarih verisi yüklenemedi</div>';
+    console.error('Bilgi yüklenemedi:', e);
+    el.innerHTML = '<div class="tarih-yukleniyor">Bilgi verisi yüklenemedi</div>';
   }
 }
 
-function tarihCevap(secilen, dogru, btn) {
-  if (tarihCevapVerildi) return;
-  tarihCevapVerildi = true;
-  const tumBtn = document.querySelectorAll('.tk-secenek');
-  tumBtn.forEach(b => b.disabled = true);
-  if (secilen === dogru) {
-    btn.classList.add('dogru');
-    user.coin += 20;
-    user.toplamDogru++;
-    persistUser();
-    ustBarGuncelle();
-    konfetiGoster(20);
-    sesCal('kazanc');
-    titreşim(80);
-    ucanPuan('+20 💰', 'var(--gold)');
-    const el = $('tarihIcerik');
-    if (el) {
-      const sonuc = document.createElement('div');
-      sonuc.className = 'tk-sonuc';
-      sonuc.textContent = '🎉 Doğru! +20 coin';
-      el.querySelector('.tarih-kart')?.appendChild(sonuc);
-    }
-  } else {
-    btn.classList.add('yanlis');
-    tumBtn.forEach(b => {
-      if (b.dataset.harf === dogru) b.classList.add('dogru');
-    });
-    sesCal('hata');
-    titreşim(150);
-  }
-  }
+// Modal kapatma yardımcısı
+function closeModal(id) {
+  document.getElementById(id)?.classList.remove('aktif');
+         }
