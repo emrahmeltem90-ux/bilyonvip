@@ -8,22 +8,20 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="style.css?v=30">
+<link rel="stylesheet" href="style.css?v=31">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
 
-<!-- ============ SPLASH EKRANI ============ -->
+<!-- SPLASH -->
 <div id="splash" class="splash">
   <div class="splash-logo">S</div>
   <div class="splash-marka">SKORLAB</div>
   <div class="splash-alt">AKILLI TAHMİN OYUNU</div>
-  <div class="splash-yukleniyor">
-    <div class="splash-bar"></div>
-  </div>
+  <div class="splash-yukleniyor"><div class="splash-bar"></div></div>
 </div>
 
-<!-- ============ ONBOARDING (ilk açılış) ============ -->
+<!-- ONBOARDING -->
 <div id="onboarding" class="onboarding">
   <div class="ob-icerik">
     <div class="ob-ikon">🎉</div>
@@ -40,7 +38,7 @@
   </div>
 </div>
 
-<!-- ============ GÜNLÜK BONUS EKRANI ============ -->
+<!-- GÜNLÜK BONUS -->
 <div id="gunlukBonus" class="bonus-ekran">
   <div class="bonus-icerik">
     <div class="bonus-ikon" id="bonusIkon">🔥</div>
@@ -51,8 +49,8 @@
   </div>
 </div>
 
-<!-- ============ PROFİL BARI ============ -->
-<header class="profil-bar" id="profilBar" onclick="switchTab(5, document.querySelectorAll('.tab')[4])">
+<!-- PROFİL BARI -->
+<header class="profil-bar" id="profilBar" onclick="switchTab(5, document.querySelectorAll('.tab')[5])">
   <div class="pb-avatar" id="pbAvatar">👤</div>
   <div class="pb-bilgi">
     <div class="pb-isim" id="pbIsim">Oyuncu</div>
@@ -64,23 +62,23 @@
   </div>
 </header>
 
-<!-- ============ ALT TAB MENÜ ============ -->
+<!-- TAB MENÜ -->
 <nav class="tabs">
   <button type="button" class="tab active" onclick="switchTab(0,this)"><span class="tab-ikon">🏠</span><span class="tab-yazi">Ana</span></button>
   <button type="button" class="tab" onclick="switchTab(1,this)"><span class="tab-ikon">🎰</span><span class="tab-yazi">Toto</span></button>
   <button type="button" class="tab" onclick="switchTab(2,this)"><span class="tab-ikon">⚽</span><span class="tab-yazi">Tahmin</span></button>
+  <button type="button" class="tab" onclick="switchTab(6,this)"><span class="tab-ikon">🎯</span><span class="tab-yazi">Sezon</span></button>
+  <button type="button" class="tab" onclick="switchTab(7,this)"><span class="tab-ikon">🏆</span><span class="tab-yazi">Turnuva</span></button>
   <button type="button" class="tab" onclick="switchTab(3,this)"><span class="tab-ikon">💾</span><span class="tab-yazi">Kupon</span></button>
-  <button type="button" class="tab" onclick="switchTab(4,this)"><span class="tab-ikon">🏆</span><span class="tab-yazi">Sıra</span></button>
+  <button type="button" class="tab" onclick="switchTab(4,this)"><span class="tab-ikon">🥇</span><span class="tab-yazi">Sıra</span></button>
 </nav>
 
 <main>
 
-<!-- ============ SAYFA 0: ANA EKRAN ============ -->
-<section id="page-0" class="page active">
-  <div id="anaEkran"></div>
-</section>
+<!-- SAYFA 0: ANA -->
+<section id="page-0" class="page active"><div id="anaEkran"></div></section>
 
-<!-- ============ SAYFA 1: TOTO ============ -->
+<!-- SAYFA 1: TOTO -->
 <section id="page-1" class="page">
   <div class="kasa-kart">
     <div class="kasa-baslik">💰 KASAM</div>
@@ -92,16 +90,14 @@
       <div><b id="totoLimit">2500</b><span>MAKS</span></div>
     </div>
   </div>
-
   <div class="page-actions">
     <button type="button" class="btn btn-blue" onclick="sonuclariGirAc()">📝 SONUÇ GİR</button>
     <button type="button" class="btn btn-green" onclick="totoKaydet()">✅ KAYDET</button>
   </div>
-
   <div id="totoListesi"></div>
 </section>
 
-<!-- ============ SAYFA 2: TAHMİN ============ -->
+<!-- SAYFA 2: TAHMİN -->
 <section id="page-2" class="page">
   <div class="kasa-kart">
     <div class="kasa-baslik">💰 KASAM</div>
@@ -113,15 +109,13 @@
       <div><b id="ligToplam">0</b><span>TOPLAM</span></div>
     </div>
   </div>
-
   <div class="page-actions">
     <button type="button" class="btn btn-green" onclick="tahminleriKaydet()" style="grid-column:1/-1">✅ TAHMİNLERİ KAYDET</button>
   </div>
-
   <div id="ligListesi"></div>
 </section>
 
-<!-- ============ SAYFA 3: KUPONLAR ============ -->
+<!-- SAYFA 3: KUPONLAR -->
 <section id="page-3" class="page">
   <div class="card">
     <div class="result-title">💾 KUPONLARIM</div>
@@ -129,7 +123,7 @@
   </div>
 </section>
 
-<!-- ============ SAYFA 4: SIRALAMA ============ -->
+<!-- SAYFA 4: SIRALAMA -->
 <section id="page-4" class="page">
   <div class="card">
     <div class="result-title">🏆 LİDERLİK</div>
@@ -141,13 +135,24 @@
   </div>
 </section>
 
-<!-- ============ SAYFA 5: PROFİL ============ -->
-<section id="page-5" class="page">
-  <div id="profilListesi"></div>
+<!-- SAYFA 5: PROFİL -->
+<section id="page-5" class="page"><div id="profilListesi"></div></section>
+
+<!-- SAYFA 6: SEZON -->
+<section id="page-6" class="page">
+  <div class="card" style="border:2px solid var(--gold)">
+    <div class="result-title" style="color:var(--gold)">🎯 SEZON TAHMİNLERİ</div>
+    <div class="muted" style="font-size:.72rem;margin-bottom:12px">İleriye dönük · Sezon sonu çözülür</div>
+  </div>
+  <div id="sezonListesi"></div>
 </section>
+
+<!-- SAYFA 7: TURNUVA -->
+<section id="page-7" class="page"><div id="turnuvaListesi"></div></section>
 
 </main>
 
+<!-- ALT KUPON ÇUBUĞU -->
 <div class="kupon-cubugu" id="kuponCubugu">
   <div class="kc-info">
     <div class="kc-satir"><span>Bahis</span><b id="kcToto">0</b></div>
@@ -161,10 +166,7 @@
 <!-- MODAL: ÇARKIFELEK -->
 <div class="modal" id="carkModal">
   <div class="modal-content">
-    <div class="modal-head">
-      <span>🎡 ÇARKIFELEK</span>
-      <button type="button" onclick="closeModal('carkModal')">✖</button>
-    </div>
+    <div class="modal-head"><span>🎡 ÇARKIFELEK</span><button type="button" onclick="closeModal('carkModal')">✖</button></div>
     <div class="modal-body" id="carkBody"></div>
   </div>
 </div>
@@ -172,10 +174,7 @@
 <!-- MODAL: JOKERLER -->
 <div class="modal" id="jokerModal">
   <div class="modal-content">
-    <div class="modal-head">
-      <span>🃏 JOKERLERİM</span>
-      <button type="button" onclick="closeModal('jokerModal')">✖</button>
-    </div>
+    <div class="modal-head"><span>🃏 JOKERLERİM</span><button type="button" onclick="closeModal('jokerModal')">✖</button></div>
     <div class="modal-body" id="jokerBody"></div>
   </div>
 </div>
@@ -183,10 +182,7 @@
 <!-- MODAL: SONUÇ GİR -->
 <div class="modal" id="sonucModal">
   <div class="modal-content">
-    <div class="modal-head">
-      <span>📝 SONUÇ GİR</span>
-      <button type="button" onclick="closeModal('sonucModal')">✖</button>
-    </div>
+    <div class="modal-head"><span>📝 SONUÇ GİR</span><button type="button" onclick="closeModal('sonucModal')">✖</button></div>
     <div class="modal-body" id="sonucBody"></div>
   </div>
 </div>
@@ -194,10 +190,7 @@
 <!-- MODAL: KUPON DETAY -->
 <div class="modal" id="kuponDetayModal">
   <div class="modal-content">
-    <div class="modal-head">
-      <span>💾 KUPON DETAY</span>
-      <button type="button" onclick="closeModal('kuponDetayModal')">✖</button>
-    </div>
+    <div class="modal-head"><span>💾 KUPON DETAY</span><button type="button" onclick="closeModal('kuponDetayModal')">✖</button></div>
     <div class="modal-body" id="kuponDetayBody"></div>
   </div>
 </div>
@@ -205,15 +198,12 @@
 <!-- MODAL: PROFİL DÜZENLE -->
 <div class="modal" id="profilDuzenleModal">
   <div class="modal-content">
-    <div class="modal-head">
-      <span>⚙️ PROFİLİ DÜZENLE</span>
-      <button type="button" onclick="closeModal('profilDuzenleModal')">✖</button>
-    </div>
+    <div class="modal-head"><span>⚙️ PROFİLİ DÜZENLE</span><button type="button" onclick="closeModal('profilDuzenleModal')">✖</button></div>
     <div class="modal-body" id="profilDuzenleBody"></div>
   </div>
 </div>
 
-<!-- MODAL: ÖDÜL PATLAMA -->
+<!-- MODAL: ÖDÜL -->
 <div class="modal" id="odulModal">
   <div class="modal-content small" style="border-top:3px solid var(--gold)">
     <div class="modal-body center" id="odulBody"></div>
@@ -224,6 +214,14 @@
 <div class="modal" id="seviyeModal">
   <div class="modal-content small" style="border-top:3px solid var(--gold)">
     <div class="modal-body center" id="seviyeBody"></div>
+  </div>
+</div>
+
+<!-- MODAL: ARKADAŞ DAVET -->
+<div class="modal" id="davetModal">
+  <div class="modal-content">
+    <div class="modal-head"><span>👥 ARKADAŞ DAVET</span><button type="button" onclick="closeModal('davetModal')">✖</button></div>
+    <div class="modal-body" id="davetBody"></div>
   </div>
 </div>
 
@@ -239,12 +237,11 @@
   </div>
 </div>
 
-<!-- ANİMASYON KATMANLARI -->
 <div id="konfetiKatman" class="konfeti-katman"></div>
 <div id="ucanKatman" class="ucan-katman"></div>
 <div id="patlamaKatman" class="patlama-katman"></div>
 
-<script src="app.js?v=30"></script>
+<script src="app.js?v=31"></script>
 <script>
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(() => {});
