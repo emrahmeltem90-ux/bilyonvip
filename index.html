@@ -4,11 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#05070d">
-<title>SkorLab · Tahmin Oyunu</title>
-<link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
-<link rel="apple-touch-icon" href="icon-192.png">
-<link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="style.css?v=32">
+<title>SkorLab Quiz</title>
+<link rel="stylesheet" href="style.css?v=1">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
@@ -17,241 +14,252 @@
 <div id="splash" class="splash">
   <div class="splash-logo">S</div>
   <div class="splash-marka">SKORLAB</div>
-  <div class="splash-alt">AKILLI TAHMİN OYUNU</div>
-  <div class="splash-yukleniyor"><div class="splash-bar"></div></div>
+  <div class="splash-alt">FUTBOL QUIZ</div>
+  <div class="splash-bar"><div class="splash-bar-dolu"></div></div>
 </div>
 
 <!-- ONBOARDING -->
 <div id="onboarding" class="onboarding">
   <div class="ob-icerik">
-    <div class="ob-ikon">🎉</div>
+    <div class="ob-ikon">⚽</div>
     <h1 class="ob-baslik">HOŞ GELDİN!</h1>
-    <p class="ob-alt">SkorLab'a katıldın. Sanal coin ile tahmin oyunu.</p>
+    <p class="ob-alt">Futbol bilgini test et. 600 soru, 60 kategori, sonsuz eğlence.</p>
     <div class="ob-kutu">
-      <div class="ob-satir"><span>💰 Başlangıç</span><b>1.000 SkorCoin</b></div>
-      <div class="ob-satir"><span>🎁 Günlük bonus</span><b>+100 SkorCoin</b></div>
-      <div class="ob-satir"><span>🎯 Tahmin kazancı</span><b>+50 / +500</b></div>
-      <div class="ob-satir"><span>🎡 Çarkıfelek</span><b>Her gün 1 kez</b></div>
+      <div class="ob-satir"><span>💰 Başlangıç</span><b>500 Coin</b></div>
+      <div class="ob-satir"><span>⭐ Başlangıç</span><b>0 Yıldız</b></div>
+      <div class="ob-satir"><span>🎯 Soru başına</span><b>+5 Coin</b></div>
+      <div class="ob-satir"><span>🏆 Kategori bitirme</span><b>+50 Coin</b></div>
     </div>
-    <button type="button" class="ob-btn" onclick="onboardingBitir()">⚡ BAŞLA</button>
-    <div class="ob-not">Gerçek para kazanılmaz, kaybedilmez.</div>
+    <button class="ob-btn" onclick="onboardingBitir()">⚡ BAŞLA</button>
+    <div class="ob-not">Reklamsız · Ücretsiz · Türkçe</div>
   </div>
 </div>
 
-<!-- GÜNLÜK BONUS -->
-<div id="gunlukBonus" class="bonus-ekran">
-  <div class="bonus-icerik">
-    <div class="bonus-ikon" id="bonusIkon">🔥</div>
-    <h2 class="bonus-baslik" id="bonusBaslik">GÜN 1!</h2>
-    <div class="bonus-odul" id="bonusOdul">+100 💰</div>
-    <div class="bonus-alt" id="bonusAlt">Hoş geldin bonusu</div>
-    <button type="button" class="ob-btn" onclick="bonusAl()">💰 AL</button>
+<!-- ÜST BAR -->
+<header class="ust-bar" id="ustBar" style="display:none">
+  <div class="ub-sol" onclick="anaEkranaDon()">
+    <span class="ub-logo">⚽ SKORLAB</span>
   </div>
-</div>
-
-<!-- PROFİL BARI -->
-<header class="profil-bar" id="profilBar" onclick="switchTab(8, document.querySelectorAll('.tab')[8])">
-  <div class="pb-avatar" id="pbAvatar">👤</div>
-  <div class="pb-bilgi">
-    <div class="pb-isim" id="pbIsim">Oyuncu</div>
-    <div class="pb-seviye" id="pbSeviye">🥉 Çaylak</div>
-  </div>
-  <div class="pb-kasa">
-    <div class="pb-coin" id="pbCoin">💰 0</div>
-    <div class="pb-seri" id="pbSeri">🔥 1 gün</div>
+  <div class="ub-sag">
+    <div class="ub-kutu"><span>⭐</span><b id="ubYildiz">0</b></div>
+    <div class="ub-kutu"><span>💰</span><b id="ubCoin">500</b></div>
   </div>
 </header>
 
-<!-- TAB MENÜ -->
-<nav class="tabs">
-  <button type="button" class="tab active" onclick="switchTab(0,this)"><span class="tab-ikon">🏠</span><span class="tab-yazi">Ana</span></button>
-  <button type="button" class="tab" onclick="switchTab(1,this)"><span class="tab-ikon">🎰</span><span class="tab-yazi">Toto</span></button>
-  <button type="button" class="tab" onclick="switchTab(2,this)"><span class="tab-ikon">⚽</span><span class="tab-yazi">Tahmin</span></button>
-  <button type="button" class="tab" onclick="switchTab(6,this)"><span class="tab-ikon">🎯</span><span class="tab-yazi">Sezon</span></button>
-  <button type="button" class="tab" onclick="switchTab(7,this)"><span class="tab-ikon">🏆</span><span class="tab-yazi">Turnuva</span></button>
-  <button type="button" class="tab" onclick="switchTab(3,this)"><span class="tab-ikon">💾</span><span class="tab-yazi">Kupon</span></button>
-  <button type="button" class="tab" onclick="switchTab(4,this)"><span class="tab-ikon">🥇</span><span class="tab-yazi">Sıra</span></button>
-  <button type="button" class="tab" onclick="switchTab(5,this)"><span class="tab-ikon">🎡</span><span class="tab-yazi">Çark</span></button>
-  <button type="button" class="tab" onclick="switchTab(9,this)"><span class="tab-ikon">👑</span><span class="tab-yazi">VIP</span></button>
-</nav>
-
-<main>
-
-<!-- SAYFA 0: ANA -->
-<section id="page-0" class="page active"><div id="anaEkran"></div></section>
-
-<!-- SAYFA 1: TOTO -->
-<section id="page-1" class="page">
-  <div class="kasa-kart">
-    <div class="kasa-baslik">💰 KASAM</div>
-    <div class="kasa-bakiye" id="totoKasa">0</div>
-    <div class="kasa-alt">SkorCoin</div>
-    <div class="kasa-istatistik">
-      <div><b id="totoKolon">0</b><span>KOLON</span></div>
-      <div><b id="totoMaliyet">0</b><span>MALİYET</span></div>
-      <div><b id="totoLimit">2500</b><span>MAKS</span></div>
+<!-- ANA MENÜ -->
+<div id="menuEkran" class="ekran aktif" style="display:none">
+  <div class="menu-icerik">
+    <div class="menu-logo">
+      <div class="menu-logo-ikon">🏆</div>
+      <h1 class="menu-logo-yazi">SKORLAB<br><span>QUIZ</span></h1>
     </div>
-  </div>
-  <div class="page-actions">
-    <button type="button" class="btn btn-blue" onclick="sonuclariGirAc()">📝 SONUÇ GİR</button>
-    <button type="button" class="btn btn-green" onclick="totoKaydet()">✅ KAYDET</button>
-  </div>
-  <div id="totoListesi"></div>
-</section>
-
-<!-- SAYFA 2: TAHMİN -->
-<section id="page-2" class="page">
-  <div class="kasa-kart">
-    <div class="kasa-baslik">💰 KASAM</div>
-    <div class="kasa-bakiye" id="ligKasa">0</div>
-    <div class="kasa-alt">SkorCoin</div>
-    <div class="kasa-istatistik">
-      <div><b id="ligTaraf">0</b><span>TARAF</span></div>
-      <div><b id="ligSkor">0</b><span>SKOR</span></div>
-      <div><b id="ligToplam">0</b><span>TOPLAM</span></div>
-    </div>
-  </div>
-  <div class="page-actions">
-    <button type="button" class="btn btn-green" onclick="tahminleriKaydet()" style="grid-column:1/-1">✅ TAHMİNLERİ KAYDET</button>
-  </div>
-  <div id="ligListesi"></div>
-</section>
-
-<!-- SAYFA 3: KUPONLAR -->
-<section id="page-3" class="page">
-  <div class="card">
-    <div class="result-title">💾 KUPONLARIM</div>
-    <div id="kayitliKuponlar"></div>
-  </div>
-</section>
-
-<!-- SAYFA 4: SIRALAMA -->
-<section id="page-4" class="page">
-  <div class="card">
-    <div class="result-title">🏆 LİDERLİK</div>
-    <div id="siralamaListesi"></div>
-  </div>
-  <div class="card">
-    <div class="result-title">🎖️ ROZETLERİM</div>
-    <div id="rozetListesi"></div>
-  </div>
-</section>
-
-<!-- SAYFA 5: ÇARK -->
-<section id="page-5" class="page">
-  <div class="card" style="border:2px solid var(--orange)">
-    <div class="result-title" style="color:var(--orange)">🎡 ÇARKIFELEK</div>
-    <div class="muted" style="font-size:.72rem;margin-bottom:12px">Günde 1 kez çevir · Coin veya joker kazan</div>
-    <button type="button" class="btn btn-gold btn-lg" onclick="carkifelekAc()">🎰 ÇARKI ÇEVİR</button>
-  </div>
-  <div class="card">
-    <div class="result-title">🃏 JOKERLERİM</div>
-    <div id="jokerOzet"></div>
-  </div>
-</section>
-
-<!-- SAYFA 6: SEZON -->
-<section id="page-6" class="page">
-  <div class="card" style="border:2px solid var(--gold)">
-    <div class="result-title" style="color:var(--gold)">🎯 SEZON TAHMİNLERİ</div>
-    <div class="muted" style="font-size:.72rem;margin-bottom:12px">İleriye dönük · Sezon sonu çözülür</div>
-  </div>
-  <div id="sezonListesi"></div>
-</section>
-
-<!-- SAYFA 7: TURNUVA -->
-<section id="page-7" class="page"><div id="turnuvaListesi"></div></section>
-
-<!-- SAYFA 8: PROFİL -->
-<section id="page-8" class="page"><div id="profilListesi"></div></section>
-
-<!-- SAYFA 9: VIP -->
-<section id="page-9" class="page"><div id="vipListesi"></div></section>
-
-</main>
-
-<!-- ALT KUPON ÇUBUĞU -->
-<div class="kupon-cubugu" id="kuponCubugu">
-  <div class="kc-info">
-    <div class="kc-satir"><span>Bahis</span><b id="kcToto">0</b></div>
-    <div class="kc-satir"><span>Toplam</span><b id="kcToplam">0 💰</b></div>
-  </div>
-  <div class="kc-butonlar">
-    <button type="button" class="btn btn-red btn-sm" onclick="tumSecimleriSil()">🗑️</button>
-  </div>
-</div>
-
-<!-- MODALLAR -->
-<div class="modal" id="carkModal">
-  <div class="modal-content">
-    <div class="modal-head"><span>🎡 ÇARKIFELEK</span><button type="button" onclick="closeModal('carkModal')">✖</button></div>
-    <div class="modal-body" id="carkBody"></div>
-  </div>
-</div>
-
-<div class="modal" id="jokerModal">
-  <div class="modal-content">
-    <div class="modal-head"><span>🃏 JOKERLERİM</span><button type="button" onclick="closeModal('jokerModal')">✖</button></div>
-    <div class="modal-body" id="jokerBody"></div>
-  </div>
-</div>
-
-<div class="modal" id="sonucModal">
-  <div class="modal-content">
-    <div class="modal-head"><span>📝 SONUÇ GİR</span><button type="button" onclick="closeModal('sonucModal')">✖</button></div>
-    <div class="modal-body" id="sonucBody"></div>
-  </div>
-</div>
-
-<div class="modal" id="kuponDetayModal">
-  <div class="modal-content">
-    <div class="modal-head"><span>💾 KUPON DETAY</span><button type="button" onclick="closeModal('kuponDetayModal')">✖</button></div>
-    <div class="modal-body" id="kuponDetayBody"></div>
-  </div>
-</div>
-
-<div class="modal" id="profilDuzenleModal">
-  <div class="modal-content">
-    <div class="modal-head"><span>⚙️ PROFİLİ DÜZENLE</span><button type="button" onclick="closeModal('profilDuzenleModal')">✖</button></div>
-    <div class="modal-body" id="profilDuzenleBody"></div>
-  </div>
-</div>
-
-<div class="modal" id="odulModal">
-  <div class="modal-content small" style="border-top:3px solid var(--gold)">
-    <div class="modal-body center" id="odulBody"></div>
-  </div>
-</div>
-
-<div class="modal" id="seviyeModal">
-  <div class="modal-content small" style="border-top:3px solid var(--gold)">
-    <div class="modal-body center" id="seviyeBody"></div>
-  </div>
-</div>
-
-<div class="modal" id="davetModal">
-  <div class="modal-content">
-    <div class="modal-head"><span>👥 ARKADAŞ DAVET</span><button type="button" onclick="closeModal('davetModal')">✖</button></div>
-    <div class="modal-body" id="davetBody"></div>
-  </div>
-</div>
-
-<div class="modal" id="toastModal">
-  <div class="modal-content small">
-    <div class="modal-body center">
-      <div id="toastIcon" style="font-size:2.5rem">✅</div>
-      <div id="toastTitle" style="font-weight:900;margin:8px 0"></div>
-      <div id="toastMsg" class="muted"></div>
-      <button type="button" class="btn btn-blue" onclick="closeModal('toastModal')" style="margin-top:12px">TAMAM</button>
+    <div class="menu-butonlar">
+      <button class="menu-btn btn-yesil" onclick="oyunaBasla()">
+        <span class="mb-ikon">▶️</span>
+        <span class="mb-yazi">OYUNA BAŞLA</span>
+      </button>
+      <button class="menu-btn btn-altin" onclick="gunlukOdulAc()">
+        <span class="mb-ikon">🎁</span>
+        <span class="mb-yazi">GÜNLÜK ÖDÜL</span>
+      </button>
+      <button class="menu-btn btn-turuncu" onclick="carkifelekAc()">
+        <span class="mb-ikon">🎡</span>
+        <span class="mb-yazi">ÇARKIFELEK</span>
+      </button>
+      <button class="menu-btn btn-mor" onclick="basarimlarAc()">
+        <span class="mb-ikon">🏆</span>
+        <span class="mb-yazi">BAŞARIMLAR</span>
+      </button>
+      <button class="menu-btn btn-mavi" onclick="magazaAc()">
+        <span class="mb-ikon">🛒</span>
+        <span class="mb-yazi">MAĞAZA</span>
+      </button>
+      <button class="menu-btn btn-pembe" onclick="profilAc()">
+        <span class="mb-ikon">👤</span>
+        <span class="mb-yazi">PROFİL</span>
+      </button>
+      <button class="menu-btn btn-kirmizi" onclick="vipAc()">
+        <span class="mb-ikon">👑</span>
+        <span class="mb-yazi">VIP</span>
+      </button>
+      <button class="menu-btn btn-gri" onclick="ayarlarAc()">
+        <span class="mb-ikon">⚙️</span>
+        <span class="mb-yazi">AYARLAR</span>
+      </button>
     </div>
   </div>
 </div>
 
+<!-- KATEGORİ SEÇİM -->
+<div id="kategoriEkran" class="ekran">
+  <div class="ekran-baslik">
+    <button class="geri-btn" onclick="anaEkranaDon()">←</button>
+    <h2>Kategori Seç</h2>
+    <div class="baslik-yildiz">⭐ <span id="katYildiz">0</span></div>
+  </div>
+  <div class="bolum-secici">
+    <button class="bolum-tab aktif" onclick="bolumSec('NORMAL',this)">📚 NORMAL</button>
+    <button class="bolum-tab" onclick="bolumSec('SAMPİYONLAR',this)">⭐ ŞL</button>
+    <button class="bolum-tab" onclick="bolumSec('EFSANELER',this)">👑 EFSANELER</button>
+  </div>
+  <div id="kategoriListesi" class="kategori-liste"></div>
+</div>
+
+<!-- QUIZ EKRANI -->
+<div id="quizEkran" class="ekran">
+  <div class="quiz-ust">
+    <button class="quiz-geri" onclick="quizIptal()">✖</button>
+    <div class="quiz-sayac"><span id="quizSayac">1/10</span></div>
+    <div class="quiz-timer" id="quizTimer">15s</div>
+  </div>
+  <div class="quiz-progress"><div class="quiz-progress-dolu" id="quizProgress"></div></div>
+  <div class="quiz-combo" id="quizCombo" style="display:none">🔥 <span id="comboText">2x</span> COMBO</div>
+  <div class="quiz-soru" id="quizSoru">Soru yükleniyor...</div>
+  <div class="quiz-secenekler" id="quizSecenekler"></div>
+  <div class="quiz-aciklama" id="quizAciklama" style="display:none">
+    <div class="qa-baslik">💡 Açıklama</div>
+    <div class="qa-text" id="qaText"></div>
+  </div>
+  <div class="quiz-jokerler">
+    <button class="joker-btn" onclick="jokerKullan('cut')"><span>✂️</span><small>30💰</small></button>
+    <button class="joker-btn" onclick="jokerKullan('answer')"><span>🎯</span><small>70💰</small></button>
+    <button class="joker-btn" onclick="jokerKullan('heart')"><span>❤️</span><small>50💰</small></button>
+  </div>
+</div>
+
+<!-- SONUÇ EKRANI -->
+<div id="sonucEkran" class="ekran">
+  <div class="sonuc-icerik">
+    <div class="sonuc-yildizlar" id="sonucYildizlar">⭐⭐⭐</div>
+    <div class="sonuc-skor" id="sonucSkor">1000 PUAN</div>
+    <div class="sonuc-detay" id="sonucDetay">8/10 doğru</div>
+    <div class="sonuc-kazanc" id="sonucKazanc">+40 💰</div>
+    <div class="sonuc-butonlar">
+      <button class="menu-btn btn-yesil" onclick="tekrarOyna()">🔄 TEKRAR OYNA</button>
+      <button class="menu-btn btn-mavi" onclick="kategoriyeDon()">📋 KATEGORİLER</button>
+      <button class="menu-btn btn-altin" onclick="anaEkranaDon()">🏠 ANA MENÜ</button>
+    </div>
+  </div>
+</div>
+
+<!-- GÜNLÜK ÖDÜL -->
+<div id="gunlukEkran" class="ekran">
+  <div class="ekran-baslik">
+    <button class="geri-btn" onclick="anaEkranaDon()">←</button>
+    <h2>🎁 Günlük Ödül</h2>
+  </div>
+  <div class="gunluk-grid" id="gunlukGrid"></div>
+  <button class="buyuk-btn btn-altin" id="gunlukAlBtn" onclick="gunlukAl()">ÖDÜLÜ AL 🎁</button>
+</div>
+
+<!-- ÇARKIFELEK -->
+<div id="carkEkran" class="ekran">
+  <div class="ekran-baslik">
+    <button class="geri-btn" onclick="anaEkranaDon()">←</button>
+    <h2>🎡 Çarkıfelek</h2>
+  </div>
+  <div class="cark-icerik">
+    <div class="cark-wrap">
+      <div class="cark-pointer">▼</div>
+      <canvas id="carkCanvas" width="320" height="320"></canvas>
+    </div>
+    <button class="buyuk-btn btn-altin" id="carkBtn" onclick="carkCevir()">ÇEVİR 🎡</button>
+    <div class="cark-bilgi" id="carkBilgi">Günde 1 ücretsiz çevirme hakkın var</div>
+  </div>
+</div>
+
+<!-- BAŞARIMLAR -->
+<div id="basarimEkran" class="ekran">
+  <div class="ekran-baslik">
+    <button class="geri-btn" onclick="anaEkranaDon()">←</button>
+    <h2>🏆 Başarımlar</h2>
+  </div>
+  <div class="basarim-liste" id="basarimListe"></div>
+</div>
+
+<!-- MAĞAZA -->
+<div id="magazaEkran" class="ekran">
+  <div class="ekran-baslik">
+    <button class="geri-btn" onclick="anaEkranaDon()">←</button>
+    <h2>🛒 Mağaza</h2>
+  </div>
+  <div class="magaza-liste" id="magazaListe"></div>
+</div>
+
+<!-- PROFİL -->
+<div id="profilEkran" class="ekran">
+  <div class="ekran-baslik">
+    <button class="geri-btn" onclick="anaEkranaDon()">←</button>
+    <h2>👤 Profil</h2>
+  </div>
+  <div class="profil-icerik">
+    <div class="profil-kart">
+      <div class="profil-avatar">👤</div>
+      <input type="text" id="profilIsim" class="profil-isim-input" placeholder="İsmini yaz" maxlength="15">
+      <button class="menu-btn btn-yesil" onclick="profilKaydet()">KAYDET ✅</button>
+    </div>
+    <div class="profil-istatistik" id="profilIstatistik"></div>
+  </div>
+</div>
+
+<!-- VIP -->
+<div id="vipEkran" class="ekran">
+  <div class="ekran-baslik">
+    <button class="geri-btn" onclick="anaEkranaDon()">←</button>
+    <h2>👑 VIP</h2>
+  </div>
+  <div class="vip-icerik">
+    <div class="vip-kart">
+      <div class="vip-ikon">👑</div>
+      <div class="vip-baslik">VIP SKORLAB</div>
+      <div class="vip-fiyat">100 ⭐ / ay</div>
+      <div class="vip-ozellikler">
+        <div>✅ Sınırsız joker (ücretsiz)</div>
+        <div>✅ Reklamsız deneyim</div>
+        <div>✅ Tüm kategoriler açık</div>
+        <div>✅ Günlük 500 coin bonus</div>
+        <div>✅ Özel VIP rozeti</div>
+        <div>✅ Öncelikli destek</div>
+      </div>
+      <button class="buyuk-btn btn-altin" onclick="vipSatinAl()">👑 VIP'A GEÇ</button>
+    </div>
+  </div>
+</div>
+
+<!-- AYARLAR -->
+<div id="ayarlarEkran" class="ekran">
+  <div class="ekran-baslik">
+    <button class="geri-btn" onclick="anaEkranaDon()">←</button>
+    <h2>⚙️ Ayarlar</h2>
+  </div>
+  <div class="ayar-liste">
+    <div class="ayar-item">
+      <span>🎵 Müzik</span>
+      <label class="switch"><input type="checkbox" id="ayarMuzik" onchange="muzikToggle()"><span class="slider"></span></label>
+    </div>
+    <div class="ayar-item">
+      <span>🔊 Ses</span>
+      <label class="switch"><input type="checkbox" id="ayarSes" onchange="sesToggle()" checked><span class="slider"></span></label>
+    </div>
+    <div class="ayar-item">
+      <span>📳 Titreşim</span>
+      <label class="switch"><input type="checkbox" id="ayarTitresim" onchange="titresimToggle()" checked><span class="slider"></span></label>
+    </div>
+    <div class="ayar-item">
+      <span>🗑️ Verileri Sıfırla</span>
+      <button class="kucuk-btn btn-kirmizi" onclick="verileriSifirla()">SIFIRLA</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast"></div>
+
+<!-- KONFETİ -->
 <div id="konfetiKatman" class="konfeti-katman"></div>
 <div id="ucanKatman" class="ucan-katman"></div>
-<div id="patlamaKatman" class="patlama-katman"></div>
 
-<script src="app.js?v=32"></script>
+<script src="app.js?v=1"></script>
 <script>
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(() => {});
