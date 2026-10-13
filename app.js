@@ -1,14 +1,14 @@
 'use strict';
 
 /* ============================================================
-   SKORLAB QUIZ · app.js (TAM SÜRÜM)
+   SKORLAB QUIZ · app.js (VIP ENTEGRELİ TAM SÜRÜM)
    ============================================================ */
 
 let TG = null;
 const $ = id => document.getElementById(id);
 
 /* ============================================================
-   ARKA PLAN MÜZİĞİ (muzik.mp3)
+   ARKA PLAN MÜZİĞİ
    ============================================================ */
 let muzikObj = null;
 let muzikCalıyor = false;
@@ -81,7 +81,7 @@ function titreşim(ms = 30) {
 }
 
 /* ============================================================
-   ZENGİN SES SİSTEMİ (Web Audio API - Dosya gerektirmez)
+   SES SİSTEMİ
    ============================================================ */
 let audioCtx = null;
 function getCtx() {
@@ -126,43 +126,36 @@ function sesCal(tur) {
 
     if (tur === 'tik') {
       notaCal(NOTALAR.E5, 0, 0.06, 'sine', 0.05);
-    }
-    else if (tur === 'ok') {
+    } else if (tur === 'ok') {
       notaCal(NOTALAR.C5, 0, 0.08, 'sine', 0.07);
       notaCal(NOTALAR.E5, 0.08, 0.1, 'sine', 0.07);
-    }
-    else if (tur === 'kazanc') {
+    } else if (tur === 'kazanc') {
       melodiCal([
         { freq: NOTALAR.C5, bas: 0, sure: 0.1 },
         { freq: NOTALAR.E5, bas: 0.1, sure: 0.1 },
         { freq: NOTALAR.G5, bas: 0.2, sure: 0.15 }
       ], 'sine', 0.08);
-    }
-    else if (tur === 'kupa') {
+    } else if (tur === 'kupa') {
       melodiCal([
         { freq: NOTALAR.C5, bas: 0, sure: 0.12 },
         { freq: NOTALAR.E5, bas: 0.12, sure: 0.12 },
         { freq: NOTALAR.G5, bas: 0.24, sure: 0.12 },
         { freq: NOTALAR.C6, bas: 0.36, sure: 0.3 }
       ], 'triangle', 0.1);
-    }
-    else if (tur === 'hata') {
+    } else if (tur === 'hata') {
       melodiCal([
         { freq: NOTALAR.A4, bas: 0, sure: 0.15 },
         { freq: NOTALAR.E4, bas: 0.15, sure: 0.2 }
       ], 'sawtooth', 0.07);
-    }
-    else if (tur === 'cark') {
+    } else if (tur === 'cark') {
       notaCal(NOTALAR.A5, 0, 0.03, 'square', 0.04);
-    }
-    else if (tur === 'combo') {
+    } else if (tur === 'combo') {
       melodiCal([
         { freq: NOTALAR.G5, bas: 0, sure: 0.06 },
         { freq: NOTALAR.A5, bas: 0.06, sure: 0.06 },
         { freq: NOTALAR.B5, bas: 0.12, sure: 0.08 }
       ], 'sine', 0.07);
-    }
-    else if (tur === 'comboBuyuk') {
+    } else if (tur === 'comboBuyuk') {
       melodiCal([
         { freq: NOTALAR.C5, bas: 0, sure: 0.07 },
         { freq: NOTALAR.E5, bas: 0.07, sure: 0.07 },
@@ -170,18 +163,15 @@ function sesCal(tur) {
         { freq: NOTALAR.C6, bas: 0.21, sure: 0.07 },
         { freq: NOTALAR.E6, bas: 0.28, sure: 0.15 }
       ], 'triangle', 0.09);
-    }
-    else if (tur === 'joker') {
+    } else if (tur === 'joker') {
       melodiCal([
         { freq: NOTALAR.G4, bas: 0, sure: 0.1 },
         { freq: NOTALAR.B4, bas: 0.1, sure: 0.1 },
         { freq: NOTALAR.D5, bas: 0.2, sure: 0.15 }
       ], 'sine', 0.06);
-    }
-    else if (tur === 'sayac') {
+    } else if (tur === 'sayac') {
       notaCal(NOTALAR.C4, 0, 0.05, 'sine', 0.04);
-    }
-    else if (tur === 'bitis') {
+    } else if (tur === 'bitis') {
       melodiCal([
         { freq: NOTALAR.G5, bas: 0, sure: 0.15 },
         { freq: NOTALAR.E5, bas: 0.15, sure: 0.15 },
@@ -192,7 +182,7 @@ function sesCal(tur) {
 }
 
 /* ============================================================
-   USER (Kullanıcı Verisi)
+   USER
    ============================================================ */
 let user = safeReadJSON('skorlab_user', {
   isim: 'Oyuncu', coin: 500, yildiz: 0,
@@ -217,9 +207,9 @@ if (typeof user.isim !== 'string') user.isim = 'Oyuncu';
 function persistUser() { safeSaveJSON('skorlab_user', user); }
 
 /* ============================================================
-   SORU YÜKLEME
+   SORU YÜKLEME (VIP paketleri dahil)
    ============================================================ */
-let sorularData = { NORMAL: [], SAMPİYONLAR: [], EFSANELER: [] };
+let sorularData = { NORMAL: [], SAMPİYONLAR: [], EFSANELER: [], VIP_EFSANELER: [] };
 let sorularYuklendi = false;
 
 async function sorulariYukle() {
@@ -251,6 +241,24 @@ async function sorulariYukle() {
         kategoriler.forEach(k => { k.bolum = 'EFSANELER'; sorularData.EFSANELER.push(k); });
       }
     } catch (e) {}
+    // VIP Paket 1
+    try {
+      const res = await fetch('sorular_vip1.json');
+      if (res.ok) {
+        const data = await res.json();
+        const kategoriler = data.kategoriler || [];
+        kategoriler.forEach(k => { k.bolum = 'VIP_EFSANELER'; sorularData.VIP_EFSANELER.push(k); });
+      }
+    } catch (e) { console.error('❌ sorular_vip1.json:', e.message); }
+    // VIP Paket 2
+    try {
+      const res = await fetch('sorular_vip2.json');
+      if (res.ok) {
+        const data = await res.json();
+        const kategoriler = data.kategoriler || [];
+        kategoriler.forEach(k => { k.bolum = 'VIP_EFSANELER'; sorularData.VIP_EFSANELER.push(k); });
+      }
+    } catch (e) { console.error('❌ sorular_vip2.json:', e.message); }
     sorularYuklendi = true;
     return true;
   } catch (e) {
@@ -353,13 +361,11 @@ window.addEventListener('DOMContentLoaded', async () => {
   await sorulariYukle();
   await splashBitir();
 
-  // İlk tıklamada müziği başlat (tarayıcı politikası)
   document.addEventListener('click', function ilkMuzik() {
     if (user.muzik) muzikBaslat();
     document.removeEventListener('click', ilkMuzik);
   }, { once: true });
 
-  // Arka plana atılınca müziği durdur
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
       if (muzikObj) muzikObj.pause();
@@ -438,6 +444,11 @@ function oyunaBasla() {
 }
 
 function bolumSec(bolum, el) {
+  if (bolum === 'VIP_EFSANELER' && !user.vip) {
+    toast('👑 Bu bölüm VIP\'lere özel!');
+    sesCal('hata'); titreşim(100);
+    return;
+  }
   aktifBolum = bolum;
   document.querySelectorAll('.bolum-tab').forEach(t => t.classList.remove('aktif'));
   if (el) el.classList.add('aktif');
@@ -464,7 +475,10 @@ function kategoriListesiniGuncelle() {
     let kilitTipi = '';
     let kilitMiktar = 0;
 
-    if (aktifBolum !== 'NORMAL') {
+    // VIP bölümü: hepsi açık (VIP olanlar zaten girmiş)
+    if (aktifBolum === 'VIP_EFSANELER') {
+      kilitli = false;
+    } else if (aktifBolum !== 'NORMAL') {
       if (kat.gereken_yildiz > 0 && !ilerleme.tamamlandi) {
         kilitli = true;
         kilitTipi = 'yildiz';
@@ -597,7 +611,9 @@ function kategoriSec(id) {
   const oncekiKategori = index > 0 ? kategoriler[index - 1] : null;
   const oncekiTamam = oncekiKategori ? (user.kategoriler[oncekiKategori.kategori_id]?.tamamlandi || false) : true;
 
-  if (aktifBolum !== 'NORMAL') {
+  if (aktifBolum === 'VIP_EFSANELER') {
+    // VIP'de hepsi açık
+  } else if (aktifBolum !== 'NORMAL') {
     if (kat.gereken_yildiz > 0 && !ilerleme.tamamlandi) {
       kilitAcModal(id, 'yildiz', kat.gereken_yildiz);
       return;
@@ -923,12 +939,10 @@ function gunlukSeriHesapla() {
   if (gecen > 2 * GUN_MS) { user.gunlukSeri = 0; persistUser(); }
   return user.gunlukSeri || 0;
 }
-
 function gunlukOdulAc() {
   ekranGoster('gunlukEkran');
   gunlukGridGuncelle();
 }
-
 function gunlukGridGuncelle() {
   const grid = $('gunlukGrid'); if (!grid) return;
   const seri = gunlukSeriHesapla();
@@ -954,7 +968,6 @@ function gunlukGridGuncelle() {
     }
   }
 }
-
 function gunlukAl() {
   if (!gunlukAlinabilirMi()) { toast('⏰ Bugün aldın'); return; }
   let seri = gunlukSeriHesapla();
@@ -1000,7 +1013,6 @@ function carkifelekAc() {
   setTimeout(() => carkCiz(), 100);
   carkDurumGuncelle();
 }
-
 function carkCiz() {
   const canvas = $('carkCanvas');
   if (!canvas) return;
@@ -1047,7 +1059,6 @@ function carkCiz() {
   ctx.textBaseline = 'middle';
   ctx.fillText('🎡', cx, cy);
 }
-
 function carkDurumGuncelle() {
   const btn = $('carkBtn');
   const bilgi = $('carkBilgi');
@@ -1064,7 +1075,6 @@ function carkDurumGuncelle() {
     if (bilgi) bilgi.textContent = `Yeni hak: ${saat}s ${dk}dk sonra`;
   }
 }
-
 function carkCevir() {
   if (carkDonuyor) return;
   const gecen = Date.now() - (user.sonCark || 0);
@@ -1288,15 +1298,11 @@ function verileriSifirla() {
    ============================================================ */
 let gununSorular = [];
 
-function gununTarihKey() {
-  return bugun();
-}
-
+function gununTarihKey() { return bugun(); }
 function gununAc() {
   ekranGoster('gununEkran');
   gununDurumGuncelle();
 }
-
 function gununDurumGuncelle() {
   const tarihKey = gununTarihKey();
   const bugunOynandi = user.gununSonOynanan === tarihKey;
@@ -1322,7 +1328,6 @@ function gununDurumGuncelle() {
     if ($('gununBilgi')) $('gununBilgi').textContent = 'Bugün henüz çözmedin';
   }
 }
-
 async function gununSorulariYukle() {
   if (gununSorular.length) return gununSorular;
   try {
@@ -1356,25 +1361,19 @@ async function gununSorulariYukle() {
     return [];
   }
 }
-
 async function gununBasla() {
   const sorular = await gununSorulariYukle();
   if (!sorular.length) { toast('Sorular yüklenemedi'); return; }
   gununModu = true;
   aktifKategori = { kategori_id: 0, kategori_adi: 'Günün 10 Sorusu' };
   quizSorular = sorular;
-  quizIndex = 0;
-  quizSkor = 0;
-  quizDogru = 0;
-  quizYanlis = 0;
-  quizCombo = 0;
-  quizEnIyiCombo = 0;
+  quizIndex = 0; quizSkor = 0; quizDogru = 0; quizYanlis = 0;
+  quizCombo = 0; quizEnIyiCombo = 0;
   quizJoker = { cut: false, answer: false, heart: false };
   quizCiftHak = false;
   ekranGoster('quizEkran');
   soruGoster();
 }
-
 function gununBitir() {
   const tarihKey = gununTarihKey();
   user.gununSonOynanan = tarihKey;
@@ -1404,7 +1403,6 @@ function kutuAc() {
     $('kutuBtn').onclick = kutuAcKontrol;
   }
 }
-
 function kutuAcKontrol() {
   const rastgele = Math.random();
   let metin = '';
@@ -1423,8 +1421,7 @@ function kutuAcKontrol() {
     user.coin += 50;
     metin = '+50 💰 BONUS';
   }
-  persistUser();
-  ustBarGuncelle();
+  persistUser(); ustBarGuncelle();
   if ($('kutuIkon')) $('kutuIkon').textContent = '🎉';
   if ($('kutuBaslik')) $('kutuBaslik').textContent = 'TEBRİKLER!';
   if ($('kutuAciklama')) $('kutuAciklama').textContent = 'Kazandın!';
@@ -1436,14 +1433,12 @@ function kutuAcKontrol() {
     $('kutuBtn').textContent = '✅ TAMAM';
     $('kutuBtn').onclick = () => closeModal('kutuModal');
   }
-  konfetiGoster(30);
-  sesCal('kazanc');
-  titreşim(100);
+  konfetiGoster(30); sesCal('kazanc'); titreşim(100);
   ucanPuan(metin, 'var(--gold)');
 }
 
 /* ============================================================
-   SONUÇ KARTI PAYLAŞ
+   SONUÇ PAYLAŞ
    ============================================================ */
 function paylasKartGoster() {
   if ($('pkSkor')) $('pkSkor').textContent = quizSkor + ' PUAN';
@@ -1457,7 +1452,6 @@ function paylasKartGoster() {
   if ($('pkYildiz')) $('pkYildiz').textContent = yildizStr;
   $('paylasModal')?.classList.add('aktif');
 }
-
 function telegramPaylas() {
   const metin = `⚽ SKORLAB QUIZ\n\n` +
     `📊 Skor: ${quizSkor} PUAN\n` +
@@ -1480,7 +1474,6 @@ function telegramPaylas() {
     });
   }
 }
-
 function kopyalaPaylas() {
   const metin = `⚽ SKORLAB QUIZ\n\n` +
     `📊 Skor: ${quizSkor} PUAN\n` +
@@ -1495,7 +1488,7 @@ function kopyalaPaylas() {
 }
 
 /* ============================================================
-   BUNU BİLİYOR MUYDUN? (Her gün yeni bilgi)
+   BUNU BİLİYOR MUYDUN?
    ============================================================ */
 let bilgilerData = null;
 
@@ -1503,7 +1496,6 @@ async function tarihAc() {
   ekranGoster('tarihEkran');
   await bilgiGoster();
 }
-
 async function bilgiGoster() {
   const el = $('tarihIcerik');
   if (!el) return;
@@ -1547,4 +1539,4 @@ async function bilgiGoster() {
    ============================================================ */
 function closeModal(id) {
   document.getElementById(id)?.classList.remove('aktif');
-}
+     }
