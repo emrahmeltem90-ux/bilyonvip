@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#05070d">
 <title>SkorLab Quiz</title>
-<link rel="stylesheet" href="style.css?v=1000">
+<link rel="stylesheet" href="style.css?v=1">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
@@ -64,6 +64,11 @@
       <div class="mbb-ok">▶</div>
     </button>
     <div class="menu-grid">
+      <button class="menu-grid-btn menu-gunun" onclick="gununAc()">
+        <div class="mgb-ikon">📅</div>
+        <div class="mgb-yazi">Günün</div>
+        <div class="mgb-badge" id="gununBadge">🔴</div>
+      </button>
       <button class="menu-grid-btn" onclick="gunlukOdulAc()">
         <div class="mgb-ikon">🎁</div>
         <div class="mgb-yazi">Günlük</div>
@@ -82,6 +87,10 @@
         <div class="mgb-ikon">🛒</div>
         <div class="mgb-yazi">Mağaza</div>
       </button>
+      <button class="menu-grid-btn menu-tarih" onclick="tarihAc()">
+        <div class="mgb-ikon">📜</div>
+        <div class="mgb-yazi">Tarih</div>
+      </button>
       <button class="menu-grid-btn" onclick="profilAc()">
         <div class="mgb-ikon">👤</div>
         <div class="mgb-yazi">Profil</div>
@@ -89,6 +98,10 @@
       <button class="menu-grid-btn menu-vip" onclick="vipAc()">
         <div class="mgb-ikon">👑</div>
         <div class="mgb-yazi">VIP</div>
+      </button>
+      <button class="menu-grid-btn" onclick="ayarlarAc()">
+        <div class="mgb-ikon">⚙️</div>
+        <div class="mgb-yazi">Ayarlar</div>
       </button>
     </div>
     <div class="menu-stat-grid">
@@ -108,7 +121,6 @@
         <div class="ms-lbl">BAŞARIM</div>
       </div>
     </div>
-    <button class="menu-ayar-btn" onclick="ayarlarAc()">⚙️ Ayarlar</button>
   </div>
 </div>
 
@@ -173,9 +185,58 @@
     <div class="sonuc-kazanc" id="sonucKazanc">+40 💰</div>
     <div class="sonuc-butonlar">
       <button class="menu-btn btn-yesil" onclick="tekrarOyna()">🔄 TEKRAR OYNA</button>
-      <button class="menu-btn btn-mavi" onclick="kategoriyeDon()">📋 KATEGORİLER</button>
+      <button class="menu-btn btn-mavi" onclick="paylasKartGoster()">📤 PAYLAŞ</button>
       <button class="menu-btn btn-altin" onclick="anaEkranaDon()">🏠 ANA MENÜ</button>
     </div>
+  </div>
+</div>
+
+<!-- GÜNÜN 10 SORUSU -->
+<div id="gununEkran" class="ekran">
+  <div class="ekran-baslik">
+    <button class="geri-btn" onclick="anaEkranaDon()">←</button>
+    <h2>📅 Günün 10 Sorusu</h2>
+    <div class="baslik-yildiz">🔥 <span id="gununSeri">0</span></div>
+  </div>
+  <div class="gunun-icerik">
+    <div class="gunun-kart">
+      <div class="gk-ikon">📅</div>
+      <div class="gk-baslik">Bugünün Mücadelesi</div>
+      <div class="gk-aciklama" id="gununTarih">Her gün 10 yeni soru</div>
+      <div class="gk-seri">
+        <span>🔥 Seri:</span>
+        <b id="gununSeriBuyuk">0 gün</b>
+      </div>
+      <button class="menu-buyuk-btn" onclick="gununBasla()" id="gununBtn">
+        <div class="mbb-sol">
+          <div class="mbb-ikon">▶️</div>
+          <div class="mbb-yazi">
+            <div class="mbb-ust">GÜNÜN SORULARINI ÇÖZ</div>
+            <div class="mbb-alt">10 soru · +100 coin · +1 yıldız</div>
+          </div>
+        </div>
+        <div class="mbb-ok">▶</div>
+      </button>
+      <div class="gk-bilgi" id="gununBilgi">Bugün henüz çözmedin</div>
+    </div>
+    <div class="gunun-oduller">
+      <div class="go-baslik">🎁 ÖDÜLLER</div>
+      <div class="go-satir"><span>✅ Tamamlama</span><b>+100 💰</b></div>
+      <div class="go-satir"><span>🔥 3 gün seri</span><b>+2 ⭐</b></div>
+      <div class="go-satir"><span>🔥 7 gün seri</span><b>+5 ⭐ + Rozet</b></div>
+      <div class="go-satir"><span>🔥 30 gün seri</span><b>+20 ⭐ + Kupa</b></div>
+    </div>
+  </div>
+</div>
+
+<!-- BUGÜN FUTBOL TARİHİNDE -->
+<div id="tarihEkran" class="ekran">
+  <div class="ekran-baslik">
+    <button class="geri-btn" onclick="anaEkranaDon()">←</button>
+    <h2>📜 Bugün Futbol Tarihinde</h2>
+  </div>
+  <div class="tarih-icerik" id="tarihIcerik">
+    <div class="tarih-yukleniyor">Yükleniyor...</div>
   </div>
 </div>
 
@@ -289,6 +350,37 @@
   </div>
 </div>
 
+<!-- MODAL: GİZEMLİ KUTU -->
+<div class="modal-overlay" id="kutuModal">
+  <div class="modal-content kutu-icerik">
+    <div class="kutu-ikon" id="kutuIkon">📦</div>
+    <h2 class="kutu-baslik" id="kutuBaslik">GİZEMLİ KUTU!</h2>
+    <div class="kutu-aciklama" id="kutuAciklama">Kutuyu açmak için dokun</div>
+    <div class="kutu-odul" id="kutuOdul" style="display:none">+100 💰</div>
+    <button class="buyuk-btn btn-altin" id="kutuBtn" onclick="kutuAcKontrol()">📦 AÇ</button>
+  </div>
+</div>
+
+<!-- MODAL: SONUÇ KARTI PAYLAŞ -->
+<div class="modal-overlay" id="paylasModal">
+  <div class="modal-content paylas-icerik">
+    <h2 class="paylas-baslik">📤 SONUCUNU PAYLAŞ</h2>
+    <div class="paylas-kart" id="paylasKart">
+      <div class="pk-ust">⚽ SKORLAB QUIZ</div>
+      <div class="pk-skor" id="pkSkor">1000 PUAN</div>
+      <div class="pk-yildiz" id="pkYildiz">⭐⭐⭐</div>
+      <div class="pk-detay" id="pkDetay">8/10 doğru</div>
+      <div class="pk-alt">Sen de beni geçebilir misin?</div>
+      <div class="pk-logo">⚽ SkorLab</div>
+    </div>
+    <div class="paylas-butonlar">
+      <button class="menu-btn btn-mavi" onclick="telegramPaylas()">📤 TELEGRAM'DA PAYLAŞ</button>
+      <button class="menu-btn btn-gri" onclick="kopyalaPaylas()">📋 KOPYALA</button>
+      <button class="menu-btn btn-kirmizi" onclick="closeModal('paylasModal')">✖ KAPAT</button>
+    </div>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div id="toast" class="toast"></div>
 
@@ -296,10 +388,15 @@
 <div id="konfetiKatman" class="konfeti-katman"></div>
 <div id="ucanKatman" class="ucan-katman"></div>
 
-<script src="app.js?v=1000"></script>
+<script src="app.js?v=1"></script>
 <script>
+  // Service Worker'ı kaldır (cache sorunu için)
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
+    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
   }
 </script>
 </body>
