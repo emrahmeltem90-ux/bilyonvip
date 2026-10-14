@@ -1,7 +1,7 @@
 'use strict';
 
 /* ============================================================
-   SKORLAB QUIZ · app.js (ADSGRAM REWARD - TAM SÜRÜM)
+   SKORLAB QUIZ · app.js (MONETAG REWARDED POPUP - TAM SÜRÜM)
    ============================================================ */
 
 let TG = null;
@@ -47,48 +47,29 @@ function muzikToggle() {
 }
 
 /* ============================================================
-   REKLAM İZLE KAZAN (Adsgram Reward) - BlockID: 53759
+   REKLAM İZLE KAZAN (Monetag - Rewarded Popup)
+   Zone ID: 12026248
    ============================================================ */
-let adsgramController = null;
-
-function adsgramReklamBaslat() {
-  if (typeof window.Adsgram === 'undefined') return;
-  try {
-    adsgramController = window.Adsgram.init({ blockId: "53759" });
-    console.log('✅ Adsgram hazır');
-  } catch (e) {
-    console.error('Adsgram init hatası:', e);
+function monetagReklamIzle() {
+  if (typeof window.show_12026248 !== 'function') {
+    toast('📺 Reklam sistemi yükleniyor, tekrar dene');
+    return;
   }
+  window.show_12026248('pop').then(() => {
+    // Reklam başarıyla izlendi
+    user.coin += 50;
+    persistUser();
+    ustBarGuncelle();
+    konfetiGoster(30);
+    sesCal('kupa');
+    titreşim(100);
+    toast('🎉 +50 Coin kazandın!');
+    ucanPuan('+50 💰', 'var(--gold)');
+  }).catch((e) => {
+    console.log('Reklam hatası:', e);
+    toast('⚠️ Reklam tamamlanmadı');
+  });
 }
-
-async function reklamIzle() {
-  if (!adsgramController) {
-    adsgramReklamBaslat();
-    if (!adsgramController) { toast('📺 Reklam sistemi yükleniyor, tekrar dene'); return; }
-  }
-  try {
-    const result = await adsgramController.show();
-    if (result && result.done) {
-      user.coin += 50;
-      persistUser();
-      ustBarGuncelle();
-      konfetiGoster(30);
-      sesCal('kupa');
-      titreşim(100);
-      toast('🎉 +50 Coin kazandın!');
-      ucanPuan('+50 💰', 'var(--gold)');
-    } else {
-      toast('⚠️ Reklam tamamlanmadı');
-    }
-  } catch (e) {
-    console.error('Adsgram hatası:', e);
-    toast('⚠️ Reklam yüklenemedi veya atlandı');
-  }
-}
-
-window.addEventListener('load', () => {
-  setTimeout(() => adsgramReklamBaslat(), 2000);
-});
 
 /* ============================================================
    DAVET ET KAZAN SİSTEMİ
@@ -1646,4 +1627,4 @@ async function bilgiGoster() {
    ============================================================ */
 function closeModal(id) {
   document.getElementById(id)?.classList.remove('aktif');
-                     }
+}
